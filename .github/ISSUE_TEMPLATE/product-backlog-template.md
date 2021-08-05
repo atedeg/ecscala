@@ -2,12 +2,14 @@
 name: Product Backlog Template
 about: Template to be used when making a product backlog item
 title: ''
-labels: ''
+labels: 'product backlog item'
 assignees: ''
 
 ---
 
+**Initial estimate of effort:**
+
 ## Sprint tasks
-**Initial estimation of effort:**
+- [ ] task 1
 
 ## Additional resources
