@@ -7,8 +7,7 @@ assignees: ''
 
 ---
 
-# Description
-
-## Initial estimation of effort
+## Sprint tasks
+**Initial estimation of effort:**
 
 ## Additional resources
