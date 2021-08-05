@@ -9,7 +9,7 @@ assignees: ''
 
 **Initial estimate of effort:**
 
-## Sprint tasks
+#### Sprint tasks
 - [ ] task 1
 
-## Additional resources
+#### Additional resources
