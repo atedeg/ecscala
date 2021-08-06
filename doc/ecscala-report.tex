@@ -1,15 +1,86 @@
-%! Author = nicolas
+%! Author = Giacomo Cavalieri, Nicolò Di Domenico, Nicolas Farabegoli, Linda Vitali
 %! Date = 8/5/21
 
 % Preamble
-\documentclass[11pt]{article}
+\documentclass[final]{report}
 
 % Packages
-\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{graphicx}
+\graphicspath{ {./img/} }
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage[backend=biber]{biblatex}
+\usepackage{hyperref}
+
+\addbibresource{ecscala-report.bib}
+
+% custom commands
+\newcommand{\eg}{\emph{e.g}\ }
+\newcommand{\emailaddr}[1]{\href{mailto:#1}{\texttt{#1}}}
+\renewcommand{\lstlistingname}{Listato}
+\lstset{basicstyle=\ttfamily, showspaces=false, showstringspaces=false}
+\definecolor{lightmauve}{rgb}{0.86, 0.82, 1.0}
+\lstset{
+    language=Scala,
+    basicstyle=\footnotesize\ttfamily,
+    columns=fixed,
+    extendedchars=true,
+    breaklines=true,
+    tabsize=2,
+    prebreak=\raisebox{0ex}[0ex][0ex]{},
+    frame=lines,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    keywordstyle=\color[rgb]{0.0, 0.0, 1.0},
+    commentstyle=\color[rgb]{0.5,0.5,0.5},
+    stringstyle=\color[rgb]{0,0.5,0},
+    numbers=left,
+%numberstyle=\small,
+%stepnumber=1,
+%numbersep=6pt,
+    captionpos=b,
+    escapeinside={\%*}{*)}
+}
+
+\title{ECScala - A general-purpose ECS framework}
+\author{
+    Giacomo Cavalieri \\
+    \emailaddr{giacomo.cavalieri2@studio.unibo.it}
+    \and
+    Nicolò Di Domenico \\
+    \emailaddr{nicolo.didomenico@studio.unibo.it}
+    \and
+    Nicolas Farabegoli \\
+    \emailaddr{nicolas.farabegoli@studio.unibo.it}
+    \and
+    Linda Vitali \\
+    \emailaddr{linda.vitali2@studio.unibo.it}
+}
 
 % Document
 \begin{document}
+    \maketitle
 
+    \newpage
 
+    \tableofcontents
+
+    \newpage
+
+    \include{0-introduction}
+    \include{1-development-process}
+    \include{2-requirments}
+    \include{3-architectural-design}
+    \include{4-detailed-design}
+    \include{5-implementation}
+    \include{6-retrospective}
+
+    \printbibliography
 
 \end{document}
