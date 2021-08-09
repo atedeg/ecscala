@@ -9,10 +9,10 @@ name: Continuous Integration
 
 on:
   pull_request:
-    branches: [ master, develop ]
+    branches: [master, develop]
   push:
-    branches: [ master, develop ]
-    tags: [ v* ]
+    branches: [master, develop]
+    tags: [v*]
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -22,9 +22,9 @@ jobs:
     name: Build and Test
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
-        scala: [ 3.0.1 ]
-        java: [ adopt@1.8, adopt@1.11, adopt@1.16 ]
+        os: [ubuntu-latest]
+        scala: [3.0.1]
+        java: [adopt@1.8, adopt@1.11, adopt@1.16]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
@@ -69,13 +69,13 @@ jobs:
 
   publish:
     name: Publish Artifacts
-    needs: [ build ]
+    needs: [build]
     if: github.event_name != 'pull_request' && (startsWith(github.ref, 'refs/tags/v'))
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
-        scala: [ 3.0.1 ]
-        java: [ adopt@1.8 ]
+        os: [ubuntu-latest]
+        scala: [3.0.1]
+        java: [adopt@1.8]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
