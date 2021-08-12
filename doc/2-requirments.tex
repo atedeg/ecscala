@@ -1,7 +1,32 @@
 \chapter{Requisiti}\label{ch:requisiti}
 
+\begin{table}[H]
+    \begin{tabular}{p{0.15\linewidth}p{0.85\linewidth}}
+        \toprule
+        \textbf{World}     & Contiene più \textit{entity} e i rispettivi \textit{component}. Permette la registrazione di più \textit{system} che utilizza per aggiornare lo stato dei \textit{component} \\
+        \textbf{View}      & Rappresenta un sottoinsieme delle \textit{entity} di un \textit{world} con i \textit{component}                                                                              \\
+        \textbf{Entity}    & Contiene più \textit{entity} e i rispettivi \textit{component}.                                                                                                              \\
+        \textbf{Component} & Rappresenta una particolare caratteristica da modellare per una \textit{entity}                                                                                              \\
+        \textbf{System}    & Aggiorna lo stato dei \textit{component} di tutte le \textit{entity} di una determinata \textit{view} secondo una logica definita dall'utilizzatore                          \\
+        \bottomrule
+    \end{tabular}\label{tab:table}
+    \caption{\label{Glossario}}
+\end{table}
+
 \section{Business}\label{sec:business}
 L'obiettivo è quello di realizzare un framework che permetta di applicare in maniera semplice il pattern ECS\@.
+
+\begin{itemize}
+    \item \textit{World} contiene più \textit{entity} e i rispettivi \textit{component}.
+    Permette la registrazione di più \textit{system} che utilizza per aggiornare lo stato dei \textit{component}
+    \item \textit{View} rappresenta un sottoinsieme delle \textit{entity} di un \textit{world} con i \textit{component}
+    specificati
+    \item \textit{Entity} è un contenitore di \textit{component} che ne descrivono lo stato
+    \item \textit{Component} rappresenta una particolare caratteristica da modellare per una \textit{entity}
+    \item \textit{System} aggiorna lo stato dei \textit{component} di tutte le \textit{entity} di una determinata \textit{view}
+    secondo una logica definita dall'utilizzatore
+\end{itemize}
+
 I requisiti di business individuati sono:
 \begin{enumerate}[label=\textbf{\ref{sec:business}.\arabic*}]
     \item \label{itm:b1} Deve essere possibile utilizzare in maniera semplice ed efficiente il pattern ECS
