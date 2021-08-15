@@ -1,4 +1,18 @@
 \chapter{Requisiti}\label{ch:requisiti}
+Per l'individuazione dei requisiti è stato innanzitutto analizzato il pattern ECS e la terminologia adottata.
+In Tabella~\ref{tab:glossario} è riportato un gloassario con i principali concetti del pattern:
+\begin{table}[H]
+    \begin{tabular}{p{0.17\linewidth}p{0.76\linewidth}}
+        \toprule
+        \textbf{World}     & Contiene più \textit{entity} e i rispettivi \textit{component}.
+        Permette la registrazione di più \textit{system} che utilizza per aggiornare lo stato dei \textit{component} \\
+        \textbf{View}      & Rappresenta il sottoinsieme delle \textit{entity} di un \textit{world} con i soli \textit{component} specificati \\
+        \textbf{Entity}    & Contiene più \textit{entity} e i rispettivi \textit{component}                                                                                                           \\
+        \textbf{Component} & Rappresenta una particolare caratteristica da modellare per una \textit{entity}                                                                                              \\
+        \textbf{System}    & Aggiorna lo stato dei \textit{component} di tutte le \textit{entity} di una determinata \textit{view} secondo una logica definita dall'utilizzatore                          \\
+        \bottomrule
+    \end{tabular}\caption{\label{tab:glossario}Glossario dei termini del dominio.}
+\end{table}
 
 \section{Business}\label{sec:business}
 L'obiettivo è quello di realizzare un framework che permetta di applicare in maniera semplice il pattern ECS\@.
@@ -27,7 +41,7 @@ In particolare:
 \section{Funzionali}\label{sec:funzionali}
 I requisiti funzionali, ricavati da quelli utente, sono:
 \begin{enumerate}[label=\textbf{\ref{sec:funzionali}.\arabic*}]
-    \item \label{itm:f1} Definire un \textit{mondo}
+    \item \label{itm:f1} Definire uno o più \textit{world}
     \begin{enumerate}[label=\textbf{\ref{itm:f1}.\arabic*}]
         \item \label{itm:ff1} Definire delle \textit{viste} che selezionino alcune \textit{entità} del \textit{mondo}
         \item \label{itm:ff2} Far avanzare lo stato del \textit{mondo}, comportando l'aggiornamento delle sue \textit{entità}
