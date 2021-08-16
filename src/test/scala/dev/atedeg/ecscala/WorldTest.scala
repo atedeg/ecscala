@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala
 
-import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.*
+import org.scalatest.wordspec.AnyWordSpec
 
 class WorldTest extends AnyWordSpec with Matchers {
   "A World" when {

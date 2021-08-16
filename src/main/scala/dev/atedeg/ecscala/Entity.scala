@@ -1,19 +1,20 @@
 package dev.atedeg.ecscala
 
-type EntityId = Int
-
-object EntityIdGenerator {
-  private var currentId: EntityId = 0
-  def nextId(): EntityId = synchronized {
-    val id = currentId
-    currentId += 1
-    id
-  }
-}
-
-trait Entity
+sealed trait Entity
 
 object Entity {
-  def apply(): Entity = EntityImpl(EntityIdGenerator.nextId())
-  private case class EntityImpl(private val id: EntityId) extends Entity
+  private opaque type Id = Int
+
+  def apply(): Entity = EntityImpl(IdGenerator.nextId())
+
+  private case class EntityImpl(private val id: Id) extends Entity
+
+  private object IdGenerator {
+    private var currentId: Id = 0
+    def nextId(): Id = synchronized {
+      val id = currentId
+      currentId += 1
+      id
+    }
+  }
 }

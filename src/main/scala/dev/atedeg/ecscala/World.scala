@@ -7,7 +7,9 @@ trait World {
 }
 
 object World {
+
   def apply(): World = new WorldImpl()
+
   private class WorldImpl() extends World {
     private var entities: Seq[Entity] = Seq()
 
