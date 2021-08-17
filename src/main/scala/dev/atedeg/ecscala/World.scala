@@ -11,18 +11,18 @@ object World {
   def apply(): World = new WorldImpl()
 
   private class WorldImpl() extends World {
-    private var entities: Seq[Entity] = Seq()
+    private var entities: Set[Entity] = Set()
 
     override def size: Int = entities.size
 
     override def createEntity(): Entity = {
       val entity = Entity()
-      entities = entities :+ entity
+      entities = entities + entity
       entity
     }
 
     override def removeEntity(entity: Entity): Unit = {
-      entities = entities filter { _ != entity }
+      entities = entities - entity
     }
   }
 }
