@@ -1,7 +1,13 @@
 package dev.atedeg.ecscala
 
+/**
+ * This trait represents an entity of ECS whose state is defined by its components.
+ */
 sealed trait Entity
 
+/**
+ * Factory for [[dev.atedeg.ecscala.Entity]] instances.
+ */
 object Entity {
   private opaque type Id = Int
 
