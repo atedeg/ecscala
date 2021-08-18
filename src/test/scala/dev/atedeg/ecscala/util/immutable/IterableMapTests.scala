@@ -1,14 +1,14 @@
 package dev.atedeg.ecscala.util.immutable
 
-import dev.atedeg.ecscala.util.BaseIterableMapTests
+import dev.atedeg.ecscala.util.BaseMapTests
 
 import scala.collection.{Map, MapFactory}
 
-class IterableMapTests extends BaseIterableMapTests[IterableMap] {
+class IterableMapTests extends BaseMapTests[IterableMap] {
 
   override def name: String = "An immutable iterable map"
 
-  override def iterableMapFactory(): MapFactory[IterableMap] = IterableMap
+  override def mapFactory(): MapFactory[IterableMap] = IterableMap
 
   override def add[K, V](map: IterableMap[K, V], elem: (K, V)): IterableMap[K, V] = map + elem
 

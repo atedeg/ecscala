@@ -31,21 +31,22 @@ object IterableMap extends MapFactory[IterableMap] {
 
   override def from[K, V](it: IterableOnce[(K, V)]): IterableMap[K, V] = new IterableMapImpl(it.iterator.toSeq: _*)
 
-  override def newBuilder[K, V]: mutable.Builder[(K, V), IterableMap[K, V]] = new IterableMapBuilderImpl
+  override def newBuilder[K, V]: mutable.Builder[(K, V), IterableMap[K, V]] = new IterableMapBuilderImpl()
 
   override def apply[K, V](elems: (K, V)*): IterableMap[K, V] = new IterableMapImpl(elems: _*)
 
   private class IterableMapImpl[K, V](elems: (K, V)*) extends IterableMap[K, V] {
 
-    private val denseKeys: ArrayBuffer[K] = ArrayBuffer.from(elems map (_._1))
-    private val denseValues: ArrayBuffer[V] = ArrayBuffer.from(elems map (_._2))
-    private val sparseKeysIndices: Map[K, Int] = Map.from(elems.zipWithIndex.map((elem, index) => (elem._1, index)))
+    private val denseKeys: ArrayBuffer[K] = ArrayBuffer.from(elems map { _._1 })
+    private val denseValues: ArrayBuffer[V] = ArrayBuffer.from(elems map { _._2 })
+    private val sparseKeysIndices: Map[K, Int] = Map.from(denseKeys.zipWithIndex)
 
     override def addOne(elem: (K, V)): this.type = {
+      val (key, value) = elem
       val denseIndex = denseKeys.size + 1
-      denseKeys += elem._1
-      denseValues += elem._2
-      sparseKeysIndices += (elem._1 -> denseIndex)
+      denseKeys += key
+      denseValues += value
+      sparseKeysIndices += (key -> denseIndex)
       this
     }
 

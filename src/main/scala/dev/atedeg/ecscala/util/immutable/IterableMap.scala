@@ -32,21 +32,22 @@ object IterableMap extends MapFactory[IterableMap] {
 
   override def from[K, V](it: IterableOnce[(K, V)]): IterableMap[K, V] = new IterableMapImpl(it.iterator.toSeq: _*)
 
-  override def newBuilder[K, V]: Builder[(K, V), IterableMap[K, V]] = new IterableMapBuilderImpl
+  override def newBuilder[K, V]: Builder[(K, V), IterableMap[K, V]] = new IterableMapBuilderImpl()
 
   override def apply[K, V](elems: (K, V)*): IterableMap[K, V] = new IterableMapImpl(elems: _*)
 
   private class IterableMapImpl[K, +V](elems: (K, V)*) extends IterableMap[K, V] {
 
-    private val denseKeys: Vector[K] = Vector.from(elems map (_._1))
-    private val denseValues: Vector[V] = Vector.from(elems map (_._2))
-    private val sparseKeysIndices: Map[K, Int] = Map.from(elems.zipWithIndex.map((elem, index) => (elem._1, index)))
+    private val denseKeys: Vector[K] = Vector.from(elems map { _._1 })
+    private val denseValues: Vector[V] = Vector.from(elems map { _._2 })
+    private val sparseKeysIndices: Map[K, Int] = Map.from(denseKeys.zipWithIndex)
 
-    override def removed(key: K): IterableMap[K, V] = IterableMap(denseKeys zip denseValues filter (_._1 != key): _*)
+    private def withoutElem(key: K): Seq[(K, V)] = denseKeys zip denseValues filter { _._1 != key }
 
-    override def updated[V1 >: V](key: K, value: V1): IterableMap[K, V1] = IterableMap(
-      (denseKeys zip denseValues filter (_._1 != key)) :+ (key, value): _*
-    )
+    override def removed(key: K): IterableMap[K, V] = IterableMap.from(withoutElem(key))
+
+    override def updated[V1 >: V](key: K, value: V1): IterableMap[K, V1] =
+      IterableMap.from(withoutElem(key) :+ (key, value))
 
     override def get(key: K): Option[V] = sparseKeysIndices get key map { denseValues(_) }
 
@@ -54,7 +55,7 @@ object IterableMap extends MapFactory[IterableMap] {
 
     override def keys: scala.Iterable[K] = denseKeys
 
-    override def keySet: Set[K] = Set(denseKeys: _*)
+    override def keySet: Set[K] = Set.from(denseKeys)
 
     override def keysIterator: Iterator[K] = denseKeys.iterator
 
@@ -64,6 +65,7 @@ object IterableMap extends MapFactory[IterableMap] {
   }
 
   private class IterableMapBuilderImpl[K, V] extends BaseIterableMapBuilder[K, V, IterableMap] {
+
     override def emptyFactory(): IterableMap[K, V] = IterableMap.empty
     override def addElement(map: IterableMap[K, V], elem: (K, V)): IterableMap[K, V] = map + elem
   }
