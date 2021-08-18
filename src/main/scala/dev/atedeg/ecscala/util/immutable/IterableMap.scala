@@ -25,9 +25,9 @@ object IterableMap extends MapFactory[IterableMap] {
 
   private class IterableMapImpl[K, +V](elems: (K, V)*) extends IterableMap[K, V] {
 
-    private val denseKeys: Vector[K] = Vector(elems map (_._1): _*)
-    private val denseValues: Vector[V] = Vector(elems map (_._2): _*)
-    private val sparseKeysIndices: Map[K, Int] = Map(elems.zipWithIndex.map((elem, index) => (elem._1, index)): _*)
+    private val denseKeys: Vector[K] = Vector.from(elems map (_._1))
+    private val denseValues: Vector[V] = Vector.from(elems map (_._2))
+    private val sparseKeysIndices: Map[K, Int] = Map.from(elems.zipWithIndex.map((elem, index) => (elem._1, index)))
 
     override def removed(key: K): IterableMap[K, V] = IterableMap(denseKeys zip denseValues filter (_._1 != key): _*)
 
@@ -49,10 +49,10 @@ object IterableMap extends MapFactory[IterableMap] {
 
     override def valuesIterator: Iterator[V] = denseValues.iterator
   }
-  
+
   private class IterableMapBuilderImpl[K, V] extends ReusableBuilder[(K, V), IterableMap[K, V]] {
     private var elems: IterableMap[K, V] = IterableMap.empty
-    
+
     override def clear(): Unit = {
       elems = IterableMap.empty
     }
