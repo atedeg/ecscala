@@ -10,7 +10,7 @@ abstract class BaseIterableMapTests[CC[K, V] <: Map[K, V]] extends AnyWordSpec w
   def add[K, V](map: CC[K, V], elem: (K, V)): CC[K, V]
   def remove[K, V](map: CC[K, V], key: K): CC[K, V]
 
-  "An immutable iterable map" when {
+  "An iterable map" when {
     "empty" should {
       "have size 0" in {
         iterableMapFactory().empty.size shouldBe 0

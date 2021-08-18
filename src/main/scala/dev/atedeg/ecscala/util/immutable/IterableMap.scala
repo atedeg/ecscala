@@ -1,8 +1,10 @@
 package dev.atedeg.ecscala.util.immutable
 
+import dev.atedeg.ecscala.util.BaseIterableMapBuilder
+
 import scala.collection.generic.DefaultSerializable
 import scala.collection.{MapFactory, MapFactoryDefaults}
-import scala.collection.mutable.{ReusableBuilder, Builder}
+import scala.collection.mutable.{Builder, ReusableBuilder}
 import scala.collection.immutable.{AbstractMap, Iterable, MapOps}
 
 trait IterableMap[K, +V]
@@ -50,18 +52,8 @@ object IterableMap extends MapFactory[IterableMap] {
     override def valuesIterator: Iterator[V] = denseValues.iterator
   }
 
-  private class IterableMapBuilderImpl[K, V] extends ReusableBuilder[(K, V), IterableMap[K, V]] {
-    private var elems: IterableMap[K, V] = IterableMap.empty
-
-    override def clear(): Unit = {
-      elems = IterableMap.empty
-    }
-
-    override def result(): IterableMap[K, V] = elems
-
-    override def addOne(elem: (K, V)): this.type = {
-      elems += elem
-      this
-    }
+  private class IterableMapBuilderImpl[K, V] extends BaseIterableMapBuilder[K, V, IterableMap] {
+    override def emptyFactory(): IterableMap[K, V] = IterableMap.empty
+    override def addElement(map: IterableMap[K, V], elem: (K, V)): IterableMap[K, V] = map + elem
   }
 }
