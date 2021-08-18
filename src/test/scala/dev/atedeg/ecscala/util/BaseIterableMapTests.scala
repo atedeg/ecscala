@@ -30,6 +30,11 @@ abstract class BaseIterableMapTests[CC[K, V] <: Map[K, V]] extends AnyWordSpec w
           map = remove(map, "test")
           map.size shouldBe 0
         }
+        "removing a non-existing element" in {
+          var map: CC[String, Int] = iterableMapFactory().empty
+          map = remove(map, "test")
+          map.size shouldBe 0
+        }
       }
     }
     "has 100 elements" should {
@@ -41,6 +46,17 @@ abstract class BaseIterableMapTests[CC[K, V] <: Map[K, V]] extends AnyWordSpec w
       }
       "return None for a non-existing element" in new Fixture {
         map get 1000 shouldBe None
+      }
+      "return the correct element" when {
+        "deleting the last one" in new Fixture {
+          val removed = remove(map, 99)
+          removed get 99 shouldBe None
+        }
+        "deleting the middle one" in new Fixture {
+          val removed = remove(map, 50)
+          removed get 50 shouldBe None
+          removed get 99 shouldBe Some(198)
+        }
       }
       "return all the keys" in new Fixture {
         map.keys shouldBe (0 until 100)
