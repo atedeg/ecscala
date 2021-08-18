@@ -6,6 +6,14 @@ import scala.collection.generic.DefaultSerializable
 import scala.collection.{MapFactory, MapFactoryDefaults, mutable}
 import scala.collection.mutable.{AbstractMap, ArrayBuffer, Builder, Iterable, Map, MapOps, ReusableBuilder}
 
+/**
+ * This trait represents a mutable [[scala.collection.mutable.Map]] that can be efficiently iterated.
+ *
+ * @tparam K
+ *   the type of the keys contained in this map.
+ * @tparam V
+ *   the type of the values associated with the keys in this map.
+ */
 trait IterableMap[K, V]
     extends AbstractMap[K, V]
     with MapOps[K, V, IterableMap, IterableMap[K, V]]
@@ -14,6 +22,9 @@ trait IterableMap[K, V]
   override def mapFactory: MapFactory[IterableMap] = IterableMap
 }
 
+/**
+ * This object provides a set of operations to create [[dev.atedeg.ecscala.util.mutable.IterableMap]] values.
+ */
 object IterableMap extends MapFactory[IterableMap] {
 
   override def empty[K, V]: IterableMap[K, V] = new IterableMapImpl()

@@ -7,6 +7,14 @@ import scala.collection.{MapFactory, MapFactoryDefaults}
 import scala.collection.mutable.{Builder, ReusableBuilder}
 import scala.collection.immutable.{AbstractMap, Iterable, MapOps}
 
+/**
+ * This trait represents an immutable [[scala.collection.immutable.Map]] that can be efficiently iterated.
+ *
+ * @tparam K
+ *   the type of the keys contained in this map.
+ * @tparam V
+ *   the type of the values associated with the keys in this map.
+ */
 trait IterableMap[K, +V]
     extends AbstractMap[K, V]
     with MapOps[K, V, IterableMap, IterableMap[K, V]]
@@ -15,6 +23,9 @@ trait IterableMap[K, +V]
   override def mapFactory: MapFactory[IterableMap] = IterableMap
 }
 
+/**
+ * This object provides a set of operations to create [[dev.atedeg.ecscala.util.immutable.IterableMap]] values.
+ */
 object IterableMap extends MapFactory[IterableMap] {
 
   override def empty[K, V]: IterableMap[K, V] = new IterableMapImpl()
