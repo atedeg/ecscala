@@ -7,6 +7,8 @@ import scala.collection.{Map, MapFactory}
 
 class IterableMapTests extends BaseIterableMapTests[IterableMap] {
 
+  override def name: String = "A mutable iterable map"
+
   override def iterableMapFactory(): MapFactory[IterableMap] = IterableMap
 
   override def add[K, V](map: IterableMap[K, V], elem: (K, V)): IterableMap[K, V] = {

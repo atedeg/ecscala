@@ -6,11 +6,12 @@ import org.scalatest.wordspec.AnyWordSpec
 import scala.collection.{Map, MapFactory}
 
 abstract class BaseIterableMapTests[CC[K, V] <: Map[K, V]] extends AnyWordSpec with Matchers {
+  def name: String
   def iterableMapFactory(): MapFactory[CC]
   def add[K, V](map: CC[K, V], elem: (K, V)): CC[K, V]
   def remove[K, V](map: CC[K, V], key: K): CC[K, V]
 
-  "An iterable map" when {
+  s"$name" when {
     "empty" should {
       "have size 0" in {
         iterableMapFactory().empty.size shouldBe 0
@@ -71,7 +72,7 @@ abstract class BaseIterableMapTests[CC[K, V] <: Map[K, V]] extends AnyWordSpec w
       }
     }
   }
-  "An immutable iterable map builder" should {
+  s"$name builder" should {
     "create an iterable map" in {
       val builder = iterableMapFactory().newBuilder[String, Int]
       builder += ("test1" -> 1)
