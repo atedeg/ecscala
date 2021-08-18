@@ -1,0 +1,12 @@
+Sprint organizzativo
+- Redazione del Product Backlog
+- Identificazione dei requisiti di base
+- Identificazione requisiti di base del processo di sviluppo:
+- Durata degli sprint: settimanali
+- Definition of done:
+		- Test passano
+		- Codice documentato (Scaladoc)
+		- Code review
+- Cadenza dei meeting:  una volta a settimana.
+- Preparazione della build
+- Preparazione delle Action di GitHub
