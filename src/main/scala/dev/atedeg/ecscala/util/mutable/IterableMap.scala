@@ -73,6 +73,7 @@ object IterableMap extends MapFactory[IterableMap] {
   }
 
   private class IterableMapBuilderImpl[K, V] extends BaseIterableMapBuilder[K, V, IterableMap] {
+
     override def emptyFactory(): IterableMap[K, V] = IterableMap.empty
     override def addElement(map: IterableMap[K, V], elem: (K, V)): IterableMap[K, V] = map.addOne(elem)
   }
