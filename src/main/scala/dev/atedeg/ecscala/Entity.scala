@@ -11,7 +11,7 @@ sealed trait Entity
 object Entity {
   private opaque type Id = Int
 
-  def apply(): Entity = EntityImpl(IdGenerator.nextId())
+  protected[ecscala] def apply(): Entity = EntityImpl(IdGenerator.nextId())
 
   private case class EntityImpl(private val id: Id) extends Entity
 
