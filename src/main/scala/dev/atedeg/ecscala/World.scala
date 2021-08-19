@@ -6,7 +6,7 @@ package dev.atedeg.ecscala
 trait World {
 
   /**
-   * Return number of entity in the world.
+   * Return the number of entities in the world.
    * @return
    *   the number of [[Entity]].
    */
