@@ -1,4 +1,4 @@
-Sprint organizzativo (da 05/08/2021 - a 08/08/2021)
+# Sprint organizzativo (da 05/08/2021 - a 08/08/2021)
 
 - Redazione del Product Backlog
 - Identificazione dei requisiti di base
