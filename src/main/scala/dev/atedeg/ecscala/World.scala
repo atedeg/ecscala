@@ -2,17 +2,15 @@ package dev.atedeg.ecscala
 
 /**
  * This trait represents a container for [[Entity]], Components and System.
- *
- * It's responsible for calling each System registered in it.
  */
 trait World {
 
   /**
-   * Return the world size.
+   * Return number of entity in the world.
    * @return
    *   the number of [[Entity]].
    */
-  def size: Int
+  def entitiesCount: Int
 
   /**
    * Create a new entity and add it to the world.
@@ -30,12 +28,12 @@ trait World {
 }
 
 /**
- * Factory for [[dev.atedeg.ecscala.World]] instances.
+ * Factory for [[World]] instances.
  */
 object World {
 
   /**
-   * Creates a new [[dev.atedeg.ecscala.World]].
+   * Creates a new [[World]].
    * @return
    *   the world.
    */
@@ -44,16 +42,14 @@ object World {
   private class WorldImpl() extends World {
     private var entities: Set[Entity] = Set()
 
-    override def size: Int = entities.size
+    override def entitiesCount: Int = entities.size
 
     override def createEntity(): Entity = {
       val entity = Entity()
-      entities = entities + entity
+      entities += entity
       entity
     }
 
-    override def removeEntity(entity: Entity): Unit = {
-      entities = entities - entity
-    }
+    override def removeEntity(entity: Entity): Unit = entities -= entity
   }
 }
