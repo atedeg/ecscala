@@ -1,11 +1,11 @@
 package dev.atedeg.ecscala.util.immutable
 
-import dev.atedeg.ecscala.util.BaseIterableMapBuilder
-
 import scala.collection.generic.DefaultSerializable
-import scala.collection.{MapFactory, MapFactoryDefaults}
+import scala.collection.{IterableFactory, MapFactory, MapFactoryDefaults}
 import scala.collection.mutable.{Builder, ReusableBuilder}
-import scala.collection.immutable.{AbstractMap, Iterable, MapOps}
+import scala.collection.immutable.{Iterable, Map, MapOps}
+
+import dev.atedeg.ecscala.util.{BaseIterableMap, BaseIterableMapBuilder}
 
 /**
  * This trait represents an immutable [[scala.collection.immutable.Map]] that can be efficiently iterated.
@@ -16,7 +16,8 @@ import scala.collection.immutable.{AbstractMap, Iterable, MapOps}
  *   the type of the values associated with the keys in this map.
  */
 trait IterableMap[K, +V]
-    extends AbstractMap[K, V]
+    extends dev.atedeg.ecscala.util.IterableMap[K, V]
+    with Map[K, V]
     with MapOps[K, V, IterableMap, IterableMap[K, V]]
     with MapFactoryDefaults[K, V, IterableMap, Iterable]
     with DefaultSerializable {
@@ -36,11 +37,13 @@ object IterableMap extends MapFactory[IterableMap] {
 
   override def apply[K, V](elems: (K, V)*): IterableMap[K, V] = new IterableMapImpl(elems: _*)
 
-  private class IterableMapImpl[K, +V](elems: (K, V)*) extends IterableMap[K, V] {
+  private class IterableMapImpl[K, V](elems: (K, V)*) extends BaseIterableMap[K, V](elems: _*) with IterableMap[K, V] {
 
-    private val denseKeys: Vector[K] = Vector.from(elems map { _._1 })
-    private val denseValues: Vector[V] = Vector.from(elems map { _._2 })
-    private val sparseKeysIndices: Map[K, Int] = Map.from(denseKeys.zipWithIndex)
+    override type Dense[T] = Vector[T]
+    override type Sparse[K, V] = Map[K, V]
+
+    protected override def denseFactory = Vector
+    protected override def sparseFactory = Map
 
     private def withoutElem(key: K): Seq[(K, V)] = denseKeys zip denseValues filter { _._1 != key }
 
@@ -48,20 +51,6 @@ object IterableMap extends MapFactory[IterableMap] {
 
     override def updated[V1 >: V](key: K, value: V1): IterableMap[K, V1] =
       IterableMap.from(withoutElem(key) :+ (key, value))
-
-    override def get(key: K): Option[V] = sparseKeysIndices get key map { denseValues(_) }
-
-    override def iterator: Iterator[(K, V)] = (denseKeys zip denseValues).iterator
-
-    override def keys: scala.Iterable[K] = denseKeys
-
-    override def keySet: Set[K] = Set.from(denseKeys)
-
-    override def keysIterator: Iterator[K] = denseKeys.iterator
-
-    override def values: scala.Iterable[V] = denseValues
-
-    override def valuesIterator: Iterator[V] = denseValues.iterator
   }
 
   private class IterableMapBuilderImpl[K, V] extends BaseIterableMapBuilder[K, V, IterableMap] {
