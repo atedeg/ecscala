@@ -9,7 +9,7 @@ import scala.quoted.*
  * @tparam T
  *   the type whose compiletime informations are stored in the TypeTag.
  */
-sealed trait TypeTag[T] {
+private[ecscala] sealed trait TypeTag[T] {
   override def equals(obj: Any): Boolean
   override def hashCode(): Int
   override def toString: String
