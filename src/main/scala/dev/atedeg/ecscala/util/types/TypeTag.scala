@@ -3,11 +3,11 @@ package dev.atedeg.ecscala.util.types
 import scala.quoted.*
 
 /**
- * A TypeTag is a trait used to describe types keeping informations about the type that would otherwise be erased at
+ * A TypeTag is a trait used to describe types keeping information about the type that would otherwise be erased at
  * runtime.
  *
  * @tparam T
- *   the type whose compiletime informations are stored in the TypeTag.
+ *   the type whose compiletime information are stored in the TypeTag.
  */
 private[ecscala] sealed trait TypeTag[T] {
   override def equals(obj: Any): Boolean
