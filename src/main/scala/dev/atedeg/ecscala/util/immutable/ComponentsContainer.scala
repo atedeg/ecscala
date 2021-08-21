@@ -11,57 +11,54 @@ private[ecscala] trait ComponentsContainer {
 
   /**
    * @tparam T
-   *   the return map's values' type
+   *   the return map's values' type.
    * @return
-   *   A collection of type [[scala.collection.immutable.Map]] [Entity, T]
+   *   a collection of type [[scala.collection.immutable.Map]] [Entity, T].
    */
   def apply[T <: Component: TypeTag]: Option[Map[Entity, T]]
 
   /**
    * @param entityComponentPair
-   *   the (entity, component) pair to add to the container
+   *   the (entity, component) pair to add to the container.
    * @tparam T
-   *   the type of the [[Component]] to add
+   *   the type of the [[Component]] to add.
    * @return
-   *   A new [[ComponentsContainer]] with the added (entity, component) pair
+   *   a new [[ComponentsContainer]] with the added (entity, component) pair.
    */
   def addComponent[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer
 
   /**
-   * @see
-   *   [[addComponent]]
+   * An alias for [[addComponent]].
    */
   def +[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer =
     addComponent(entityComponentPair)
 
   /**
    * @param entityComponentPair
-   *   the (entity, component) pair to remove from the container
+   *   the (entity, component) pair to remove from the container.
    * @tparam T
-   *   the type of the [[Component]] to remove
+   *   the type of the [[Component]] to remove.
    * @return
-   *   A new [[ComponentsContainer]] with the removed (entity, component) pair
+   *   a new [[ComponentsContainer]] with the removed (entity, component) pair.
    */
   def removeComponent[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer
 
   /**
-   * @see
-   *   [[removeComponent]]
+   * An alias for [[removeComponent]].
    */
   def -[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer =
     removeComponent(entityComponentPair)
 
   /**
    * @param entity
-   *   the [[Entity]] to remove from the container
+   *   the [[Entity]] to remove from the container.
    * @return
-   *   A [[ComponentsContainer]] with the removed entity and all its components
+   *   a [[ComponentsContainer]] with the removed entity and all its components.
    */
   def removeEntity(entity: Entity): ComponentsContainer
 
   /**
-   * @see
-   *   [[removeEntity]]
+   * An alias for [[removeEntity]].
    */
   def -(entity: Entity): ComponentsContainer = removeEntity(entity)
 }
