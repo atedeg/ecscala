@@ -40,16 +40,16 @@ object World {
   def apply(): World = new WorldImpl()
 
   private class WorldImpl() extends World {
-    private var entities: Set[Entity] = Set()
-
-    override def entitiesCount: Int = entities.size
+    private var _entitiesCount: Int = 0
+    
+    override def entitiesCount: Int = _entitiesCount
 
     override def createEntity(): Entity = {
       val entity = Entity()
-      entities += entity
+      _entitiesCount += 1
       entity
     }
 
-    override def removeEntity(entity: Entity): Unit = entities -= entity
+    override def removeEntity(entity: Entity): Unit = _entitiesCount -= 1
   }
 }
