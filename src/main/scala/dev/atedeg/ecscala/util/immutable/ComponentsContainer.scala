@@ -12,6 +12,7 @@ private[ecscala] trait ComponentsContainer {
   def -[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer =
     removeComponent(entityComponentPair)
   def removeEntity(entity: Entity): ComponentsContainer
+  def -(entity: Entity): ComponentsContainer = removeEntity(entity)
 }
 
 private[ecscala] object ComponentsContainer {
@@ -31,11 +32,6 @@ private[ecscala] object ComponentsContainer {
       ComponentsContainer(newComponentsMap)
     }
 
-    /*
-    cc + (e1 -> Position(1,2))
-    cc + (e2 -> Position(2,3))
-    cc - (e2 -> Position(1,2))
-     */
     extension [T <: Component](map: Map[Entity, T]) {
       def -(entityComponentPair: (Entity, T)): Map[Entity, T] = {
         val (entity, component) = entityComponentPair
@@ -57,6 +53,15 @@ private[ecscala] object ComponentsContainer {
       ComponentsContainer(newComponentsMap)
     }
 
-    override def removeEntity(entity: Entity) = ???
+    override def removeEntity(entity: Entity) = {
+//      val newComponentsMap = componentsMap flatMap { (tt, map) =>
+//        val newMap = map - entity
+//        if newMap.isEmpty then None else Some(tt -> newMap)
+//      }
+      val newComponentsMap = componentsMap collect {
+        case (tt, map) if !(map - entity).isEmpty => tt -> (map - entity)
+      }
+      ComponentsContainer(newComponentsMap)
+    }
   }
 }
