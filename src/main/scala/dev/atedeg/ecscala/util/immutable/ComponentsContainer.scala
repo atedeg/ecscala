@@ -97,8 +97,8 @@ private[ecscala] object ComponentsContainer {
     override def removeComponent[T <: Component](entityComponentPair: (Entity, T))(using tt: TypeTag[T]) = {
       val newComponentsMap =
         this.apply[T] flatMap (_ -? entityComponentPair) match {
-          case Some(m) => componentsMap + (tt -> m)
-          case None    => componentsMap - tt
+          case Some(componentMap) => componentsMap + (tt -> componentMap)
+          case None               => componentsMap - tt
         }
       ComponentsContainer(newComponentsMap)
     }
