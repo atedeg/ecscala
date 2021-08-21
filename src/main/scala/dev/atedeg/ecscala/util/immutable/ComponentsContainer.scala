@@ -3,15 +3,66 @@ package dev.atedeg.ecscala.util.immutable
 import dev.atedeg.ecscala.{Component, Entity}
 import dev.atedeg.ecscala.util.types.TypeTag
 
+/**
+ * This trait represents a container of multiple [[scala.collection.immutable.Map]] [Entity, T], with T subtype of
+ * Component.
+ */
 private[ecscala] trait ComponentsContainer {
+
+  /**
+   * @tparam T
+   *   the return map's values' type
+   * @return
+   *   A collection of type [[scala.collection.immutable.Map]] [Entity, T]
+   */
   def apply[T <: Component: TypeTag]: Option[Map[Entity, T]]
+
+  /**
+   * @param entityComponentPair
+   *   the (entity, component) pair to add to the container
+   * @tparam T
+   *   the type of the [[Component]] to add
+   * @return
+   *   A new [[ComponentsContainer]] with the added (entity, component) pair
+   */
   def addComponent[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer
-  def removeComponent[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer
+
+  /**
+   * @see
+   *   [[addComponent]]
+   */
   def +[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer =
     addComponent(entityComponentPair)
+
+  /**
+   * @param entityComponentPair
+   *   the (entity, component) pair to remove from the container
+   * @tparam T
+   *   the type of the [[Component]] to remove
+   * @return
+   *   A new [[ComponentsContainer]] with the removed (entity, component) pair
+   */
+  def removeComponent[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer
+
+  /**
+   * @see
+   *   [[removeComponent]]
+   */
   def -[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer =
     removeComponent(entityComponentPair)
+
+  /**
+   * @param entity
+   *   the [[Entity]] to remove from the container
+   * @return
+   *   A [[ComponentsContainer]] with the removed entity and all its components
+   */
   def removeEntity(entity: Entity): ComponentsContainer
+
+  /**
+   * @see
+   *   [[removeEntity]]
+   */
   def -(entity: Entity): ComponentsContainer = removeEntity(entity)
 }
 
