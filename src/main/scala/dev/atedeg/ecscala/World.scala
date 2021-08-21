@@ -1,5 +1,7 @@
 package dev.atedeg.ecscala
 
+import dev.atedeg.ecscala.util.immutable.ComponentsContainer
+
 /**
  * This trait represents a container for [[Entity]], Components and System.
  */
@@ -40,16 +42,20 @@ object World {
   def apply(): World = new WorldImpl()
 
   private class WorldImpl() extends World {
-    private var _entitiesCount: Int = 0
-    
-    override def entitiesCount: Int = _entitiesCount
+    private var entities: Set[Entity] = Set()
+    private var componentsContainer = ComponentsContainer()
+
+    override def entitiesCount: Int = entities.size
 
     override def createEntity(): Entity = {
       val entity = Entity()
-      _entitiesCount += 1
+      entities += entity
       entity
     }
 
-    override def removeEntity(entity: Entity): Unit = _entitiesCount -= 1
+    override def removeEntity(entity: Entity): Unit = {
+      entities -= entity
+      componentsContainer -= entity
+    }
   }
 }
