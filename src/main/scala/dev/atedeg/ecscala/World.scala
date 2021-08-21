@@ -1,6 +1,7 @@
 package dev.atedeg.ecscala
 
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
+import dev.atedeg.ecscala.util.types.TypeTag
 
 /**
  * This trait represents a container for [[Entity]], Components and System.
@@ -27,6 +28,8 @@ trait World {
    *   to remove.
    */
   def removeEntity(entity: Entity): Unit
+
+  private[ecscala] def getComponents[T <: Component: TypeTag]: Option[Map[Entity, T]]
 }
 
 /**
@@ -48,7 +51,9 @@ object World {
     override def entitiesCount: Int = entities.size
 
     override def createEntity(): Entity = {
+      import dev.atedeg.ecscala.util.types.{given TypeTag[_]}
       val entity = Entity()
+      entity.onAddedComponent(componentsContainer += _)
       entities += entity
       entity
     }
@@ -57,5 +62,7 @@ object World {
       entities -= entity
       componentsContainer -= entity
     }
+
+    override private[ecscala] def getComponents[T <: Component: TypeTag] = componentsContainer[T]
   }
 }
