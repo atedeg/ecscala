@@ -73,13 +73,12 @@ private[ecscala] object ComponentsContainer {
   private class ComponentsContainerImpl(
       private val componentsMap: Map[TypeTag[? <: Component], Map[Entity, ? <: Component]] = Map()
   ) extends ComponentsContainer {
-    override def apply[T <: Component](using tt: TypeTag[T]) = componentsMap.get(tt).map(_.asInstanceOf[Map[Entity, T]])
+    override def apply[T <: Component](using tt: TypeTag[T]) =
+      componentsMap.get(tt) map (_.asInstanceOf[Map[Entity, T]])
 
     override def addComponent[T <: Component](entityComponentPair: (Entity, T))(using tt: TypeTag[T]) = {
-      val newComponentsMap = this.apply[T] match {
-        case Some(map) => componentsMap + (tt -> (map + entityComponentPair))
-        case None      => componentsMap + (tt -> Map(entityComponentPair))
-      }
+      val newComponentMap = this.apply[T] map (_ + entityComponentPair) getOrElse (Map(entityComponentPair))
+      val newComponentsMap = componentsMap + (tt -> newComponentMap)
       ComponentsContainer(newComponentsMap)
     }
 
@@ -88,30 +87,24 @@ private[ecscala] object ComponentsContainer {
         val (entity, component) = entityComponentPair
         map filterNot ((e, c) => e == entity && c.eq(component))
       }
+
+      def -?(entityComponentPair: (Entity, T)): Option[Map[Entity, T]] =
+        Some(map - entityComponentPair) filter (!_.isEmpty)
+
+      def -?(entity: Entity): Option[Map[Entity, T]] = Some(map - entity) filter (!_.isEmpty)
     }
 
     override def removeComponent[T <: Component](entityComponentPair: (Entity, T))(using tt: TypeTag[T]) = {
-      val (entity, component) = entityComponentPair
-      val newComponentsMap = this.apply[T] match {
-        case Some(map) => {
-          (map - entityComponentPair) match {
-            case m if !m.isEmpty => componentsMap + (tt -> m)
-            case _               => componentsMap - tt
-          }
+      val newComponentsMap =
+        this.apply[T] flatMap (_ -? entityComponentPair) match {
+          case Some(m) => componentsMap + (tt -> m)
+          case None    => componentsMap - tt
         }
-        case None => componentsMap
-      }
       ComponentsContainer(newComponentsMap)
     }
 
     override def removeEntity(entity: Entity) = {
-//      val newComponentsMap = componentsMap flatMap { (tt, map) =>
-//        val newMap = map - entity
-//        if newMap.isEmpty then None else Some(tt -> newMap)
-//      }
-      val newComponentsMap = componentsMap collect {
-        case (tt, map) if !(map - entity).isEmpty => tt -> (map - entity)
-      }
+      val newComponentsMap = componentsMap flatMap { (tt, componentMap) => (componentMap -? entity) map (tt -> _) }
       ComponentsContainer(newComponentsMap)
     }
   }
