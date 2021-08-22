@@ -59,6 +59,7 @@ object Entity {
     private var onRemovedComponentEvent: Event[(Entity, TypeTag[Component], Component)] = Event()
 
     override def addComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
+      component.setEntity(Some(this))
       onAddedComponentEvent(this, tt, component)
       this
     }
@@ -69,6 +70,7 @@ object Entity {
     }
 
     override def removeComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
+      component.setEntity(None)
       onRemovedComponentEvent(this, tt, component)
       this
     }
