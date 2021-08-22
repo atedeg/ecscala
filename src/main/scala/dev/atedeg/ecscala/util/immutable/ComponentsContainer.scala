@@ -101,7 +101,8 @@ private[ecscala] object ComponentsContainer {
     }
 
     override def removeEntity(entity: Entity) = {
-      val newComponentsMap = componentsMap flatMap { (tt, componentMap) => (componentMap -? entity) map (tt -> _) }
+      val newComponentsMap: Map[TypeTag[? <: Component], Map[Entity, Component]] =
+        componentsMap flatMap { (tt, componentMap) => (componentMap -? entity) map (tt -> _) }
       ComponentsContainer(newComponentsMap)
     }
   }
