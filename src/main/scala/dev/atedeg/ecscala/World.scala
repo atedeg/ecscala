@@ -51,9 +51,8 @@ object World {
     override def entitiesCount: Int = entities.size
 
     override def createEntity(): Entity = {
-      import dev.atedeg.ecscala.util.types.{given TypeTag[_]}
       val entity = Entity()
-      entity.onAddedComponent(componentsContainer += _)
+      entity.onAddedComponent((e, tt, c) => (componentsContainer = componentsContainer.addComponent(e, c)(using tt)))
       entities += entity
       entity
     }
