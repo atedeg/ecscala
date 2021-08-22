@@ -85,9 +85,23 @@ private[ecscala] object ComponentsContainer {
         map filterNot ((e, c) => e == entity && c.eq(component))
       }
 
+      /**
+       * @param entityComponentPair
+       *   the pair to remove.
+       * @return
+       *   an [[Option]] with the map with the removed pair if the map still has some elements; if the removed element
+       *   was the last one and the map would be empty it returns a None.
+       */
       def -?(entityComponentPair: (Entity, T)): Option[Map[Entity, T]] =
         Some(map - entityComponentPair) filter (!_.isEmpty)
 
+      /**
+       * @param entity
+       *   the [[Entity]] to remove.
+       * @return
+       *   an [[Option]] with the map with the removed [[Entity]] if the map still has some elements; if the removed
+       *   element was the last one and the map would be empty it returns a None.
+       */
       def -?(entity: Entity): Option[Map[Entity, T]] = Some(map - entity) filter (!_.isEmpty)
     }
 
