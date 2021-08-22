@@ -53,7 +53,9 @@ object World {
     override def createEntity(): Entity = {
       val entity = Entity()
       entity.onAddedComponent((e, tt, c) => (componentsContainer = componentsContainer.addComponent(e, c)(using tt)))
-      entity.onRemovedComponent((e, tt, c) => (componentsContainer = componentsContainer.removeComponent(e, c)(using tt)))
+      entity.onRemovedComponent((e, tt, c) =>
+        (componentsContainer = componentsContainer.removeComponent(e, c)(using tt))
+      )
       entities += entity
       entity
     }
