@@ -27,6 +27,19 @@ trait Event[T] {
    * An alias for [[registerHandler]].
    */
   def +(handler: T => Unit) = registerHandler(handler)
+
+  /**
+   * @param handler
+   *   the handler that will be removed.
+   * @return
+   *   a new [[Event]] with the removed handler.
+   */
+  def removeHandler(handler: T => Unit): Event[T]
+
+  /**
+   * An alias for [[removeHandler()]].
+   */
+  def -(handler: T => Unit) = removeHandler(handler)
 }
 
 object Event {
@@ -36,5 +49,6 @@ object Event {
   private class EventImpl[T](private val handlers: Seq[T => Unit]) extends Event[T] {
     override def apply(eventParam: T): Unit = handlers map (_(eventParam))
     override def registerHandler(handler: T => Unit): Event[T] = Event(handlers :+ handler)
+    override def removeHandler(handler: T => Unit): Event[T] = Event(handlers filterNot (_ == handler))
   }
 }

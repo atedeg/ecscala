@@ -23,5 +23,31 @@ class EventTest extends AnyWordSpec with Matchers {
         n shouldBe 100
       }
     }
+    "removed an handler" should {
+      "return a new Event without it" in {
+        var s = ""
+        var event = Event[String]()
+        val handler: String => Unit = (s += _)
+        event += handler
+        event -= handler
+        event("Test")
+        s shouldBe ""
+      }
+    }
+    "removed an handler" should {
+      "still execute the others" in {
+        var n = 0
+        var event = Event[Int]()
+        val handler: Int => Unit = (n += _)
+        val handler2: Int => Unit = (n += _)
+        event += handler
+        event += handler2
+        event -= handler2
+        event(1)
+        event(1)
+        n shouldBe 2
+      }
+    }
+
   }
 }
