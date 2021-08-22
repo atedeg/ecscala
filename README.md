@@ -43,7 +43,7 @@ Contributions are what make the open source community such an amazing place to b
 - **Giacomo Cavalieri** - [giacomocavalieri](https://github.com/giacomocavalieri)
 - **Nicolò Di Domenico** - [ndido98](https://github.com/ndido98)
 - **Nicolas Farabegoli** - [nicolasfara](https://github.com/nicolasfara)
-- **Lida Vitali** - [vitlinda](https://github.com/vitlinda)
+- **Linda Vitali** - [vitlinda](https://github.com/vitlinda)
 
 ## License
 
