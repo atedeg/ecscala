@@ -35,5 +35,14 @@ class WorldTest extends AnyWordSpec with Matchers {
         world.getComponents[Position] should contain(Map(entity -> Position(1, 1)))
       }
     }
+    "components are removed from its enities" should {
+      "not return the components" in new WorldFixture with ComponentsFixture {
+        val entity = world.createEntity()
+        val component = Position(1, 1)
+        entity addComponent component
+        entity removeComponent component
+        world.getComponents[Position] shouldBe empty
+      }
+    }
   }
 }

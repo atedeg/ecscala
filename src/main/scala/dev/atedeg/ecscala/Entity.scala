@@ -20,13 +20,30 @@ sealed trait Entity {
   def addComponent[T <: Component: TypeTag](component: T): Entity
 
   /**
+   * @param component
+   *   the [[Component]] to remove from the [[Entity]].
+   * @tparam T
+   *   the type of the [[Component]].
+   * @return
+   *   itself.
+   */
+  def removeComponent[T <: Component: TypeTag](component: T): Entity
+
+  /**
    * @param handler
    *   the handler to execute when a [[Component]] is added to this entity.
    * @return
    *   itself.
    */
-  // TODO: try to understand if this could be made public to the library user without having to expose the TypeTag[T] trait
   private[ecscala] def onAddedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit): Entity
+
+  /**
+   * @param handler
+   *   the handler to execute when a [[Component]] is removed from this entity.
+   * @return
+   *   itself.
+   */
+  private[ecscala] def onRemovedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit): Entity
 }
 
 /**
@@ -39,7 +56,8 @@ object Entity {
 
   private case class EntityImpl(private val id: Id) extends Entity {
     private var onAddedComponentEvent: Event[(Entity, TypeTag[Component], Component)] = Event()
-    
+    private var onRemovedComponentEvent: Event[(Entity, TypeTag[Component], Component)] = Event()
+
     override def addComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
       onAddedComponentEvent(this, tt, component)
       this
@@ -47,6 +65,16 @@ object Entity {
 
     override def onAddedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit): Entity = {
       onAddedComponentEvent += handler
+      this
+    }
+
+    override def removeComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
+      onRemovedComponentEvent(this, tt, component)
+      this
+    }
+
+    override private[ecscala] def onRemovedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit) = {
+      onRemovedComponentEvent += handler
       this
     }
   }
