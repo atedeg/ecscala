@@ -9,3 +9,5 @@ As a framework user I want the framework to be able to update the state of at le
 Nicolas Farabegoli",30,,,,,,,
 As a framework user I would higly appreciate a handy DSL to perform these operations,Desing DSL,,Linda Vitali,20,,,,,,,
 ,First implementation of the DSL,,Linda Vitali,20,,,,,,,
+As a framework user I want to create a World,Design detailed World's architecture,,Giacomo Cavalieri,2,,,,,,,
+As a framework user I want to manipulate the  World's Entities,Design detailed Entity's architecture,,Giacomo Cavalieri,2,,,,,,,
