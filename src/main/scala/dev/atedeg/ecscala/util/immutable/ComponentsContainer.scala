@@ -71,6 +71,8 @@ private[ecscala] object ComponentsContainer {
       private val componentsMap: Map[TypeTag[? <: Component], Map[Entity, ? <: Component]] = Map()
   ) extends ComponentsContainer {
     override def apply[T <: Component](using tt: TypeTag[T]) =
+      // This cast is needed to return a map with the appropriate type and not a generic "Component" type.
+      // It is always safe to perform such a cast since the TypeTag holds the type of the retrieved map's components.
       componentsMap.get(tt) map (_.asInstanceOf[Map[Entity, T]])
 
     override def addComponent[T <: Component](entityComponentPair: (Entity, T))(using tt: TypeTag[T]) = {
@@ -82,6 +84,8 @@ private[ecscala] object ComponentsContainer {
     extension [T <: Component](map: Map[Entity, T]) {
       def -(entityComponentPair: (Entity, T)): Map[Entity, T] = {
         val (entity, component) = entityComponentPair
+        // The components are compared using the eq method because, when removing elements, two components are
+        // considered to be equal only if they are the same object.
         map filterNot ((e, c) => e == entity && c.eq(component))
       }
 
