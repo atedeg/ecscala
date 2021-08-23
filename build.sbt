@@ -106,6 +106,8 @@ inThisBuild(
     ),
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",
+      "-Xss4G",
+      "-Xmx16G",
     ),
     libraryDependencies := Seq(
       "org.scalactic" %% "scalactic" % "3.2.9",
@@ -124,3 +126,5 @@ ThisProject / jacocoReportSettings := JacocoReportSettings(
   fileEncoding = "utf-8",
 )
 ThisProject / jacocoExcludes := Seq("**.macros.*")
+
+enablePlugins(JmhPlugin)
