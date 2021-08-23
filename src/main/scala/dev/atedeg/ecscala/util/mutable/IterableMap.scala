@@ -45,10 +45,16 @@ object IterableMap extends MapFactory[IterableMap] {
 
     override def addOne(elem: (K, V)): this.type = {
       val (key, value) = elem
-      val denseIndex = denseKeys.size + 1
-      denseKeys += key
-      denseValues += value
-      sparseKeysIndices += (key -> denseIndex)
+      sparseKeysIndices get key match {
+        // We don't need to change the sparse key index because we replace key and value in the dense arrays
+        case Some(keyIndex) => denseValues(keyIndex) = value
+        case None => {
+          val denseIndex = denseKeys.size + 1
+          denseKeys += key
+          denseValues += value
+          sparseKeysIndices += (key -> denseIndex)
+        }
+      }
       this
     }
 
@@ -58,17 +64,23 @@ object IterableMap extends MapFactory[IterableMap] {
       elemIndex match {
         case Some(index) => {
           sparseKeysIndices -= elem
-          if (index != denseKeys.size - 1) {
-            denseKeys(index) = denseKeys.last
-            denseValues(index) = denseValues.last
-            sparseKeysIndices += (denseKeys.last -> index)
-          }
-          denseKeys.dropRightInPlace(1)
-          denseValues.dropRightInPlace(1)
+          if (index != denseKeys.size - 1) replaceWithLast(index)
+          removeLast()
           this
         }
         case None => this
       }
+    }
+
+    private def replaceWithLast(index: Int): Unit = {
+      denseKeys(index) = denseKeys.last
+      denseValues(index) = denseValues.last
+      sparseKeysIndices += (denseKeys.last -> index)
+    }
+
+    private def removeLast(): Unit = {
+      denseKeys.dropRightInPlace(1)
+      denseValues.dropRightInPlace(1)
     }
   }
 
