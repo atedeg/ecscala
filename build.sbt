@@ -52,7 +52,7 @@ inThisBuild(
         name = Some("Publish coverage to codecov"),
         params = Map(
           "token" -> "${{ secrets.CODECOV_TOKEN }}",
-          "directory" -> s"target/scala-${scala3Version}/jacoco/report",
+          "directory" -> s"target/scala-$scala3Version/jacoco/report",
           "fail_ci_if_error" -> "true",
         ),
       ),
@@ -100,7 +100,7 @@ inThisBuild(
           "repo_token" -> "${{ secrets.GITHUB_TOKEN }}",
           "prerelease" -> "${{ env.IS_SNAPSHOT }}",
           "title" -> """Release - Version ${{ env.VERSION }}""",
-          "files" -> s"target/scala-${scala3Version}/*.jar\ntarget/scala-${scala3Version}/*.pom\ndoc/ecscala-report.pdf",
+          "files" -> s"target/scala-$scala3Version/*.jar\ntarget/scala-$scala3Version/*.pom\ndoc/ecscala-report.pdf",
         ),
       ),
     ),
