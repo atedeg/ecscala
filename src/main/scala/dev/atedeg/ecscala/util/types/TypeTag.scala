@@ -9,7 +9,7 @@ import scala.quoted.*
  * @tparam T
  *   the type whose compiletime information are stored in the TypeTag.
  */
-private[ecscala] sealed trait TypeTag[T]
+private[ecscala] sealed trait TypeTag[+T]
 
 inline given [T]: TypeTag[T] = ${ deriveTypeTagImpl[T] }
 private def deriveTypeTagImpl[T: Type](using quotes: Quotes): Expr[TypeTag[T]] = {
