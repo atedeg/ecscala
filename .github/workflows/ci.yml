@@ -58,6 +58,23 @@ jobs:
       - name: Tests
         run: sbt ++${{ matrix.scala }} test
 
+      - name: Generate JaCoCo report
+        run: sbt ++${{ matrix.scala }} jacoco
+
+      - name: Publish coverage to codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: target/scala-3.0.1/jacoco/report
+          fail_ci_if_error: true
+
+      - name: Build LaTeX report
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: ecscala-report.tex
+          args: '-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape'
+          working_directory: doc
+
       - name: Compress target directories
         run: tar cf targets.tar target project/target
 
@@ -116,23 +133,6 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           IS_SNAPSHOT=`if [[ "${VERSION}" =~ "-" ]] ; then echo "true" ; else echo "false" ; fi`
           echo "IS_SNAPSHOT=${IS_SNAPSHOT}" >> $GITHUB_ENV
-
-      - name: Build LaTeX report
-        uses: xu-cheng/latex-action@v2
-        with:
-          root_file: ecscala-report.tex
-          args: '-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape'
-          working_directory: doc
-
-      - name: Generate JaCoCo report
-        run: sbt ++${{ matrix.scala }} jacoco
-
-      - name: Publish coverage to codecov
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: target/scala-3.0.1/jacoco/report
-          fail_ci_if_error: true
 
       - name: Release to Sonatype
         env:
