@@ -3,7 +3,7 @@ package dev.atedeg.ecscala.util
 import org.scalatest.matchers.should.*
 import org.scalatest.wordspec.AnyWordSpec
 
-import scala.collection.{Map, MapFactory}
+import scala.collection.{ Map, MapFactory }
 
 abstract class BaseMapTests[CC[K, V] <: Map[K, V]] extends AnyWordSpec with Matchers {
 
@@ -75,6 +75,7 @@ abstract class BaseMapTests[CC[K, V] <: Map[K, V]] extends AnyWordSpec with Matc
       }
     }
   }
+
   s"$name builder" should {
     "create an iterable map" in {
       val builder = mapFactory().newBuilder[String, Int]

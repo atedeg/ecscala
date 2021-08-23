@@ -1,9 +1,9 @@
 package dev.atedeg.ecscala.util.mutable
 
 import scala.collection.generic.DefaultSerializable
-import scala.collection.{MapFactory, MapFactoryDefaults, SeqFactory, mutable}
-import scala.collection.mutable.{AbstractMap, ArrayBuffer, Builder, Iterable, Map, MapOps, ReusableBuilder}
-import dev.atedeg.ecscala.util.{BaseIterableMap, BaseIterableMapBuilder}
+import scala.collection.{ mutable, MapFactory, MapFactoryDefaults, SeqFactory }
+import scala.collection.mutable.{ AbstractMap, ArrayBuffer, Builder, Iterable, Map, MapOps, ReusableBuilder }
+import dev.atedeg.ecscala.util.{ BaseIterableMap, BaseIterableMapBuilder }
 
 /**
  * This trait represents a mutable [[scala.collection.mutable.Map]] that can be efficiently iterated.

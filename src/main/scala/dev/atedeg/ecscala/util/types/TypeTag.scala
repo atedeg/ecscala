@@ -12,6 +12,7 @@ import scala.quoted.*
 private[ecscala] sealed trait TypeTag[+T]
 
 inline given [T]: TypeTag[T] = ${ deriveTypeTagImpl[T] }
+
 private def deriveTypeTagImpl[T: Type](using quotes: Quotes): Expr[TypeTag[T]] = {
   import quotes.reflect.*
   '{
@@ -20,7 +21,7 @@ private def deriveTypeTagImpl[T: Type](using quotes: Quotes): Expr[TypeTag[T]] =
       override def hashCode: Int = this.toString.hashCode
       override def equals(obj: Any) = obj match {
         case that: TypeTag[_] => that.toString == this.toString
-        case _                => false
+        case _ => false
       }
     }
   }

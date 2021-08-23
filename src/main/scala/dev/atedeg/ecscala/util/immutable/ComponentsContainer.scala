@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala.util.immutable
 
-import dev.atedeg.ecscala.{Component, Entity}
+import dev.atedeg.ecscala.{ Component, Entity }
 import dev.atedeg.ecscala.util.types.TypeTag
 
 /**
@@ -68,8 +68,9 @@ private[ecscala] object ComponentsContainer {
   private def apply(map: Map[TypeTag[? <: Component], Map[Entity, ? <: Component]]) = new ComponentsContainerImpl(map)
 
   private class ComponentsContainerImpl(
-      private val componentsMap: Map[TypeTag[? <: Component], Map[Entity, ? <: Component]] = Map()
+      private val componentsMap: Map[TypeTag[? <: Component], Map[Entity, ? <: Component]] = Map(),
   ) extends ComponentsContainer {
+
     override def apply[T <: Component](using tt: TypeTag[T]) =
       // This cast is needed to return a map with the appropriate type and not a generic "Component" type.
       // It is always safe to perform such a cast since the TypeTag holds the type of the retrieved map's components.
@@ -82,6 +83,7 @@ private[ecscala] object ComponentsContainer {
     }
 
     extension [T <: Component](map: Map[Entity, T]) {
+
       def -(entityComponentPair: (Entity, T)): Map[Entity, T] = {
         val (entity, component) = entityComponentPair
         // The components are compared using the eq method because, when removing elements, two components are
@@ -113,7 +115,7 @@ private[ecscala] object ComponentsContainer {
       val newComponentsMap =
         this.apply[T] flatMap (_ -? entityComponentPair) match {
           case Some(componentMap) => componentsMap + (tt -> componentMap)
-          case None               => componentsMap - tt
+          case None => componentsMap - tt
         }
       ComponentsContainer(newComponentsMap)
     }

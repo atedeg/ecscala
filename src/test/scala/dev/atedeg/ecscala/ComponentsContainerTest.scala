@@ -1,13 +1,14 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.fixtures.{ComponentsFixture, WorldFixture}
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, WorldFixture }
 import dev.atedeg.ecscala.util.types.TypeTag
-import dev.atedeg.ecscala.util.types.{given TypeTag[_]}
+import dev.atedeg.ecscala.util.types.given TypeTag[_]
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class ComponentsContainerTest extends AnyWordSpec with Matchers {
+
   "A ComponentsContainer" when {
     "added an element" which {
       "was not present" should {

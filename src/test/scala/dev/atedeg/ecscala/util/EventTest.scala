@@ -4,6 +4,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class EventTest extends AnyWordSpec with Matchers {
+
   "An Event" when {
     "added an handler" should {
       "execute it" in {

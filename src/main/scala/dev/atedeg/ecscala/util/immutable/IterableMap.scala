@@ -1,11 +1,11 @@
 package dev.atedeg.ecscala.util.immutable
 
 import scala.collection.generic.DefaultSerializable
-import scala.collection.{IterableFactory, MapFactory, MapFactoryDefaults}
-import scala.collection.mutable.{Builder, ReusableBuilder}
-import scala.collection.immutable.{Iterable, Map, MapOps}
+import scala.collection.{ IterableFactory, MapFactory, MapFactoryDefaults }
+import scala.collection.mutable.{ Builder, ReusableBuilder }
+import scala.collection.immutable.{ Iterable, Map, MapOps }
 
-import dev.atedeg.ecscala.util.{BaseIterableMap, BaseIterableMapBuilder}
+import dev.atedeg.ecscala.util.{ BaseIterableMap, BaseIterableMapBuilder }
 
 /**
  * This trait represents an immutable [[scala.collection.immutable.Map]] that can be efficiently iterated.
@@ -42,8 +42,8 @@ object IterableMap extends MapFactory[IterableMap] {
     override type Dense[T] = Vector[T]
     override type Sparse[K, V] = Map[K, V]
 
-    protected override def denseFactory = Vector
-    protected override def sparseFactory = Map
+    override protected def denseFactory = Vector
+    override protected def sparseFactory = Map
 
     private def withoutElem(key: K): Seq[(K, V)] = denseKeys zip denseValues filter { _._1 != key }
 

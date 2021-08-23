@@ -50,7 +50,7 @@ sealed trait Entity {
  * Factory for [[dev.atedeg.ecscala.Entity]] instances.
  */
 object Entity {
-  private opaque type Id = Int
+  opaque private type Id = Int
 
   protected[ecscala] def apply(): Entity = EntityImpl(IdGenerator.nextId())
 
@@ -75,7 +75,7 @@ object Entity {
       this
     }
 
-    override private[ecscala] def onRemovedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit) = {
+    private[ecscala] override def onRemovedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit) = {
       onRemovedComponentEvent += handler
       this
     }
@@ -83,6 +83,7 @@ object Entity {
 
   private object IdGenerator {
     private var currentId: Id = 0
+
     def nextId(): Id = synchronized {
       val id = currentId
       currentId += 1

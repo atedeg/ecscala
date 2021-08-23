@@ -4,10 +4,12 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class TypeTagTest extends AnyWordSpec with Matchers {
+
   def assertTagsEqual[A, B](using ttA: TypeTag[A], ttB: TypeTag[B]): Unit = {
     ttA shouldEqual ttB
     ttB shouldEqual ttA
   }
+
   def assertTagsNotEqual[A, B](using ttA: TypeTag[A], ttB: TypeTag[B]): Unit = {
     ttA should not equal ttB
     ttB should not equal ttA

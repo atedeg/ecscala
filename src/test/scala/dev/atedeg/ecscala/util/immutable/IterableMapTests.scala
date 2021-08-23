@@ -2,7 +2,7 @@ package dev.atedeg.ecscala.util.immutable
 
 import dev.atedeg.ecscala.util.BaseMapTests
 
-import scala.collection.{Map, MapFactory}
+import scala.collection.{ Map, MapFactory }
 
 class IterableMapTests extends BaseMapTests[IterableMap] {
 

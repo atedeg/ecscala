@@ -1,12 +1,13 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.fixtures.{ComponentsFixture, WorldFixture}
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, WorldFixture }
 import dev.atedeg.ecscala.util.types.TypeTag
 import dev.atedeg.ecscala.util.types.given
 import org.scalatest.matchers.should.*
 import org.scalatest.wordspec.AnyWordSpec
 
 class WorldTest extends AnyWordSpec with Matchers {
+
   "A World" when {
     "empty" should {
       "have size 0" in new WorldFixture {

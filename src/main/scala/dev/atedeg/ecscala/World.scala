@@ -54,7 +54,7 @@ object World {
       val entity = Entity()
       entity.onAddedComponent((e, tt, c) => (componentsContainer = componentsContainer.addComponent(e, c)(using tt)))
       entity.onRemovedComponent((e, tt, c) =>
-        (componentsContainer = componentsContainer.removeComponent(e, c)(using tt))
+        (componentsContainer = componentsContainer.removeComponent(e, c)(using tt)),
       )
       entities += entity
       entity
@@ -65,6 +65,6 @@ object World {
       componentsContainer -= entity
     }
 
-    override private[ecscala] def getComponents[T <: Component: TypeTag] = componentsContainer[T]
+    private[ecscala] override def getComponents[T <: Component: TypeTag] = componentsContainer[T]
   }
 }
