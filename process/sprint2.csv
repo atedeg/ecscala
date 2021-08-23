@@ -9,5 +9,5 @@ As a framework user I want to manipulate the  World's Entities,Define Entities t
 As a framework user I want to manipulate the Entities' Components,Implement methods to add and remove components to an entity,,Linda Vitali,10,8,7,,,,,
 ,Implement component type,,Linda Vitali,2,2,1,,,,,
 ,Design detailed Component's architecture,,Linda Vitali,8,10,2,,,,,
-As a framework user I want to define World's Views,Define a type-safe way to create Views,,Giacomo Cavalieri,28,28,,,,,,
-,Implement World's getView method,,Giacomo Cavalieri,2,2,,,,,,
+As a framework user I want to define World's Views,Define a type-safe way to create Views,,Giacomo Cavalieri,28,28,25,25,25,25,20,20
+,Implement World's getView method,,Giacomo Cavalieri,2,2,2,2,2,2,2,2
