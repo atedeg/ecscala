@@ -43,7 +43,7 @@ trait Event[T] {
 }
 
 object Event {
-  def apply[T](): Event[T] = new EventImpl[T](Seq())
+  def apply[T](): Event[T] = new EventImpl(Seq())
   private def apply[T](handlers: Seq[T => Unit]): Event[T] = new EventImpl(handlers)
 
   private class EventImpl[T](private val handlers: Seq[T => Unit]) extends Event[T] {
