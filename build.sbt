@@ -2,6 +2,8 @@ import sbtghactions.GenerativePlugin.autoImport.{ githubWorkflowPublishPreamble,
 
 val scala3Version = "3.0.1"
 
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
 inThisBuild(
   List(
     organization := "dev.atedeg.ecscala",
@@ -39,10 +41,10 @@ inThisBuild(
     githubWorkflowTargetTags ++= Seq("v*"),
     githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
     githubWorkflowBuild := Seq(
-      WorkflowStep.Sbt(List("scalafmtCheck"), name = Some("Lint check with scalafmt")),
-      WorkflowStep.Sbt(List("test"), name = Some("Tests")),
+      WorkflowStep.Sbt(List("core / scalafmtCheck"), name = Some("Lint check with scalafmt")),
+      WorkflowStep.Sbt(List("core / test"), name = Some("Tests")),
       WorkflowStep.Sbt(
-        List("jacoco"),
+        List("core / jacoco"),
         name = Some("Generate JaCoCo report"),
       ),
       WorkflowStep.Use(
@@ -52,7 +54,7 @@ inThisBuild(
         name = Some("Publish coverage to codecov"),
         params = Map(
           "token" -> "${{ secrets.CODECOV_TOKEN }}",
-          "directory" -> s"target/scala-$scala3Version/jacoco/report",
+          "directory" -> s"core/target/scala-$scala3Version/jacoco/report",
           "fail_ci_if_error" -> "true",
         ),
       ),
@@ -104,27 +106,43 @@ inThisBuild(
         ),
       ),
     ),
-    scalacOptions ++= Seq(
-      "-Yexplicit-nulls",
-      "-Xss4G",
-      "-Xmx16G",
-    ),
+  ),
+)
+
+lazy val root = project
+  .in(file("."))
+  .aggregate(core, benchmarks)
+  .settings(
+    name := "ecscala",
+    publish / skip := true,
+  )
+
+lazy val core = project
+  .in(file("core"))
+  .settings(
+    name := "ecscala",
     libraryDependencies := Seq(
       "org.scalactic" %% "scalactic" % "3.2.9",
       "org.scalatest" %% "scalatest" % "3.2.9" % "test",
     ),
-  ),
-)
+    scalacOptions ++= Seq(
+      "-Yexplicit-nulls",
+    ),
+    jacocoAggregateReportSettings := JacocoReportSettings(
+      title = "Jaoco coverage report",
+      subDirectory = None,
+      thresholds = JacocoThresholds(),
+      formats = Seq(JacocoReportFormats.HTML, JacocoReportFormats.XML),
+      fileEncoding = "utf-8",
+    ),
+    Test / jacocoExcludes := Seq("**.macros.*"),
+  )
 
-ThisProject / name := "ecscala"
-
-ThisProject / jacocoReportSettings := JacocoReportSettings(
-  title = "Jaoco coverage report",
-  subDirectory = None,
-  thresholds = JacocoThresholds(),
-  formats = Seq(JacocoReportFormats.HTML, JacocoReportFormats.XML),
-  fileEncoding = "utf-8",
-)
-ThisProject / jacocoExcludes := Seq("**.macros.*")
-
-enablePlugins(JmhPlugin)
+lazy val benchmarks = project
+  .in(file("benchmarks"))
+  .dependsOn(core)
+  .enablePlugins(JmhPlugin)
+  .settings(
+    publish / skip := true,
+    test / skip := true,
+  )
