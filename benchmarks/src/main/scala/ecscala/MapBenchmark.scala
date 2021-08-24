@@ -1,17 +1,9 @@
+package ecscala
+
 import dev.atedeg.ecscala.util.IterableMap
+import org.openjdk.jmh.annotations.*
 
 import java.util.concurrent.TimeUnit
-import org.openjdk.jmh.annotations.{
-  Benchmark,
-  BenchmarkMode,
-  Fork,
-  Measurement,
-  Mode,
-  OutputTimeUnit,
-  Scope,
-  State,
-  Warmup,
-}
 
 @BenchmarkMode(Array(Mode.AverageTime))
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
