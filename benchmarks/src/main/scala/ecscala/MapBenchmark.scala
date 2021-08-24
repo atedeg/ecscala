@@ -1,5 +1,3 @@
-package dev.atedeg.ecscala
-
 import dev.atedeg.ecscala.util.IterableMap
 
 import java.util.concurrent.TimeUnit
