@@ -4,31 +4,31 @@ import scala.collection.{ mutable, IterableOps, StrictOptimizedIterableOps }
 import scala.collection.*
 import scala.collection.mutable.{ ArrayBuffer, Builder, GrowableBuilder }
 
-class LongIterableMap[A](elems: (Long, A)*)
-    extends mutable.Map[Long, A]
-    with mutable.MapOps[Long, A, mutable.Map, LongIterableMap[A]]
-    with StrictOptimizedIterableOps[(Long, A), mutable.Iterable, LongIterableMap[A]] {
+class LongIterableMap[@specialized A](elems: (Int, A)*)
+    extends mutable.Map[Int, A]
+    with mutable.MapOps[Int, A, mutable.Map, LongIterableMap[A]]
+    with StrictOptimizedIterableOps[(Int, A), mutable.Iterable, LongIterableMap[A]] {
 
   // Fields
-  protected val denseKeys: ArrayBuffer[Long] = ArrayBuffer.from(elems map { _._1 })
+  protected val denseKeys: ArrayBuffer[Int] = ArrayBuffer.from(elems map { _._1 })
   protected val denseValues: ArrayBuffer[A] = ArrayBuffer.from(elems map { _._2 })
-  protected val sparseKeysIndices: mutable.LongMap[Int] = mutable.LongMap.from(denseKeys.zipWithIndex)
+  protected val sparseKeysIndices: mutable.HashMap[Int, Int] = mutable.HashMap.from(denseKeys.zipWithIndex)
 
-  override def get(s: Long): Option[A] = sparseKeysIndices get s map { denseValues(_) }
+  override def get(s: Int): Option[A] = sparseKeysIndices get s map { denseValues(_) }
 
-  override def iterator: Iterator[(Long, A)] = new Iterator[(Long, A)] {
+  override def iterator: Iterator[(Int, A)] = new Iterator[(Int, A)] {
     private var nextIndex = 0
 
     override def hasNext: Boolean = nextIndex < math.min(denseKeys.size, denseValues.size)
 
-    override def next(): (Long, A) = {
+    override def next(): (Int, A) = {
       val kv = (denseKeys(nextIndex), denseValues(nextIndex))
       nextIndex += 1
       kv
     }
   }
 
-  override def addOne(kv: (Long, A)): this.type = {
+  override def addOne(kv: (Int, A)): this.type = {
     val (key, value) = kv
     sparseKeysIndices get key match {
       // We don't need to change the sparse key index because we replace key and value in the dense arrays
@@ -37,13 +37,13 @@ class LongIterableMap[A](elems: (Long, A)*)
         val denseIndex = denseKeys.size
         denseKeys += key
         denseValues += value
-        sparseKeysIndices += (key -> denseIndex)
+        sparseKeysIndices += (key -> denseIndex) // critical point!! too much time spent here
       }
     }
     this
   }
 
-  override def subtractOne(s: Long): this.type = {
+  override def subtractOne(s: Int): this.type = {
     // We switch the last item in place of the one we deleted
     val elemIndex = sparseKeysIndices get s
     elemIndex match {
@@ -58,14 +58,14 @@ class LongIterableMap[A](elems: (Long, A)*)
   }
 
   // Overloading of transformation methods that should return a PrefixMap
-  def map[B](f: ((Long, A)) => (Long, B)): LongIterableMap[B] =
+  def map[B](f: ((Int, A)) => (Int, B)): LongIterableMap[B] =
     strictOptimizedMap(LongIterableMap.newBuilder, f)
 
-  def flatMap[B](f: ((Long, A)) => IterableOnce[(Long, B)]): LongIterableMap[B] =
+  def flatMap[B](f: ((Int, A)) => IterableOnce[(Int, B)]): LongIterableMap[B] =
     strictOptimizedFlatMap(LongIterableMap.newBuilder, f)
 
   // Override `concat` and `empty` methods to refine their return type
-  override def concat[B >: A](suffix: IterableOnce[(Long, B)]): LongIterableMap[B] =
+  override def concat[B >: A](suffix: IterableOnce[(Int, B)]): LongIterableMap[B] =
     strictOptimizedConcat(suffix, LongIterableMap.newBuilder)
   override def empty: LongIterableMap[A] = new LongIterableMap
 
@@ -76,10 +76,10 @@ class LongIterableMap[A](elems: (Long, A)*)
     sparseKeysIndices.clear()
   }
   // Members declared in scala.collection.IterableOps
-  override protected def fromSpecific(coll: IterableOnce[(Long, A)]): LongIterableMap[A] = LongIterableMap.from(coll)
-  override protected def newSpecificBuilder: mutable.Builder[(Long, A), LongIterableMap[A]] = LongIterableMap.newBuilder
+  override protected def fromSpecific(coll: IterableOnce[(Int, A)]): LongIterableMap[A] = LongIterableMap.from(coll)
+  override protected def newSpecificBuilder: mutable.Builder[(Int, A), LongIterableMap[A]] = LongIterableMap.newBuilder
 
-  override def className = "LIterableMap"
+  override def className = "LongIterableMap"
 
   private def replaceWithLast(index: Int): Unit = {
     denseKeys(index) = denseKeys.last
@@ -96,23 +96,20 @@ class LongIterableMap[A](elems: (Long, A)*)
 object LongIterableMap {
   def empty[A] = new LongIterableMap[A]
 
-  def from[A](source: IterableOnce[(Long, A)]): LongIterableMap[A] =
+  def from[A](source: IterableOnce[(Int, A)]): LongIterableMap[A] =
     source match {
       case pm: LongIterableMap[A] => pm
       case _ => (newBuilder ++= source).result()
     }
 
-  def apply[A](kvs: (Long, A)*): LongIterableMap[A] = from(kvs)
+  def apply[A](kvs: (Int, A)*): LongIterableMap[A] = from(kvs)
 
-  def newBuilder[A]: mutable.Builder[(Long, A), LongIterableMap[A]] =
-    new mutable.GrowableBuilder[(Long, A), LongIterableMap[A]](empty)
+  def newBuilder[A]: mutable.Builder[(Int, A), LongIterableMap[A]] =
+    new mutable.GrowableBuilder[(Int, A), LongIterableMap[A]](empty)
 
-  //import scala.language.implicitConversions
-
-  //given [A] =>> Conversion[this.type, Factory[(Long, _), LIterableMap[_]]] = ???
-  given toFactory[A](using self: this.type): Factory[(Long, A), LongIterableMap[A]] =
-    new Factory[(Long, A), LongIterableMap[A]] {
-      def fromSpecific(it: IterableOnce[(Long, A)]): LongIterableMap[A] = self.from(it)
-      def newBuilder: mutable.Builder[(Long, A), LongIterableMap[A]] = self.newBuilder
+  given toFactory[A](using self: this.type): Factory[(Int, A), LongIterableMap[A]] =
+    new Factory[(Int, A), LongIterableMap[A]] {
+      def fromSpecific(it: IterableOnce[(Int, A)]): LongIterableMap[A] = self.from(it)
+      def newBuilder: mutable.Builder[(Int, A), LongIterableMap[A]] = self.newBuilder
     }
 }
