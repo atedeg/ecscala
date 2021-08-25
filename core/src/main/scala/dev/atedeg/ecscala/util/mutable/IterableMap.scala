@@ -2,7 +2,7 @@ package dev.atedeg.ecscala.util.mutable
 
 import scala.collection.generic.DefaultSerializable
 import scala.collection.{ mutable, MapFactory, MapFactoryDefaults, SeqFactory }
-import scala.collection.mutable.{ AbstractMap, ArrayBuffer, Builder, Iterable, Map, MapOps, ReusableBuilder }
+import scala.collection.mutable.{ AbstractMap, ArrayBuffer, Builder, HashMap, Iterable, Map, MapOps, ReusableBuilder }
 import dev.atedeg.ecscala.util.{ BaseIterableMap, BaseIterableMapBuilder }
 
 /**
@@ -38,10 +38,10 @@ object IterableMap extends MapFactory[IterableMap] {
   private class IterableMapImpl[K, V](elems: (K, V)*) extends BaseIterableMap[K, V](elems: _*) with IterableMap[K, V] {
 
     override protected type Dense[T] = ArrayBuffer[T]
-    override protected type Sparse[K, V] = Map[K, V]
+    override protected type Sparse[K, V] = HashMap[K, V]
 
     override protected def denseFactory = ArrayBuffer
-    override protected def sparseFactory = Map
+    override protected def sparseFactory = HashMap
 
     override def addOne(elem: (K, V)): this.type = {
       val (key, value) = elem

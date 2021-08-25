@@ -1,7 +1,6 @@
 package ecscala
 
-import dev.atedeg.ecscala.util.IterableMap
-import dev.atedeg.ecscala.util.mutable.LongIterableMap
+import dev.atedeg.ecscala.util.mutable.IterableMap
 import org.openjdk.jmh.annotations.*
 
 import java.util.concurrent.TimeUnit
@@ -9,41 +8,26 @@ import java.util.concurrent.TimeUnit
 @BenchmarkMode(Array(Mode.AverageTime))
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
-@Warmup(iterations = 15, time = 200, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 10, time = 200, timeUnit = TimeUnit.MILLISECONDS)
+@Warmup(iterations = 50, time = 200, timeUnit = TimeUnit.MILLISECONDS)
+@Measurement(iterations = 50, time = 200, timeUnit = TimeUnit.MILLISECONDS)
 @Fork(2)
 class MapBenchmark {
-  case class Key(val key: Int)
-  case class Value(val value: Int)
+  case class Key(key: Int)
+  case class Value(value: Int)
 
-  given Conversion[Key, Long] = _.key.toLong
+  private val keys = 0 until 1_000_000 map { Key.apply }
+  private val values = 0 until 1_000_000 map { Value.apply }
 
-  private val keys = 0 until 10000000 map { Key(_) }
-  private val values = 0 until 10000000 map { Value(_) }
-
-  private var baseLineMap = Map.from(keys zip values)
-  private var iterableMap = IterableMap.from(keys zip values)
-
-  private var baseMutableMap = scala.collection.mutable.Map.from(keys zip values)
-  private var mutableIterableMap = LongIterableMap(12L -> Value(3), 15L -> Value(4))
-
-  //@Benchmark
-  def immutableBaseline: Unit = {
-    for (key <- baseLineMap.keys) baseLineMap += (key -> Value(baseLineMap(key).value + 1))
-  }
-
-  //@Benchmark
-  def immutableIterable: Unit = {
-    for (key <- iterableMap.keys) iterableMap += (key -> Value(iterableMap(key).value + 1))
-  }
+  private var baseMutableMap = scala.collection.mutable.HashMap.from(keys zip values)
+  private var mutableIterableMap = IterableMap.from((keys map { _.key }) zip values)
 
   @Benchmark
-  def mutableBaseline: Unit = {
+  def mutableBaseline(): Unit = {
     for (key <- baseMutableMap.keys) baseMutableMap += (key -> Value(baseMutableMap(key).value + 1))
   }
 
   @Benchmark
-  def mutableIterable: Unit = {
+  def mutableIterable(): Unit = {
     for (key <- mutableIterableMap.keys) mutableIterableMap += (key -> Value(mutableIterableMap(key).value + 1))
   }
 }
