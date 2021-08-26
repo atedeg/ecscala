@@ -76,7 +76,7 @@ jobs:
           working_directory: doc
 
       - name: Compress target directories
-        run: tar cf targets.tar target core/target benchmarks/target project/target
+        run: tar cf targets.tar target core/target project/target
 
       - name: Upload target directories
         uses: actions/upload-artifact@v2

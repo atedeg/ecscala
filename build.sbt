@@ -145,4 +145,5 @@ lazy val benchmarks = project
   .settings(
     publish / skip := true,
     test / skip := true,
+    githubWorkflowArtifactUpload := false,
   )
