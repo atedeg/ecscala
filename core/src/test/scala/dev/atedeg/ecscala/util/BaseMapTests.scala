@@ -39,6 +39,12 @@ abstract class BaseMapTests[CC[K, V] <: Map[K, V]] extends AnyWordSpec with Matc
           map = remove(map, "test")
           map.size shouldBe 1
         }
+        "updating an element" in {
+          var map: CC[String, Int] = mapFactory()("key" -> 1)
+          map = add(map, "key" -> 2)
+          map.size shouldBe 1
+          map get "key" shouldBe Some(2)
+        }
       }
     }
     "has 100 elements" should {
