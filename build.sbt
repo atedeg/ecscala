@@ -128,7 +128,7 @@ lazy val core = project
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",
     ),
-    jacocoAggregateReportSettings := JacocoReportSettings(
+    jacocoReportSettings := JacocoReportSettings(
       title = "Jaoco coverage report",
       subDirectory = None,
       thresholds = JacocoThresholds(),
