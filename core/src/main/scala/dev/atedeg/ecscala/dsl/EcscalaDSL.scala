@@ -5,5 +5,4 @@ trait EcscalaDSL {
   def entity: EntityWord = EntityWord()
 }
 
-
 case class EntityWord()
