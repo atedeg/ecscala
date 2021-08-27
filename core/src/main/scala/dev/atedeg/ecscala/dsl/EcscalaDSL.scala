@@ -1,5 +1,14 @@
 package dev.atedeg.ecscala.dsl
-import dev.atedeg.ecscala.World
+
+import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.{ Component, Entity, World }
+
+/**
+ * This case class enables the following syntax:
+ *
+ * <pre class="stHighlight"> world hasAn entity </pre>
+ */
+case class EntityWord()
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the Ecscala framework operation using an
@@ -10,8 +19,14 @@ trait EcscalaDSL {
 }
 
 /**
- * This case class enables the following syntax:
+ * This method enables the following syntax:
  *
- * <pre class="stHighlight"> [...] hasAn entity withComponent [...] </pre>
+ * <pre class="stHighlight"> entity withComponents { 
+ *                         *(Component1()) 
+ *                         *(Component2())
+ *                         [...]
+ *                       } </pre>
  */
-case class EntityWord()
+def *[T <: Component](component: T)(using e: Entity)(using tt: TypeTag[T]) = {
+  e.addComponent(component)(tt)
+}

@@ -9,9 +9,26 @@ extension (entity: Entity) {
   /**
    * This method enables the following syntax:
    *
-   * <pre class="stHighlight"> entity withComponent Component1 </pre>
+   * <pre class="stHighlight"> entity withComponents {
+   *
+   * *(Component1())
+   *
+   * *(Component2())
+   *
+   * } </pre>
    */
-  def withComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
+  def withComponents(init: Entity ?=> Unit): Entity = {
+    given e: Entity = entity
+    init
+    e
+  }
+
+  /**
+   * This method enables the following syntax:
+   *
+   * <pre class="stHighlight"> entity + Component() </pre>
+   */
+  def +[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
     entity.addComponent(component)(tt)
     entity
   }
@@ -19,7 +36,7 @@ extension (entity: Entity) {
   /**
    * This method enables the following syntax:
    *
-   * <pre class="stHighlight"> entity - Component </pre>
+   * <pre class="stHighlight"> entity - Component() </pre>
    */
   def -[T <: Component](component: T)(using tt: TypeTag[T]): Entity = entity.removeComponent(component)(tt)
 }
@@ -31,5 +48,8 @@ extension (world: World) {
    *
    * <pre class="stHighlight"> world hasAn entity </pre>
    */
-  def hasAn(entityWord: EntityWord): Entity = world.createEntity()
+  def hasAn(entityWord: EntityWord): Entity = {
+    val a = world.createEntity()
+    a
+  }
 }
