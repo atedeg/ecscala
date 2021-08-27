@@ -6,7 +6,7 @@ As a framework user I want to define and use Systems,Define a way to create syst
 ,Add systems to the world,,Giacomo Cavalieri,2,,,,,,,
 As a framework user I want to update the World's state,,,Giacomo Cavalieri,5,,,,,,,
 As a framework user I want the framework to be able to update the state of at least 10'000 Entities,"Banchmark, performace tests",,"Nicolò Di Domenico
-Nicolas Farabegoli",30,,,,,,,
+Nicolas Farabegoli",30,20,10,4,0,0,0,
 As a framework user I would higly appreciate a handy DSL to perform these operations,Desing DSL,,Linda Vitali,20,,,,,,,
 ,First implementation of the DSL,,Linda Vitali,20,,,,,,,
 As a framework user I want to create a World,Design detailed World's architecture,,Giacomo Cavalieri,2,,,,,,,
