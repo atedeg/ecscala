@@ -6,5 +6,6 @@ import dev.atedeg.ecscala.util.immutable.ComponentsContainer
 trait ComponentsFixture {
   case class Position(x: Double, y: Double) extends Component
   case class Velocity(vx: Double, vy: Double) extends Component
+  case class Gravity(g: Double) extends Component
   var componentsContainer: ComponentsContainer = ComponentsContainer()
 }
