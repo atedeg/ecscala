@@ -11,7 +11,7 @@ import dev.atedeg.ecscala.dsl.EcscalaDSL
 
 class EcscalaDSLTest extends AnyWordSpec with Matchers with EcscalaDSL {
 
-  "The dsl syntax to add components to an entity" should {
+  "The dsl syntax" should {
     "work the same way as the addComponent() method" in new WorldFixture with ComponentsFixture {
       val entity1 =
         world hasAn entity withComponent Position(1, 2) withComponent Velocity(2, 4) withComponent Gravity(9.8)
