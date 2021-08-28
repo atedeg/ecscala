@@ -27,7 +27,17 @@ private[util] abstract class BaseIterableMap[K, V](elems: (K, V)*) extends Itera
 
   override def get(key: K): Option[V] = sparseKeysIndices get key map { denseValues(_) }
 
-  override def iterator: Iterator[(K, V)] = (denseKeys zip denseValues).iterator
+  override def iterator: Iterator[(K, V)] = new Iterator[(K, V)] {
+    private var nextIndex = 0
+
+    override def hasNext: Boolean = nextIndex < math.min(denseKeys.size, denseValues.size)
+
+    override def next(): (K, V) = {
+      val kv = (denseKeys(nextIndex), denseValues(nextIndex))
+      nextIndex += 1
+      kv
+    }
+  }
 
   override def keys: scala.Iterable[K] = denseKeys
 

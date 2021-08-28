@@ -2,7 +2,7 @@ package dev.atedeg.ecscala.util.mutable
 
 import scala.collection.generic.DefaultSerializable
 import scala.collection.{ mutable, MapFactory, MapFactoryDefaults, SeqFactory }
-import scala.collection.mutable.{ AbstractMap, ArrayBuffer, Builder, Iterable, Map, MapOps, ReusableBuilder }
+import scala.collection.mutable.{ AbstractMap, ArrayBuffer, Builder, HashMap, Iterable, Map, MapOps, ReusableBuilder }
 import dev.atedeg.ecscala.util.{ BaseIterableMap, BaseIterableMapBuilder }
 
 /**
@@ -38,17 +38,23 @@ object IterableMap extends MapFactory[IterableMap] {
   private class IterableMapImpl[K, V](elems: (K, V)*) extends BaseIterableMap[K, V](elems: _*) with IterableMap[K, V] {
 
     override protected type Dense[T] = ArrayBuffer[T]
-    override protected type Sparse[K, V] = Map[K, V]
+    override protected type Sparse[K, V] = HashMap[K, V]
 
     override protected def denseFactory = ArrayBuffer
-    override protected def sparseFactory = Map
+    override protected def sparseFactory = HashMap
 
     override def addOne(elem: (K, V)): this.type = {
       val (key, value) = elem
-      val denseIndex = denseKeys.size + 1
-      denseKeys += key
-      denseValues += value
-      sparseKeysIndices += (key -> denseIndex)
+      sparseKeysIndices get key match {
+        // If there already is an element with the given key it simply replaces the value associated with it, there is no need to change the sparse index
+        case Some(keyIndex) => denseValues(keyIndex) = value
+        case None => {
+          val denseIndex = denseKeys.size + 1
+          denseKeys += key
+          denseValues += value
+          sparseKeysIndices += (key -> denseIndex)
+        }
+      }
       this
     }
 
@@ -58,17 +64,23 @@ object IterableMap extends MapFactory[IterableMap] {
       elemIndex match {
         case Some(index) => {
           sparseKeysIndices -= elem
-          if (index != denseKeys.size - 1) {
-            denseKeys(index) = denseKeys.last
-            denseValues(index) = denseValues.last
-            sparseKeysIndices += (denseKeys.last -> index)
-          }
-          denseKeys.dropRightInPlace(1)
-          denseValues.dropRightInPlace(1)
+          if (index != denseKeys.size - 1) replaceWithLast(index)
+          removeLast()
           this
         }
         case None => this
       }
+    }
+
+    private def replaceWithLast(index: Int): Unit = {
+      denseKeys(index) = denseKeys.last
+      denseValues(index) = denseValues.last
+      sparseKeysIndices += (denseKeys.last -> index)
+    }
+
+    private def removeLast(): Unit = {
+      denseKeys.dropRightInPlace(1)
+      denseValues.dropRightInPlace(1)
     }
   }
 

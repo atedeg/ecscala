@@ -53,19 +53,19 @@ jobs:
         run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 
       - name: Lint check with scalafmt
-        run: sbt ++${{ matrix.scala }} scalafmtCheck
+        run: sbt ++${{ matrix.scala }} 'core / scalafmtCheck'
 
       - name: Tests
-        run: sbt ++${{ matrix.scala }} test
+        run: sbt ++${{ matrix.scala }} 'core / test'
 
       - name: Generate JaCoCo report
-        run: sbt ++${{ matrix.scala }} jacoco
+        run: sbt ++${{ matrix.scala }} 'core / jacoco'
 
       - name: Publish coverage to codecov
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: target/scala-3.0.1/jacoco/report
+          directory: core/target/scala-3.0.1/jacoco/report
           fail_ci_if_error: true
 
       - name: Build LaTeX report
@@ -76,7 +76,7 @@ jobs:
           working_directory: doc
 
       - name: Compress target directories
-        run: tar cf targets.tar target project/target
+        run: tar cf targets.tar target core/target project/target
 
       - name: Upload target directories
         uses: actions/upload-artifact@v2
