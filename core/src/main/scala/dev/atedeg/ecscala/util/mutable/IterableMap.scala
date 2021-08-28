@@ -46,7 +46,7 @@ object IterableMap extends MapFactory[IterableMap] {
     override def addOne(elem: (K, V)): this.type = {
       val (key, value) = elem
       sparseKeysIndices get key match {
-        // We don't need to change the sparse key index because we replace key and value in the dense arrays
+        // If there already is an element with the given key it simply replaces the value associated with it, there is no need to change the sparse index
         case Some(keyIndex) => denseValues(keyIndex) = value
         case None => {
           val denseIndex = denseKeys.size + 1
