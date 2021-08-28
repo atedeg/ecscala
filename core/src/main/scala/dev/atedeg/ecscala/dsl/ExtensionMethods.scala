@@ -26,10 +26,7 @@ extension (entity: Entity) {
    *
    * <pre class="stHighlight"> entity + Component() </pre>
    */
-  def +[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
-    entity.addComponent(component)(tt)
-    entity
-  }
+  def +[T <: Component](component: T)(using tt: TypeTag[T]): Entity = entity.addComponent(component)(tt)
 
   /**
    * This method enables the following syntax:
@@ -46,15 +43,12 @@ extension (world: World) {
    *
    * <pre class="stHighlight"> world hasAn entity </pre>
    */
-  def hasAn(entityWord: EntityWord): Entity = {
-    val a = world.createEntity()
-    a
-  }
+  def hasAn(entityWord: EntityWord): Entity = world.createEntity()
 }
 
 extension [T <: Component](component: T) {
+
   /**
-   * 
    * @param c
    * @param e
    * @tparam C
