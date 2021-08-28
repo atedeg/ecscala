@@ -10,7 +10,7 @@ class CListTest extends AnyWordSpec with Matchers {
   "A CList" must {
     "only contain elements of type T <: Component" in new ComponentsFixture {
       "val t = 1 &: CNil" shouldNot typeCheck
-      "val t = Position(1, 1) &: Velocity(2, 2) &: CNil" should compile
+      "val t = Position(1, 1) &: Velocity(2, 2)" should compile
     }
   }
 
@@ -22,8 +22,9 @@ class CListTest extends AnyWordSpec with Matchers {
     }
     "has elements" should {
       "iterate over its elements" in new ComponentsFixture {
-        val cList = Position(1, 2) &: Velocity(2, 2) &: CNil
-        cList.toList shouldBe List(Position(1, 2), Velocity(2, 2))
+        val cList: Position &: Velocity &: Mass &: CNil = Position(1, 2) &: Velocity(2, 2) &: Mass(3)
+        
+        cList.toList shouldBe List(Position(1, 2), Velocity(2, 2), Mass(3))
       }
     }
   }
