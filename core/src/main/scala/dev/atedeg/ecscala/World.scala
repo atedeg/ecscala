@@ -33,10 +33,10 @@ trait World {
   private[ecscala] def getComponents[T <: Component: TypeTag]: Option[Map[Entity, T]]
 
   @targetName("addComponent")
-  private[ecscala] def +[T <: Component: TypeTag](entityComponentPair: (Entity, T)): Unit
+  private[ecscala] def +=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World
 
   @targetName("removeComponent")
-  private[ecscala] def -[T <: Component: TypeTag](entityComponentPair: (Entity, T)): Unit
+  private[ecscala] def -=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World
 }
 
 /**
@@ -72,11 +72,15 @@ object World {
       componentsContainer[T]
 
     @targetName("addComponent")
-    private[ecscala] override def +[T <: Component: TypeTag](entityComponentPair: (Entity, T)): Unit =
+    private[ecscala] override def +=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World = {
       componentsContainer += entityComponentPair
+      this
+    }
 
     @targetName("removeComponent")
-    private[ecscala] override def -[T <: Component: TypeTag](entityComponentPair: (Entity, T)): Unit =
+    private[ecscala] override def -=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World = {
       componentsContainer -= entityComponentPair
+      this
+    }
   }
 }
