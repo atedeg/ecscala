@@ -8,7 +8,14 @@ import dev.atedeg.ecscala.util.types.TypeTag
 /**
  * A List of elements whose type must be a subtype of [[Component]].
  */
-sealed trait CList extends Iterable[Component]
+sealed trait CList extends Iterable[Component] {
+
+  override def toString: String = this match {
+    case head &: CNil => head.toString
+    case head &: tail => s"$head &: $tail"
+    case CNil => "CNil"
+  }
+}
 
 object CList {
 
