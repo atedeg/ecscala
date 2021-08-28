@@ -4,6 +4,7 @@ import dev.atedeg.ecscala.util.mutable.IterableMap
 import org.openjdk.jmh.annotations.*
 
 import java.util.concurrent.TimeUnit
+import scala.collection.mutable
 
 @BenchmarkMode(Array(Mode.AverageTime))
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
@@ -18,16 +19,20 @@ class MapBenchmark {
   private val keys = 0 until 1_000_000 map { Key.apply }
   private val values = 0 until 1_000_000 map { Value.apply }
 
-  private var baseMutableMap = scala.collection.mutable.HashMap.from(keys zip values)
-  private var mutableIterableMap = IterableMap.from((keys map { _.key }) zip values)
+  private val baseMutableMap = scala.collection.mutable.HashMap.from(keys zip values)
+  private val mutableIterableMap = IterableMap.from(keys zip values)
 
   @Benchmark
   def mutableBaseline(): Unit = {
-    for (key <- baseMutableMap.keys) baseMutableMap += (key -> Value(baseMutableMap(key).value + 1))
+    testMap(baseMutableMap)
   }
 
   @Benchmark
   def mutableIterable(): Unit = {
-    for (key <- mutableIterableMap.keys) mutableIterableMap += (key -> Value(mutableIterableMap(key).value + 1))
+    testMap(mutableIterableMap)
+  }
+
+  private def testMap(map: mutable.Map[Key, Value]): Unit = {
+    for (key <- map.keys) map += (key -> Value(map(key).value + 1))
   }
 }
