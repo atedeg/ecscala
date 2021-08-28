@@ -30,6 +30,8 @@ trait World {
   def removeEntity(entity: Entity): Unit
 
   private[ecscala] def getComponents[T <: Component: TypeTag]: Option[Map[Entity, T]]
+  private[ecscala] def componentAdded[T <: Component: TypeTag](entity: Entity, component: T): Unit
+  private[ecscala] def componentRemoved[T <: Component: TypeTag](entity: Entity, component: T): Unit
 }
 
 /**
@@ -51,11 +53,7 @@ object World {
     override def entitiesCount: Int = entities.size
 
     override def createEntity(): Entity = {
-      val entity = Entity()
-      entity.onAddedComponent((e, tt, c) => (componentsContainer = componentsContainer.addComponent(e, c)(using tt)))
-      entity.onRemovedComponent((e, tt, c) =>
-        (componentsContainer = componentsContainer.removeComponent(e, c)(using tt)),
-      )
+      val entity = Entity(this)
       entities += entity
       entity
     }
@@ -65,6 +63,13 @@ object World {
       componentsContainer -= entity
     }
 
-    private[ecscala] override def getComponents[T <: Component: TypeTag] = componentsContainer[T]
+    private[ecscala] override def getComponents[T <: Component: TypeTag] =
+      componentsContainer[T]
+
+    private[ecscala] override def componentAdded[T <: Component: TypeTag](entity: Entity, component: T): Unit =
+      componentsContainer += (entity, component)
+
+    private[ecscala] override def componentRemoved[T <: Component: TypeTag](entity: Entity, component: T): Unit =
+      componentsContainer -= (entity, component)
   }
 }
