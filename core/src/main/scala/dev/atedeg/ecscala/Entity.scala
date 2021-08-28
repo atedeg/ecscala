@@ -28,22 +28,6 @@ sealed trait Entity {
    *   itself.
    */
   def removeComponent[T <: Component: TypeTag](component: T): Entity
-
-  /**
-   * @param handler
-   *   the handler to execute when a [[Component]] is added to this entity.
-   * @return
-   *   itself.
-   */
-  private[ecscala] def onAddedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit): Entity
-
-  /**
-   * @param handler
-   *   the handler to execute when a [[Component]] is removed from this entity.
-   * @return
-   *   itself.
-   */
-  private[ecscala] def onRemovedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit): Entity
 }
 
 /**
@@ -52,31 +36,19 @@ sealed trait Entity {
 object Entity {
   opaque private type Id = Int
 
-  protected[ecscala] def apply(): Entity = EntityImpl(IdGenerator.nextId())
+  protected[ecscala] def apply(world: World): Entity = EntityImpl(IdGenerator.nextId(), world)
 
-  private case class EntityImpl(private val id: Id) extends Entity {
-    private var onAddedComponentEvent: Event[(Entity, TypeTag[Component], Component)] = Event()
-    private var onRemovedComponentEvent: Event[(Entity, TypeTag[Component], Component)] = Event()
+  private case class EntityImpl(private val id: Id, private val world: World) extends Entity {
 
     override def addComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
       component.setEntity(Some(this))
-      onAddedComponentEvent(this, tt, component)
-      this
-    }
-
-    override def onAddedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit): Entity = {
-      onAddedComponentEvent += handler
+      world += (this -> component)
       this
     }
 
     override def removeComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
       component.setEntity(None)
-      onRemovedComponentEvent(this, tt, component)
-      this
-    }
-
-    private[ecscala] override def onRemovedComponent(handler: ((Entity, TypeTag[Component], Component)) => Unit) = {
-      onRemovedComponentEvent += handler
+      world -= (this -> component)
       this
     }
   }

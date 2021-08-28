@@ -135,7 +135,7 @@ lazy val core = project
       formats = Seq(JacocoReportFormats.HTML, JacocoReportFormats.XML),
       fileEncoding = "utf-8",
     ),
-    Test / jacocoExcludes := Seq("**.macros.*"),
+    Test / jacocoExcludes := Seq("**.macros.*", "**.types.*"),
   )
 
 lazy val benchmarks = project

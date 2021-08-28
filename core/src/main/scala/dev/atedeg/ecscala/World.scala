@@ -1,5 +1,6 @@
 package dev.atedeg.ecscala
 
+import scala.annotation.targetName
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
 import dev.atedeg.ecscala.util.types.TypeTag
 
@@ -30,6 +31,12 @@ trait World {
   def removeEntity(entity: Entity): Unit
 
   private[ecscala] def getComponents[T <: Component: TypeTag]: Option[Map[Entity, T]]
+
+  @targetName("addComponent")
+  private[ecscala] def +=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World
+
+  @targetName("removeComponent")
+  private[ecscala] def -=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World
 }
 
 /**
@@ -51,11 +58,7 @@ object World {
     override def entitiesCount: Int = entities.size
 
     override def createEntity(): Entity = {
-      val entity = Entity()
-      entity.onAddedComponent((e, tt, c) => (componentsContainer = componentsContainer.addComponent(e, c)(using tt)))
-      entity.onRemovedComponent((e, tt, c) =>
-        (componentsContainer = componentsContainer.removeComponent(e, c)(using tt)),
-      )
+      val entity = Entity(this)
       entities += entity
       entity
     }
@@ -65,6 +68,19 @@ object World {
       componentsContainer -= entity
     }
 
-    private[ecscala] override def getComponents[T <: Component: TypeTag] = componentsContainer[T]
+    private[ecscala] override def getComponents[T <: Component: TypeTag] =
+      componentsContainer[T]
+
+    @targetName("addComponent")
+    private[ecscala] override def +=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World = {
+      componentsContainer += entityComponentPair
+      this
+    }
+
+    @targetName("removeComponent")
+    private[ecscala] override def -=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World = {
+      componentsContainer -= entityComponentPair
+      this
+    }
   }
 }
