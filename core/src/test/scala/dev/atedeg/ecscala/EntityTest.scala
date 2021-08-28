@@ -15,23 +15,4 @@ class EntityTest extends AnyWordSpec with Matchers {
       }
     }
   }
-
-  "An Entity" when {
-    "added handlers" should {
-      "execute all of them when a component is added" in new WorldFixture with ComponentsFixture {
-        var n = 0
-        var entity = world.createEntity()
-        (0 until 100) foreach { _ => entity.onAddedComponent(_ => n += 1) }
-        entity addComponent Position(1, 1)
-        n shouldBe 100
-      }
-      "execute all of them when a component is removed" in new WorldFixture with ComponentsFixture {
-        var n = 0
-        var entity = world.createEntity()
-        (0 until 100) foreach { _ => entity.onRemovedComponent(_ => n += 1) }
-        entity removeComponent Position(1, 1)
-        n shouldBe 100
-      }
-    }
-  }
 }
