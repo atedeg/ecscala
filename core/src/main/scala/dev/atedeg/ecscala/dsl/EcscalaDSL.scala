@@ -17,16 +17,3 @@ case class EntityWord()
 trait EcscalaDSL {
   def entity: EntityWord = EntityWord()
 }
-
-/**
- * This method enables the following syntax:
- *
- * <pre class="stHighlight"> entity withComponents { 
- *                         *(Component1()) 
- *                         *(Component2())
- *                         [...]
- *                       } </pre>
- */
-def *[T <: Component](component: T)(using e: Entity)(using tt: TypeTag[T]) = {
-  e.addComponent(component)(tt)
-}

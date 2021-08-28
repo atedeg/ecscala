@@ -11,9 +11,7 @@ extension (entity: Entity) {
    *
    * <pre class="stHighlight"> entity withComponents {
    *
-   * *(Component1())
-   *
-   * *(Component2())
+   * Component1() and Component2()
    *
    * } </pre>
    */
@@ -51,5 +49,14 @@ extension (world: World) {
   def hasAn(entityWord: EntityWord): Entity = {
     val a = world.createEntity()
     a
+  }
+}
+
+extension [T <: Component](component: T) {
+
+  def and[C <: Component](c: C)(using e: Entity)(using tt1: TypeTag[T])(using tt2: TypeTag[C]): C = {
+    e.addComponent(component)(tt1)
+    e.addComponent(c)(tt2)
+    c
   }
 }

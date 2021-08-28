@@ -7,6 +7,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.dsl.EcscalaDSL
+import dev.atedeg.ecscala.dsl.Conversions.componentToUnitImpl
 
 class EcscalaDSLTest extends AnyWordSpec with Matchers with EcscalaDSL {
 
@@ -14,8 +15,7 @@ class EcscalaDSLTest extends AnyWordSpec with Matchers with EcscalaDSL {
     "work the same way as the addComponent() method" in new WorldFixture with ComponentsFixture {
       val entity1 =
         world hasAn entity withComponents {
-          *(Position(1, 2))
-          *(Velocity(3, 4))
+          Position(1, 2) and Velocity(3, 4) and Gravity(9.8)
         }
 
       entity1 + Gravity(9.8)
