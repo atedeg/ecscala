@@ -53,7 +53,13 @@ extension (world: World) {
 }
 
 extension [T <: Component](component: T) {
-
+  /**
+   * 
+   * @param c
+   * @param e
+   * @tparam C
+   * @return
+   */
   def and[C <: Component](c: C)(using e: Entity)(using tt1: TypeTag[T])(using tt2: TypeTag[C]): C = {
     e.addComponent(component)(tt1)
     e.addComponent(c)(tt2)
