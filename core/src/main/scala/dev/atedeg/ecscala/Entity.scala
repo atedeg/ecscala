@@ -42,13 +42,13 @@ object Entity {
 
     override def addComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
       component.setEntity(Some(this))
-      world.componentAdded(this, component)
+      world + (this -> component)
       this
     }
 
     override def removeComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
       component.setEntity(None)
-      world.componentRemoved(this, component)
+      world - (this -> component)
       this
     }
   }
