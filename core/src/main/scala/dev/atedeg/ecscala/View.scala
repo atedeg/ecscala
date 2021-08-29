@@ -8,7 +8,7 @@ import dev.atedeg.ecscala.util.macros.ViewMacro.createViewImpl
  * @tparam L
  *   [[CList]] with the type of the components.
  */
-trait View[L <: CList] extends Iterable[Entity]
+trait View[L <: CList] extends Iterable[(Entity, L)]
 
 private[ecscala] object View {
   inline def apply[T <: CList](world: World): View[T] = createViewImpl[T](world)
