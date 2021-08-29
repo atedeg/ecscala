@@ -13,7 +13,7 @@ import dev.atedeg.ecscala.util.types.TypeTag
 // An alterative solution could be declare the getView as an abstract inline method in the trait;
 // however, the library user could not call such method on any val typed as the trait.
 // For more details on this problem refer to: https://docs.scala-lang.org/scala3/guides/macros/inline.html
-class World() {
+final class World() {
   private var entities: Set[Entity] = Set()
   private var componentsContainer = ComponentsContainer()
 
@@ -79,17 +79,4 @@ class World() {
   }
 
   override def toString: String = componentsContainer.toString
-}
-
-/**
- * Factory for [[World]] instances.
- */
-object World {
-
-  /**
-   * Creates a new [[World]].
-   * @return
-   *   the world.
-   */
-  def apply(): World = new World()
 }

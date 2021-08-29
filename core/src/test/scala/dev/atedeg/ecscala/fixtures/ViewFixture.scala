@@ -12,6 +12,4 @@ trait ViewFixture extends ComponentsFixture with WorldFixture {
 
   entity2.addComponent(Velocity(3, 5))
   entity2.addComponent(Mass(3))
-
-  println(world)
 }
