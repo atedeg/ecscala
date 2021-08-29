@@ -11,11 +11,15 @@ object ViewMacro {
     new View[L] {
       override def iterator = new Iterator[(Entity, L)] {
         val maps: Seq[Map[Entity, Component]] = getMaps[L](world) sortBy (_.size)
-        var smallerMap: Option[Map[Entity, Component]] = maps.headOption
         val otherMaps: Seq[Map[Entity, Component]] = if !maps.isEmpty then maps.tail else maps
+        var smallerMap: Option[Map[Entity, Component]] = maps.headOption.map(keepCommonKeys(_)(otherMaps))
         var current: Option[Entity] = smallerMap flatMap (_.headOption) map (_.head)
 
-        override def hasNext = current.isDefined && otherMaps.forall(_.contains(current.get))
+        private def keepCommonKeys[K, V](map: Map[K, V])(maps: Seq[Map[K, V]]) =
+          map.filter((k, _) => isInAllMaps(k)(maps))
+        private def isInAllMaps[K, V](key: K)(maps: Seq[Map[K, V]]) = maps.forall(_.contains(key))
+
+        override def hasNext = current.isDefined
 
         override def next() = {
           val result = current
