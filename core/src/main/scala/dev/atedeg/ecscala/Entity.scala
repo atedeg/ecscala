@@ -50,6 +50,8 @@ object Entity {
       world -= (this -> component)
       this
     }
+
+    override def toString: String = s"Entity($id)"
   }
 
   private object IdGenerator {

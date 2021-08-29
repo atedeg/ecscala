@@ -77,6 +77,8 @@ class World() {
     componentsContainer -= entityComponentPair
     this
   }
+
+  override def toString: String = componentsContainer.toString
 }
 
 /**
