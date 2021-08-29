@@ -42,7 +42,6 @@ class ViewBenchmark {
   @Benchmark
   def viewIterationBenchmark: Unit = {
     val view = world.getView[Position &: Velocity &: CNil]
-    var i = 0
-    view foreach (_ => i += 1)
+    view foreach (_.addComponent(Position(2, 3)))
   }
 }
