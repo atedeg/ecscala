@@ -3,6 +3,7 @@ package dev.atedeg.ecscala.dsl
 import dev.atedeg.ecscala.util.types.TypeTag
 import dev.atedeg.ecscala.{ Component, Entity, World }
 import dev.atedeg.ecscala.dsl.Words.*
+import dev.atedeg.ecscala.dsl.hasAn
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the Ecscala framework operation using an
@@ -13,6 +14,7 @@ trait EcscalaDSL {
 }
 
 private[dsl] case class ComponentWrapper() {
+
   /**
    * This method adds its argument to an entity and enables the following syntax:
    *
