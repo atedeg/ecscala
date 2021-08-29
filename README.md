@@ -20,9 +20,11 @@ import dev.atedeg.ecscala.{ World, Entity }
 
 @main def main(): Unit = {
   val world: World = World()
-  
-  val entity1: Entity = world.createEntity()
-  val entity2: Entity = world.createEntity()
+
+  val entity1 = world hasAn entity withComponents {
+    Position(1, 2) and Velocity(3, 4) and Gravity(9.8)
+  }
+  entity1 + Mass(5)
   
   // TODO
 }
