@@ -2,7 +2,7 @@ package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala.util.types.TypeTag
 import dev.atedeg.ecscala.{ Component, Entity, World }
-import dev.atedeg.ecscala.dsl.EntityWord
+import dev.atedeg.ecscala.dsl.Words.*
 
 extension (entity: Entity) {
 
@@ -24,16 +24,23 @@ extension (entity: Entity) {
   /**
    * This method enables the following syntax:
    *
+   * <pre class="stHighlight"> entity withComponent Component()</pre>
+   */
+  def withComponent[T <: Component: TypeTag](component: T): Entity = entity.addComponent(component)
+
+  /**
+   * This method enables the following syntax:
+   *
    * <pre class="stHighlight"> entity + Component() </pre>
    */
-  def +[T <: Component](component: T)(using tt: TypeTag[T]): Entity = entity.addComponent(component)(tt)
+  def +[T <: Component: TypeTag](component: T): Entity = entity.addComponent(component)
 
   /**
    * This method enables the following syntax:
    *
    * <pre class="stHighlight"> entity - Component() </pre>
    */
-  def -[T <: Component](component: T)(using tt: TypeTag[T]): Entity = entity.removeComponent(component)(tt)
+  def -[T <: Component: TypeTag](component: T): Entity = entity.removeComponent(component)
 }
 
 extension (world: World) {
@@ -46,17 +53,25 @@ extension (world: World) {
   def hasAn(entityWord: EntityWord): Entity = world.createEntity()
 }
 
-extension [T <: Component](component: T) {
+extension [T <: Component: TypeTag](component: T) {
 
   /**
-   * @param c
-   * @param e
-   * @tparam C
+   * This method adds the current component and its agrument to an entity and enables the following syntax:
+   *
+   * <pre class="stHighlight"> entity withComponents {
+   *
+   * Component1() and Component2()
+   *
+   * } </pre>
+   *
+   * @param rightComponent
+   *   The component to be added to an entity.
    * @return
+   *   A [[ComponentWrapper]] that enables the components chaining.
    */
-  def and[C <: Component](c: C)(using e: Entity)(using tt1: TypeTag[T])(using tt2: TypeTag[C]): C = {
-    e.addComponent(component)(tt1)
-    e.addComponent(c)(tt2)
-    c
+  def and[C <: Component](rightComponent: C)(using entity: Entity)(using tt: TypeTag[C]): ComponentWrapper = {
+    entity.addComponent(component)
+    entity.addComponent(rightComponent)(tt)
+    ComponentWrapper()
   }
 }
