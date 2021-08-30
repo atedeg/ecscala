@@ -1,6 +1,5 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.util.Event
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
 import dev.atedeg.ecscala.util.types.TypeTag
 
@@ -51,6 +50,8 @@ object Entity {
       world -= (this -> component)
       this
     }
+
+    override def toString: String = s"Entity($id)"
   }
 
   private object IdGenerator {

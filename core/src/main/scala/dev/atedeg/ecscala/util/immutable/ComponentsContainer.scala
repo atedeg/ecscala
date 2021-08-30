@@ -108,7 +108,7 @@ private[ecscala] object ComponentsContainer {
        *   an [[Option]] with the map with the removed [[Entity]] if the map still has some elements; if the removed
        *   element was the last one and the map would be empty it returns a None.
        */
-      def -?(entity: Entity): Option[Map[Entity, T]] = Some(map - entity) filter (!_.isEmpty)
+      def -?(entity: Entity): Option[Map[Entity, T]] = Some(map - entity) filter (_.nonEmpty)
     }
 
     override def removeComponent[T <: Component](entityComponentPair: (Entity, T))(using tt: TypeTag[T]) = {
@@ -125,5 +125,7 @@ private[ecscala] object ComponentsContainer {
         componentsMap flatMap { (tt, componentMap) => (componentMap -? entity) map (tt -> _) }
       ComponentsContainer(newComponentsMap)
     }
+
+    override def toString: String = componentsMap.toString
   }
 }
