@@ -6,9 +6,9 @@ import dev.atedeg.ecscala.util.types.TypeTag
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.dsl.EcscalaDSL
+import dev.atedeg.ecscala.dsl.ECScalaDSL
 
-class EcscalaDSLTest extends AnyWordSpec with Matchers with EcscalaDSL {
+class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "The dsl syntax" should {
     "work the same way as the entity.addComponent() method" in new WorldFixture with ComponentsFixture {

@@ -8,9 +8,8 @@ import dev.atedeg.ecscala.dsl.Words.*
  * This trait provides a domain specific language (DSL) for expressing the Ecscala framework operation using an
  * english-like language.
  */
-trait EcscalaDSL extends ExtensionMethodsDSL {
+trait ECScalaDSL extends ExtensionMethodsDSL {
   def entity: EntityWord = EntityWord()
-
 }
 
 private[dsl] case class ComponentWrapper() {

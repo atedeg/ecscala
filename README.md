@@ -16,17 +16,20 @@ libraryDependencies += "dev.atedeg" %% "ecscala" % "0.1.0"
 ## Usage
 
 ```scala
-import dev.atedeg.ecscala.{ World, Entity }
+import dev.atedeg.ecscala.dsl.ECScalaDSL
+import dev.atedeg.ecscala.util.types.given
 
-@main def main(): Unit = {
-  val world: World = World()
+case class Position(x: Double, y: Double) extends Component
+case class Velocity(vx: Double, vy: Double) extends Component
+case class Gravity(g: Double) extends Component
+
+object AnObject extends ECScalaDSL {
+  val world = World()
 
   val entity1 = world hasAn entity withComponents {
     Position(1, 2) and Velocity(3, 4) and Gravity(9.8)
   }
-  entity1 + Mass(5)
-  
-  // TODO
+  entity1 + Position(3, 6)
 }
 ```
 

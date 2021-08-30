@@ -8,5 +8,4 @@ object Words {
    * {{{world hasAn entity}}}
    */
   case class EntityWord()
-
 }
