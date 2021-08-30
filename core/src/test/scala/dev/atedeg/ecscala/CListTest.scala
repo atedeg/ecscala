@@ -28,6 +28,8 @@ class CListTest extends AnyWordSpec with Matchers {
     "has elements" should {
       "iterate over its elements" in new ComponentsFixture {
         val cList: Position &: Velocity &: Mass &: CNil = Position(1, 2) &: Velocity(2, 2) &: Mass(3)
+        cList.iterator.hasNext shouldBe true
+        cList.iterator.next shouldBe Position(1, 2)
         cList.toList shouldBe List(Position(1, 2), Velocity(2, 2), Mass(3))
       }
       "print its elements" in new ComponentsFixture {
