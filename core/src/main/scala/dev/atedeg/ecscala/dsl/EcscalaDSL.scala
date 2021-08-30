@@ -20,7 +20,7 @@ private[dsl] case class ComponentWrapper() {
    * {{{
    * entity withComponents {
    *
-   * Component1() and Component2() and Component3()
+   *   Component1() and Component2() and Component3()
    *
    * }
    * }}}

@@ -14,9 +14,9 @@ trait ExtensionMethodsDSL {
      * {{{
      * entity withComponents {
      *
-     * Component1() and Component2()
+     *   Component1() and Component2()
      *
-     * } 
+     * }
      * }}}
      */
     def withComponents(init: Entity ?=> Unit): Entity = {
@@ -73,7 +73,7 @@ trait ExtensionMethodsDSL {
      * {{{
      * entity withComponents {
      *
-     * Component1() and Component2()
+     *   Component1() and Component2()
      *
      * }
      * }}}
