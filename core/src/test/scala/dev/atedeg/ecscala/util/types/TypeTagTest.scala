@@ -2,7 +2,7 @@ package dev.atedeg.ecscala.util.types
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import dev.atedeg.ecscala.fixtures.ComponentsFixture
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, Velocity }
 
 class TypeTagTest extends AnyWordSpec with Matchers {
 

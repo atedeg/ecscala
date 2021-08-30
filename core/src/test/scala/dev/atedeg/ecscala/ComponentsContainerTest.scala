@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, WorldFixture }
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, Velocity, WorldFixture }
 import dev.atedeg.ecscala.util.types.TypeTag
 import dev.atedeg.ecscala.util.types.given TypeTag[_]
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
