@@ -11,15 +11,14 @@ trait ExtensionMethodsDSL {
     /**
      * This method enables the following syntax:
      *
-     * <pre class="stHighlight"> entity withComponents {
+     * {{{entity withComponents {
      *
      * Component1() and Component2()
      *
-     * } </pre>
+     * } }}}
      */
     def withComponents(init: Entity ?=> Unit): Entity = {
       given e: Entity = entity
-
       init
       e
     }
@@ -27,21 +26,21 @@ trait ExtensionMethodsDSL {
     /**
      * This method enables the following syntax:
      *
-     * <pre class="stHighlight"> entity withComponent Component()</pre>
+     * {{{entity withComponent Component()}}}
      */
     def withComponent[T <: Component: TypeTag](component: T): Entity = entity.addComponent(component)
 
     /**
      * This method enables the following syntax:
      *
-     * <pre class="stHighlight"> entity + Component() </pre>
+     * {{{entity + Component()}}}
      */
     def +[T <: Component: TypeTag](component: T): Entity = entity.addComponent(component)
 
     /**
      * This method enables the following syntax:
      *
-     * <pre class="stHighlight"> entity - Component() </pre>
+     * {{{entity - Component()}}}
      */
     def -[T <: Component: TypeTag](component: T): Entity = entity.removeComponent(component)
   }
@@ -51,7 +50,7 @@ trait ExtensionMethodsDSL {
     /**
      * This method enables the following syntax:
      *
-     * <pre class="stHighlight"> world hasAn entity </pre>
+     * {{{world hasAn entity}}}
      */
     def hasAn(entityWord: EntityWord): Entity = world.createEntity()
   }
@@ -61,11 +60,11 @@ trait ExtensionMethodsDSL {
     /**
      * This method adds the current component and its agrument to an entity and enables the following syntax:
      *
-     * <pre class="stHighlight"> entity withComponents {
+     * {{{ entity withComponents {
      *
      * Component1() and Component2()
      *
-     * } </pre>
+     * } }}}
      *
      * @param rightComponent
      *   The component to be added to an entity.

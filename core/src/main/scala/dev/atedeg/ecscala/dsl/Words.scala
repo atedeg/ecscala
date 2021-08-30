@@ -5,7 +5,7 @@ object Words {
   /**
    * This case class enables the following syntax:
    *
-   * <pre class="stHighlight"> world hasAn entity </pre>
+   * {{{world hasAn entity}}}
    */
   case class EntityWord()
 

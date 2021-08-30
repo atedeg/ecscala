@@ -18,11 +18,11 @@ private[dsl] case class ComponentWrapper() {
   /**
    * This method adds its argument to an entity and enables the following syntax:
    *
-   * <pre class="stHighlight"> entity withComponents {
+   * {{{ entity withComponents {
    *
    * Component1() and Component2() and Component3()
    *
-   * } </pre>
+   * } }}}
    *
    * @param rightComponent
    *   The component to be added to an entity.
