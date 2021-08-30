@@ -5,7 +5,9 @@ object Words {
   /**
    * This case class enables the following syntax:
    *
-   * {{{world hasAn entity}}}
+   * {{{
+   * world hasAn entity
+   * }}}
    */
   case class EntityWord()
 }
