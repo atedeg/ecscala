@@ -5,7 +5,7 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import scala.collection.{ Map, MapFactory }
 
-abstract class BaseMapTests[CC[K, V] <: Map[K, V]] extends AnyWordSpec with Matchers {
+abstract class BaseMapTest[CC[K, V] <: Map[K, V]] extends AnyWordSpec with Matchers {
 
   def name: String
   def mapFactory(): MapFactory[CC]

@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala.util.types
 
-import dev.atedeg.ecscala.Component
+import dev.atedeg.ecscala.{ CList, Component }
 
 import scala.quoted.*
 
@@ -21,7 +21,7 @@ private def deriveTypeTagImpl[T: Type](using quotes: Quotes): Expr[TypeTag[T]] =
   if typeReprOfT =:= TypeRepr.of[Component] then
     report.error("Can only derive TypeTags for subtypes of Component, not for Component itself.")
   else if typeReprOfT =:= TypeRepr.of[Nothing] then report.error("Cannot derive TypeTag[Nothing]")
-  else if !(typeReprOfT <:< TypeRepr.of[Component]) then
+  else if !(typeReprOfT <:< TypeRepr.of[Component] || typeReprOfT <:< TypeRepr.of[CList]) then
     report.error(s"${typeReprOfT.show} must be a subtype of Component")
 
   '{
