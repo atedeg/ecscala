@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala.{ Component, Entity, World }
-import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, WorldFixture }
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Position, Velocity, WorldFixture }
 import dev.atedeg.ecscala.util.types.TypeTag
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -13,19 +13,18 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
   "The dsl syntax" should {
     "work the same way as the entity.addComponent() method" in new WorldFixture with ComponentsFixture {
       val entity1 = world hasAn entity withComponents {
-        Position(1, 2) and Velocity(3, 4) and Gravity(9.8)
+        Position(1, 2) and Velocity(3, 4) and Gravity(9)
       }
-
-      val entity2 = world hasAn entity withComponent Gravity(24.7)
-
-      world.getComponents[Position] should contain(Map(entity1 -> Position(1, 2)))
-      world.getComponents[Velocity] should contain(Map(entity1 -> Velocity(3, 4)))
-      world.getComponents[Gravity] should contain(Map(entity1 -> Gravity(9.8), entity2 -> Gravity(24.7)))
+      val entity2 = world hasAn entity withComponent Gravity(24)
 
       val world2 = World()
       val entity3 = world2 hasAn entity withComponents {
         Position(1, 2) and Velocity(3, 4)
       }
+
+      world.getComponents[Position] should contain(Map(entity1 -> Position(1, 2)))
+      world.getComponents[Velocity] should contain(Map(entity1 -> Velocity(3, 4)))
+      world.getComponents[Gravity] should contain(Map(entity1 -> Gravity(9), entity2 -> Gravity(24)))
       world2.getComponents[Position] should contain(Map(entity3 -> Position(1, 2)))
       world2.getComponents[Velocity] should contain(Map(entity3 -> Velocity(3, 4)))
     }
