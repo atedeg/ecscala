@@ -21,6 +21,13 @@ class EcscalaDSLTest extends AnyWordSpec with Matchers with EcscalaDSL {
       world.getComponents[Position] should contain(Map(entity1 -> Position(1, 2)))
       world.getComponents[Velocity] should contain(Map(entity1 -> Velocity(3, 4)))
       world.getComponents[Gravity] should contain(Map(entity1 -> Gravity(9.8), entity2 -> Gravity(24.7)))
+
+      val world2 = World()
+      val entity3 = world2 hasAn entity withComponents {
+        Position(1, 2) and Velocity(3, 4)
+      }
+      world2.getComponents[Position] should contain(Map(entity3 -> Position(1, 2)))
+      world2.getComponents[Velocity] should contain(Map(entity3 -> Velocity(3, 4)))
     }
 
     "work the same way as the entity.removeComponent() method" in new WorldFixture with ComponentsFixture {
@@ -28,10 +35,10 @@ class EcscalaDSLTest extends AnyWordSpec with Matchers with EcscalaDSL {
       val entity1 = world hasAn entity
 
       entity1 + position
-      world.getComponents[Position] should contain(Map(entity1 -> Position(1, 2)))
+      world.getComponents[Position] should contain(Map(entity1 -> position))
 
       entity1 - position
-      world.getComponents[Position] should not contain (Map(entity1 -> position))
+      world.getComponents[Position] shouldBe empty
     }
   }
 }
