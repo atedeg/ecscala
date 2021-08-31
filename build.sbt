@@ -35,6 +35,7 @@ inThisBuild(
       ),
     ),
     scalaVersion := scala3Version,
+    sonatypeCredentialHost := "s01.oss.sonatype.org",
     githubWorkflowScalaVersions := Seq("3.0.1"),
     githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@1.16"),
     githubWorkflowTargetBranches := Seq("master", "develop"),
