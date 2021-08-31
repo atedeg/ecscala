@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala
 
 import scala.annotation.targetName
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.{ CListTag, TypeTag }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.util.macros.ViewMacro.createViewImpl
 
@@ -13,8 +13,5 @@ import dev.atedeg.ecscala.util.macros.ViewMacro.createViewImpl
 trait View[L <: CList] extends Iterable[(Entity, L)]
 
 private[ecscala] object View {
-  inline def apply[T <: CList: TypeTag](world: World): View[T] = createViewImpl[T](world)
-
-  @targetName("getViewFromSingleComponentType")
-  inline def apply[C <: Component: TypeTag](world: World): View[C &: CNil] = createViewImpl[C &: CNil](world)
+  def apply[T <: CList](world: World)(using clt: CListTag[T]): View[T] = createViewImpl(world)(using clt)
 }
