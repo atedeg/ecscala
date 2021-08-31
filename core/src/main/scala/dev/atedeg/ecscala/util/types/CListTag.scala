@@ -1,6 +1,8 @@
 package dev.atedeg.ecscala.util.types
 
+import dev.atedeg.ecscala.util.macros.Debug
 import dev.atedeg.ecscala.{ &:, CList, Component }
+import dev.atedeg.ecscala.util.types.given
 
 import scala.quoted.{ Expr, Quotes, Type }
 
@@ -9,7 +11,6 @@ sealed trait CListTag[L <: CList] {
 }
 
 inline given [L <: CList]: CListTag[L] = {
-
   new CListTag[L] {
     override def tags = getTags[L]
     override def toString: String = tags.toString
@@ -22,9 +23,9 @@ inline given [L <: CList]: CListTag[L] = {
 }
 
 inline private def getTags[C <: CList]: Seq[TypeTag[? <: Component]] = {
-  import scala.compiletime.{ erasedValue, summonInline }
+  import scala.compiletime.erasedValue
   inline erasedValue[C] match {
-    case _: (head &: tail) => summonInline[TypeTag[head]] +: getTags[tail]
+    case _: (head &: tail) => summon[TypeTag[head]] +: getTags[tail]
     case _ => Seq()
   }
 }
