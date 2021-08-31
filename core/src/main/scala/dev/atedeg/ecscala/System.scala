@@ -1,7 +1,5 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.util.macros.Debug
-
 import scala.annotation.tailrec
 import dev.atedeg.ecscala.{ CList, Entity, View }
 import dev.atedeg.ecscala.util.types.given

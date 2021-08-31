@@ -1,6 +1,5 @@
 package dev.atedeg.ecscala.util.types
 
-import dev.atedeg.ecscala.util.macros.Debug
 import dev.atedeg.ecscala.{ &:, CList, Component }
 import dev.atedeg.ecscala.util.types.given
 
