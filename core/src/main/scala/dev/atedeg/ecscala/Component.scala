@@ -16,7 +16,7 @@ trait Component {
 
 object Component {
 
-  extension [H <: Component: ComponentTag, C <: Component: ComponentTag] (head: H)
+  extension [H <: Component: ComponentTag, C <: Component: ComponentTag](head: H)
     /**
      * Convert two [[Component]] in a [[CList]].
      */

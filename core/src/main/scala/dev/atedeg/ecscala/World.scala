@@ -4,13 +4,13 @@ import scala.annotation.targetName
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
 import dev.atedeg.ecscala.util.macros.Debug
 import dev.atedeg.ecscala.util.macros.ViewMacro.createViewImpl
-import dev.atedeg.ecscala.util.types.{CListTag, ComponentTag}
-import dev.atedeg.ecscala.util.types
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
 /**
  * A container for [[Entity]], Components and System.
  */
 sealed trait World {
+
   /**
    * @return
    *   the number of [[Entity]] in the [[World]].
@@ -42,8 +42,10 @@ sealed trait World {
 
   /**
    * Add a [[System]] to the [[World]].
-   * @param system the system to add.
-   * @tparam L the [[CList]] of system components.
+   * @param system
+   *   the system to add.
+   * @tparam L
+   *   the [[CList]] of system components.
    */
   def addSystem[L <: CList](system: System[L])(using tt: CListTag[L]): Unit
 
@@ -93,17 +95,17 @@ object World {
 
     override def toString: String = componentsContainer.toString
 
-    override private[ecscala] def getComponents[T <: Component: ComponentTag]: Option[Map[Entity, T]] =
+    private[ecscala] override def getComponents[T <: Component: ComponentTag]: Option[Map[Entity, T]] =
       componentsContainer[T]
 
     @targetName("addComponent")
-    override private[ecscala] def +=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World = {
+    private[ecscala] override def +=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World = {
       componentsContainer += entityComponentPair
       this
     }
 
     @targetName("removeComponent")
-    override private[ecscala] def -=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World = {
+    private[ecscala] override def -=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World = {
       componentsContainer -= entityComponentPair
       this
     }
