@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, WorldFixture }
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, ViewFixture, WorldFixture }
 import dev.atedeg.ecscala.util.types.ComponentTag
 import dev.atedeg.ecscala.util.types.given
 import org.scalatest.matchers.should.*
@@ -43,6 +43,27 @@ class WorldTest extends AnyWordSpec with Matchers {
         entity addComponent component
         entity removeComponent component
         world.getComponents[Position] shouldBe empty
+      }
+    }
+    "update is called" should {
+      "execute all systems in the same order as they were added" in new ViewFixture {
+        world.addSystem[Position &: CNil]((_, cl, _) => {
+          val Position(px, py) &: CNil = cl
+          Position(px * 2, py * 2) &: CNil
+        })
+
+        world.addSystem[Position &: CNil]((_, cl, _) => {
+          val Position(x, y) &: CNil = cl
+          Position(x + 1, y + 1) &: CNil
+        })
+
+        world.update()
+
+        world.getView[Position &: CNil] should contain theSameElementsAs List(
+          (entity1, Position(3, 3) &: CNil),
+          (entity3, Position(3, 3) &: CNil),
+          (entity4, Position(3, 3) &: CNil),
+        )
       }
     }
   }
