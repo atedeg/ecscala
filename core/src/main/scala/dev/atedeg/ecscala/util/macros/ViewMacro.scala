@@ -39,12 +39,6 @@ object ViewMacro {
     (componentsWithTags
       .foldRight(CNil: CList)((compTag, acc) => &:(compTag.head, acc)(using compTag._2)))
       .asInstanceOf[L]
-//    import scala.compiletime.*
-//    (inline erasedValue[L] match {
-//      case _: (head &: tail) =>
-//        world.getComponents[head].get(entity) &: getEntityComponents[tail](world)(entity)
-//      case _ => CNil
-//    }).asInstanceOf[L]
   }
 
   private def getMaps[L <: CList](world: World)(using clt: CListTag[L]): Seq[Map[Entity, Component]] = {
@@ -52,12 +46,4 @@ object ViewMacro {
     if (optionalMaps.exists(_.isEmpty)) then Seq()
     else optionalMaps map (_.get.asInstanceOf[Map[Entity, Component]])
   }
-
-//  inline private def summonAllTags[L <: CList]: Seq[TypeTag[? <: Component]] = {
-//    import scala.compiletime.*
-//    inline erasedValue[L] match {
-//      case _: (head &: tail) => summonAllTags[tail] :+ summon[TypeTag[head]]
-//      case _ => Seq()
-//    }
-//  }
 }
