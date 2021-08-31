@@ -23,11 +23,5 @@ trait System[L <: CList] extends Function3[Entity, L, View[L], L] {
       val (tt, component) = taggedComponent
       entity.addComponent(component)(using tt)
     }
-//    components match {
-//      case head &: tail =>
-//        entity.addComponent(head)
-//        updateComponents(tail)(entity)
-//      case _ => ()
-//    }
   }
 }
