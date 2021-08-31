@@ -2,7 +2,7 @@ package ecscala
 
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.{ &:, CNil, Component, World }
-import ecscala.utils.{ Position, Velocity }
+import ecscala.utils.{ JmhSettings, Position, Velocity }
 import org.openjdk.jmh.annotations.{
   Benchmark,
   BenchmarkMode,
@@ -19,23 +19,7 @@ import org.openjdk.jmh.annotations.{
 
 import java.util.concurrent.TimeUnit
 
-@BenchmarkMode(Array(Mode.AverageTime))
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-@State(Scope.Thread)
-@Warmup(iterations = 50, time = 200, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 50, time = 200, timeUnit = TimeUnit.MILLISECONDS)
-@Fork(2)
-class ViewBenchmark {
-  private var world: World = _
-  private val nEntities = 10_000
-
-  @Setup(Level.Trial)
-  def setup: Unit = {
-    world = World()
-    val entities = (0 until nEntities) map (_ => world.createEntity())
-    entities foreach (_.addComponent(Position(1, 2)))
-    entities foreach (_.addComponent(Velocity(3, 4)))
-  }
+class ViewBenchmark extends JmhSettings {
 
   @Benchmark
   def viewIterationBenchmark: Unit = {
