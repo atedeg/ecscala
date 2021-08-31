@@ -4,7 +4,7 @@ import scala.annotation.targetName
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
 import dev.atedeg.ecscala.util.macros.Debug
 import dev.atedeg.ecscala.util.macros.ViewMacro.createViewImpl
-import dev.atedeg.ecscala.util.types.{ CListTag, TypeTag }
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 import dev.atedeg.ecscala.util.types.given
 
 /**
@@ -65,17 +65,17 @@ final class World() {
     system.update(this)(using tt)
   })
 
-  private[ecscala] def getComponents[T <: Component: TypeTag] =
+  private[ecscala] def getComponents[T <: Component: ComponentTag] =
     componentsContainer[T]
 
   @targetName("addComponent")
-  private[ecscala] def +=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World = {
+  private[ecscala] def +=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World = {
     componentsContainer += entityComponentPair
     this
   }
 
   @targetName("removeComponent")
-  private[ecscala] def -=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World = {
+  private[ecscala] def -=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World = {
     componentsContainer -= entityComponentPair
     this
   }

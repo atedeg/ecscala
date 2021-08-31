@@ -5,7 +5,7 @@ import dev.atedeg.ecscala.util.macros.Debug
 import scala.annotation.tailrec
 import dev.atedeg.ecscala.{ CList, Entity, View }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.util.types.{ CListTag, TypeTag }
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
 trait System[L <: CList] extends Function3[Entity, L, View[L], L] {
 
@@ -18,7 +18,7 @@ trait System[L <: CList] extends Function3[Entity, L, View[L], L] {
   }
 
   private def updateComponents[C <: CList](components: C)(entity: Entity)(using clt: CListTag[C]): Unit = {
-    val taggedComponents = clt.tags.asInstanceOf[Seq[TypeTag[Component]]] zip components
+    val taggedComponents = clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] zip components
     taggedComponents foreach { taggedComponent =>
       val (tt, component) = taggedComponent
       entity.addComponent(component)(using tt)

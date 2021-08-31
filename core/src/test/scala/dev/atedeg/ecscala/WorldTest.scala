@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala
 
 import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, WorldFixture }
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.ComponentTag
 import dev.atedeg.ecscala.util.types.given
 import org.scalatest.matchers.should.*
 import org.scalatest.wordspec.AnyWordSpec

@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala
 
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.ComponentTag
 
 /**
  * This trait represents an entity of ECS whose state is defined by its components.
@@ -16,7 +16,7 @@ sealed trait Entity {
    * @return
    *   itself.
    */
-  def addComponent[T <: Component: TypeTag](component: T): Entity
+  def addComponent[T <: Component: ComponentTag](component: T): Entity
 
   /**
    * @param component
@@ -26,7 +26,7 @@ sealed trait Entity {
    * @return
    *   itself.
    */
-  def removeComponent[T <: Component: TypeTag](component: T): Entity
+  def removeComponent[T <: Component: ComponentTag](component: T): Entity
 }
 
 /**
@@ -39,13 +39,13 @@ object Entity {
 
   private case class EntityImpl(private val id: Id, private val world: World) extends Entity {
 
-    override def addComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
+    override def addComponent[T <: Component](component: T)(using tt: ComponentTag[T]): Entity = {
       component.setEntity(Some(this))
       world += (this -> component)
       this
     }
 
-    override def removeComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
+    override def removeComponent[T <: Component](component: T)(using tt: ComponentTag[T]): Entity = {
       component.setEntity(None)
       world -= (this -> component)
       this

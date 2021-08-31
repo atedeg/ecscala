@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala
 
 import scala.annotation.targetName
-import dev.atedeg.ecscala.util.types.{ CListTag, TypeTag }
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.util.macros.ViewMacro.createViewImpl
 

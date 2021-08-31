@@ -15,9 +15,9 @@ class CListTagTest extends AnyWordSpec with Matchers {
     }
     "has a CList" should {
       "have the appropriate tags" in {
-        summon[CListTag[Position &: CNil]].tags shouldBe Seq(summon[TypeTag[Position]])
+        summon[CListTag[Position &: CNil]].tags shouldBe Seq(summon[ComponentTag[Position]])
         summon[CListTag[Position &: Velocity &: CNil]].tags shouldBe
-          Seq(summon[TypeTag[Position]], summon[TypeTag[Velocity]])
+          Seq(summon[ComponentTag[Position]], summon[ComponentTag[Velocity]])
       }
     }
   }

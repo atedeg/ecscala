@@ -7,7 +7,7 @@ import dev.atedeg.ecscala.util.types.given
 import scala.quoted.{ Expr, Quotes, Type }
 
 sealed trait CListTag[L <: CList] {
-  def tags: Seq[TypeTag[? <: Component]]
+  def tags: Seq[ComponentTag[? <: Component]]
 }
 
 inline given [L <: CList]: CListTag[L] = {
@@ -22,10 +22,10 @@ inline given [L <: CList]: CListTag[L] = {
   }
 }
 
-inline private def getTags[C <: CList]: Seq[TypeTag[? <: Component]] = {
+inline private def getTags[C <: CList]: Seq[ComponentTag[? <: Component]] = {
   import scala.compiletime.erasedValue
   inline erasedValue[C] match {
-    case _: (head &: tail) => summon[TypeTag[head]] +: getTags[tail]
+    case _: (head &: tail) => summon[ComponentTag[head]] +: getTags[tail]
     case _ => Seq()
   }
 }

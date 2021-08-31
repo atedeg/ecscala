@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.ComponentTag
 
 /**
  * This trait represents an [[Entity]] 's feature.
@@ -16,7 +16,7 @@ trait Component {
 
 object Component {
 
-  extension [H <: Component: TypeTag, C <: Component: TypeTag](head: H)
+  extension [H <: Component: ComponentTag, C <: Component: ComponentTag] (head: H)
     /**
      * Convert two [[Component]] in a [[CList]].
      */

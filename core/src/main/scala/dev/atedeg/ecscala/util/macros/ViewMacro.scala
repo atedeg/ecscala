@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala.util.macros
 
-import dev.atedeg.ecscala.util.types.{ CListTag, TypeTag }
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 import dev.atedeg.ecscala.util.types
 import dev.atedeg.ecscala.{ &:, CList, CNil, Component, Entity, View, World }
 
@@ -35,7 +35,7 @@ object ViewMacro {
       map (world.getComponents(using _))
       map (_.get)
       map (_(entity))).asInstanceOf[Seq[? <: Component]]
-    val componentsWithTags = components zip clt.tags.asInstanceOf[Seq[TypeTag[Component]]]
+    val componentsWithTags = components zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]]
     (componentsWithTags
       .foldRight(CNil: CList)((compTag, acc) => &:(compTag.head, acc)(using compTag._2)))
       .asInstanceOf[L]
