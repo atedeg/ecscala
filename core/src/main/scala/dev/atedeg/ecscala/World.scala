@@ -69,7 +69,7 @@ object World {
   private class WorldImpl() extends World {
     private var entities: Set[Entity] = Set()
     private var componentsContainer = ComponentsContainer()
-    private var systems: Set[(CListTag[?], System[? <: CList])] = Set()
+    private var systems: List[(CListTag[?], System[? <: CList])] = List()
 
     override def entitiesCount: Int = entities.size
 
@@ -86,7 +86,8 @@ object World {
 
     override def getView[L <: CList](using clt: CListTag[L]): View[L] = View(this)(using clt)
 
-    override def addSystem[L <: CList](system: System[L])(using tt: CListTag[L]): Unit = systems += (tt -> system)
+    override def addSystem[L <: CList](system: System[L])(using tt: CListTag[L]): Unit =
+      systems = systems :+ (tt -> system)
 
     override def update(): Unit = systems foreach (tagSystem => {
       val (tt, system) = tagSystem
