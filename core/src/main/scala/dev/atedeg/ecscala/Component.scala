@@ -14,6 +14,9 @@ trait Component {
   }
 }
 
+/**
+ * A special [[Component]] type that is used to represent a component removal inside a [[System]]
+ */
 sealed trait Deleted extends Component
 case object Deleted extends Deleted
 
