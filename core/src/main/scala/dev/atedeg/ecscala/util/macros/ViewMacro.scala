@@ -46,7 +46,7 @@ object ViewMacro {
   private def getMaps[L <: CList](
       world: World,
   )(using clt: CListTag[L]): Seq[(ComponentTag[? <: Component], Map[Entity, Component])] = {
-    val optionalMaps = clt.tags map (tt => tt -> world.getComponents(using tt))
+    val optionalMaps = clt.tags map (ct => ct -> world.getComponents(using ct))
     if (optionalMaps.exists(_._2.isEmpty)) then Seq()
     else optionalMaps map ((taggedMap) => taggedMap._1 -> taggedMap._2.get.asInstanceOf[Map[Entity, Component]])
   }

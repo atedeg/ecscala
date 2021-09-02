@@ -13,5 +13,5 @@ import dev.atedeg.ecscala.util.macros.ViewMacro.createViewImpl
 trait View[L <: CList] extends Iterable[(Entity, L)]
 
 private[ecscala] object View {
-  def apply[T <: CList](world: World)(using clt: CListTag[T]): View[T] = createViewImpl(world)(using clt)
+  def apply[L <: CList](world: World)(using clt: CListTag[L]): View[L] = createViewImpl(world)(using clt)
 }

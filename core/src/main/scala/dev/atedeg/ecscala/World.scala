@@ -46,17 +46,17 @@ sealed trait World {
    * @tparam L
    *   the [[CList]] of system components.
    */
-  def addSystem[L <: CList](system: System[L])(using tt: CListTag[L]): Unit
+  def addSystem[L <: CList](system: System[L])(using ct: CListTag[L]): Unit
 
   def update(): Unit
 
-  private[ecscala] def getComponents[T <: Component: ComponentTag]: Option[Map[Entity, T]]
+  private[ecscala] def getComponents[C <: Component: ComponentTag]: Option[Map[Entity, C]]
 
   @targetName("addComponent")
-  private[ecscala] def +=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World
+  private[ecscala] def +=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World
 
   @targetName("removeComponent")
-  private[ecscala] def -=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World
+  private[ecscala] def -=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World
 }
 
 /**
@@ -85,27 +85,27 @@ object World {
 
     override def getView[L <: CList](using clt: CListTag[L]): View[L] = View(this)(using clt)
 
-    override def addSystem[L <: CList](system: System[L])(using tt: CListTag[L]): Unit =
-      systems = systems :+ (tt -> system)
+    override def addSystem[L <: CList](system: System[L])(using ct: CListTag[L]): Unit =
+      systems = systems :+ (ct -> system)
 
     override def update(): Unit = systems foreach (taggedSystem => {
-      val (tt, system) = taggedSystem
-      system.update(this)(using tt)
+      val (ct, system) = taggedSystem
+      system.update(this)(using ct)
     })
 
     override def toString: String = componentsContainer.toString
 
-    private[ecscala] override def getComponents[T <: Component: ComponentTag]: Option[Map[Entity, T]] =
-      componentsContainer[T]
+    private[ecscala] override def getComponents[C <: Component: ComponentTag]: Option[Map[Entity, C]] =
+      componentsContainer[C]
 
     @targetName("addComponent")
-    private[ecscala] override def +=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World = {
+    private[ecscala] override def +=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World = {
       componentsContainer += entityComponentPair
       this
     }
 
     @targetName("removeComponent")
-    private[ecscala] override def -=[T <: Component: ComponentTag](entityComponentPair: (Entity, T)): World = {
+    private[ecscala] override def -=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World = {
       componentsContainer -= entityComponentPair
       this
     }

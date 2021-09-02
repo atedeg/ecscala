@@ -11,14 +11,14 @@ class ComponentTagTest extends AnyWordSpec with Matchers {
     "not be equal to ComponentTag[Velocity]" in assertTagsNotEqual[Position, Velocity]
   }
 
-  def assertTagsEqual[A, B](using ttA: ComponentTag[A], ttB: ComponentTag[B]): Unit = {
-    ttA shouldEqual ttB
-    ttB shouldEqual ttA
+  def assertTagsEqual[A, B](using ctA: ComponentTag[A], ctB: ComponentTag[B]): Unit = {
+    ctA shouldEqual ctB
+    ctB shouldEqual ctA
   }
 
-  def assertTagsNotEqual[A, B](using ttA: ComponentTag[A], ttB: ComponentTag[B]): Unit = {
-    ttA should not equal ttB
-    ttB should not equal ttA
+  def assertTagsNotEqual[A, B](using ctA: ComponentTag[A], ctB: ComponentTag[B]): Unit = {
+    ctA should not equal ctB
+    ctB should not equal ctA
   }
 
   "The compiler" should {

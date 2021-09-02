@@ -25,13 +25,13 @@ trait System[L <: CList] extends Function3[Entity, L, View[L], Deletable[L]] {
     after(view)
   }
 
-  private def updateComponents[C <: CList](components: Deletable[C])(entity: Entity)(using clt: CListTag[C]): Unit = {
+  private def updateComponents[L <: CList](components: Deletable[L])(entity: Entity)(using clt: CListTag[L]): Unit = {
     val taggedComponents = clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] zip components
     taggedComponents foreach { taggedComponent =>
-      val (tt, component) = taggedComponent
+      val (ct, component) = taggedComponent
       component match {
-        case Deleted => entity.removeComponent(using tt)
-        case _ => entity.addComponent(component)(using tt)
+        case Deleted => entity.removeComponent(using ct)
+        case _ => entity.addComponent(component)(using ct)
       }
     }
   }

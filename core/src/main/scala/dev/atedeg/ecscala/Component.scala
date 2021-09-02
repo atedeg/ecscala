@@ -22,9 +22,9 @@ case object Deleted extends Deleted
 
 object Component {
 
-  extension [H <: Component: ComponentTag, C <: Component: ComponentTag](head: H)
+  extension [A <: Component: ComponentTag, B <: Component: ComponentTag](head: A)
     /**
      * Convert two [[Component]] in a [[CList]].
      */
-    def &:(otherComp: C): H &: C &: CNil = dev.atedeg.ecscala.&:(head, otherComp &: CNil)
+    def &:(otherComp: B): A &: B &: CNil = dev.atedeg.ecscala.&:(head, otherComp &: CNil)
 }

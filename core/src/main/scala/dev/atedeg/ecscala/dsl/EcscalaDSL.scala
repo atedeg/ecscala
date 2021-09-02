@@ -30,7 +30,7 @@ private[dsl] case class ComponentWrapper() {
    * @return
    *   A [[ComponentWrapper]] that enables the components chaining.
    */
-  def and[T <: Component: ComponentTag](rightComponent: T)(using entity: Entity): ComponentWrapper = {
+  def and[C <: Component: ComponentTag](rightComponent: C)(using entity: Entity): ComponentWrapper = {
     entity.addComponent(rightComponent)
     this
   }

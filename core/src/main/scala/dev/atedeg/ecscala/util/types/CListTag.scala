@@ -21,9 +21,9 @@ inline given [L <: CList]: CListTag[L] = {
   }
 }
 
-inline private def getTags[C <: CList]: Seq[ComponentTag[? <: Component]] = {
+inline private def getTags[L <: CList]: Seq[ComponentTag[? <: Component]] = {
   import scala.compiletime.erasedValue
-  inline erasedValue[C] match {
+  inline erasedValue[L] match {
     case _: (head &: tail) => summon[ComponentTag[head]] +: getTags[tail]
     case _ => Seq()
   }

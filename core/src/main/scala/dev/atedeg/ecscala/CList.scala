@@ -31,7 +31,7 @@ sealed trait CList extends Iterable[Component] {
 object CList {
 
   implicit class CListOps[L <: CList](list: L) {
-    def &:[H <: Component: ComponentTag](head: H): H &: L = dev.atedeg.ecscala.&:(head, list)
+    def &:[C <: Component: ComponentTag](head: C): C &: L = dev.atedeg.ecscala.&:(head, list)
   }
   // We ended up using the "old" implicit syntax since using the extension method
   // IntelliJ cannot correctly infer the type of a CList like
@@ -47,7 +47,7 @@ object CList {
  * An empty [[CList]].
  */
 sealed trait CNil extends CList {
-  def &:[H <: Component: ComponentTag](head: H): H &: CNil = dev.atedeg.ecscala.&:(head, this)
+  def &:[C <: Component: ComponentTag](head: C): C &: CNil = dev.atedeg.ecscala.&:(head, this)
 }
 
 case object CNil extends CNil {
@@ -66,7 +66,7 @@ case object CNil extends CNil {
  *   the type of the tail of the [[CList]].
  */
 @showAsInfix
-case class &:[+H <: Component: ComponentTag, +T <: CList](h: H, t: T) extends CList {
+case class &:[+C <: Component: ComponentTag, +L <: CList](h: C, t: L) extends CList {
 
   override def iterator = new Iterator[Component] {
     private var list: CList = h &: t

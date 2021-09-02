@@ -8,16 +8,16 @@ import scala.quoted.*
  * A ComponentTag is a trait used to describe types keeping information about the type that would otherwise be erased at
  * runtime.
  *
- * @tparam T
+ * @tparam C
  *   the type whose compiletime information are stored in the ComponentTag.
  */
-sealed trait ComponentTag[T]
+sealed trait ComponentTag[C]
 
-inline given [T]: ComponentTag[T] = ${ deriveComponentTagImpl[T] }
+inline given [C]: ComponentTag[C] = ${ deriveComponentTagImpl[C] }
 
-private def deriveComponentTagImpl[T: Type](using quotes: Quotes): Expr[ComponentTag[T]] = {
+private def deriveComponentTagImpl[C: Type](using quotes: Quotes): Expr[ComponentTag[C]] = {
   import quotes.reflect.*
-  val typeReprOfT = TypeRepr.of[T]
+  val typeReprOfT = TypeRepr.of[C]
   if typeReprOfT =:= TypeRepr.of[Component] then
     report.error("Can only derive ComponentTags for subtypes of Component, not for Component itself.")
   else if typeReprOfT =:= TypeRepr.of[Nothing] then report.error("Cannot derive ComponentTag[Nothing]")
@@ -25,7 +25,7 @@ private def deriveComponentTagImpl[T: Type](using quotes: Quotes): Expr[Componen
     report.error(s"${typeReprOfT.show} must be a subtype of Component")
 
   '{
-    new ComponentTag[T] {
+    new ComponentTag[C] {
       override def toString: String = ${ Expr(typeReprOfT.show) }
       override def hashCode: Int = this.toString.hashCode
       override def equals(obj: Any) = obj match {
