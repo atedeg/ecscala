@@ -42,6 +42,9 @@ class WorldTest extends AnyWordSpec with Matchers {
         val component = Position(1, 1)
         entity addComponent component
         entity removeComponent component
+        entity addComponent Position(1, 1)
+        entity.removeComponent[Position]
+
         world.getComponents[Position] shouldBe empty
       }
     }
