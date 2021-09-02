@@ -31,12 +31,13 @@ object ViewMacro {
   }
 
   private def getEntityComponents[L <: CList](world: World)(entity: Entity)(using clt: CListTag[L]): L = {
-    val components = (clt.tags
-      map (world.getComponents(using _))
-      map (_.get)
-      map (_(entity))).asInstanceOf[Seq[? <: Component]]
-    val componentsWithTags = components zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]]
-    (componentsWithTags
+    // This cast is always safe:
+    // the compiler infers the type as Seq[Any], while it is a Seq[? <: Component] so casting it to
+    // Seq[Component] is safe
+    val components =
+      (clt.tags map (world.getComponents(using _)) map (_.get) map (_(entity))).asInstanceOf[Seq[Component]]
+    val taggedComponents = components zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]]
+    (taggedComponents
       .foldRight(CNil: CList)((compTag, acc) => &:(compTag.head, acc)(using compTag._2)))
       .asInstanceOf[L]
   }

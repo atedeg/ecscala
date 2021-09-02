@@ -2,8 +2,19 @@ package dev.atedeg.ecscala
 
 import scala.annotation.{ showAsInfix, tailrec }
 import scala.collection.IterableOps
-import dev.atedeg.ecscala.Component
+import dev.atedeg.ecscala.{ Component, Deleted }
 import dev.atedeg.ecscala.util.types.ComponentTag
+
+/**
+ * Represents a CList whose elements can either be a standard [[Component]] or a special [[Deleted]] component,
+ * representing a component that was deleted.
+ * @tparam L
+ *   the type of the [[CList]] to be wrapped.
+ */
+type Deletable[L <: CList] <: CList = L match {
+  case h &: t => (h | Deleted) &: Deletable[t]
+  case CNil => CNil
+}
 
 /**
  * A List of elements whose type must be a subtype of [[Component]].
@@ -55,7 +66,7 @@ case object CNil extends CNil {
  *   the type of the tail of the [[CList]].
  */
 @showAsInfix
-case class &:[H <: Component: ComponentTag, T <: CList](h: H, t: T) extends CList {
+case class &:[+H <: Component: ComponentTag, +T <: CList](h: H, t: T) extends CList {
 
   override def iterator = new Iterator[Component] {
     private var list: CList = h &: t

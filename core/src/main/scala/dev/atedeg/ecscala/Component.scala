@@ -14,6 +14,9 @@ trait Component {
   }
 }
 
+sealed trait Deleted extends Component
+case object Deleted extends Deleted
+
 object Component {
 
   extension [H <: Component: ComponentTag, C <: Component: ComponentTag](head: H)

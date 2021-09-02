@@ -9,6 +9,10 @@ class ViewTest extends AnyWordSpec with Matchers {
 
   "A view" should {
     "iterate over the correct entities" in new ViewFixture {
+      world.getView[Mass &: CNil] should contain theSameElementsAs List(
+        (entity2, Mass(1) &: CNil),
+        (entity3, Mass(1) &: CNil),
+      )
       world.getView[Position &: CNil] should contain theSameElementsAs List(
         (entity1, Position(1, 1) &: CNil),
         (entity3, Position(1, 1) &: CNil),

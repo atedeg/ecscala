@@ -5,7 +5,7 @@ import dev.atedeg.ecscala.{ CList, Entity, View }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
-trait System[L <: CList] extends Function3[Entity, L, View[L], L] {
+trait System[L <: CList] extends Function3[Entity, L, View[L], Deletable[L]] {
   def before(view: View[L]): Unit = {}
 
   def after(view: View[L]): Unit = {}
@@ -25,11 +25,14 @@ trait System[L <: CList] extends Function3[Entity, L, View[L], L] {
     after(view)
   }
 
-  private def updateComponents[C <: CList](components: C)(entity: Entity)(using clt: CListTag[C]): Unit = {
+  private def updateComponents[C <: CList](components: Deletable[C])(entity: Entity)(using clt: CListTag[C]): Unit = {
     val taggedComponents = clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] zip components
     taggedComponents foreach { taggedComponent =>
       val (tt, component) = taggedComponent
-      entity.addComponent(component)(using tt)
+      component match {
+        case Deleted => entity.removeComponent(using tt)
+        case _ => entity.addComponent(component)(using tt)
+      }
     }
   }
 }
