@@ -65,7 +65,7 @@ trait ExtensionMethodsDSL {
     def hasAn(entityWord: EntityWord): Entity = world.createEntity()
   }
 
-  extension [T <: Component: ComponentTag] (component: T) {
+  extension [T <: Component: ComponentTag](component: T) {
 
     /**
      * This method adds the current component and its agrument to an entity and enables the following syntax:

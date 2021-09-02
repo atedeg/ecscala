@@ -22,7 +22,17 @@ sealed trait Entity {
    * @param component
    *   the [[Component]] to remove from the [[Entity]].
    * @tparam T
-   *   the type of the [[Component]].
+   *   the type of the [[Component]] to be removed.
+   * @return
+   *   itself.
+   */
+  def removeComponent[T <: Component: ComponentTag]: Entity
+
+  /**
+   * @param component
+   *   the [[Component]] to remove from the [[Entity]].
+   * @tparam T
+   *   the type of the [[Component]] to be removed.
    * @return
    *   itself.
    */
@@ -45,9 +55,24 @@ object Entity {
       this
     }
 
+    override def removeComponent[T <: Component](using tt: ComponentTag[T]): Entity = {
+      val componentToRemove = world.getComponents(using tt) flatMap (_.get(this))
+      componentToRemove match {
+        case Some(component) =>
+          component.setEntity(None)
+          world -= (this -> component)
+        case None => ()
+      }
+      this
+    }
+
     override def removeComponent[T <: Component](component: T)(using tt: ComponentTag[T]): Entity = {
-      component.setEntity(None)
-      world -= (this -> component)
+      component.entity match {
+        case Some(entity) if entity == this =>
+          component.setEntity(None)
+          world -= (this -> component)
+        case _ => ()
+      }
       this
     }
 
