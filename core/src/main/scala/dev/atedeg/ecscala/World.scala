@@ -88,8 +88,8 @@ object World {
     override def addSystem[L <: CList](system: System[L])(using tt: CListTag[L]): Unit =
       systems = systems :+ (tt -> system)
 
-    override def update(): Unit = systems foreach (tagSystem => {
-      val (tt, system) = tagSystem
+    override def update(): Unit = systems foreach (taggedSystem => {
+      val (tt, system) = taggedSystem
       system.update(this)(using tt)
     })
 
