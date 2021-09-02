@@ -6,13 +6,23 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
 trait System[L <: CList] extends Function3[Entity, L, View[L], L] {
+  def before(view: View[L]): Unit = {}
 
+  def after(view: View[L]): Unit = {}
+
+  // This method should only be called with a CListTag[L], it can not be enforced in the interface as
+  // it would make it impossible to call it correctly from the World requiring to cast the tags to a
+  // type that has been erased.
   private[ecscala] def update(world: World)(using clt: CListTag[? <: CList]): Unit = {
-    val view = world.getView(using clt).asInstanceOf[View[L]]
+    // If the method is called correctly (i.e. only with a CListTag[L]) this cast is always safe
+    val castedClt = clt.asInstanceOf[CListTag[L]]
+    val view = world.getView(using castedClt)
+    before(view)
     view foreach { (entity, components) =>
       val updatedComponents = this.apply(entity, components, view)
-      updateComponents(updatedComponents)(entity)(using clt.asInstanceOf[CListTag[L]])
+      updateComponents(updatedComponents)(entity)(using castedClt)
     }
+    after(view)
   }
 
   private def updateComponents[C <: CList](components: C)(entity: Entity)(using clt: CListTag[C]): Unit = {
