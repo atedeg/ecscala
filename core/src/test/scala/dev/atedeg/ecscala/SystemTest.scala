@@ -82,7 +82,7 @@ class SystemTest extends AnyWordSpec with Matchers {
               entity.addComponent(Position(px + 1, py + 1))
             })
 
-          override def apply(entity: Entity, components: Comps, deltaTime: Float, world: World, view: View[Comps]) =
+          override def apply(entity: Entity, components: Comps, deltaTime: DeltaTime, world: World, view: View[Comps]) =
             components
         }
         world.addSystem(testSystem)

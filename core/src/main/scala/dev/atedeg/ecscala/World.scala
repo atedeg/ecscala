@@ -48,7 +48,7 @@ sealed trait World {
    */
   def addSystem[L <: CList](system: System[L])(using ct: CListTag[L]): Unit
 
-  def update(deltaTime: Float): Unit
+  def update(deltaTime: DeltaTime): Unit
 
   private[ecscala] def getComponents[C <: Component: ComponentTag]: Option[Map[Entity, C]]
 
@@ -88,7 +88,7 @@ object World {
     override def addSystem[L <: CList](system: System[L])(using ct: CListTag[L]): Unit =
       systems = systems :+ (ct -> system)
 
-    override def update(deltaTime: Float): Unit = systems foreach (taggedSystem => {
+    override def update(deltaTime: DeltaTime): Unit = systems foreach (taggedSystem => {
       val (ct, system) = taggedSystem
       system.update(this, deltaTime)(using ct)
     })
