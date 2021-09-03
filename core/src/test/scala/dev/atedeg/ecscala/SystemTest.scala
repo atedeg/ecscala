@@ -52,13 +52,13 @@ class SystemTest extends AnyWordSpec with Matchers {
     "execute their before and after handlers in the correct order" in new ViewFixture {
       type Comps = Position &: Velocity &: CNil
       val testSystem = new System[Comps] {
-        override def before(view: View[Comps]) =
+        override def before(world: World, view: View[Comps]) =
           view foreach (entityComponentsPair => {
             val (entity, Position(px, py) &: _) = entityComponentsPair
             entity.addComponent(Position(px * 2, py * 2))
           })
 
-        override def after(view: View[Comps]) =
+        override def after(world: World, view: View[Comps]) =
           view foreach (entityComponentsPair => {
             val (entity, Position(px, py) &: _) = entityComponentsPair
             entity.addComponent(Position(px + 1, py + 1))
