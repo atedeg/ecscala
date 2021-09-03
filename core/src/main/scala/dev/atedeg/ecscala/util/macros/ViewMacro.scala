@@ -35,7 +35,7 @@ object ViewMacro {
   private def getEntityComponents[L <: CList](
       taggedMaps: Seq[(ComponentTag[? <: Component], Map[Entity, ? <: Component])],
   )(entity: Entity)(using clt: CListTag[L]): L = {
-    // taggedComponents would otherwise be inferred as a Seq[(ComponentTag[? <: Component], Component)].
+    // The val taggedComponents would otherwise be inferred as a Seq[(ComponentTag[? <: Component], Component)].
     // This cast is necessary since ComponentTag cannot be made covariant (it would hinder the correct
     // compile time inference of ComponentTags' types).
     val taggedComponents = taggedMaps

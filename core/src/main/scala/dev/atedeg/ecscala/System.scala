@@ -10,23 +10,23 @@ import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
  * @tparam L
  *   a clist representing the Components available to the [[System]].
  */
-trait System[L <: CList] extends Function3[Entity, L, View[L], Deletable[L]] {
+trait System[L <: CList] extends ((Entity, L, View[L]) => Deletable[L]) {
 
   /**
    * This method is executed before each iteration of the [[System]].
    * @param world
-   *   the world.
+   *   the [[World]] in which the [[System]] is being executed.
    * @param view
-   *   a [[View]] with the same Components of the system.
+   *   a [[View]] with the Components specified by the [[System]] type.
    */
   def before(world: World, view: View[L]): Unit = {}
 
   /**
    * This method is executed after each iteration of the [[System]]
    * @param world
-   *   the world.
+   *   the [[World]] in which the [[System]] is being executed.
    * @param view
-   *   a [[View]] with the same Components of the system.
+   *   a [[View]] with the Components specified by the [[System]] type.
    */
   def after(world: World, view: View[L]): Unit = {}
 
