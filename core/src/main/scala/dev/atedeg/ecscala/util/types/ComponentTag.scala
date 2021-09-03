@@ -17,16 +17,16 @@ inline given [C]: ComponentTag[C] = ${ deriveComponentTagImpl[C] }
 
 private def deriveComponentTagImpl[C: Type](using quotes: Quotes): Expr[ComponentTag[C]] = {
   import quotes.reflect.*
-  val typeReprOfT = TypeRepr.of[C]
-  if typeReprOfT =:= TypeRepr.of[Component] then
+  val typeReprOfC = TypeRepr.of[C]
+  if typeReprOfC =:= TypeRepr.of[Component] then
     report.error("Can only derive ComponentTags for subtypes of Component, not for Component itself.")
-  else if typeReprOfT =:= TypeRepr.of[Nothing] then report.error("Cannot derive ComponentTag[Nothing]")
-  else if !(typeReprOfT <:< TypeRepr.of[Component]) then
-    report.error(s"${typeReprOfT.show} must be a subtype of Component")
+  else if typeReprOfC =:= TypeRepr.of[Nothing] then report.error("Cannot derive ComponentTag[Nothing]")
+  else if !(typeReprOfC <:< TypeRepr.of[Component]) then
+    report.error(s"${typeReprOfC.show} must be a subtype of Component")
 
   '{
     new ComponentTag[C] {
-      override def toString: String = ${ Expr(typeReprOfT.show) }
+      override def toString: String = ${ Expr(typeReprOfC.show) }
       override def hashCode: Int = this.toString.hashCode
       override def equals(obj: Any) = obj match {
         case that: ComponentTag[_] => that.toString == this.toString

@@ -26,8 +26,8 @@ class SystemBenchmark extends JmhSettings {
 
   @Setup
   def init: Unit = {
-    val system: System[Position &: Velocity &: CNil] = (e, cl, v) => {
-      val Position(x, y) &: Velocity(v1, v2) &: CNil = cl
+    val system: System[Position &: Velocity &: CNil] = (_, comps, _, _, _) => {
+      val Position(x, y) &: Velocity(v1, v2) &: CNil = comps
       Position(x + 1, y) &: Velocity(v1, v2)
     }
 
@@ -36,6 +36,6 @@ class SystemBenchmark extends JmhSettings {
 
   @Benchmark
   def systemIterationBenchmark: Unit = {
-    world.update()
+    world.update(10)
   }
 }
