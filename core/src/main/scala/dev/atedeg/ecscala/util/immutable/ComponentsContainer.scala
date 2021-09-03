@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.util.immutable
 
 import dev.atedeg.ecscala.{ Component, Entity }
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.ComponentTag
 
 /**
  * This trait represents a container of multiple [[scala.collection.immutable.Map]] [Entity, T], with T subtype of
@@ -10,43 +10,43 @@ import dev.atedeg.ecscala.util.types.TypeTag
 private[ecscala] trait ComponentsContainer {
 
   /**
-   * @tparam T
+   * @tparam C
    *   the return map's values' type.
    * @return
-   *   a collection of type [[scala.collection.immutable.Map]] [Entity, T].
+   *   a collection of type [[scala.collection.immutable.Map]].
    */
-  def apply[T <: Component: TypeTag]: Option[Map[Entity, T]]
+  def apply[C <: Component: ComponentTag]: Option[Map[Entity, C]]
 
   /**
    * @param entityComponentPair
    *   the (entity, component) pair to add to the container.
-   * @tparam T
+   * @tparam C
    *   the type of the [[Component]] to add.
    * @return
    *   a new [[ComponentsContainer]] with the added (entity, component) pair.
    */
-  def addComponent[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer
+  def addComponent[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): ComponentsContainer
 
   /**
    * An alias for [[addComponent]].
    */
-  def +[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer =
+  def +[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): ComponentsContainer =
     addComponent(entityComponentPair)
 
   /**
    * @param entityComponentPair
    *   the (entity, component) pair to remove from the container.
-   * @tparam T
+   * @tparam C
    *   the type of the [[Component]] to remove.
    * @return
    *   a new [[ComponentsContainer]] with the removed (entity, component) pair.
    */
-  def removeComponent[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer
+  def removeComponent[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): ComponentsContainer
 
   /**
    * An alias for [[removeComponent]].
    */
-  def -[T <: Component: TypeTag](entityComponentPair: (Entity, T)): ComponentsContainer =
+  def -[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): ComponentsContainer =
     removeComponent(entityComponentPair)
 
   /**
@@ -65,26 +65,29 @@ private[ecscala] trait ComponentsContainer {
 
 private[ecscala] object ComponentsContainer {
   def apply(): ComponentsContainer = new ComponentsContainerImpl
-  private def apply(map: Map[TypeTag[? <: Component], Map[Entity, ? <: Component]]) = new ComponentsContainerImpl(map)
+
+  private def apply(map: Map[ComponentTag[? <: Component], Map[Entity, ? <: Component]]) = new ComponentsContainerImpl(
+    map,
+  )
 
   private class ComponentsContainerImpl(
-      private val componentsMap: Map[TypeTag[? <: Component], Map[Entity, ? <: Component]] = Map(),
+      private val componentsMap: Map[ComponentTag[? <: Component], Map[Entity, ? <: Component]] = Map(),
   ) extends ComponentsContainer {
 
-    override def apply[T <: Component](using tt: TypeTag[T]) =
+    override def apply[C <: Component](using ct: ComponentTag[C]) =
       // This cast is needed to return a map with the appropriate type and not a generic "Component" type.
-      // It is always safe to perform such a cast since the TypeTag holds the type of the retrieved map's components.
-      componentsMap.get(tt) map (_.asInstanceOf[Map[Entity, T]])
+      // It is always safe to perform such a cast since the ComponentTag holds the type of the retrieved map's components.
+      componentsMap.get(ct) map (_.asInstanceOf[Map[Entity, C]])
 
-    override def addComponent[T <: Component](entityComponentPair: (Entity, T))(using tt: TypeTag[T]) = {
-      val newComponentMap = this.apply[T] map (_ + entityComponentPair) getOrElse (Map(entityComponentPair))
-      val newComponentsMap = componentsMap + (tt -> newComponentMap)
+    override def addComponent[C <: Component](entityComponentPair: (Entity, C))(using ct: ComponentTag[C]) = {
+      val newComponentMap = this.apply[C] map (_ + entityComponentPair) getOrElse (Map(entityComponentPair))
+      val newComponentsMap = componentsMap + (ct -> newComponentMap)
       ComponentsContainer(newComponentsMap)
     }
 
-    extension [T <: Component](map: Map[Entity, T]) {
+    extension [C <: Component](map: Map[Entity, C]) {
 
-      def -(entityComponentPair: (Entity, T)): Map[Entity, T] = {
+      def -(entityComponentPair: (Entity, C)): Map[Entity, C] = {
         val (entity, component) = entityComponentPair
         // The components are compared using the eq method because, when removing elements, two components are
         // considered to be equal only if they are the same object.
@@ -98,7 +101,7 @@ private[ecscala] object ComponentsContainer {
        *   an [[Option]] with the map with the removed pair if the map still has some elements; if the removed element
        *   was the last one and the map would be empty it returns a None.
        */
-      def -?(entityComponentPair: (Entity, T)): Option[Map[Entity, T]] =
+      def -?(entityComponentPair: (Entity, C)): Option[Map[Entity, C]] =
         Some(map - entityComponentPair) filter (!_.isEmpty)
 
       /**
@@ -108,21 +111,21 @@ private[ecscala] object ComponentsContainer {
        *   an [[Option]] with the map with the removed [[Entity]] if the map still has some elements; if the removed
        *   element was the last one and the map would be empty it returns a None.
        */
-      def -?(entity: Entity): Option[Map[Entity, T]] = Some(map - entity) filter (_.nonEmpty)
+      def -?(entity: Entity): Option[Map[Entity, C]] = Some(map - entity) filter (_.nonEmpty)
     }
 
-    override def removeComponent[T <: Component](entityComponentPair: (Entity, T))(using tt: TypeTag[T]) = {
+    override def removeComponent[C <: Component](entityComponentPair: (Entity, C))(using ct: ComponentTag[C]) = {
       val newComponentsMap =
-        this.apply[T] flatMap (_ -? entityComponentPair) match {
-          case Some(componentMap) => componentsMap + (tt -> componentMap)
-          case None => componentsMap - tt
+        this.apply[C] flatMap (_ -? entityComponentPair) match {
+          case Some(componentMap) => componentsMap + (ct -> componentMap)
+          case None => componentsMap - ct
         }
       ComponentsContainer(newComponentsMap)
     }
 
     override def removeEntity(entity: Entity) = {
-      val newComponentsMap: Map[TypeTag[? <: Component], Map[Entity, Component]] =
-        componentsMap flatMap { (tt, componentMap) => (componentMap -? entity) map (tt -> _) }
+      val newComponentsMap: Map[ComponentTag[? <: Component], Map[Entity, Component]] =
+        componentsMap flatMap { (ct, componentMap) => (componentMap -? entity) map (ct -> _) }
       ComponentsContainer(newComponentsMap)
     }
 

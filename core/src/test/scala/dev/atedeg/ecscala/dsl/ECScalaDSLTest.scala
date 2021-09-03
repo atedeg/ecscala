@@ -2,7 +2,7 @@ package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala.{ Component, Entity, World }
 import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Position, Velocity, WorldFixture }
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.ComponentTag
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given

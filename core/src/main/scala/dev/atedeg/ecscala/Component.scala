@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.ComponentTag
 
 /**
  * This trait represents an [[Entity]] 's feature.
@@ -14,11 +14,17 @@ trait Component {
   }
 }
 
+/**
+ * A special [[Component]] type that is used to represent a component removal inside a [[System]]
+ */
+sealed trait Deleted extends Component
+case object Deleted extends Deleted
+
 object Component {
 
-  extension [H <: Component: TypeTag, C <: Component: TypeTag](head: H)
+  extension [A <: Component: ComponentTag, B <: Component: ComponentTag](head: A)
     /**
      * Convert two [[Component]] in a [[CList]].
      */
-    def &:(otherComp: C): H &: C &: CNil = dev.atedeg.ecscala.&:(head, otherComp &: CNil)
+    def &:(otherComp: B): A &: B &: CNil = dev.atedeg.ecscala.&:(head, otherComp &: CNil)
 }

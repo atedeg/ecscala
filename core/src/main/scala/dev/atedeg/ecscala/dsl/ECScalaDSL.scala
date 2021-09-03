@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.ComponentTag
 import dev.atedeg.ecscala.{ Component, Entity, World }
 import dev.atedeg.ecscala.dsl.Words.*
 
@@ -30,7 +30,7 @@ private[dsl] case class ComponentWrapper() {
    * @return
    *   A [[ComponentWrapper]] that enables the components chaining.
    */
-  def and[T <: Component: TypeTag](rightComponent: T)(using entity: Entity): ComponentWrapper = {
+  def and[C <: Component: ComponentTag](rightComponent: C)(using entity: Entity): ComponentWrapper = {
     entity.addComponent(rightComponent)
     this
   }

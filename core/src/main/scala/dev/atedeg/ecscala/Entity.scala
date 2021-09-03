@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala
 
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.ComponentTag
 
 /**
  * This trait represents an entity of ECS whose state is defined by its components.
@@ -11,22 +11,32 @@ sealed trait Entity {
   /**
    * @param component
    *   the [[Component]] to add to the [[Entity]].
-   * @tparam T
+   * @tparam C
    *   the type of the [[Component]].
    * @return
    *   itself.
    */
-  def addComponent[T <: Component: TypeTag](component: T): Entity
+  def addComponent[C <: Component: ComponentTag](component: C): Entity
 
   /**
    * @param component
    *   the [[Component]] to remove from the [[Entity]].
-   * @tparam T
-   *   the type of the [[Component]].
+   * @tparam C
+   *   the type of the [[Component]] to be removed.
    * @return
    *   itself.
    */
-  def removeComponent[T <: Component: TypeTag](component: T): Entity
+  def removeComponent[C <: Component: ComponentTag]: Entity
+
+  /**
+   * @param component
+   *   the [[Component]] to remove from the [[Entity]].
+   * @tparam C
+   *   the type of the [[Component]] to be removed.
+   * @return
+   *   itself.
+   */
+  def removeComponent[C <: Component: ComponentTag](component: C): Entity
 }
 
 /**
@@ -39,15 +49,30 @@ object Entity {
 
   private case class EntityImpl(private val id: Id, private val world: World) extends Entity {
 
-    override def addComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
+    override def addComponent[C <: Component](component: C)(using ct: ComponentTag[C]): Entity = {
       component.setEntity(Some(this))
       world += (this -> component)
       this
     }
 
-    override def removeComponent[T <: Component](component: T)(using tt: TypeTag[T]): Entity = {
-      component.setEntity(None)
-      world -= (this -> component)
+    override def removeComponent[C <: Component](using ct: ComponentTag[C]): Entity = {
+      val componentToRemove = world.getComponents(using ct) flatMap (_.get(this))
+      componentToRemove match {
+        case Some(component) =>
+          component.setEntity(None)
+          world -= (this -> component)
+        case None => ()
+      }
+      this
+    }
+
+    override def removeComponent[C <: Component](component: C)(using ct: ComponentTag[C]): Entity = {
+      component.entity match {
+        case Some(entity) if entity == this =>
+          component.setEntity(None)
+          world -= (this -> component)
+        case _ => ()
+      }
       this
     }
 

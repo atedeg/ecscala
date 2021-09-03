@@ -3,46 +3,32 @@ package dev.atedeg.ecscala
 import scala.annotation.targetName
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
 import dev.atedeg.ecscala.util.macros.ViewMacro.createViewImpl
-import dev.atedeg.ecscala.util.types.TypeTag
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
 /**
  * A container for [[Entity]], Components and System.
  */
-// world could not be a trait since the inline method getView would be retained and not correctly
-// inlined when calling world.getView.
-// An alterative solution could be declare the getView as an abstract inline method in the trait;
-// however, the library user could not call such method on any val typed as the trait.
-// For more details on this problem refer to: https://docs.scala-lang.org/scala3/guides/macros/inline.html
-final class World() {
-  private var entities: Set[Entity] = Set()
-  private var componentsContainer = ComponentsContainer()
+sealed trait World {
 
   /**
    * @return
    *   the number of [[Entity]] in the [[World]].
    */
-  def entitiesCount: Int = entities.size
+  def entitiesCount: Int
 
   /**
    * Create a new [[Entity]] and add it to the [[World]].
    * @return
    *   the created [[Entity]].
    */
-  def createEntity(): Entity = {
-    val entity = Entity(this)
-    entities += entity
-    entity
-  }
+  def createEntity(): Entity
 
   /**
    * Remove a given [[Entity]] from the [[World]].
    * @param entity
    *   the [[Entity]] to remove.
    */
-  def removeEntity(entity: Entity): Unit = {
-    entities -= entity
-    componentsContainer -= entity
-  }
+  def removeEntity(entity: Entity): Unit
 
   /**
    * A [[View]] on this [[World]] that allows to iterate over its entities with components of the type specified in L.
@@ -51,32 +37,77 @@ final class World() {
    * @return
    *   the [[View]].
    */
-  inline def getView[L <: CList]: View[L] = View[L](this)
+  def getView[L <: CList](using clt: CListTag[L]): View[L]
 
   /**
-   * A [[View]] on this [[World]] that allows to iterate over its entities with a [[Component]] of type C.
-   * @tparam C
-   *   the type of the [[Component]] that entities in this [[World]] must have.
-   * @return
-   *   the [[View]].
+   * Add a [[System]] to the [[World]].
+   * @param system
+   *   the system to add.
+   * @tparam L
+   *   the [[CList]] of system components.
    */
-  @targetName("getViewFromSingleComponentType")
-  inline def getView[C <: Component]: View[C &: CNil] = View[C](this)
+  def addSystem[L <: CList](system: System[L])(using ct: CListTag[L]): Unit
 
-  private[ecscala] def getComponents[T <: Component: TypeTag] =
-    componentsContainer[T]
+  def update(): Unit
+
+  private[ecscala] def getComponents[C <: Component: ComponentTag]: Option[Map[Entity, C]]
 
   @targetName("addComponent")
-  private[ecscala] def +=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World = {
-    componentsContainer += entityComponentPair
-    this
-  }
+  private[ecscala] def +=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World
 
   @targetName("removeComponent")
-  private[ecscala] def -=[T <: Component: TypeTag](entityComponentPair: (Entity, T)): World = {
-    componentsContainer -= entityComponentPair
-    this
-  }
+  private[ecscala] def -=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World
+}
 
-  override def toString: String = componentsContainer.toString
+/**
+ * A factory for the [[World]].
+ */
+object World {
+  def apply(): World = new WorldImpl()
+
+  private class WorldImpl() extends World {
+    private var entities: Set[Entity] = Set()
+    private var componentsContainer = ComponentsContainer()
+    private var systems: List[(CListTag[?], System[? <: CList])] = List()
+
+    override def entitiesCount: Int = entities.size
+
+    override def createEntity(): Entity = {
+      val entity = Entity(this)
+      entities += entity
+      entity
+    }
+
+    override def removeEntity(entity: Entity): Unit = {
+      entities -= entity
+      componentsContainer -= entity
+    }
+
+    override def getView[L <: CList](using clt: CListTag[L]): View[L] = View(this)(using clt)
+
+    override def addSystem[L <: CList](system: System[L])(using ct: CListTag[L]): Unit =
+      systems = systems :+ (ct -> system)
+
+    override def update(): Unit = systems foreach (taggedSystem => {
+      val (ct, system) = taggedSystem
+      system.update(this)(using ct)
+    })
+
+    override def toString: String = componentsContainer.toString
+
+    private[ecscala] override def getComponents[C <: Component: ComponentTag]: Option[Map[Entity, C]] =
+      componentsContainer[C]
+
+    @targetName("addComponent")
+    private[ecscala] override def +=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World = {
+      componentsContainer += entityComponentPair
+      this
+    }
+
+    @targetName("removeComponent")
+    private[ecscala] override def -=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World = {
+      componentsContainer -= entityComponentPair
+      this
+    }
+  }
 }
