@@ -42,10 +42,10 @@ inThisBuild(
     githubWorkflowTargetTags ++= Seq("v*"),
     githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v"))),
     githubWorkflowBuild := Seq(
-      WorkflowStep.Sbt(List("core / scalafmtCheck"), name = Some("Lint check with scalafmt")),
-      WorkflowStep.Sbt(List("core / test"), name = Some("Tests")),
+      WorkflowStep.Sbt(List("scalafmtCheck"), name = Some("Lint check with scalafmt")),
+      WorkflowStep.Sbt(List("coreJVM / test"), name = Some("Tests")),
       WorkflowStep.Sbt(
-        List("core / jacoco"),
+        List("coreJVM / jacoco"),
         name = Some("Generate JaCoCo report"),
       ),
       WorkflowStep.Use(
@@ -55,7 +55,7 @@ inThisBuild(
         name = Some("Publish coverage to codecov"),
         params = Map(
           "token" -> "${{ secrets.CODECOV_TOKEN }}",
-          "directory" -> s"core/target/scala-$scala3Version/jacoco/report",
+          "directory" -> s"core/.jvm/target/scala-$scala3Version/jacoco/report",
           "fail_ci_if_error" -> "true",
         ),
       ),
@@ -103,7 +103,7 @@ inThisBuild(
           "repo_token" -> "${{ secrets.GITHUB_TOKEN }}",
           "prerelease" -> "${{ env.IS_SNAPSHOT }}",
           "title" -> """Release - Version ${{ env.VERSION }}""",
-          "files" -> s"target/scala-$scala3Version/*.jar\ntarget/scala-$scala3Version/*.pom\ndoc/ecscala-report.pdf",
+          "files" -> s"core/.jvm/target/scala-$scala3Version/*.jar\ncore/.jvm/target/scala-$scala3Version/*.pom\ncore/.js/target/scala-$scala3Version/*.jar\ncore/.js/target/scala-$scala3Version/*.pom\ndoc/ecscala-report.pdf",
         ),
       ),
     ),
@@ -112,19 +112,20 @@ inThisBuild(
 
 lazy val root = project
   .in(file("."))
-  .aggregate(core, benchmarks)
+  .aggregate(core.js, core.jvm, benchmarks)
   .settings(
     name := "ecscala",
     publish / skip := true,
   )
 
-lazy val core = project
+lazy val core = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Pure)
   .in(file("core"))
   .settings(
     name := "ecscala",
     libraryDependencies := Seq(
-      "org.scalactic" %% "scalactic" % "3.2.9",
-      "org.scalatest" %% "scalatest" % "3.2.9" % "test",
+      "org.scalactic" %%% "scalactic" % "3.2.9",
+      "org.scalatest" %%% "scalatest" % "3.2.9" % "test",
     ),
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",
@@ -141,7 +142,7 @@ lazy val core = project
 
 lazy val benchmarks = project
   .in(file("benchmarks"))
-  .dependsOn(core)
+  .dependsOn(core.js, core.jvm)
   .enablePlugins(JmhPlugin)
   .settings(
     publish / skip := true,
