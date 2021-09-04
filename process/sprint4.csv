@@ -3,8 +3,8 @@ Product Backlog Item,Sprint Task,URL,Volunteer,Initial estimate of effort,1,2,3,
 As a framework user I want to define and use Systems,Add systems to the world,,"Giacomo Cavalieri
 Nicolas Farabegoli
 Nicolò di Domenico
-Linda Vitali",20,,,,,,,
+Linda Vitali",20,7,7,5,1,1,0,0
 ,Define a way to create systems,,"Giacomo Cavalieri
-Nicolas Farabegoli",3,,,,,,,
+Nicolas Farabegoli",3,0,0,0,0,0,0,0
 As a framework user I want to update the World's state,,,Giacomo Cavalieri Nicolas Farabegoli,5,,,,,,,
 As a framework user I would higly appreciate a handy DSL to perform these operations,Design DSL,,Linda Vitali,15,,,,,,,
