@@ -48,9 +48,14 @@ private[dsl] case class ComponentWrapper() {
 
 object ViewWrapper {
 
-  class From[L <: CList](using clt: CListTag[L]) {
+  class ViewUtility[L <: CList](using clt: CListTag[L]) {
     def from(world: World): View[L] = world.getView(using clt)
   }
+  class EntityUtility[T](entities: Seq[Entity]) {
+    def from(world: World): Unit = entities foreach { world.removeEntity(_) }
+  }
 
-  def getView[L <: CList](using clt: CListTag[L]): From[? <: CList] = From(using clt)
+  def getView[L <: CList](using clt: CListTag[L]): ViewUtility[? <: CList] = ViewUtility(using clt)
+
+  def remove[T](entity: Entity*): EntityUtility[T] = EntityUtility(entity)
 }

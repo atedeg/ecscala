@@ -46,7 +46,12 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
   "The following syntax: world hasNoMore myEntity" should {
     "work the same way ad the world.removeEntity() method" in new WorldFixture {
       val entity1 = world hasAn entity
-      world hasNoMore entity1
+      val entity2 = world hasAn entity
+
+//      world hasNoMore entity1
+      import dev.atedeg.ecscala.dsl.ViewWrapper.*
+
+      remove (entity1, entity2) from world
 
       world.entitiesCount shouldBe 0
     }
