@@ -2,7 +2,6 @@ package dev.atedeg.ecscala
 
 import scala.annotation.targetName
 import dev.atedeg.ecscala.util.immutable.ComponentsContainer
-import dev.atedeg.ecscala.util.macros.ViewMacro.createViewImpl
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
 /**
