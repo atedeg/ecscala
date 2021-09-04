@@ -66,6 +66,13 @@ trait ExtensionMethodsDSL {
      */
     def hasAn(entityWord: EntityWord): Entity = world.createEntity()
 
+    /**
+     * This method enables the following syntax:
+     *
+     * {{{
+     * world hasA system[Component &: CNil]()
+     * }}}
+     */
     def hasA(init: World ?=> Unit): Unit = {
       given w: World = world
       init

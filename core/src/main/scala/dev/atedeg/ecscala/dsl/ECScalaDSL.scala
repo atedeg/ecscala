@@ -9,11 +9,16 @@ import dev.atedeg.ecscala.dsl.Words.*
  * english-like language.
  */
 trait ECScalaDSL extends ExtensionMethodsDSL {
+  /**
+   * Keyword that enables the use of the word "entity" in the dsl.
+   */
   def entity: EntityWord = EntityWord()
-  def system[L <: CList](system: System[L])(using ct: CListTag[L])(using world: World): Unit = {
-    world.addSystem(system)(using ct)
 
-  }
+  /**
+   * 
+   * Keyword that enables the use of the word "system" in the dsl.
+   */
+  def system[L <: CList](system: System[L])(using ct: CListTag[L])(using world: World): Unit = world.addSystem(system)(using ct)
 }
 
 private[dsl] case class ComponentWrapper() {
