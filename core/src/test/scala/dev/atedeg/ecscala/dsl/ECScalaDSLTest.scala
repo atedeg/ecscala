@@ -44,13 +44,11 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
   }
 
   "The following syntax: world hasNoMore myEntity" should {
-    "work the same way ad the world.removeEntity() method" in new WorldFixture{
+    "work the same way ad the world.removeEntity() method" in new WorldFixture {
       val entity1 = world hasAn entity
-      
       world hasNoMore entity1
 
       world.entitiesCount shouldBe 0
-
     }
   }
 
@@ -74,6 +72,19 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
         (entity1, Position(3, 3) &: CNil),
         (entity3, Position(3, 3) &: CNil),
         (entity4, Position(3, 3) &: CNil),
+      )
+    }
+  }
+
+  "The following syntax: getView[Position &: CNil] from world" should {
+    "work the same way as the world.getView[Position &: CNil] method" in new ViewFixture with WorldFixture {
+      import dev.atedeg.ecscala.dsl.ViewWrapper.*
+      val view = getView[Position &: Velocity &: CNil] from world
+
+      view should contain theSameElementsAs List(
+        (entity1, Position(1, 1) &: Velocity(1, 1) &: CNil),
+        (entity3, Position(1, 1) &: Velocity(1, 1) &: CNil),
+        (entity4, Position(1, 1) &: Velocity(1, 1) &: CNil),
       )
     }
   }

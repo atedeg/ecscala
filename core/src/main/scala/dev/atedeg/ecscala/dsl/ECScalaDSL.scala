@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
-import dev.atedeg.ecscala.{ CList, Component, Entity, System, World }
+import dev.atedeg.ecscala.{ CList, Component, Entity, System, View, World }
 import dev.atedeg.ecscala.dsl.Words.*
 
 /**
@@ -9,16 +9,17 @@ import dev.atedeg.ecscala.dsl.Words.*
  * english-like language.
  */
 trait ECScalaDSL extends ExtensionMethodsDSL {
+
   /**
    * Keyword that enables the use of the word "entity" in the dsl.
    */
   def entity: EntityWord = EntityWord()
 
   /**
-   * 
    * Keyword that enables the use of the word "system" in the dsl.
    */
-  def system[L <: CList](system: System[L])(using ct: CListTag[L])(using world: World): Unit = world.addSystem(system)(using ct)
+  def system[L <: CList](system: System[L])(using ct: CListTag[L])(using world: World): Unit =
+    world.addSystem(system)(using ct)
 }
 
 private[dsl] case class ComponentWrapper() {
@@ -43,4 +44,13 @@ private[dsl] case class ComponentWrapper() {
     entity.addComponent(rightComponent)
     this
   }
+}
+
+object ViewWrapper {
+
+  class From[L <: CList](using clt: CListTag[L]) {
+    def from(world: World): View[L] = world.getView(using clt)
+  }
+
+  def getView[L <: CList](using clt: CListTag[L]): From[? <: CList] = From(using clt)
 }
