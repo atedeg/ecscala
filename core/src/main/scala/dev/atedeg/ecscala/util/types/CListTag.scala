@@ -3,8 +3,6 @@ package dev.atedeg.ecscala.util.types
 import dev.atedeg.ecscala.{ &:, CList, CNil, Component }
 import dev.atedeg.ecscala.util.types
 
-import scala.compiletime.erasedValue
-import scala.annotation.tailrec
 import scala.quoted.{ Expr, Quotes, Type }
 
 sealed trait CListTag[L <: CList] {
@@ -38,6 +36,7 @@ private def deriveCListTagImpl[L <: CList: Type](using quotes: Quotes): Expr[CLi
 }
 
 inline private def getTags[L <: CList]: Seq[ComponentTag[? <: Component]] = {
+  import scala.compiletime.erasedValue
   inline erasedValue[L] match {
     case _: (head &: tail) => summon[ComponentTag[head]] +: getTags[tail]
     case _ => Seq()
