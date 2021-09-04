@@ -30,7 +30,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
-  "The following syntax: myEntity - Component " should {
+  "The following syntax: myEntity - Component" should {
     "work the same way as the entity.removeComponent() method" in new WorldFixture with ComponentsFixture {
       val position = Position(1, 2)
       val entity1 = world hasAn entity
@@ -40,6 +40,17 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
       entity1 - position
       world.getComponents[Position] shouldBe empty
+    }
+  }
+
+  "The following syntax: world hasNoMore myEntity" should {
+    "work the same way ad the world.removeEntity() method" in new WorldFixture{
+      val entity1 = world hasAn entity
+      
+      world hasNoMore entity1
+
+      world.entitiesCount shouldBe 0
+
     }
   }
 

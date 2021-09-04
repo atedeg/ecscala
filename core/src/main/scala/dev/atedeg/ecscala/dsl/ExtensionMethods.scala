@@ -70,6 +70,15 @@ trait ExtensionMethodsDSL {
      * This method enables the following syntax:
      *
      * {{{
+     * world hasNoMore myEntity
+     * }}}
+     */
+    def hasNoMore(entity: Entity): Unit = world.removeEntity(entity)
+
+    /**
+     * This method enables the following syntax:
+     *
+     * {{{
      * world hasA system[Component &: CNil]()
      * }}}
      */
