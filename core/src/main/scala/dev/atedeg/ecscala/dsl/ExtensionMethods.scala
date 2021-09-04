@@ -1,8 +1,10 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.util.types.ComponentTag
-import dev.atedeg.ecscala.{ Component, Entity, World }
+import dev.atedeg.ecscala.util.types.{CListTag, ComponentTag}
+import dev.atedeg.ecscala.{CList, Component, Entity, System, World}
 import dev.atedeg.ecscala.dsl.Words.*
+
+import scala.annotation.showAsInfix
 
 trait ExtensionMethodsDSL {
 
@@ -63,6 +65,11 @@ trait ExtensionMethodsDSL {
      * }}}
      */
     def hasAn(entityWord: EntityWord): Entity = world.createEntity()
+
+    def hasA(init: World ?=> Unit): Unit = {
+      given w: World = world
+      init
+    }
   }
 
   extension [A <: Component: ComponentTag](component: A) {

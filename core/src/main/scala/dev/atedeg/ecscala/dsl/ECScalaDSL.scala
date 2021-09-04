@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.util.types.ComponentTag
-import dev.atedeg.ecscala.{ Component, Entity, World }
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
+import dev.atedeg.ecscala.{ CList, Component, Entity, System, World }
 import dev.atedeg.ecscala.dsl.Words.*
 
 /**
@@ -10,6 +10,10 @@ import dev.atedeg.ecscala.dsl.Words.*
  */
 trait ECScalaDSL extends ExtensionMethodsDSL {
   def entity: EntityWord = EntityWord()
+  def system[L <: CList](system: System[L])(using ct: CListTag[L])(using world: World): Unit = {
+    world.addSystem(system)(using ct)
+
+  }
 }
 
 private[dsl] case class ComponentWrapper() {

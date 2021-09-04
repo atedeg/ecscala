@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.{ Component, Entity, World }
-import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Position, Velocity, WorldFixture }
+import dev.atedeg.ecscala.{&:, CNil, Component, Entity, World, fixtures}
+import dev.atedeg.ecscala.fixtures.{ComponentsFixture, Gravity, Position, Velocity, ViewFixture, WorldFixture}
 import dev.atedeg.ecscala.util.types.ComponentTag
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -19,7 +19,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
       val world2 = World()
       val entity3 = world2 hasAn entity withComponents {
-        Position(1, 2) and Velocity(3, 4)
+        Position(1, 2).and(Velocity(3, 4))
       }
 
       world.getComponents[Position] should contain(Map(entity1 -> Position(1, 2)))
@@ -38,6 +38,27 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
       entity1 - position
       world.getComponents[Position] shouldBe empty
+    }
+    "work the same way as the world.getView() method" in new ViewFixture {
+      world hasA system[Position &: CNil] { (_, cl, _) => {
+          val Position(px, py) &: CNil = cl
+          Position(px * 2, py * 2) &: CNil
+        }
+      }
+      
+      world hasA system[Position &: CNil]((_, cl, _) => {
+        val Position(x, y) &: CNil = cl
+        Position(x + 1, y + 1) &: CNil
+      })
+
+      world.update()
+
+      world.getView[Position &: CNil] should contain theSameElementsAs List(
+        (entity1, Position(3, 3) &: CNil),
+        (entity3, Position(3, 3) &: CNil),
+        (entity4, Position(3, 3) &: CNil),
+      )
+
     }
   }
 }
