@@ -8,7 +8,7 @@ import dev.atedeg.ecscala.dsl.Words.*
  * This trait provides a domain specific language (DSL) for expressing the Ecscala framework operation using an
  * english-like language.
  */
-trait ECScalaDSL extends ExtensionMethodsDSL {
+trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
 
   /**
    * Keyword that enables the use of the word "entity" in the dsl.
@@ -20,6 +20,21 @@ trait ECScalaDSL extends ExtensionMethodsDSL {
    */
   def system[L <: CList](system: System[L])(using ct: CListTag[L])(using world: World): Unit =
     world.addSystem(system)(using ct)
+
+  /**
+   * Keyword that enables the use of the word "getView" in the dsl.
+   */
+  def getView[L <: CList](using clt: CListTag[L]) = ViewFromWorld(using clt)
+
+  /**
+   * Keyword that enables the use of the word "remove" in the dsl.
+   */
+  def remove(entities: Entity*) = FromWorld(entities)
+
+  /**
+   * Keyword that enables the use of the word "remove" in the dsl.
+   */
+  def remove[C <: Component](component: C)(using ct: ComponentTag[C]) = FromEntity(component)
 }
 
 private[dsl] case class ComponentWrapper() {
@@ -46,16 +61,17 @@ private[dsl] case class ComponentWrapper() {
   }
 }
 
-object ViewWrapper {
+private[dsl] trait FromSyntax {
 
-  class ViewUtility[L <: CList](using clt: CListTag[L]) {
-    def from(world: World): View[L] = world.getView(using clt)
-  }
-  class EntityUtility[T](entities: Seq[Entity]) {
+  class FromWorld(entities: Seq[Entity]) {
     def from(world: World): Unit = entities foreach { world.removeEntity(_) }
   }
 
-  def getView[L <: CList](using clt: CListTag[L]): ViewUtility[? <: CList] = ViewUtility(using clt)
+  class FromEntity[C <: Component: ComponentTag](component: C) {
+    def from(entity: Entity): Unit = entity.removeComponent(component)
+  }
 
-  def remove[T](entity: Entity*): EntityUtility[T] = EntityUtility(entity)
+  class ViewFromWorld[L <: CList](using clt: CListTag[L]) {
+    def from(world: World): View[L] = world.getView(using clt)
+  }
 }
