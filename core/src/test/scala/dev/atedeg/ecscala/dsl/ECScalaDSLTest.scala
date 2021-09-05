@@ -90,18 +90,18 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "The following syntax: world hasA system[Component &: CNil] { () => {} }" should {
     "work the same way as the world.addSystem() method" in new ViewFixture {
-      world hasA system[Position &: CNil] { (_, cl, _) =>
+      world hasA system[Position &: CNil] { (_, cl, _, _, _) =>
         {
           val Position(px, py) &: CNil = cl
           Position(px * 2, py * 2) &: CNil
         }
       }
-      world hasA system[Position &: CNil]((_, cl, _) => {
+      world hasA system[Position &: CNil]((_, cl, _, _, _) => {
         val Position(x, y) &: CNil = cl
         Position(x + 1, y + 1) &: CNil
       })
 
-      world.update()
+      world.update(10)
 
       world.getView[Position &: CNil] should contain theSameElementsAs List(
         (entity1, Position(3, 3) &: CNil),
