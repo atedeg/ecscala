@@ -112,14 +112,38 @@ private[dsl] case class ComponentWrapper() {
 private[dsl] trait FromSyntax {
 
   class FromWorld(entities: Seq[Entity]) {
+
+    /**
+     * This method enables the following syntax:
+     * 
+     * {{{
+     *   remove (entity1) from world
+     * }}}
+     */
     def from(world: World): Unit = entities foreach { world.removeEntity(_) }
   }
 
   class FromEntity[C <: Component: ComponentTag](component: C) {
+
+    /**
+     * This method enables the following syntax:
+     * 
+     * {{{
+     *   remove (myComponent) from entity1
+     * }}}
+     */
     def from(entity: Entity): Unit = entity.removeComponent(component)
   }
 
   class ViewFromWorld[L <: CList](using clt: CListTag[L]) {
+
+    /**
+     * This method enables the following syntax:
+     * 
+     * {{{
+     *   getView[MyComponent1() &: MyComponent2() &: CNil] from world
+     * }}}
+     */
     def from(world: World): View[L] = world.getView(using clt)
   }
 }
