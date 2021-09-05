@@ -6,7 +6,55 @@ import dev.atedeg.ecscala.dsl.Words.*
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the Ecscala framework operation using an
- * english-like language.
+ * english-like language. Here's the things you can do:
+ *
+ * '''Create an entity in a world:'''
+ * {{{
+ * val world = World()
+ * val entity1 = world has an entity
+ * }}}
+ *
+ * '''Remove entities from a world:'''
+ * {{{
+ *   *  world - entity1
+ *   *  remove (entity1) from world
+ *   *  remove (entity1, entity2, entity3) from world
+ * }}}
+ *
+ * '''Create an entity in a world with a component:'''
+ * {{{
+ * val entity1 = world hasAn entity withComponent MyComponent()
+ * }}}
+ *
+ * '''Create an entity in a world with multiple components:'''
+ * {{{
+ * val entity1 = world hasAn entity withComponents {
+ *       MyComponent1() and MyComponent2() and MyComponent3()
+ * }
+ * }}}
+ *
+ * '''Add components to an entity:'''
+ * {{{
+ *   *  entity1 + MyComponent()
+ *   *  entity1 withComponent MyComponent()
+ *   *  entity1 withComponents { MyComponent1() and MyComponent2() }
+ * }}}
+ *
+ * '''Remove a component from an entity:'''
+ * {{{
+ *   *  remove MyComponent() from entity1
+ *   *  entity1 - MyComponent()
+ * }}}
+ *
+ * '''Add a system to a world:'''
+ * {{{
+ * world hasA system[MyComponent() &: CNil] { (_,_,_) => {}}
+ * }}}
+ *
+ * '''Get a view from a world:'''
+ * {{{
+ *   val view = getView[MyComponent1() &: MyComponent2() &: CNil] from world
+ * }}}
  */
 trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
 
