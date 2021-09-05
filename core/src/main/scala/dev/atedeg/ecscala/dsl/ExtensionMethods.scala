@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.util.types.{CListTag, ComponentTag}
-import dev.atedeg.ecscala.{CList, Component, Entity, System, World}
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
+import dev.atedeg.ecscala.{ CList, Component, Entity, System, World }
 import dev.atedeg.ecscala.dsl.Words.*
 
 import scala.annotation.showAsInfix
@@ -61,19 +61,19 @@ trait ExtensionMethodsDSL {
      * This method enables the following syntax:
      *
      * {{{
+     * world - entity
+     * }}}
+     */
+    def -(entity: Entity) = world.removeEntity(entity)
+
+    /**
+     * This method enables the following syntax:
+     *
+     * {{{
      * world hasAn entity
      * }}}
      */
     def hasAn(entityWord: EntityWord): Entity = world.createEntity()
-
-//    /**
-//     * This method enables the following syntax:
-//     *
-//     * {{{
-//     * world hasNoMore myEntity
-//     * }}}
-//     */
-//    def hasNoMore(entity: Entity): Unit = world.removeEntity(entity)
 
     /**
      * This method enables the following syntax:
