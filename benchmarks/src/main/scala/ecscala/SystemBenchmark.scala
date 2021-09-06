@@ -3,7 +3,6 @@ package ecscala
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.{ &:, CNil, System, World }
 import ecscala.utils.{ JmhSettings, Position, Velocity }
-import org.graalvm.compiler.word.Word
 import org.openjdk.jmh.annotations.{
   Benchmark,
   BenchmarkMode,
