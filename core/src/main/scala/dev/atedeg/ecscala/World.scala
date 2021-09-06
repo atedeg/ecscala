@@ -60,8 +60,33 @@ sealed trait World {
    * @tparam L
    *   the [[CList]] of system components.
    */
-  def addSystem[L <: CList](system: System[L])(using ct: CListTag[L]): Unit
+  def addSystem[L <: CList](system: System[L])(using clt: CListTag[L]): Unit
 
+  /**
+   * Add an anonymous [[System]] to the [[World]].
+   * @param system
+   *   a function that will be run for each matching entity.
+   * @tparam L
+   *   the [[CList]] of system components.
+   */
+  def addSystem[L <: CList](system: (Entity, L, DeltaTime) => Deletable[L])(using clt: CListTag[L]): Unit
+
+  /**
+   * Add an anonymous [[System]] to the [[World]].
+   * @param system
+   *   a function that will be run for each matching entity.
+   * @tparam L
+   *   the [[CList]] of system components.
+   */
+  def addSystem[L <: CList](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L])(using
+      clt: CListTag[L],
+  ): Unit
+
+  /**
+   * Update the world.
+   * @param deltaTime
+   *   the time between two updates.
+   */
   def update(deltaTime: DeltaTime): Unit
 
   private[ecscala] def getComponents[C <: Component: ComponentTag]: Option[Map[Entity, C]]
@@ -104,12 +129,19 @@ object World {
         cltExcl: CListTag[LExcluded],
     ): ExcludingView[LIncluded, LExcluded] = View(this)(using cltIncl, cltExcl)
 
-    override def addSystem[L <: CList](system: System[L])(using ct: CListTag[L]): Unit =
-      systems = systems :+ (ct -> system)
+    override def addSystem[L <: CList](system: System[L])(using clt: CListTag[L]): Unit =
+      systems = systems :+ (clt -> system)
+
+    override def addSystem[L <: CList](system: (Entity, L, DeltaTime) => Deletable[L])(using clt: CListTag[L]): Unit =
+      addSystem(convertFunctionToSystem(system))(using clt)
+
+    override def addSystem[L <: CList](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L])(using
+        clt: CListTag[L],
+    ): Unit = addSystem(convertFunctionToSystem(system))(using clt)
 
     override def update(deltaTime: DeltaTime): Unit = systems foreach (taggedSystem => {
       val (ct, system) = taggedSystem
-      system.update(this, deltaTime)(using ct)
+      system(this, deltaTime)(using ct)
     })
 
     override def toString: String = componentsContainer.toString
@@ -127,6 +159,26 @@ object World {
     private[ecscala] override def -=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World = {
       componentsContainer -= entityComponentPair
       this
+    }
+
+    private def convertFunctionToSystem[L <: CList](system: (Entity, L, DeltaTime) => Deletable[L]): System[L] =
+      new System[L] {
+
+        override def update(
+            entity: Entity,
+            components: L,
+        )(deltaTime: DeltaTime, world: World, view: View[L]): Deletable[L] = system(entity, components, deltaTime)
+      }
+
+    private def convertFunctionToSystem[L <: CList](
+        system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L],
+    ): System[L] = new System[L] {
+
+      override def update(
+          entity: Entity,
+          components: L,
+      )(deltaTime: DeltaTime, world: World, view: View[L]): Deletable[L] =
+        system(entity, components, deltaTime, world, view)
     }
   }
 }
