@@ -12,11 +12,13 @@ class ViewTest extends AnyWordSpec with Matchers {
       world.getView[Mass &: CNil] should contain theSameElementsAs List(
         (entity2, Mass(1) &: CNil),
         (entity3, Mass(1) &: CNil),
+        (entity5, Mass(1) &: CNil),
       )
       world.getView[Position &: CNil] should contain theSameElementsAs List(
         (entity1, Position(1, 1) &: CNil),
         (entity3, Position(1, 1) &: CNil),
         (entity4, Position(1, 1) &: CNil),
+        (entity5, Position(1, 1) &: CNil),
       )
       world.getView[Velocity &: CNil] should contain theSameElementsAs List(
         (entity1, Velocity(1, 1) &: CNil),
@@ -28,6 +30,7 @@ class ViewTest extends AnyWordSpec with Matchers {
       )
       world.getView[Position &: Mass &: CNil] should contain theSameElementsAs List(
         (entity3, Position(1, 1) &: Mass(1) &: CNil),
+        (entity5, Position(1, 1) &: Mass(1) &: CNil),
       )
       world.getView[Position &: Velocity &: CNil] should contain theSameElementsAs List(
         (entity1, Position(1, 1) &: Velocity(1, 1) &: CNil),
@@ -47,6 +50,19 @@ class ViewTest extends AnyWordSpec with Matchers {
       val view = world.getView[Velocity &: Mass &: CNil]
       view foreach (_.head.addComponent(Mass(11)))
       view should contain theSameElementsAs List((entity3, Velocity(1, 1) &: Mass(11)))
+    }
+  }
+
+  "An excluding view" should {
+    "iterate over the correct entities" in new ViewFixture {
+      world.getView[Position &: Velocity &: CNil, Mass &: CNil] should contain theSameElementsAs List(
+        (entity1, Position(1, 1) &: Velocity(1, 1) &: CNil),
+        (entity4, Position(1, 1) &: Velocity(1, 1) &: CNil),
+      )
+      world.getView[Mass &: CNil, Position &: Velocity &: CNil] should contain theSameElementsAs List(
+        (entity2, Mass(1) &: CNil),
+      )
+      world.getView[Velocity &: CNil, Position &: CNil] shouldBe empty
     }
   }
 }

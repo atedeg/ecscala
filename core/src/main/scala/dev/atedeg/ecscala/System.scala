@@ -10,7 +10,7 @@ type DeltaTime = Float
 /**
  * Represent a way to iterate over specific components (given by the type parameter L) and manupulate them.
  * @tparam L
- *   a clist representing the Components available to the [[System]].
+ *   a CList representing the Components available to the [[System]].
  */
 trait System[L <: CList] extends ((Entity, L, DeltaTime, World, View[L]) => Deletable[L]) {
 

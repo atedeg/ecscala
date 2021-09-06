@@ -40,6 +40,7 @@ class SystemTest extends AnyWordSpec with Matchers {
           (entity2, Mass(1) &: CNil),
           (entity3, Mass(10) &: CNil),
           (entity4, Mass(10) &: CNil),
+          (entity5, Mass(1) &: CNil),
         )
       }
       "add entities to its world" in new ViewFixture {
@@ -48,7 +49,7 @@ class SystemTest extends AnyWordSpec with Matchers {
           comps
         })
         world.update(10)
-        world.entitiesCount shouldBe 7
+        world.entitiesCount shouldBe 9
       }
       "remove entities from its world" in new ViewFixture {
         world.addSystem[Position &: CNil]((entity, comps, _, w, _) => {
