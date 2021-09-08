@@ -8,7 +8,8 @@ import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 type DeltaTime = Float
 
 /**
- * Represent a way to iterate over entities specific components (given by the type parameter L) and manupulate them.
+ * Represent a way to iterate over entities with specific components (given by the type parameter L) and manupulate
+ * them.
  * @tparam L
  *   a [[CList]] representing the Components available to the [[System]].
  */
@@ -30,6 +31,8 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
 
   /**
    * This method is executed before each iteration of the [[System]].
+   * @param deltaTime
+   *   the delta time used to update
    * @param world
    *   the [[World]] in which the [[System]] is being executed.
    * @param view
@@ -39,6 +42,8 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
 
   /**
    * This method is executed after each iteration of the [[System]]
+   * @param deltaTime
+   *   the delta time used to update
    * @param world
    *   the [[World]] in which the [[System]] is being executed.
    * @param view
@@ -90,7 +95,7 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
  */
 trait ExcludingSystem[LIncluded <: CList, LExcluded <: CList](using
     private val cltIncl: CListTag[LIncluded],
-    cltExcl: CListTag[LExcluded],
+    private val cltExcl: CListTag[LExcluded],
 ) extends System[LIncluded] {
   override protected def getView(world: World): View[LIncluded] = world.getView(using cltIncl, cltExcl)
 }

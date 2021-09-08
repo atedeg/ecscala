@@ -36,11 +36,11 @@ sealed trait World {
    * @return
    *   the [[View]].
    */
-  def getView[L <: CList](using clt: CListTag[L]): View[L]
+  def getView[L <: CList: CListTag]: View[L]
 
   /**
    * A [[View]] on this [[World]] that allows to iterate over its entities with components of the type specified in
-   * LIncluded, that do not have any of the components listed in LEXcluded.
+   * LIncluded, that do not have any of the components listed in LExcluded.
    * @tparam LIncluded
    *   [[CList]] with the types of the components that must be present in all entities.
    * @tparam LExcluded
@@ -48,10 +48,7 @@ sealed trait World {
    * @return
    *   the [[View]].
    */
-  def getView[LIncluded <: CList, LExcluded <: CList](using
-      cltIncl: CListTag[LIncluded],
-      cltExcl: CListTag[LExcluded],
-  ): ExcludingView[LIncluded, LExcluded]
+  def getView[LIncluded <: CList: CListTag, LExcluded <: CList: CListTag]: ExcludingView[LIncluded, LExcluded]
 
   /**
    * Add a [[System]] to the [[World]].
@@ -60,7 +57,7 @@ sealed trait World {
    * @tparam L
    *   the [[CList]] of system components.
    */
-  def addSystem[L <: CList](system: System[L])(using clt: CListTag[L]): Unit
+  def addSystem[L <: CList: CListTag](system: System[L]): Unit
 
   /**
    * Add an anonymous [[System]] to the [[World]].
@@ -69,7 +66,7 @@ sealed trait World {
    * @tparam L
    *   the [[CList]] of system components.
    */
-  def addSystem[L <: CList](system: (Entity, L, DeltaTime) => Deletable[L])(using clt: CListTag[L]): Unit
+  def addSystem[L <: CList: CListTag](system: (Entity, L, DeltaTime) => Deletable[L]): Unit
 
   /**
    * Add an anonymous [[ExcludingSystem]] to the [[World]].
@@ -80,22 +77,20 @@ sealed trait World {
    * @tparam LExcluded
    *   the [[CList]] of excluded system components.
    */
-  def addSystem[LIncluded <: CList, LExcluded <: CList](
+  def addSystem[LIncluded <: CList: CListTag, LExcluded <: CList: CListTag](
       system: (Entity, LIncluded, DeltaTime) => Deletable[LIncluded],
-  )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): Unit
-
-  /**
-   * Add an anonymous [[System]] to the [[World]].
-   * @param system
-   *   a function that will be run for each matching entity.
-   * @tparam L
-   *   the [[CList]] of system components.
-   */
-  def addSystem[L <: CList](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L])(using
-      clt: CListTag[L],
   ): Unit
 
   /**
+   * Add an anonymous [[System]] to the [[World]].
+   * @param system
+   *   a function that will be run for each matching entity.
+   * @tparam L
+   *   the [[CList]] of system components.
+   */
+  def addSystem[L <: CList: CListTag](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L]): Unit
+
+  /**
    * Add an anonymous [[ExcludingSystem]] to the [[World]].
    * @param system
    *   a function that will be run for each matching entity.
@@ -104,9 +99,9 @@ sealed trait World {
    * @tparam LExcluded
    *   the [[CList]] of excluded system components.
    */
-  def addSystem[LIncluded <: CList, LExcluded <: CList](
+  def addSystem[LIncluded <: CList: CListTag, LExcluded <: CList: CListTag](
       system: (Entity, LIncluded, DeltaTime, World, View[LIncluded]) => Deletable[LIncluded],
-  )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): Unit
+  ): Unit
 
   /**
    * Update the world.

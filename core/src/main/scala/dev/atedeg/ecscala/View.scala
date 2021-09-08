@@ -24,7 +24,7 @@ trait ExcludingView[LIncluded <: CList, LExcluded <: CList] extends View[LInclud
 private[ecscala] object View {
 
   def apply[L <: CList](world: World)(using clt: CListTag[L]): View[L] = new View[L] {
-    override def iterator: Iterator[(Entity, L)] = new ViewIterator[L](world)(using clt)
+    override def iterator: Iterator[(Entity, L)] = new ViewIterator(world)(using clt)
   }
 
   def apply[LIncluded <: CList, LExcluded <: CList](
@@ -32,8 +32,7 @@ private[ecscala] object View {
   )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): ExcludingView[LIncluded, LExcluded] =
     new ExcludingView[LIncluded, LExcluded] {
 
-      override def iterator: Iterator[(Entity, LIncluded)] =
-        new ExcludingViewIterator[LIncluded, LExcluded](world)(using cltIncl, cltExcl)
+      override def iterator: Iterator[(Entity, LIncluded)] = new ExcludingViewIterator(world)(using cltIncl, cltExcl)
     }
 
   private abstract class BaseViewIterator[L <: CList](world: World)(using clt: CListTag[L])
@@ -57,7 +56,7 @@ private[ecscala] object View {
 
   private class ViewIterator[L <: CList](world: World)(using clt: CListTag[L])
       extends BaseViewIterator[L](world)(using clt) {
-    override protected def isValid(entity: Entity): Boolean = maps.forall(_ contains entity)
+    override protected def isValid(entity: Entity): Boolean = otherMaps.forall(_ contains entity)
   }
 
   private class ExcludingViewIterator[LIncluded <: CList, LExcluded <: CList](world: World)(using
@@ -65,11 +64,11 @@ private[ecscala] object View {
       cltExcl: CListTag[LExcluded],
   ) extends ViewIterator[LIncluded](world)(using cltIncl) {
 
-    private val taggedExludingMaps = getMaps(world)(using cltExcl)
-    private val excludingMaps = taggedExludingMaps map (_._2)
+    private val taggedExcludingMaps = getMaps(world)(using cltExcl)
+    private val excludingMaps = taggedExcludingMaps map (_._2)
 
     override protected def isValid(entity: Entity): Boolean =
-      maps.forall(_ contains entity) && !excludingMaps.exists(_ contains entity)
+      otherMaps.forall(_ contains entity) && !excludingMaps.exists(_ contains entity)
   }
 
   private def getEntityComponents[L <: CList](
