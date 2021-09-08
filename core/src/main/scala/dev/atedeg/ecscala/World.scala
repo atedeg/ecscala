@@ -72,6 +72,19 @@ sealed trait World {
   def addSystem[L <: CList](system: (Entity, L, DeltaTime) => Deletable[L])(using clt: CListTag[L]): Unit
 
   /**
+   * Add an anonymous [[ExcludingSystem]] to the [[World]].
+   * @param system
+   *   a function that will be run for each matching entity.
+   * @tparam LIncluded
+   *   the [[CList]] of included system components.
+   * @tparam LExcluded
+   *   the [[CList]] of excluded system components.
+   */
+  def addSystem[LIncluded <: CList, LExcluded <: CList](
+      system: (Entity, LIncluded, DeltaTime) => Deletable[LIncluded],
+  )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): Unit
+
+  /**
    * Add an anonymous [[System]] to the [[World]].
    * @param system
    *   a function that will be run for each matching entity.
@@ -81,6 +94,19 @@ sealed trait World {
   def addSystem[L <: CList](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L])(using
       clt: CListTag[L],
   ): Unit
+
+  /**
+   * Add an anonymous [[ExcludingSystem]] to the [[World]].
+   * @param system
+   *   a function that will be run for each matching entity.
+   * @tparam LIncluded
+   *   the [[CList]] of included system components.
+   * @tparam LExcluded
+   *   the [[CList]] of excluded system components.
+   */
+  def addSystem[LIncluded <: CList, LExcluded <: CList](
+      system: (Entity, LIncluded, DeltaTime, World, View[LIncluded]) => Deletable[LIncluded],
+  )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): Unit
 
   /**
    * Update the world.
@@ -133,15 +159,27 @@ object World {
       systems = systems :+ (clt -> system)
 
     override def addSystem[L <: CList](system: (Entity, L, DeltaTime) => Deletable[L])(using clt: CListTag[L]): Unit =
-      addSystem(convertFunctionToSystem(system))(using clt)
+      addSystem(convertFunctionToSystem[L](system))(using clt)
+
+    override def addSystem[LIncluded <: CList, LExcluded <: CList](
+        system: (Entity, LIncluded, DeltaTime) => Deletable[LIncluded],
+    )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): Unit = addSystem(
+      convertFunctionToSystem[LIncluded, LExcluded](system),
+    )(using cltIncl)
 
     override def addSystem[L <: CList](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L])(using
         clt: CListTag[L],
-    ): Unit = addSystem(convertFunctionToSystem(system))(using clt)
+    ): Unit = addSystem(convertFunctionToSystem[L](system))(using clt)
+
+    override def addSystem[LIncluded <: CList, LExcluded <: CList](
+        system: (Entity, LIncluded, DeltaTime, World, View[LIncluded]) => Deletable[LIncluded],
+    )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): Unit = addSystem(
+      convertFunctionToSystem[LIncluded, LExcluded](system),
+    )(using cltIncl)
 
     override def update(deltaTime: DeltaTime): Unit = systems foreach (taggedSystem => {
       val (ct, system) = taggedSystem
-      system(this, deltaTime)(using ct)
+      system(this, deltaTime)
     })
 
     override def toString: String = componentsContainer.toString
@@ -161,8 +199,10 @@ object World {
       this
     }
 
-    private def convertFunctionToSystem[L <: CList](system: (Entity, L, DeltaTime) => Deletable[L]): System[L] =
-      new System[L] {
+    private def convertFunctionToSystem[L <: CList](
+        system: (Entity, L, DeltaTime) => Deletable[L],
+    )(using clt: CListTag[L]): System[L] =
+      new System[L](using clt) {
 
         override def update(
             entity: Entity,
@@ -172,7 +212,7 @@ object World {
 
     private def convertFunctionToSystem[L <: CList](
         system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L],
-    ): System[L] = new System[L] {
+    )(using clt: CListTag[L]): System[L] = new System[L](using clt) {
 
       override def update(
           entity: Entity,
@@ -180,5 +220,29 @@ object World {
       )(deltaTime: DeltaTime, world: World, view: View[L]): Deletable[L] =
         system(entity, components, deltaTime, world, view)
     }
+
+    private def convertFunctionToSystem[LIncluded <: CList, LExcluded <: CList](
+        system: (Entity, LIncluded, DeltaTime) => Deletable[LIncluded],
+    )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): ExcludingSystem[LIncluded, LExcluded] =
+      new ExcludingSystem[LIncluded, LExcluded](using cltIncl, cltExcl) {
+
+        override def update(
+            entity: Entity,
+            components: LIncluded,
+        )(deltaTime: DeltaTime, world: World, view: View[LIncluded]): Deletable[LIncluded] =
+          system(entity, components, deltaTime)
+      }
+
+    private def convertFunctionToSystem[LIncluded <: CList, LExcluded <: CList](
+        system: (Entity, LIncluded, DeltaTime, World, View[LIncluded]) => Deletable[LIncluded],
+    )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): ExcludingSystem[LIncluded, LExcluded] =
+      new ExcludingSystem[LIncluded, LExcluded] {
+
+        override def update(
+            entity: Entity,
+            components: LIncluded,
+        )(deltaTime: DeltaTime, world: World, view: View[LIncluded]): Deletable[LIncluded] =
+          system(entity, components, deltaTime, world, view)
+      }
   }
 }

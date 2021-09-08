@@ -8,24 +8,22 @@ import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 type DeltaTime = Float
 
 /**
- * Represent a way to iterate over specific components (given by the type parameter L) and manupulate them.
+ * Represent a way to iterate over entities specific components (given by the type parameter L) and manupulate them.
  * @tparam L
- *   a CList representing the Components available to the [[System]].
+ *   a [[CList]] representing the Components available to the [[System]].
  */
-trait System[L <: CList] {
+trait System[L <: CList](using private val clt: CListTag[L]) {
 
   /**
    * This method should only be called with a CListTag[L], it cannnot be enforced in the interface as it would make it
    * impossible to call it correctly from the World requiring to cast the tags to a type that has been erased.
    */
-  private[ecscala] def apply(world: World, deltaTime: DeltaTime)(using clt: CListTag[? <: CList]): Unit = {
-    // If the method is called correctly (i.e. only with a CListTag[L]) this cast is always safe
-    val castedClt = clt.asInstanceOf[CListTag[L]]
-    val view = world.getView(using castedClt)
+  private[ecscala] final def apply(world: World, deltaTime: DeltaTime): Unit = {
+    val view = getView(world)
     before(deltaTime, world, view)
     view foreach { (entity, components) =>
       val updatedComponents = this.update(entity, components)(deltaTime, world, view)
-      updateComponents(updatedComponents)(entity)(using castedClt)
+      updateComponents(updatedComponents)(entity)(using clt)
     }
     after(deltaTime, world, view)
   }
@@ -68,6 +66,8 @@ trait System[L <: CList] {
    */
   def update(entity: Entity, components: L)(deltaTime: DeltaTime, world: World, view: View[L]): Deletable[L]
 
+  protected def getView(world: World): View[L] = world.getView(using clt)
+
   private def updateComponents[L <: CList](components: Deletable[L])(entity: Entity)(using clt: CListTag[L]): Unit = {
     val taggedComponents = clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] zip components
     taggedComponents foreach { taggedComponent =>
@@ -78,4 +78,19 @@ trait System[L <: CList] {
       }
     }
   }
+}
+
+/**
+ * Represent a way to iterate over entities with specific components (given by the type parameter LIncluded) and without
+ * specific components (given by the type parameter LExcluded) and manipulate them.
+ * @tparam LIncluded
+ *   a [[CList]] representing the Components available to the [[System]].
+ * @tparam LExcluded
+ *   a [[CList]] representing the Components to filter out from the selected entities.
+ */
+trait ExcludingSystem[LIncluded <: CList, LExcluded <: CList](using
+    private val cltIncl: CListTag[LIncluded],
+    cltExcl: CListTag[LExcluded],
+) extends System[LIncluded] {
+  override protected def getView(world: World): View[LIncluded] = world.getView(using cltIncl, cltExcl)
 }
