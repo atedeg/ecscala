@@ -13,7 +13,7 @@ trait View[L <: CList] extends Iterable[(Entity, L)]
 
 /**
  * A [[View]] on this [[World]] that allows to iterate over its entities with components of the type specified in
- * LIncluded, that do not have any of the components listed in LEXcluded.
+ * LIncluded, that do not have any of the components listed in LExcluded.
  * @tparam LIncluded
  *   [[CList]] with the types of the components that must be present in all entities.
  * @tparam LExcluded
@@ -91,6 +91,7 @@ private[ecscala] object View {
       world: World,
   )(using clt: CListTag[L]): Seq[(ComponentTag[? <: Component], Map[Entity, Component])] = {
     val optionalMaps = clt.tags map (ct => ct -> world.getComponents(using ct))
+    // The cast is required because otherwise the compiler infers Map[Entity, Any] instead of Map[Entity, Component]
     if (optionalMaps.exists(_._2.isEmpty)) then Seq()
     else optionalMaps map ((taggedMap) => taggedMap._1 -> taggedMap._2.get.asInstanceOf[Map[Entity, Component]])
   }
