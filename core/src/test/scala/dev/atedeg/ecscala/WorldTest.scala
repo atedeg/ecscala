@@ -66,6 +66,7 @@ class WorldTest extends AnyWordSpec with Matchers {
           (entity1, Position(3, 3) &: CNil),
           (entity3, Position(3, 3) &: CNil),
           (entity4, Position(3, 3) &: CNil),
+          (entity5, Position(3, 3) &: CNil),
         )
       }
     }

@@ -11,7 +11,7 @@ class SystemTest extends AnyWordSpec with Matchers {
   "A System" when {
     "executing its update" should beAbleTo {
       "update components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil]((_, comps, _, _, _) => {
+        world.addSystem[Position &: Velocity &: CNil]((_, comps, _) => {
           val Position(x, y) &: Velocity(vx, vy) &: CNil = comps
           Position(x + 1, y + 1) &: Velocity(vx + 1, vy + 1) &: CNil
         })
@@ -24,12 +24,12 @@ class SystemTest extends AnyWordSpec with Matchers {
         )
       }
       "remove components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil]((_, _, _, _, _) => Deleted &: Deleted &: CNil)
+        world.addSystem[Position &: Velocity &: CNil]((_, _, _) => Deleted &: Deleted &: CNil)
         world.update(10)
         world.getView[Position &: Velocity &: CNil] shouldBe empty
       }
       "add components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil]((entity, comps, _, _, _) => {
+        world.addSystem[Position &: Velocity &: CNil]((entity, comps, _) => {
           entity addComponent Mass(10)
           comps
         })
@@ -40,6 +40,7 @@ class SystemTest extends AnyWordSpec with Matchers {
           (entity2, Mass(1) &: CNil),
           (entity3, Mass(10) &: CNil),
           (entity4, Mass(10) &: CNil),
+          (entity5, Mass(1) &: CNil),
         )
       }
       "add entities to its world" in new ViewFixture {
@@ -48,7 +49,7 @@ class SystemTest extends AnyWordSpec with Matchers {
           comps
         })
         world.update(10)
-        world.entitiesCount shouldBe 7
+        world.entitiesCount shouldBe 9
       }
       "remove entities from its world" in new ViewFixture {
         world.addSystem[Position &: CNil]((entity, comps, _, w, _) => {
@@ -61,7 +62,7 @@ class SystemTest extends AnyWordSpec with Matchers {
     }
     "executing its update" should {
       "have the correct delta time" in new ViewFixture {
-        world.addSystem[Position &: CNil]((_, comps, dt, _, _) => {
+        world.addSystem[Position &: CNil]((_, comps, dt) => {
           dt shouldBe 10
           comps
         })
@@ -70,20 +71,22 @@ class SystemTest extends AnyWordSpec with Matchers {
       "execute its before and after handlers in the correct order" in new ViewFixture {
         type Comps = Position &: Velocity &: CNil
         val testSystem = new System[Comps] {
-          override def before(world: World, view: View[Comps]) =
+          override def before(deltaTime: DeltaTime, world: World, view: View[Comps]) =
             view foreach (entityComponentsPair => {
               val (entity, Position(px, py) &: _) = entityComponentsPair
               entity.addComponent(Position(px * 2, py * 2))
             })
 
-          override def after(world: World, view: View[Comps]) =
+          override def after(deltaTime: DeltaTime, world: World, view: View[Comps]) =
             view foreach (entityComponentsPair => {
               val (entity, Position(px, py) &: _) = entityComponentsPair
               entity.addComponent(Position(px + 1, py + 1))
             })
 
-          override def apply(entity: Entity, components: Comps, deltaTime: DeltaTime, world: World, view: View[Comps]) =
-            components
+          override def update(
+              entity: Entity,
+              components: Comps,
+          )(deltaTime: DeltaTime, world: World, view: View[Comps]) = components
         }
         world.addSystem(testSystem)
         world.update(10)
@@ -92,6 +95,23 @@ class SystemTest extends AnyWordSpec with Matchers {
           (entity1, Position(3, 3) &: Velocity(1, 1)),
           (entity3, Position(3, 3) &: Velocity(1, 1)),
           (entity4, Position(3, 3) &: Velocity(1, 1)),
+        )
+      }
+    }
+  }
+
+  "An ExcludingSystem" when {
+    "executing its update" should beAbleTo {
+      "update components" in new ViewFixture {
+        world.addSystem[Position &: Velocity &: CNil, Mass &: CNil]((_, comps, _) => {
+          val Position(x, y) &: Velocity(vx, vy) &: CNil = comps
+          Position(x + 1, y + 1) &: Velocity(vx + 1, vy + 1) &: CNil
+        })
+        world.update(10)
+
+        world.getView[Position &: Velocity &: CNil, Mass &: CNil] should contain theSameElementsAs List(
+          (entity1, Position(2, 2) &: Velocity(2, 2)),
+          (entity4, Position(2, 2) &: Velocity(2, 2)),
         )
       }
     }
