@@ -6,7 +6,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 inThisBuild(
   List(
-    organization := "dev.atedeg.ecscala",
+    organization := "dev.atedeg",
     licenses := List("MIT" -> url("https://opensource.org/licenses/MIT")),
     developers := List(
       Developer(
