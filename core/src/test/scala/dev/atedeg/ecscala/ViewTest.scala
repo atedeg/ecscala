@@ -64,5 +64,10 @@ class ViewTest extends AnyWordSpec with Matchers {
       )
       world.getView[Velocity &: CNil, Position &: CNil] shouldBe empty
     }
+    "return nothing" when {
+      "including and excluding the same component type" in new ViewFixture {
+        world.getView[Position &: Velocity &: CNil, Position &: CNil] shouldBe empty
+      }
+    }
   }
 }
