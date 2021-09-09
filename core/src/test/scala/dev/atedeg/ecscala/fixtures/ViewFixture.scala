@@ -8,6 +8,7 @@ trait ViewFixture extends ComponentsFixture with WorldFixture {
   val entity2 = world.createEntity()
   val entity3 = world.createEntity()
   val entity4 = world.createEntity()
+  val entity5 = world.createEntity()
 
   entity1.addComponent(Position(1, 1))
   entity1.addComponent(Velocity(1, 1))
@@ -20,4 +21,7 @@ trait ViewFixture extends ComponentsFixture with WorldFixture {
 
   entity4.addComponent(Position(1, 1))
   entity4.addComponent(Velocity(1, 1))
+
+  entity5.addComponent(Position(1, 1))
+  entity5.addComponent(Mass(1))
 }
