@@ -52,15 +52,20 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
       val entity1 = world hasAn entity
 
       entity1 withComponents { position and velocity }
-      //      world.getComponents[Position] should contain(Map(entity1 -> position))
-      //      world.getComponents[Velocity] should contain(Map(entity1 -> velocity))
-
-      // remove (position and velocity) from world
-      remove (position) from entity1
-
-      world.getComponents[Position] shouldBe empty
+      
+      world.getComponents[Position] should contain(Map(entity1 -> position))
       world.getComponents[Velocity] should contain(Map(entity1 -> velocity))
-//      world.getComponents[Velocity] shouldBe empty
+
+      remove { position and velocity } from entity1
+      
+      world.getComponents[Position] shouldBe empty
+      world.getComponents[Velocity] shouldBe empty
+
+      entity1 withComponents { position and velocity }
+      remove(position) from entity1
+
+      world.getComponents[Velocity] should contain(Map(entity1 -> velocity))
+
     }
   }
 
@@ -77,13 +82,13 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
       val entity1 = world hasAn entity
       val entity2 = world hasAn entity
 
-      remove (entity1) from world
+      remove(entity1) from world
       world.entitiesCount shouldBe 1
 
       val entity3 = world hasAn entity
       val entity4 = world hasAn entity
 
-      remove (entity2, entity3, entity4) from world
+      remove(entity2, entity3, entity4) from world
       world.entitiesCount shouldBe 0
     }
   }

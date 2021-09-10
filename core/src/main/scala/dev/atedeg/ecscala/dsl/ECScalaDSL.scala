@@ -11,7 +11,7 @@ import dev.atedeg.ecscala.dsl.Words.*
  * '''Create an entity in a world:'''
  * {{{
  * val world = World()
- * val entity1 = world has an entity
+ * val entity1 = world hasAn entity
  * }}}
  *
  * '''Remove entities from a world:'''
@@ -82,31 +82,9 @@ trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove[C <: Component](component: C)(using ct: ComponentTag[C]) = FromEntity(component)
-}
+  def remove(map: => Map[ComponentTag[? <: Component], Component]): FromEntity = FromEntity(map)
 
-private[dsl] case class ComponentWrapper() {
-
-  /**
-   * This method adds its argument to an entity and enables the following syntax:
-   *
-   * {{{
-   * entity withComponents {
-   *
-   *   Component1() and Component2() and Component3()
-   *
-   * }
-   * }}}
-   *
-   * @param rightComponent
-   *   The component to be added to an entity.
-   * @return
-   *   A [[ComponentWrapper]] that enables the components chaining.
-   */
-  def and[C <: Component: ComponentTag](rightComponent: C)(using entity: Entity): ComponentWrapper = {
-    entity.addComponent(rightComponent)
-    this
-  }
+  def remove[C <: Component](component: C)(using ct: ComponentTag[C]): FromEntity = FromEntity(Map(ct -> component))
 }
 
 private[dsl] trait FromSyntax {
@@ -115,7 +93,7 @@ private[dsl] trait FromSyntax {
 
     /**
      * This method enables the following syntax:
-     * 
+     *
      * {{{
      *   remove (entity1) from world
      * }}}
@@ -123,23 +101,25 @@ private[dsl] trait FromSyntax {
     def from(world: World): Unit = entities foreach { world.removeEntity(_) }
   }
 
-  class FromEntity[C <: Component: ComponentTag](component: C) {
+  class FromEntity(map: => Map[ComponentTag[? <: Component], Component]) {
 
     /**
      * This method enables the following syntax:
-     * 
+     *
      * {{{
      *   remove (myComponent) from entity1
      * }}}
      */
-    def from(entity: Entity): Unit = entity.removeComponent(component)
+    def from(entity: Entity): Unit = map foreach { (ct, component) =>
+      entity.removeComponent(component)(using ct.asInstanceOf[ComponentTag[Component]])
+    }
   }
 
   class ViewFromWorld[L <: CList](using clt: CListTag[L]) {
 
     /**
      * This method enables the following syntax:
-     * 
+     *
      * {{{
      *   getView[MyComponent1() &: MyComponent2() &: CNil] from world
      * }}}

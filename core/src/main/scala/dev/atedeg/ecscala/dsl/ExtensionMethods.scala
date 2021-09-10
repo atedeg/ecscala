@@ -4,8 +4,6 @@ import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 import dev.atedeg.ecscala.{ CList, Component, Entity, System, World }
 import dev.atedeg.ecscala.dsl.Words.*
 
-import scala.annotation.showAsInfix
-
 trait ExtensionMethodsDSL {
 
   extension (entity: Entity) {
@@ -21,10 +19,9 @@ trait ExtensionMethodsDSL {
      * }
      * }}}
      */
-    def withComponents(init: Entity ?=> Unit): Entity = {
-      given e: Entity = entity
-      init
-      e
+    def withComponents(map: => Map[ComponentTag[? <: Component], Component]): Entity = {
+      map foreach { (ct, component) => entity.addComponent(component)(using ct.asInstanceOf[ComponentTag[Component]]) }
+      entity
     }
 
     /**
@@ -88,7 +85,7 @@ trait ExtensionMethodsDSL {
     }
   }
 
-  extension [A <: Component: ComponentTag](component: A) {
+  extension [A <: Component](component: A)(using ctA: ComponentTag[A]) {
 
     /**
      * This method adds the current component and its agrument to an entity and enables the following syntax:
@@ -106,10 +103,20 @@ trait ExtensionMethodsDSL {
      * @return
      *   A [[ComponentWrapper]] that enables the components chaining.
      */
-    def and[B <: Component](rightComponent: B)(using entity: Entity)(using ct: ComponentTag[B]): ComponentWrapper = {
-      entity.addComponent(component)
-      entity.addComponent(rightComponent)(ct)
-      ComponentWrapper()
+
+    def and[B <: Component](
+        rightComponent: B,
+    )(using ctB: ComponentTag[B]): Map[ComponentTag[? <: Component], Component] = {
+      Map(ctB -> rightComponent, ctA -> component)
+    }
+  }
+
+  extension (map: Map[ComponentTag[? <: Component], Component]) {
+
+    def and[B <: Component](
+        rightComponent: B,
+    )(using ct: ComponentTag[B]): Map[ComponentTag[? <: Component], Component] = {
+      map + (ct -> rightComponent)
     }
   }
 }
