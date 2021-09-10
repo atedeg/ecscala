@@ -64,7 +64,7 @@ trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
    * Keyword that enables the use of the word "entity" in the dsl.
    */
   def entity: EntityWord = EntityWord()
-  
+
   /**
    * Keyword that enables the use of the word "system" in the dsl.
    */

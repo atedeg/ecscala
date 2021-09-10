@@ -87,10 +87,10 @@ trait ExtensionMethodsDSL {
      * This method enables the two following syntax:
      *
      * {{{
-     *  * entity withComponents { Component1() and Component2() }
+     *   * entity withComponents { Component1() and Component2() }
      * }}}
      * {{{
-     *  * remove { Component1() and Component2() } from myEntity
+     *   * remove { Component1() and Component2() } from myEntity
      * }}}
      */
     def and[B <: Component](
@@ -106,10 +106,10 @@ trait ExtensionMethodsDSL {
      * This method enables the two following syntax:
      *
      * {{{
-     *  * entity withComponents { Component1() and Component2() }
+     *   * entity withComponents { Component1() and Component2() }
      * }}}
      * {{{
-     *  * remove { Component1() and Component2() } from myEntity
+     *   * remove { Component1() and Component2() } from myEntity
      * }}}
      */
     def and[B <: Component](
