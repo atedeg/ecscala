@@ -88,7 +88,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
       val entity3 = world hasAn entity
       val entity4 = world hasAn entity
 
-      remove (entity2, entity3, entity4) from world
+      remove(entity2, entity3, entity4) from world
       world.entitiesCount shouldBe 0
     }
   }

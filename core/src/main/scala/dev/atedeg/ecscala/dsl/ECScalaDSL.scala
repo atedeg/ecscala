@@ -41,10 +41,11 @@ import dev.atedeg.ecscala.DeltaTime
  *   *  entity1 withComponents { MyComponent1() and MyComponent2() }
  * }}}
  *
- * '''Remove a component from an entity:'''
+ * '''Remove a components from an entity:'''
  * {{{
  *   *  remove MyComponent() from entity1
  *   *  entity1 - MyComponent()
+ *   *  remove { MyComponent1() and MyComponent2 and MyComponent3 } from entity1
  * }}}
  *
  * '''Add a system to a world:'''
@@ -63,43 +64,13 @@ trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
    * Keyword that enables the use of the word "entity" in the dsl.
    */
   def entity: EntityWord = EntityWord()
-
-  /**
-   * Keyword that enables the use of the word "system" in the dsl.
-   */
-  def system[L <: CList](system: System[L])(using ct: CListTag[L])(using world: World): Unit =
-    world.addSystem(system)(using ct)
-
-  /**
-   * Keyword that enables the use of the word "system" in the dsl.
-   */
-  def system[L <: CList](system: (Entity, L, DeltaTime) => Deletable[L])(using ct: CListTag[L])(using
-      world: World,
-  ): Unit =
-    world.addSystem(system)(using ct)
-
-  /**
-   * Keyword that enables the use of the word "system" in the dsl.
-   */
-  def system[LIncluded <: CList, LExcluded <: CList](
-      system: (Entity, LIncluded, DeltaTime) => Deletable[LIncluded],
-  )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded])(using world: World): Unit =
-    world.addSystem(system)(using cltIncl)
-
+  
   /**
    * Keyword that enables the use of the word "system" in the dsl.
    */
   def system[L <: CList](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L])(using
       clt: CListTag[L],
   )(using world: World): Unit = world.addSystem(system)(using clt)
-
-  /**
-   * Keyword that enables the use of the word "system" in the dsl.
-   */
-  def system[LIncluded <: CList, LExcluded <: CList](
-      system: (Entity, LIncluded, DeltaTime, World, View[LIncluded]) => Deletable[LIncluded],
-  )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded])(using world: World): Unit =
-    world.addSystem(system)(using cltIncl)
 
   /**
    * Keyword that enables the use of the word "getView" in the dsl.
@@ -116,6 +87,9 @@ trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
    */
   def remove(map: => Map[ComponentTag[? <: Component], Component]): FromEntity = FromEntity(map)
 
+  /**
+   * Keyword that enables the use of the word "remove" in the dsl.
+   */
   def remove[C <: Component](component: C)(using ct: ComponentTag[C]): FromEntity = FromEntity(Map(ct -> component))
 }
 

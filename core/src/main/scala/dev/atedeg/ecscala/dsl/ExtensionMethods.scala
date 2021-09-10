@@ -4,7 +4,6 @@ import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 import dev.atedeg.ecscala.{ CList, Component, Entity, System, World }
 import dev.atedeg.ecscala.dsl.Words.EntityWord
 
-
 trait ExtensionMethodsDSL {
 
   extension (entity: Entity) {
@@ -13,11 +12,7 @@ trait ExtensionMethodsDSL {
      * This method enables the following syntax:
      *
      * {{{
-     * entity withComponents {
-     *
-     *   Component1() and Component2()
-     *
-     * }
+     * entity withComponents { Component1() and Component2() }
      * }}}
      */
     def withComponents(map: => Map[ComponentTag[? <: Component], Component]): Entity = {
@@ -77,7 +72,7 @@ trait ExtensionMethodsDSL {
      * This method enables the following syntax:
      *
      * {{{
-     * world hasA system[Component &: CNil]()
+     * world hasA system[Component &: CNil]{ () => {} }
      * }}}
      */
     def hasA(init: World ?=> Unit): Unit = {
@@ -89,22 +84,15 @@ trait ExtensionMethodsDSL {
   extension [A <: Component](component: A)(using ctA: ComponentTag[A]) {
 
     /**
-     * This method adds the current component and its agrument to an entity and enables the following syntax:
+     * This method enables the two following syntax:
      *
      * {{{
-     * entity withComponents {
-     *
-     *   Component1() and Component2()
-     *
-     * }
+     *  * entity withComponents { Component1() and Component2() }
      * }}}
-     *
-     * @param rightComponent
-     *   The component to be added to an entity.
-     * @return
-     *   A [[ComponentWrapper]] that enables the components chaining.
+     * {{{
+     *  * remove { Component1() and Component2() } from myEntity
+     * }}}
      */
-
     def and[B <: Component](
         rightComponent: B,
     )(using ctB: ComponentTag[B]): Map[ComponentTag[? <: Component], Component] = {
@@ -114,6 +102,16 @@ trait ExtensionMethodsDSL {
 
   extension (map: Map[ComponentTag[? <: Component], Component]) {
 
+    /**
+     * This method enables the two following syntax:
+     *
+     * {{{
+     *  * entity withComponents { Component1() and Component2() }
+     * }}}
+     * {{{
+     *  * remove { Component1() and Component2() } from myEntity
+     * }}}
+     */
     def and[B <: Component](
         rightComponent: B,
     )(using ct: ComponentTag[B]): Map[ComponentTag[? <: Component], Component] = {
