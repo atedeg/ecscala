@@ -1,8 +1,9 @@
 package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
-import dev.atedeg.ecscala.{ CList, Component, Entity, System, View, World }
-import dev.atedeg.ecscala.dsl.Words.*
+import dev.atedeg.ecscala.{ CList, Component, Deletable, Entity, System, View, World }
+import dev.atedeg.ecscala.dsl.Words.EntityWord
+import dev.atedeg.ecscala.DeltaTime
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the Ecscala framework operation using an
@@ -70,6 +71,37 @@ trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
     world.addSystem(system)(using ct)
 
   /**
+   * Keyword that enables the use of the word "system" in the dsl.
+   */
+  def system[L <: CList](system: (Entity, L, DeltaTime) => Deletable[L])(using ct: CListTag[L])(using
+      world: World,
+  ): Unit =
+    world.addSystem(system)(using ct)
+
+  /**
+   * Keyword that enables the use of the word "system" in the dsl.
+   */
+  def system[LIncluded <: CList, LExcluded <: CList](
+      system: (Entity, LIncluded, DeltaTime) => Deletable[LIncluded],
+  )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded])(using world: World): Unit =
+    world.addSystem(system)(using cltIncl)
+
+  /**
+   * Keyword that enables the use of the word "system" in the dsl.
+   */
+  def system[L <: CList](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L])(using
+      clt: CListTag[L],
+  )(using world: World): Unit = world.addSystem(system)(using clt)
+
+  /**
+   * Keyword that enables the use of the word "system" in the dsl.
+   */
+  def system[LIncluded <: CList, LExcluded <: CList](
+      system: (Entity, LIncluded, DeltaTime, World, View[LIncluded]) => Deletable[LIncluded],
+  )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded])(using world: World): Unit =
+    world.addSystem(system)(using cltIncl)
+
+  /**
    * Keyword that enables the use of the word "getView" in the dsl.
    */
   def getView[L <: CList](using clt: CListTag[L]) = ViewFromWorld(using clt)
@@ -126,4 +158,16 @@ private[dsl] trait FromSyntax {
      */
     def from(world: World): View[L] = world.getView(using clt)
   }
+}
+
+object Words {
+
+  /**
+   * This case class enables the following syntax:
+   *
+   * {{{
+   * world hasAn entity
+   * }}}
+   */
+  case class EntityWord()
 }

@@ -62,7 +62,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
       world.getComponents[Velocity] shouldBe empty
 
       entity1 withComponents { position and velocity }
-      remove(position) from entity1
+      remove { position } from entity1
 
       world.getComponents[Velocity] should contain(Map(entity1 -> velocity))
 
@@ -82,27 +82,26 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
       val entity1 = world hasAn entity
       val entity2 = world hasAn entity
 
-      remove(entity1) from world
+      remove { entity1 } from world
       world.entitiesCount shouldBe 1
 
       val entity3 = world hasAn entity
       val entity4 = world hasAn entity
 
-      remove(entity2, entity3, entity4) from world
+      remove (entity2, entity3, entity4) from world
       world.entitiesCount shouldBe 0
     }
   }
 
   "The following syntax: world hasA system[Component &: CNil] { () => {} }" should {
     "work the same way as the world.addSystem() method" in new ViewFixture {
-      world hasA system[Position &: CNil] { (_, cl, _, _, _) =>
-        {
-          val Position(px, py) &: CNil = cl
-          Position(px * 2, py * 2) &: CNil
-        }
-      }
-      world hasA system[Position &: CNil]((_, cl, _, _, _) => {
-        val Position(x, y) &: CNil = cl
+      world hasA system[Position &: CNil]((_, comps, _, _, _) => {
+        val Position(px, py) &: CNil = comps
+        Position(px * 2, py * 2) &: CNil
+      })
+
+      world hasA system[Position &: CNil]((_, comps, _, _, _) => {
+        val Position(x, y) &: CNil = comps
         Position(x + 1, y + 1) &: CNil
       })
 
@@ -112,6 +111,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
         (entity1, Position(3, 3) &: CNil),
         (entity3, Position(3, 3) &: CNil),
         (entity4, Position(3, 3) &: CNil),
+        (entity5, Position(3, 3) &: CNil),
       )
     }
   }

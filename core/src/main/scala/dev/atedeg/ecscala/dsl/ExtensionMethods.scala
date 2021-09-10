@@ -2,7 +2,8 @@ package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 import dev.atedeg.ecscala.{ CList, Component, Entity, System, World }
-import dev.atedeg.ecscala.dsl.Words.*
+import dev.atedeg.ecscala.dsl.Words.EntityWord
+
 
 trait ExtensionMethodsDSL {
 
