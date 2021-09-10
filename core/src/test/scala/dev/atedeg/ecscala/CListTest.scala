@@ -12,6 +12,10 @@ class CListTest extends AnyWordSpec with Matchers {
       "val t = 1 &: CNil" shouldNot typeCheck
       "val t = Position(1, 1) &: Velocity(2, 2)" should compile
     }
+    "fail to compile when trying to do an invalid unpacking" in new ComponentsFixture {
+      "val a &: CNil = Position(1, 1) &: Velocity(1, 1) &: CNil" shouldNot compile
+      "val a &: b &: CNil = Position(1, 1) &: CNil" shouldNot compile
+    }
   }
 
   "A CList" when {

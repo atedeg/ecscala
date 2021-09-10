@@ -19,7 +19,7 @@ type Deletable[L <: CList] <: CList = L match {
 /**
  * A List of elements whose type must be a subtype of [[Component]].
  */
-sealed trait CList extends Iterable[Component] {
+sealed trait CList extends Product with Iterable[Component] {
 
   override def toString: String = this match {
     case head &: CNil => head.toString
@@ -29,6 +29,10 @@ sealed trait CList extends Iterable[Component] {
 }
 
 object CList {
+
+  def apply(): CNil.type = CNil
+
+  def apply[C <: Component: ComponentTag](component: C): C &: CNil = component &: CNil
 
   implicit class CListOps[L <: CList](list: L) {
     def &:[C <: Component: ComponentTag](head: C): C &: L = dev.atedeg.ecscala.&:(head, list)
@@ -66,7 +70,7 @@ case object CNil extends CNil {
  *   the type of the tail of the [[CList]].
  */
 @showAsInfix
-case class &:[+C <: Component: ComponentTag, +L <: CList](h: C, t: L) extends CList {
+final case class &:[+C <: Component: ComponentTag, +L <: CList](h: C, t: L) extends CList {
 
   override def iterator = new Iterator[Component] {
     private var list: CList = h &: t
