@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.util.types.{CListTag, ComponentTag}
-import dev.atedeg.ecscala.{CList, CNil, Component, Deletable, DeltaTime, Entity, System, View, World}
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
+import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity, System, View, World }
 import dev.atedeg.ecscala.dsl.Words.*
 import dev.atedeg.ecscala.util.types
 
@@ -116,8 +116,8 @@ private[dsl] trait FromSyntax {
      * This method enables the following syntax:
      *
      * {{{
-     *  * remove (entity1) from world
-     *  * clearAll from world
+     *   * remove (entity1) from world
+     *   * clearAll from world
      * }}}
      */
     def from(world: World): Unit = left match
@@ -136,8 +136,8 @@ private[dsl] trait FromSyntax {
      */
     def from(entity: Entity): Unit =
       componentList zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] foreach {
-      entity.removeComponent(_)(using _)
-    }
+        entity.removeComponent(_)(using _)
+      }
   }
 
   class ViewFromWorld[L <: CList](using clt: CListTag[L]) {
