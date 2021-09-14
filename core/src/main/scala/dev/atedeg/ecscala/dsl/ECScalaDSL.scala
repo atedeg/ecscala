@@ -6,8 +6,8 @@ import dev.atedeg.ecscala.dsl.Words.EntityWord
 import dev.atedeg.ecscala.DeltaTime
 
 /**
- * This trait provides a domain specific language (DSL) for expressing the Ecscala framework operation using an
- * english-like language. Here's the things you can do:
+ * This trait provides a domain specific language (DSL) for expressing the ECScala framework operation using an
+ * english-like syntax. Here's the things you can do:
  *
  * '''Create an entity in a world:'''
  * {{{
@@ -80,12 +80,17 @@ trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove(entities: Entity*) = FromWorld(entities)
+  def remove(entity: Entity) = FromWorld(Seq(entity))
 
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove(map: => Map[ComponentTag[? <: Component], Component]): FromEntity = FromEntity(map)
+  def remove(entities: Seq[Entity]) = FromWorld(entities)
+
+  /**
+   * Keyword that enables the use of the word "remove" in the dsl.
+   */
+  def remove(componentsMap: => Map[ComponentTag[? <: Component], Component]): FromEntity = FromEntity(componentsMap)
 
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
@@ -107,7 +112,7 @@ private[dsl] trait FromSyntax {
     def from(world: World): Unit = entities foreach { world.removeEntity(_) }
   }
 
-  class FromEntity(map: => Map[ComponentTag[? <: Component], Component]) {
+  class FromEntity(componentsMap: => Map[ComponentTag[? <: Component], Component]) {
 
     /**
      * This method enables the following syntax:
@@ -116,7 +121,7 @@ private[dsl] trait FromSyntax {
      *   remove (myComponent) from entity1
      * }}}
      */
-    def from(entity: Entity): Unit = map foreach { (ct, component) =>
+    def from(entity: Entity): Unit = componentsMap foreach { (ct, component) =>
       entity.removeComponent(component)(using ct.asInstanceOf[ComponentTag[Component]])
     }
   }

@@ -100,7 +100,7 @@ trait ExtensionMethodsDSL {
     }
   }
 
-  extension (map: Map[ComponentTag[? <: Component], Component]) {
+  extension (componentsMap: Map[ComponentTag[? <: Component], Component]) {
 
     /**
      * This method enables the two following syntax:
@@ -115,7 +115,7 @@ trait ExtensionMethodsDSL {
     def and[B <: Component](
         rightComponent: B,
     )(using ct: ComponentTag[B]): Map[ComponentTag[? <: Component], Component] = {
-      map + (ct -> rightComponent)
+      componentsMap + (ct -> rightComponent)
     }
   }
 }
