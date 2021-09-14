@@ -57,7 +57,7 @@ class WorldTest extends AnyWordSpec with Matchers {
         entity1.addComponent(Position(3, 4))
 
         world.clear()
-        
+
         world.getComponents[Position] shouldBe empty
       }
     }

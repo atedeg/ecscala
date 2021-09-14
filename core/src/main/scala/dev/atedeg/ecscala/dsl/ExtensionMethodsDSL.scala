@@ -13,7 +13,7 @@ trait ExtensionMethodsDSL {
      * This method enables the following syntax:
      *
      * {{{
-     * entity withComponents { Component1() and Component2() }
+     * entity withComponents { Component1() &: Component2() }
      * }}}
      */
     def withComponents[L <: CList](componentList: L)(using clt: CListTag[L]): Entity = {
@@ -81,42 +81,4 @@ trait ExtensionMethodsDSL {
       init
     }
   }
-
-//  extension [A <: Component](component: A)(using ctA: ComponentTag[A]) {
-//
-//    /**
-//     * This method enables the two following syntax:
-//     *
-//     * {{{
-//     *   * entity withComponents { Component1() and Component2() }
-//     * }}}
-//     * {{{
-//     *   * remove { Component1() and Component2() } from myEntity
-//     * }}}
-//     */
-//    def and[B <: Component](
-//        rightComponent: B,
-//    )(using ctB: ComponentTag[B]): Map[ComponentTag[? <: Component], Component] = {
-//      Map(ctB -> rightComponent, ctA -> component)
-//    }
-//  }
-
-//  extension (componentsMap: Map[ComponentTag[? <: Component], Component]) {
-//
-//    /**
-//     * This method enables the two following syntax:
-//     *
-//     * {{{
-//     *   * entity withComponents { Component1() and Component2() }
-//     * }}}
-//     * {{{
-//     *   * remove { Component1() and Component2() } from myEntity
-//     * }}}
-//     */
-//    def and[B <: Component](
-//        rightComponent: B,
-//    )(using ct: ComponentTag[B]): Map[ComponentTag[? <: Component], Component] = {
-//      componentsMap + (ct -> rightComponent)
-//    }
-//  }
 }

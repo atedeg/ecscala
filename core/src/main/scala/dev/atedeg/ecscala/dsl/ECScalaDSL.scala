@@ -2,8 +2,8 @@ package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala.util.types.{CListTag, ComponentTag}
 import dev.atedeg.ecscala.{CList, CNil, Component, Deletable, DeltaTime, Entity, System, View, World}
-import dev.atedeg.ecscala.dsl.Words.EntityWord
-import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.dsl.Words.*
+import dev.atedeg.ecscala.util.types
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the ECScala framework operation using an
@@ -19,7 +19,7 @@ import dev.atedeg.ecscala.util.types.given
  * {{{
  *   *  world - entity1
  *   *  remove (entity1) from world
- *   *  remove (entity1, entity2, entity3) from world
+ *   *  remove (List(entity1, entity2, entity3)) from world
  * }}}
  *
  * '''Create an entity in a world with a component:'''
@@ -30,7 +30,7 @@ import dev.atedeg.ecscala.util.types.given
  * '''Create an entity in a world with multiple components:'''
  * {{{
  * val entity1 = world hasAn entity withComponents {
- *       MyComponent1() and MyComponent2() and MyComponent3()
+ *       MyComponent1() &: MyComponent2() &: MyComponent3()
  * }
  * }}}
  *
@@ -38,24 +38,29 @@ import dev.atedeg.ecscala.util.types.given
  * {{{
  *   *  entity1 + MyComponent()
  *   *  entity1 withComponent MyComponent()
- *   *  entity1 withComponents { MyComponent1() and MyComponent2() }
+ *   *  entity1 withComponents { MyComponent1() &: MyComponent2() }
  * }}}
  *
- * '''Remove a components from an entity:'''
+ * '''Remove components from an entity:'''
  * {{{
  *   *  remove MyComponent() from entity1
  *   *  entity1 - MyComponent()
- *   *  remove { MyComponent1() and MyComponent2 and MyComponent3 } from entity1
+ *   *  remove { MyComponent1() &: MyComponent2() &: MyComponent3() } from entity1
  * }}}
  *
  * '''Add a system to a world:'''
  * {{{
- * world hasA system[MyComponent() &: CNil] { (_,_,_) => {}}
+ * world hasA system[MyComponent &: CNil] { (_,_,_) => {}}
  * }}}
  *
  * '''Get a view from a world:'''
  * {{{
- *   val view = getView[MyComponent1() &: MyComponent2() &: CNil] from world
+ *   val view = getView[MyComponent1 &: MyComponent2 &: CNil] from world
+ * }}}
+ *
+ * '''Remove all entities and their components from a world:'''
+ * {{{
+ *   clearAll from world
  * }}}
  */
 trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
@@ -92,24 +97,32 @@ trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
    */
   def remove[L <: CList](componentsList: L)(using clt: CListTag[L]): FromEntity = FromEntity(componentsList)
 
-  /**
-   * Keyword that enables the use of the word "remove" in the dsl.
-   */
+//  /**
+//   * Keyword that enables the use of the word "remove" in the dsl.
+//   */
 //  def remove[C <: Component](component: C)(using ct: ComponentTag[C]): FromEntity = FromEntity(component &: CNil)(using ct &: CNil)
+
+  /**
+   * Keyword that enables the use of the word "clearAll" in the dsl.
+   */
+  def clearAll: FromWorld = FromWorld(ClearWord())
 }
 
 private[dsl] trait FromSyntax {
 
-  class FromWorld(entities: Seq[Entity]) {
+  class FromWorld(left: Seq[Entity] | ClearWord) {
 
     /**
      * This method enables the following syntax:
      *
      * {{{
-     *   remove (entity1) from world
+     *  * remove (entity1) from world
+     *  * clearAll from world
      * }}}
      */
-    def from(world: World): Unit = entities foreach { world.removeEntity(_) }
+    def from(world: World): Unit = left match
+      case entitities: Seq[Entity] => entitities foreach { world.removeEntity(_) }
+      case _: ClearWord => world.clear()
   }
 
   class FromEntity(componentList: CList)(using clt: CListTag[? <: CList]) {
@@ -150,4 +163,5 @@ object Words {
    * }}}
    */
   case class EntityWord()
+  private[dsl] case class ClearWord()
 }
