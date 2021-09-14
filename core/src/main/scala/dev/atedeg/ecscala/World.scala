@@ -149,7 +149,7 @@ object World {
     }
 
     override def clear(): Unit = {
-      entities foreach { componentsContainer.removeEntity(_) }
+      entities foreach { componentsContainer -= _ }
       entities = Set()
     }
 

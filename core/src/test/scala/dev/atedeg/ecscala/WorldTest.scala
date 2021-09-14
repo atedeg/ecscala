@@ -28,7 +28,7 @@ class WorldTest extends AnyWordSpec with Matchers {
           world.entitiesCount shouldBe 0
         }
       }
-      "not have a componet of a deleted entity" in new WorldFixture {
+      "not have a component of a removed entity" in new WorldFixture {
         val entity = world.createEntity()
         val entity1 = world.createEntity()
         entity.addComponent(Position(1, 2))
@@ -49,6 +49,16 @@ class WorldTest extends AnyWordSpec with Matchers {
 
           world.entitiesCount shouldBe 0
         }
+      }
+      " not have the components from the removed entities" in new WorldFixture {
+        val entity = world.createEntity()
+        val entity1 = world.createEntity()
+        entity.addComponent(Position(1, 2))
+        entity1.addComponent(Position(3, 4))
+
+        world.clear()
+        
+        world.getComponents[Position] shouldBe empty
       }
     }
     "has entities with components" should {
