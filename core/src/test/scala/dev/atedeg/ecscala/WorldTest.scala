@@ -28,13 +28,22 @@ class WorldTest extends AnyWordSpec with Matchers {
           world.entitiesCount shouldBe 0
         }
       }
+      "not have a componet of a deleted entity" in new WorldFixture {
+        val entity = world.createEntity()
+        val entity1 = world.createEntity()
+        entity.addComponent(Position(1, 2))
+        entity1.addComponent(Position(1, 2))
+        world.removeEntity(entity)
+
+        world.getComponents[Position] should contain(Map(entity1 -> Position(1, 2)))
+      }
     }
     "has 3 entities " should {
       "have size 0" when {
         "all entities are removed" in new WorldFixture {
           val entity = world.createEntity()
+          val entity1 = world.createEntity()
           val entity2 = world.createEntity()
-          val entity3 = world.createEntity()
 
           world.clear()
 
