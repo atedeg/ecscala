@@ -1,9 +1,9 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
-import dev.atedeg.ecscala.{ CList, Component, Deletable, Entity, System, View, World }
+import dev.atedeg.ecscala.util.types.{CListTag, ComponentTag}
+import dev.atedeg.ecscala.{CList, CNil, Component, Deletable, DeltaTime, Entity, System, View, World}
 import dev.atedeg.ecscala.dsl.Words.EntityWord
-import dev.atedeg.ecscala.DeltaTime
+import dev.atedeg.ecscala.util.types.given
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the ECScala framework operation using an
@@ -90,12 +90,12 @@ trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove(componentsMap: => Map[ComponentTag[? <: Component], Component]): FromEntity = FromEntity(componentsMap)
+  def remove[L <: CList](componentsList: L)(using clt: CListTag[L]): FromEntity = FromEntity(componentsList)
 
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove[C <: Component](component: C)(using ct: ComponentTag[C]): FromEntity = FromEntity(Map(ct -> component))
+//  def remove[C <: Component](component: C)(using ct: ComponentTag[C]): FromEntity = FromEntity(component &: CNil)(using ct &: CNil)
 }
 
 private[dsl] trait FromSyntax {
@@ -112,7 +112,7 @@ private[dsl] trait FromSyntax {
     def from(world: World): Unit = entities foreach { world.removeEntity(_) }
   }
 
-  class FromEntity(componentsMap: => Map[ComponentTag[? <: Component], Component]) {
+  class FromEntity(componentList: CList)(using clt: CListTag[? <: CList]) {
 
     /**
      * This method enables the following syntax:
@@ -121,8 +121,9 @@ private[dsl] trait FromSyntax {
      *   remove (myComponent) from entity1
      * }}}
      */
-    def from(entity: Entity): Unit = componentsMap foreach { (ct, component) =>
-      entity.removeComponent(component)(using ct.asInstanceOf[ComponentTag[Component]])
+    def from(entity: Entity): Unit =
+      componentList zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] foreach {
+      entity.removeComponent(_)(using _)
     }
   }
 
