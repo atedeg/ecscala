@@ -29,6 +29,19 @@ class WorldTest extends AnyWordSpec with Matchers {
         }
       }
     }
+    "has 3 entities " should {
+      "have size 0" when {
+        "all entities are removed" in new WorldFixture {
+          val entity = world.createEntity()
+          val entity2 = world.createEntity()
+          val entity3 = world.createEntity()
+
+          world.clear()
+
+          world.entitiesCount shouldBe 0
+        }
+      }
+    }
     "has entities with components" should {
       "return the components" in new WorldFixture with ComponentsFixture {
         val entity = world.createEntity()
