@@ -26,7 +26,7 @@ case class Gravity(g: Double) extends Component
 object AnObject extends ECScalaDSL {
   val world = World()
   val entity1 = world hasAn entity withComponents {
-    Position(1, 2) and Velocity(3, 4) and Gravity(9.8)
+    Position(1, 2) &: Velocity(3, 4) &: Gravity(9.8)
   }
   
   entity1 + Position(3, 6)
