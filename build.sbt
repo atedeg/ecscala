@@ -120,7 +120,6 @@ lazy val root = project
   .in(file("."))
   .aggregate(core, benchmarks, demo)
   .settings(
-    name := "ecscala",
     publish / skip := true,
   )
 
