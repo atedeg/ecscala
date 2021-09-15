@@ -6,7 +6,7 @@ import dev.atedeg.ecscala.dsl.Words.*
 import dev.atedeg.ecscala.util.types
 
 /**
- * This trait provides a domain specific language (DSL) for expressing the ECScala framework operation using an
+ * This trait provides a domain specific language (DSL) for expressing the ECScala framework operations using an
  * english-like syntax. Here's the things you can do:
  *
  * '''Create an entity in a world:'''
@@ -43,7 +43,7 @@ import dev.atedeg.ecscala.util.types
  *
  * '''Remove components from an entity:'''
  * {{{
- *   *  remove MyComponent() from entity1
+ *   *  remove { MyComponent() } from entity1
  *   *  entity1 - MyComponent()
  *   *  remove { MyComponent1() &: MyComponent2() &: MyComponent3() } from entity1
  * }}}
@@ -63,7 +63,7 @@ import dev.atedeg.ecscala.util.types
  *   clearAll from world
  * }}}
  */
-trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
+trait ECScalaDSL extends ExtensionMethods with Conversions with FromSyntax {
 
   /**
    * Keyword that enables the use of the word "entity" in the dsl.
@@ -85,22 +85,12 @@ trait ECScalaDSL extends ExtensionMethodsDSL with FromSyntax {
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove(entity: Entity) = FromWorld(Seq(entity))
-
-  /**
-   * Keyword that enables the use of the word "remove" in the dsl.
-   */
   def remove(entities: Seq[Entity]) = FromWorld(entities)
 
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove[L <: CList](componentsList: L)(using clt: CListTag[L]): FromEntity = FromEntity(componentsList)
-
-//  /**
-//   * Keyword that enables the use of the word "remove" in the dsl.
-//   */
-//  def remove[C <: Component](component: C)(using ct: ComponentTag[C]): FromEntity = FromEntity(component &: CNil)(using ct &: CNil)
+  def remove[L <: CList: CListTag](componentsList: L): FromEntity[L] = FromEntity(componentsList)
 
   /**
    * Keyword that enables the use of the word "clearAll" in the dsl.
@@ -125,7 +115,7 @@ private[dsl] trait FromSyntax {
       case _: ClearWord => world.clear()
   }
 
-  class FromEntity(componentList: CList)(using clt: CListTag[? <: CList]) {
+  class FromEntity[L <: CList](componentList: L)(using clt: CListTag[L]) {
 
     /**
      * This method enables the following syntax:
