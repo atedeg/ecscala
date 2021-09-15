@@ -38,7 +38,7 @@ class WorldTest extends AnyWordSpec with Matchers {
         world.getComponents[Position] should contain(Map(entity1 -> Position(1, 2)))
       }
     }
-    "has 3 entities " should {
+    "has 3 entities" should {
       "have size 0" when {
         "all entities are removed" in new WorldFixture {
           val entity = world.createEntity()
@@ -50,7 +50,7 @@ class WorldTest extends AnyWordSpec with Matchers {
           world.entitiesCount shouldBe 0
         }
       }
-      " not have the components from the removed entities" in new WorldFixture {
+      "not have the components from the removed entities" in new WorldFixture {
         val entity = world.createEntity()
         val entity1 = world.createEntity()
         entity.addComponent(Position(1, 2))

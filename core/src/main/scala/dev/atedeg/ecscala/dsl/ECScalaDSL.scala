@@ -136,7 +136,7 @@ private[dsl] trait FromSyntax {
      * This method enables the following syntax:
      *
      * {{{
-     *   getView[MyComponent1() &: MyComponent2() &: CNil] from world
+     *   getView[MyComponent1 &: MyComponent2 &: CNil] from world
      * }}}
      */
     def from(world: World): View[L] = world.getView(using clt)
