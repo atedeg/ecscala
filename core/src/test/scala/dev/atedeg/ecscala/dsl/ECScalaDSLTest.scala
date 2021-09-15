@@ -7,6 +7,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
+import scala.language.implicitConversions
 
 class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
@@ -51,12 +52,9 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
       val velocity = Velocity(3, 4)
       val entity1 = world hasAn entity
 
-      entity1 withComponents {
-        position &: velocity
-      }
-      remove {
-        position &: CNil
-      } from entity1
+      entity1 withComponents { position &: velocity }
+
+      remove { position } from entity1
 
       world.getComponents[Velocity] should contain(Map(entity1 -> velocity))
     }
@@ -68,12 +66,8 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
       val velocity = Velocity(3, 4)
       val entity1 = world hasAn entity
 
-      entity1 withComponents {
-        position &: velocity
-      }
-      remove {
-        position &: velocity
-      } from entity1
+      entity1 withComponents { position &: velocity }
+      remove { position &: velocity } from entity1
 
       world.getComponents[Position] shouldBe empty
       world.getComponents[Velocity] shouldBe empty
@@ -88,22 +82,18 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
-  "remove (entity1, entity2) from world" should {
-    "work the same way ad the world.removeEntity() method" in new WorldFixture {
+  "remove (Seq(entity1, entity2)) from world" should {
+    "work the same way as the world.removeEntity() method" in new WorldFixture {
       val entity1 = world hasAn entity
       val entity2 = world hasAn entity
 
-      remove {
-        entity1
-      } from world
+      remove { entity1 } from world
       world.entitiesCount shouldBe 1
 
       val entity3 = world hasAn entity
       val entity4 = world hasAn entity
 
-      remove {
-        List(entity2, entity3, entity4)
-      } from world
+      remove { List(entity2, entity3, entity4) } from world
       world.entitiesCount shouldBe 0
     }
   }
