@@ -1,31 +1,32 @@
 package dev.atedeg.ecscalademo.controller
 
-import java.net.URL
-import java.util.ResourceBundle
-import javafx.scene.{ control as jfxsc, layout as jfxsl }
-import javafx.{ event as jfxe, fxml as jfxf }
+import javafx.fxml.{ FXML, Initializable }
+import javafx.scene.layout as jfx
 import scalafx.scene.control.Button
 import scalafx.scene.layout.Pane
 
-class MainViewController extends jfxf.Initializable {
+import java.net.URL
+import java.util.ResourceBundle
 
-  @jfxf.FXML
+class MainViewController extends Initializable {
+
+  @FXML
   private var playPauseBtn: Button = _
 
-  @jfxf.FXML
+  @FXML
   private var addBallBtn: Button = _
 
-  @jfxf.FXML
+  @FXML
   private var selectBallBtn: Button = _
 
-  @jfxf.FXML
+  @FXML
   private var moveBtn: Button = _
 
-  @jfxf.FXML
+  @FXML
   private var changeVelBtn: Button = _
 
-  @jfxf.FXML
-  private var canvas: jfxsl.Pane = _
+  @FXML
+  private var canvas: jfx.Pane = _
   private var cnvs: Pane = _
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
