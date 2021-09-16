@@ -116,6 +116,11 @@ ThisBuild / githubWorkflowPublish := Seq(
   ),
 )
 
+val scalaTest = Seq(
+  "org.scalactic" %% "scalactic" % "3.2.9",
+  "org.scalatest" %% "scalatest" % "3.2.9" % "test",
+)
+
 lazy val root = project
   .in(file("."))
   .aggregate(core, benchmarks, demo)
@@ -127,10 +132,7 @@ lazy val core = project
   .in(file("core"))
   .settings(
     name := "ecscala",
-    libraryDependencies := Seq(
-      "org.scalactic" %% "scalactic" % "3.2.9",
-      "org.scalatest" %% "scalatest" % "3.2.9" % "test",
-    ),
+    libraryDependencies := scalaTest,
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",
     ),
@@ -181,6 +183,7 @@ lazy val demo = project
     test / skip := true,
     assembly / assemblyJarName := "ECScalaDemo.jar",
     githubWorkflowArtifactUpload := false,
+    libraryDependencies ++= scalaTest,
     libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
     libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName),
   )

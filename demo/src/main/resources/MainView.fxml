@@ -22,5 +22,5 @@
       </VBox.margin>
    </VBox>
    <Separator />
-   <Pane fx:id="canvas" />
+   <Pane fx:id="canvasDelegate" />
 </VBox>
