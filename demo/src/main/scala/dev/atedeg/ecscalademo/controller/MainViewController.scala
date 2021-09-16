@@ -26,10 +26,10 @@ class MainViewController extends Initializable {
   private var changeVelBtn: Button = _
 
   @FXML
-  private var canvas: jfx.Pane = _
-  private var cnvs: Pane = _
+  private var canvasDelegate: jfx.Pane = _
+  private var canvas: Pane = _
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
-    cnvs = new Pane(canvas)
+    canvas = new Pane(canvasDelegate)
   }
 }
