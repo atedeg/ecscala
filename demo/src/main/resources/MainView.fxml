@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -23,5 +22,5 @@
       </VBox.margin>
    </VBox>
    <Separator />
-   <Pane fx:id="canvas" onMouseClicked="#canvasOver" />
+   <Pane fx:id="canvas" />
 </VBox>
