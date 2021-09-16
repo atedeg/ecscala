@@ -163,7 +163,7 @@ lazy val osName = System.getProperty("os.name") match {
 }
 
 // Add dependency on JavaFX libraries, OS dependent
-lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics")
+lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics", "web", "media", "swing")
 
 ThisBuild / assemblyMergeStrategy := {
   case PathList("module-info.class") => MergeStrategy.discard
