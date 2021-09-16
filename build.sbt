@@ -148,3 +148,34 @@ lazy val benchmarks = project
     test / skip := true,
     githubWorkflowArtifactUpload := false,
   )
+
+// Determine OS version of JavaFX binaries
+lazy val osName = System.getProperty("os.name") match {
+  case n if n.startsWith("Linux") => "linux"
+  case n if n.startsWith("Mac") => "mac"
+  case n if n.startsWith("Windows") => "win"
+  case _ => throw new Exception("Unknown platform!")
+}
+
+// Add dependency on JavaFX libraries, OS dependent
+lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics", "web", "media", "swing")
+
+ThisBuild / assemblyMergeStrategy := {
+  case PathList("module-info.class") => MergeStrategy.discard
+  case x if x.endsWith("/module-info.class") => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
+    oldStrategy(x)
+}
+
+lazy val demo = project
+  .in(file("demo"))
+  .dependsOn(core)
+  .settings(
+    publish / skip := true,
+    test / skip := true,
+    assembly / assemblyJarName := "ECScalaDemo.jar",
+    githubWorkflowArtifactUpload := false,
+    libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
+    libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName),
+  )
