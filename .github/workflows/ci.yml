@@ -134,9 +134,6 @@ jobs:
           IS_SNAPSHOT=`if [[ "${VERSION}" =~ "-" ]] ; then echo "true" ; else echo "false" ; fi`
           echo "IS_SNAPSHOT=${IS_SNAPSHOT}" >> $GITHUB_ENV
 
-      - name: Generate FatJar for demo
-        run: sbt ++${{ matrix.scala }} 'demo / assembly'
-
       - name: Release to Sonatype
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
@@ -155,5 +152,4 @@ jobs:
           files: |
             core/target/scala-3.0.1/*.jar
             core/target/scala-3.0.1/*.pom
-            demo/target/scala-3.0.1/*.jar
             doc/ecscala-report.pdf

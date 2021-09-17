@@ -88,10 +88,6 @@ ThisBuild / githubWorkflowPublishPreamble ++= Seq(
 
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(
-    List("demo / assembly"),
-    name = Some("Generate FatJar for demo"),
-  ),
-  WorkflowStep.Sbt(
     List("ci-release"),
     name = Some("Release to Sonatype"),
     env = Map(
@@ -111,14 +107,14 @@ ThisBuild / githubWorkflowPublish := Seq(
       "repo_token" -> "${{ secrets.GITHUB_TOKEN }}",
       "prerelease" -> "${{ env.IS_SNAPSHOT }}",
       "title" -> """Release - Version ${{ env.VERSION }}""",
-      "files" -> s"core/target/scala-$scala3Version/*.jar\ncore/target/scala-$scala3Version/*.pom\ndemo/target/scala-$scala3Version/*.jar\ndoc/ecscala-report.pdf",
+      "files" -> s"core/target/scala-$scala3Version/*.jar\ncore/target/scala-$scala3Version/*.pom\ndoc/ecscala-report.pdf",
     ),
   ),
 )
 
 lazy val root = project
   .in(file("."))
-  .aggregate(core, benchmarks, demo)
+  .aggregate(core, benchmarks)
   .settings(
     name := "ecscala",
     publish / skip := true,
@@ -153,35 +149,4 @@ lazy val benchmarks = project
     publish / skip := true,
     test / skip := true,
     githubWorkflowArtifactUpload := false,
-  )
-
-// Determine OS version of JavaFX binaries
-lazy val osName = System.getProperty("os.name") match {
-  case n if n.startsWith("Linux") => "linux"
-  case n if n.startsWith("Mac") => "mac"
-  case n if n.startsWith("Windows") => "win"
-  case _ => throw new Exception("Unknown platform!")
-}
-
-// Add dependency on JavaFX libraries, OS dependent
-lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics")
-
-ThisBuild / assemblyMergeStrategy := {
-  case PathList("module-info.class") => MergeStrategy.discard
-  case x if x.endsWith("/module-info.class") => MergeStrategy.discard
-  case x =>
-    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
-    oldStrategy(x)
-}
-
-lazy val demo = project
-  .in(file("demo"))
-  .dependsOn(core)
-  .settings(
-    publish / skip := true,
-    test / skip := true,
-    assembly / assemblyJarName := "ECScalaDemo.jar",
-    githubWorkflowArtifactUpload := false,
-    libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
-    libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName),
   )
