@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -8,7 +9,7 @@
    <VBox prefHeight="78.0" prefWidth="900.0" spacing="10.0">
       <Label text="Label" />
       <HBox prefHeight="20.0" prefWidth="580.0" spacing="10.0">
-         <Button fx:id="playPauseBtn" mnemonicParsing="false" text="Play" />
+         <Button fx:id="playPauseBtn" mnemonicParsing="false" onAction="#onClick" text="Play" />
          <Button fx:id="addBallBtn" mnemonicParsing="false" text="Add Ball" />
          <Button fx:id="selectBallBtn" mnemonicParsing="false" text="SelectBall" />
       </HBox>
@@ -16,11 +17,12 @@
       <HBox prefHeight="9.0" prefWidth="900.0" spacing="10.0">
          <Button fx:id="moveBtn" mnemonicParsing="false" text="Move" />
          <Button fx:id="changeVelBtn" mnemonicParsing="false" text="Change Velocity" />
+         <Label fx:id="fpsLabel" text="Label" />
       </HBox>
       <VBox.margin>
          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
       </VBox.margin>
    </VBox>
    <Separator />
-   <Pane fx:id="canvasDelegate" />
+   <Canvas fx:id="canvasDelegate" />
 </VBox>

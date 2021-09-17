@@ -1,12 +1,18 @@
 package dev.atedeg.ecscalademo.controller
 
+import dev.atedeg.ecscala.World
 import javafx.fxml.{ FXML, Initializable }
+import javafx.scene.control.Label as JfxLabel
 import javafx.scene.layout as jfx
-import scalafx.scene.control.Button
-import scalafx.scene.layout.Pane
+import javafx.scene.canvas.Canvas as JfxCanvas
+import scalafx.scene.control.{ Button, Label }
+import scalafx.scene.canvas.Canvas
+import scalafx.animation.AnimationTimer
+import scalafx.util.converter.NumberStringConverter
 
 import java.net.URL
 import java.util.ResourceBundle
+import scala.language.postfixOps
 
 class MainViewController extends Initializable {
 
@@ -26,10 +32,29 @@ class MainViewController extends Initializable {
   private var changeVelBtn: Button = _
 
   @FXML
-  private var canvasDelegate: jfx.Pane = _
-  private var canvas: Pane = _
+  private var canvasDelegate: JfxCanvas = _
+  private var canvas: Canvas = _
+
+  @FXML
+  private var fpsLabel: JfxLabel = _
+  private var fps: Label = _
+
+  private val world: World = World()
+  //private val ecsController: ECScontroller = ECScontroller(world, 16 milliseconds)
+  private var loop: GameLoop = _
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
-    canvas = new Pane(canvasDelegate)
+    canvas = new Canvas(canvasDelegate)
+    fps = new Label(fpsLabel)
+
+    loop = GameLoop(f => { world.update(f.toFloat) })
+    loop.start()
+    fps.text.bindBidirectional(loop.fpsProp, new NumberStringConverter("FPS: "))
+    //ecsController.start
+    //fpsLabel.textProperty().bindBidirectional(???, "FPS: ")
+  }
+
+  def onClick: Unit = {
+    loop.stop()
   }
 }
