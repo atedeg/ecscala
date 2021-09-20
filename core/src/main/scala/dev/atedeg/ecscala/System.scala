@@ -15,24 +15,27 @@ type DeltaTime = Float
  */
 trait System[L <: CList](using private val clt: CListTag[L]) {
 
-  /**
-   * This method should only be called with a CListTag[L], it cannnot be enforced in the interface as it would make it
-   * impossible to call it correctly from the World requiring to cast the tags to a type that has been erased.
-   */
   private[ecscala] final def apply(world: World, deltaTime: DeltaTime): Unit = {
-    val view = getView(world)
-    before(deltaTime, world, view)
-    view foreach { (entity, components) =>
-      val updatedComponents = this.update(entity, components)(deltaTime, world, view)
-      updateComponents(updatedComponents)(entity)(using clt)
+    if (shouldRun) {
+      val view = getView(world)
+      before(deltaTime, world, view)
+      view foreach { (entity, components) =>
+        val updatedComponents = this.update(entity, components)(deltaTime, world, view)
+        updateComponents(updatedComponents)(entity)(using clt)
+      }
+      after(deltaTime, world, view)
     }
-    after(deltaTime, world, view)
   }
+
+  /**
+   * @return wether this [[System]] should be executed or not.
+   */
+  def shouldRun: Boolean = true
 
   /**
    * This method is executed before each iteration of the [[System]].
    * @param deltaTime
-   *   the delta time used to update
+   *   the delta time used to update.
    * @param world
    *   the [[World]] in which the [[System]] is being executed.
    * @param view
@@ -41,9 +44,9 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
   def before(deltaTime: DeltaTime, world: World, view: View[L]): Unit = {}
 
   /**
-   * This method is executed after each iteration of the [[System]]
+   * This method is executed after each iteration of the [[System]].
    * @param deltaTime
-   *   the delta time used to update
+   *   the delta time used to update.
    * @param world
    *   the [[World]] in which the [[System]] is being executed.
    * @param view
@@ -54,15 +57,15 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
   /**
    * Describes how this [[System]] updates the components (described by the type of the System) of an [[Entity]].
    * @param entity
-   *   the [[Entity]] whose components are being updated
+   *   the [[Entity]] whose components are being updated.
    * @param components
-   *   the [[CList]] of Components that are being updated
+   *   the [[CList]] of Components that are being updated.
    * @param deltaTime
-   *   the delta time used to update
+   *   the delta time used to update.
    * @param world
-   *   the [[World]] in which this [[System]] is being used
+   *   the [[World]] in which this [[System]] is being used.
    * @param view
-   *   the [[View]] of all entities with the components described by L
+   *   the [[View]] of all entities with the components described by L.
    * @return
    *   a new [[CList]] with the updated components; it could also contain a special component - Deleted - that is used
    *   to delete the corresponding component: e.g. If the expected return type is a {{{Position &: Velocity &: CNil}}}
