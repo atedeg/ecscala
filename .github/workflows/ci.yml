@@ -56,16 +56,16 @@ jobs:
         run: sbt ++${{ matrix.scala }} scalafmtCheck
 
       - name: Tests
-        run: sbt ++${{ matrix.scala }} 'coreJVM / test'
+        run: sbt ++${{ matrix.scala }} 'core / test'
 
       - name: Generate JaCoCo report
-        run: sbt ++${{ matrix.scala }} 'coreJVM / jacoco'
+        run: sbt ++${{ matrix.scala }} 'core / jacoco'
 
       - name: Publish coverage to codecov
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: core/.jvm/target/scala-3.0.1/jacoco/report
+          directory: core/target/scala-3.0.1/jacoco/report
           fail_ci_if_error: true
 
       - name: Build LaTeX report
@@ -76,7 +76,7 @@ jobs:
           working_directory: doc
 
       - name: Compress target directories
-        run: tar cf targets.tar target core/.js/target core/.jvm/target project/target
+        run: tar cf targets.tar target core/target project/target
 
       - name: Upload target directories
         uses: actions/upload-artifact@v2
@@ -150,8 +150,6 @@ jobs:
           prerelease: ${{ env.IS_SNAPSHOT }}
           title: Release - Version ${{ env.VERSION }}
           files: |
-            core/.jvm/target/scala-3.0.1/*.jar
-            core/.jvm/target/scala-3.0.1/*.pom
-            core/.js/target/scala-3.0.1/*.jar
-            core/.js/target/scala-3.0.1/*.pom
+            core/target/scala-3.0.1/*.jar
+            core/target/scala-3.0.1/*.pom
             doc/ecscala-report.pdf
