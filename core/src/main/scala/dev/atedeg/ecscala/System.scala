@@ -102,3 +102,19 @@ trait ExcludingSystem[LIncluded <: CList, LExcluded <: CList](using
 ) extends System[LIncluded] {
   override protected def getView(world: World): View[LIncluded] = world.getView(using cltIncl, cltExcl)
 }
+
+trait EmptySystem extends System[CNil] {
+  def update(): Unit
+
+  override final def update(entity: Entity, components: CNil)(deltaTime: DeltaTime, world: World, view: View[CNil]) =
+    throw new IllegalStateException("An EmptySystem's update method should never be called.")
+
+  override final def before(deltaTime: DeltaTime, world: World, view: View[CNil]): Unit = update()
+  override final def after(deltaTime: DeltaTime, world: World, view: View[CNil]): Unit = ()
+}
+
+object EmptySystem {
+  def apply(f: () => Unit): EmptySystem = new EmptySystem {
+    override def update(): Unit = f()
+  } 
+}
