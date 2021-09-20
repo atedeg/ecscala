@@ -16,7 +16,10 @@ class SystemTest extends AnyWordSpec with Matchers {
           override def shouldRun = false
           override def before(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]): Unit = success = false
           override def after(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]): Unit = success = false
-          override def update(entity: Entity, components: Position &: CNil)(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]) = {
+          override def update(
+              entity: Entity,
+              components: Position &: CNil,
+          )(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]) = {
             success = false
             components
           }
@@ -140,5 +143,5 @@ class SystemTest extends AnyWordSpec with Matchers {
       world.update(10)
       success shouldBe true
     }
-    }
   }
+}

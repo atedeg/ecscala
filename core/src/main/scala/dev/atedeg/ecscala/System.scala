@@ -28,7 +28,8 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
   }
 
   /**
-   * @return wether this [[System]] should be executed or not.
+   * @return
+   *   wether this [[System]] should be executed or not.
    */
   def shouldRun: Boolean = true
 
@@ -114,7 +115,8 @@ trait EmptySystem extends System[CNil] {
 }
 
 object EmptySystem {
+
   def apply(f: () => Unit): EmptySystem = new EmptySystem {
     override def update(): Unit = f()
-  } 
+  }
 }
