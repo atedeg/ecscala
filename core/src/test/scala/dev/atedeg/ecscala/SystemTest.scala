@@ -9,6 +9,22 @@ class SystemTest extends AnyWordSpec with Matchers {
   def beAbleTo = afterWord("be able to")
 
   "A System" when {
+    "with a false precondition" should {
+      "not execute" in new ViewFixture {
+        var success = true
+        world.addSystem(new System[Position &: CNil] {
+          override def shouldRun = false
+          override def before(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]): Unit = success = false
+          override def after(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]): Unit = success = false
+          override def update(entity: Entity, components: Position &: CNil)(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]) = {
+            success = false
+            components
+          }
+        })
+        world.update(10)
+        success shouldBe true
+      }
+    }
     "executing its update" should beAbleTo {
       "update components" in new ViewFixture {
         world.addSystem[Position &: Velocity &: CNil]((_, comps, _) => {
