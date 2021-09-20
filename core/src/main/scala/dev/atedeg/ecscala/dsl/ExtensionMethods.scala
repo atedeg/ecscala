@@ -1,10 +1,11 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.util.types.ComponentTag
-import dev.atedeg.ecscala.{ Component, Entity, World }
-import dev.atedeg.ecscala.dsl.Words.*
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
+import dev.atedeg.ecscala.{ CList, Component, Entity, System, World }
+import dev.atedeg.ecscala.dsl.Words.EntityWord
+import dev.atedeg.ecscala.util.types.given
 
-trait ExtensionMethodsDSL {
+trait ExtensionMethods {
 
   extension (entity: Entity) {
 
@@ -12,17 +13,12 @@ trait ExtensionMethodsDSL {
      * This method enables the following syntax:
      *
      * {{{
-     * entity withComponents {
-     *
-     *   Component1() and Component2()
-     *
-     * }
+     * entity withComponents { Component1() &: Component2() }
      * }}}
      */
-    def withComponents(init: Entity ?=> Unit): Entity = {
-      given e: Entity = entity
-      init
-      e
+    def withComponents[L <: CList](componentList: L)(using clt: CListTag[L]): Entity = {
+      componentList zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] foreach { entity.addComponent(_)(using _) }
+      entity
     }
 
     /**
@@ -59,34 +55,30 @@ trait ExtensionMethodsDSL {
      * This method enables the following syntax:
      *
      * {{{
+     * world - entity
+     * }}}
+     */
+    def -(entity: Entity) = world.removeEntity(entity)
+
+    /**
+     * This method enables the following syntax:
+     *
+     * {{{
      * world hasAn entity
      * }}}
      */
     def hasAn(entityWord: EntityWord): Entity = world.createEntity()
-  }
-
-  extension [A <: Component: ComponentTag](component: A) {
 
     /**
-     * This method adds the current component and its agrument to an entity and enables the following syntax:
+     * This method enables the following syntax:
      *
      * {{{
-     * entity withComponents {
-     *
-     *   Component1() and Component2()
-     *
-     * }
+     * world hasA system[Component &: CNil]{ () => {} }
      * }}}
-     *
-     * @param rightComponent
-     *   The component to be added to an entity.
-     * @return
-     *   A [[ComponentWrapper]] that enables the components chaining.
      */
-    def and[B <: Component](rightComponent: B)(using entity: Entity)(using ct: ComponentTag[B]): ComponentWrapper = {
-      entity.addComponent(component)
-      entity.addComponent(rightComponent)(ct)
-      ComponentWrapper()
+    def hasA(init: World ?=> Unit): Unit = {
+      given w: World = world
+      init
     }
   }
 }
