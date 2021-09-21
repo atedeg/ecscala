@@ -5,7 +5,7 @@ General-purpose ECS Scala framework
 [![GitHub release](https://img.shields.io/github/release/nicolasfara/ecscala.svg)](https://gitHub.com/nicolasfara/ecscala/releases/)
 ![example workflow](https://github.com/nicolasfara/ecscala/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/nicolasfara/ecscala/branch/develop/graph/badge.svg?token=0XZ4XF71AY)](https://codecov.io/gh/nicolasfara/ecscala)
-[![javadoc](https://javadoc.io/badge2/dev.atedeg/ecscala/javadoc.svg)](https://javadoc.io/doc/dev.atedeg/ecscala)
+[![javadoc](https://javadoc.io/badge2/dev.atedeg/ecscala_3/javadoc.svg)](https://javadoc.io/doc/dev.atedeg/ecscala_3)
 
 ## Getting Started
 
@@ -25,10 +25,10 @@ case class Gravity(g: Double) extends Component
 
 object AnObject extends ECScalaDSL {
   val world = World()
-
   val entity1 = world hasAn entity withComponents {
-    Position(1, 2) and Velocity(3, 4) and Gravity(9.8)
+    Position(1, 2) &: Velocity(3, 4) &: Gravity(9.8)
   }
+  
   entity1 + Position(3, 6)
 }
 ```

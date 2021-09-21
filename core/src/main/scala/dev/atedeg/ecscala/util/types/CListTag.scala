@@ -17,8 +17,6 @@ private def deriveCListTagImpl[L <: CList: Type](using quotes: Quotes): Expr[CLi
   if typeReprOfL =:= TypeRepr.of[Nothing] then report.error("Cannot derive CListTag for Nothing.")
   else if typeReprOfL =:= TypeRepr.of[CList] then
     report.error("Cannot derive CListTag for a generic CList, its exact components must be known at compile time.")
-  else if typeReprOfL =:= TypeRepr.of[CNil] then
-    report.error("Cannot derive CListTag for a CNil, it must have at least one Component.")
   else if containsDuplicates[L] then
     report.error("A CListTag cannot be derived from CLists with duplicate element types.")
 

@@ -1,0 +1,10 @@
+Sprint 6 (da 13/09/2021 a 20/09/2021),,,,,,,,,,,
+Product Backlog Item,Sprint Task,URL,Volunteer,Initial estimate of effort,1,2,3,4,5,6,7
+As a framework user I would higly appreciate a handy DSL to perform these operations,Remove inconsistencies from dsl syntax,,Linda Vitali,1,1,1,0,0,0,0,0
+,Refactor World's interface,,Giacomo Cavalieri,20,20,20,20,20,20,20,
+,Add precondition to System execution,,Giacomo Cavalieri,2,2,2,2,2,2,2,0
+,Add System that not iterate over View,,Giacomo Cavalieri,10,10	,10,10,10,10,10,0
+As a framework user I want a working example of the framework,Define demo architecture,,"Nicolò Di Domenico
+Nicolas Farabegoli
+Giacomo Cavalieri
+Linda Vitali",20,20,20,20,20,0,0,0

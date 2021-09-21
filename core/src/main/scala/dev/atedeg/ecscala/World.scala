@@ -30,6 +30,11 @@ sealed trait World {
   def removeEntity(entity: Entity): Unit
 
   /**
+   * Remove all the entites and their respective components from the [[World]]
+   */
+  def clear(): Unit
+
+  /**
    * A [[View]] on this [[World]] that allows to iterate over its entities with components of the type specified in L.
    * @tparam L
    *   [[CList]] with the types of the components.
@@ -141,6 +146,11 @@ object World {
     override def removeEntity(entity: Entity): Unit = {
       entities -= entity
       componentsContainer -= entity
+    }
+
+    override def clear(): Unit = {
+      entities foreach { componentsContainer -= _ }
+      entities = Set()
     }
 
     override def getView[L <: CList](using clt: CListTag[L]): View[L] = View(this)(using clt)

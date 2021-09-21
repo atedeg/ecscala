@@ -74,22 +74,17 @@ ThisBuild / githubWorkflowBuild := Seq(
   ),
 )
 
-ThisBuild / githubWorkflowPublishPreamble ++= Seq(
-  WorkflowStep.Run(
-    List(
-      """VERSION=`sbt -Dsbt.ci=true 'inspect actual version' | grep "Setting: java.lang.String" | cut -d '=' -f2 | tr -d ' '`""",
-      """echo "VERSION=${VERSION}" >> $GITHUB_ENV""",
-      """IS_SNAPSHOT=`if [[ "${VERSION}" =~ "-" ]] ; then echo "true" ; else echo "false" ; fi`""",
-      """echo "IS_SNAPSHOT=${IS_SNAPSHOT}" >> $GITHUB_ENV""",
-    ),
-    name = Some("Setup environment variables"),
-  ),
-)
-
 ThisBuild / githubWorkflowPublish := Seq(
-  WorkflowStep.Sbt(
-    List("demo / assembly"),
-    name = Some("Generate FatJar for demo"),
+  WorkflowStep.Use(
+    "xu-cheng",
+    "latex-action",
+    "v2",
+    name = Some("Build LaTeX report"),
+    params = Map(
+      "root_file" -> "ecscala-report.tex",
+      "args" -> "-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape",
+      "working_directory" -> "doc",
+    ),
   ),
   WorkflowStep.Sbt(
     List("ci-release"),
@@ -111,7 +106,7 @@ ThisBuild / githubWorkflowPublish := Seq(
       "repo_token" -> "${{ secrets.GITHUB_TOKEN }}",
       "prerelease" -> "${{ env.IS_SNAPSHOT }}",
       "title" -> """Release - Version ${{ env.VERSION }}""",
-      "files" -> s"core/target/scala-$scala3Version/*.jar\ncore/target/scala-$scala3Version/*.pom\ndemo/target/scala-$scala3Version/*.jar\ndoc/ecscala-report.pdf",
+      "files" -> s"core/target/scala-$scala3Version/*.jar\ncore/target/scala-$scala3Version/*.pom\ndoc/ecscala-report.pdf",
     ),
   ),
 )
@@ -123,7 +118,7 @@ val scalaTest = Seq(
 
 lazy val root = project
   .in(file("."))
-  .aggregate(core, benchmarks, demo)
+  .aggregate(core, benchmarks)
   .settings(
     publish / skip := true,
   )
