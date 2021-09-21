@@ -17,12 +17,25 @@
       <HBox prefHeight="9.0" prefWidth="900.0" spacing="10.0">
          <Button fx:id="moveBtn" mnemonicParsing="false" text="Move" />
          <Button fx:id="changeVelBtn" mnemonicParsing="false" text="Change Velocity" />
-         <Label fx:id="fpsLabel" text="Label" />
       </HBox>
       <VBox.margin>
          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
       </VBox.margin>
    </VBox>
    <Separator />
-   <Canvas fx:id="canvasDelegate" />
+   <StackPane alignment="TOP_RIGHT" prefHeight="380.0" prefWidth="920.0">
+      <children>
+         <Canvas fx:id="canvasDelegate" />
+         <Label fx:id="fpsLabel" alignment="TOP_RIGHT" text="FPS" textAlignment="CENTER" />
+      </children>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+      <padding>
+         <Insets right="10.0" />
+      </padding>
+   </StackPane>
 </VBox>

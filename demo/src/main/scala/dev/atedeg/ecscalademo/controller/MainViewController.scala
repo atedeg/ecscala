@@ -40,7 +40,6 @@ class MainViewController extends Initializable {
   private var fps: Label = _
 
   private val world: World = World()
-  //private val ecsController: ECScontroller = ECScontroller(world, 16 milliseconds)
   private var loop: GameLoop = _
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
@@ -48,13 +47,11 @@ class MainViewController extends Initializable {
     fps = new Label(fpsLabel)
 
     loop = GameLoop(f => { world.update(f.toFloat) })
-    loop.start()
-    fps.text.bindBidirectional(loop.fpsProp, new NumberStringConverter("FPS: "))
-    //ecsController.start
-    //fpsLabel.textProperty().bindBidirectional(???, "FPS: ")
+    loop.start
+    fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
   }
 
   def onClick: Unit = {
-    loop.stop()
+    loop.stop
   }
 }
