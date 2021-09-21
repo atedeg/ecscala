@@ -22,6 +22,8 @@ extension (scalar: Double) {
   def *(vector: Vector) = vector * scalar
 }
 
-extension [T](number: T)(using ord: Ordering[T]) {
-  def clamped(min: T, max: T) = if ord.gt(number, max) then max else if ord.lt(number, min) then min else number
+extension [T](element: T)(using ord: Ordering[T]) {
+
+  def clamped(lowerBound: T, upperBound: T) =
+    if ord.gt(element, upperBound) then upperBound else if ord.lt(element, lowerBound) then lowerBound else element
 }
