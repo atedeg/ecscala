@@ -63,8 +63,6 @@ class MainViewController extends Initializable {
 
     canvas.widthProperty().addListener(_ => updateCanvas)
     canvas.heightProperty().addListener(_ => updateCanvas)
-
-    loop.start
   }
 
   def onMouseMovedHandler(event: MouseEvent): Unit = {
@@ -86,10 +84,12 @@ class MainViewController extends Initializable {
       PlayState.playing = false
       isRunning = false
       playPauseBtn.text = "Play"
+      loop.stop
     } else {
       PlayState.playing = true
       isRunning = true
       playPauseBtn.text = "Pause"
+      loop.start
     }
   }
 
