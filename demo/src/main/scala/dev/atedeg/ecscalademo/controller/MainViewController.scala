@@ -5,8 +5,11 @@ import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.layout as jfx
 import javafx.scene.canvas.Canvas as JfxCanvas
+import javafx.scene.layout.Pane as JfxPane
 import scalafx.scene.control.{ Button, Label }
-import scalafx.scene.canvas.Canvas
+import scalafx.scene.canvas.{ Canvas, GraphicsContext }
+import scalafx.scene.paint.Color
+import scalafx.scene.layout.Pane
 import scalafx.animation.AnimationTimer
 import scalafx.util.converter.NumberStringConverter
 
@@ -34,24 +37,30 @@ class MainViewController extends Initializable {
   @FXML
   private var canvasDelegate: JfxCanvas = _
   private var canvas: Canvas = _
+  private var graphicsContext: GraphicsContext = _
 
   @FXML
-  private var fpsLabel: JfxLabel = _
+  private var fpsDelegate: JfxLabel = _
   private var fps: Label = _
 
   private val world: World = World()
   private var loop: GameLoop = _
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
-    canvas = new Canvas(canvasDelegate)
-    fps = new Label(fpsLabel)
-
     loop = GameLoop(f => { world.update(f.toFloat) })
-    loop.start
+
+    canvas = new Canvas(canvasDelegate)
+    graphicsContext = canvas.graphicsContext2D
+    fps = new Label(fpsDelegate)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
+
+    canvas.widthProperty().addListener(_ => updateCanvas)
+    canvas.heightProperty().addListener(_ => updateCanvas)
+
+    loop.start
   }
 
-  def onClick: Unit = {
-    loop.stop
+  private def updateCanvas: Unit = {
+    graphicsContext.clearRect(0, 0, canvas.getWidth, canvas.getHeight)
   }
 }
