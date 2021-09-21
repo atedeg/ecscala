@@ -74,19 +74,18 @@ ThisBuild / githubWorkflowBuild := Seq(
   ),
 )
 
-ThisBuild / githubWorkflowPublishPreamble ++= Seq(
-  WorkflowStep.Run(
-    List(
-      """VERSION=`sbt -Dsbt.ci=true 'inspect actual version' | grep "Setting: java.lang.String" | cut -d '=' -f2 | tr -d ' '`""",
-      """echo "VERSION=${VERSION}" >> $GITHUB_ENV""",
-      """IS_SNAPSHOT=`if [[ "${VERSION}" =~ "-" ]] ; then echo "true" ; else echo "false" ; fi`""",
-      """echo "IS_SNAPSHOT=${IS_SNAPSHOT}" >> $GITHUB_ENV""",
-    ),
-    name = Some("Setup environment variables"),
-  ),
-)
-
 ThisBuild / githubWorkflowPublish := Seq(
+  WorkflowStep.Use(
+    "xu-cheng",
+    "latex-action",
+    "v2",
+    name = Some("Build LaTeX report"),
+    params = Map(
+      "root_file" -> "ecscala-report.tex",
+      "args" -> "-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape",
+      "working_directory" -> "doc",
+    ),
+  ),
   WorkflowStep.Sbt(
     List("ci-release"),
     name = Some("Release to Sonatype"),
