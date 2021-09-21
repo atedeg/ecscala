@@ -9,7 +9,7 @@
    <VBox spacing="10.0">
       <Label text="Label" />
       <HBox spacing="10.0">
-         <Button fx:id="playPauseBtn" mnemonicParsing="false" text="Play" />
+         <Button fx:id="playPauseBtnDelegate" mnemonicParsing="false" onAction="#onPlayPauseClickHandler" text="Play" />
          <Button fx:id="addBallBtn" mnemonicParsing="false" text="Add Ball" />
          <Button fx:id="selectBallBtn" mnemonicParsing="false" text="SelectBall" />
       </HBox>
@@ -23,14 +23,13 @@
       </VBox.margin>
    </VBox>
    <Separator />
-   <StackPane alignment="TOP_RIGHT" prefHeight="380.0" prefWidth="920.0">
+   <StackPane alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
       <padding>
          <Insets right="10.0" />
       </padding>
       <Pane fx:id="paneDelegate">
-         <Canvas fx:id="canvasDelegate" height="${paneDelegate.height}" width="${paneDelegate.width}" />
+         <Canvas fx:id="canvasDelegate" height="${paneDelegate.height}" onMouseMoved="#onMouseMovedHandler" onMousePressed="#onMousePressedHandler" onMouseReleased="#onMouseReleasedHandler" width="${paneDelegate.width}" />
       </Pane>
-
       <Label fx:id="fpsDelegate" alignment="TOP_RIGHT" text="FPS" textAlignment="CENTER" />
    </StackPane>
 </VBox>
