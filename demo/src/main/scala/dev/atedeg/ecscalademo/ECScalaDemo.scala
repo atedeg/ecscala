@@ -17,5 +17,7 @@ object ECScalaDemo extends JFXApp3 {
       title = "ECScala Demo"
       scene = new Scene(root)
     }
+    stage.setMinHeight(540)
+    stage.setMinWidth(960)
   }
 }
