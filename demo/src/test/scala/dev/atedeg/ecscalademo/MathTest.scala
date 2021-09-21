@@ -4,6 +4,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class MathTest extends AnyWordSpec with Matchers {
+
   "A point" when {
     "adding a vector" should {
       "return a point with summed components" in {
@@ -21,6 +22,7 @@ class MathTest extends AnyWordSpec with Matchers {
       }
     }
   }
+
   "A vector" when {
     "given another vector" should {
       "add it" in {
@@ -57,6 +59,7 @@ class MathTest extends AnyWordSpec with Matchers {
       }
     }
   }
+
   "A vector" must {
     "have a squared norm" in {
       Vector(2, 2).squaredNorm shouldBe 8
@@ -65,6 +68,7 @@ class MathTest extends AnyWordSpec with Matchers {
       Vector(3, 4).norm shouldBe 5
     }
   }
+
   "A number" can {
     "be clamped between a minimum and a maximum" in {
       5.clamped(1, 10) shouldBe 5
