@@ -1,34 +1,44 @@
 package dev.atedeg.ecscalademo.controller
 
-import javafx.animation.AnimationTimer as AT
+import javafx.animation.AnimationTimer as JfxAnimationTimer
 import scalafx.animation.AnimationTimer
 import scalafx.beans.property.IntegerProperty
 
-abstract class GameLoop(delegate: AT) extends AnimationTimer(delegate) {
-  def fpsProp: IntegerProperty
+trait GameLoop {
+  val fps = IntegerProperty(0)
+  def start: Unit
+  def stop: Unit
 }
 
 object GameLoop {
-  private var delta = 0L
-  private var lastFrameTime = 0L
-  private val _fpsProp = IntegerProperty(0)
-  private var count = 0
+  def apply(handler: Long => Unit): GameLoop = GameLoopImpl(handler)
 
-  def apply(handler: Long => Unit): GameLoop = new GameLoop(new AT() {
-    override def handle(now: Long): Unit = {
-      delta = now - lastFrameTime
-      count += 1
-      lastFrameTime = now
-      if (count >= 25) {
-        _fpsProp.value = (1e9 / delta).toInt
-        count = 0
+  private class GameLoopImpl(handler: Long => Unit) extends GameLoop {
+
+    private val animationTimer = new JfxAnimationTimer() {
+      private var prevFrameTime = 0L
+      private var count = 0
+
+      override def handle(now: Long): Unit = {
+        val delta = now - prevFrameTime
+        count += 1
+        if (count >= 20) {
+          fpsCounter(delta)
+          count = 0
+        }
+        handler(delta)
+        prevFrameTime = now
       }
-      handler(delta)
-    }
-  }) {
 
-    override def fpsProp: IntegerProperty = {
-      _fpsProp
+      private def fpsCounter(delta: Long): Int = {
+        val currentFps = (1e9 / delta).toInt
+        fps.value = currentFps
+        currentFps
+      }
     }
+
+    override def start: Unit = animationTimer.start()
+
+    override def stop: Unit = animationTimer.stop()
   }
 }
