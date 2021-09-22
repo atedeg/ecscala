@@ -24,8 +24,8 @@ class MathTest extends AnyWordSpec with Matchers {
   }
 
   "A vector" when {
-    "given another vector" should {
-      "add it" in {
+    "adding another vector" should {
+      "return the correct result" in {
         Vector(1, 1) + Vector(2, 2) shouldBe Vector(3, 3)
       }
       "subtract it" in {
