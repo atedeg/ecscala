@@ -1,19 +1,18 @@
 package dev.atedeg.ecscalademo.controller
 
 import dev.atedeg.ecscala.World
-import dev.atedeg.ecscalademo.{Coordinates, ECSCanvas, MouseState, PlayState}
-import javafx.fxml.{FXML, Initializable}
+import dev.atedeg.ecscalademo.{ Coordinates, ECSCanvas, MouseState, PlayState }
+import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.control.Button as JfxButton
 import javafx.scene.layout as jfx
 import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.layout.Pane as JfxPane
-import scalafx.scene.control.{Button, Label}
-import scalafx.scene.canvas.{Canvas, GraphicsContext}
+import scalafx.scene.control.{ Button, Label }
+import scalafx.scene.canvas.{ Canvas, GraphicsContext }
 import scalafx.scene.paint.Color
 import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
-import scalafx.scene.shape.ArcType
 import scalafx.animation.AnimationTimer
 import scalafx.util.converter.NumberStringConverter
 
@@ -53,7 +52,9 @@ class MainViewController extends Initializable {
   private var isRunning = false
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
-    loop = GameLoop(f => { world.update(f.toFloat) })
+    loop = GameLoop(f => {
+      world.update(f.toFloat)
+    })
 
     playPauseBtn = new Button(playPauseBtnDelegate)
     canvas = new Canvas(canvasDelegate)
