@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo
 
 object MouseState {
-  var coordinates = Coordinates(0, 0)
+  var coordinates = Point(0, 0)
   var clicked = false
   var down = false
   var up = false

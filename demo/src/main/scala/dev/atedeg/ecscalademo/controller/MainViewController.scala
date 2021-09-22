@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo.controller
 
 import dev.atedeg.ecscala.World
-import dev.atedeg.ecscalademo.{ Coordinates, ECSCanvas, MouseState, PlayState }
+import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState }
 import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.control.Button as JfxButton
@@ -15,6 +15,7 @@ import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
 import scalafx.animation.AnimationTimer
 import scalafx.util.converter.NumberStringConverter
+import dev.atedeg.ecscalademo.Point
 
 import java.net.URL
 import java.util.ResourceBundle
@@ -65,7 +66,7 @@ class MainViewController extends Initializable {
   }
 
   def onMouseMovedHandler(event: MouseEvent): Unit = {
-    MouseState.coordinates = Coordinates(event.getX, event.getY)
+    MouseState.coordinates = Point(event.getX, event.getY)
   }
 
   def onMousePressedHandler(event: MouseEvent): Unit = {

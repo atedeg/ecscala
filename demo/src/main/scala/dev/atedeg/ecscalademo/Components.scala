@@ -2,8 +2,6 @@ package dev.atedeg.ecscalademo
 
 import dev.atedeg.ecscala.Component
 
-case class Coordinates(x: Double, y: Double)
-
 case class Color(r: Int, g: Int, b: Int) {
   require(r >= 0 && r <= 255)
   require(g >= 0 && g <= 255)
