@@ -23,14 +23,14 @@ object GameLoop {
         val delta = now - prevFrameTime
         count += 1
         if (count >= 20) {
-          fpsCounter(delta)
+          fpsCount(delta)
           count = 0
         }
         handler(delta)
         prevFrameTime = now
       }
 
-      private def fpsCounter(delta: Long): Int = {
+      private def fpsCount(delta: Long): Int = {
         val currentFps = (1e9 / delta).toInt
         fps.value = currentFps
         currentFps
