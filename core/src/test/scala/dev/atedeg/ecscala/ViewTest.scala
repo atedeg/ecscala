@@ -8,6 +8,11 @@ import org.scalatest.wordspec.AnyWordSpec
 class ViewTest extends AnyWordSpec with Matchers {
 
   "A view" should {
+    "be empty" when {
+      "defined with a CNil components list" in new ViewFixture {
+        world.getView[CNil] shouldBe empty
+      }
+    }
     "iterate over the correct entities" in new ViewFixture {
       world.getView[Mass &: CNil] should contain theSameElementsAs List(
         (entity2, Mass(1) &: CNil),
