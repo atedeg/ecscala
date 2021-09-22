@@ -11,5 +11,3 @@ object PlayState {
   var playing = false
   var selectedBall = Option.empty
 }
-
-case class Coordinates(x: Double, y: Double)
