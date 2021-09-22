@@ -28,12 +28,16 @@ class MathTest extends AnyWordSpec with Matchers {
       "return the correct result" in {
         Vector(1, 1) + Vector(2, 2) shouldBe Vector(3, 3)
       }
-      "subtract it" in {
+    "subtracting another vector" should {
+      "return the correct result" in {
         Vector(1, 1) - Vector(2, 2) shouldBe Vector(-1, -1)
       }
-      "compute the dot product" in {
+    }
+    "computing the dot product" should {
+      "return the correct result" in {
         Vector(1, 2) dot Vector(3, 4) shouldBe 11
       }
+    }
     }
     "inverted" should {
       "return the opposite vector" in {
