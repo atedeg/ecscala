@@ -9,7 +9,6 @@ object MouseState {
 
 object PlayState {
   var playing = false
-  var lastBallAddedTimeStamp = 0
   var selectedBall = Option.empty
 }
 
