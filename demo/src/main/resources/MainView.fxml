@@ -30,6 +30,9 @@
       <Pane fx:id="paneDelegate">
          <Canvas fx:id="canvasDelegate" height="${paneDelegate.height}" onMouseMoved="#onMouseMovedHandler" onMousePressed="#onMousePressedHandler" onMouseReleased="#onMouseReleasedHandler" width="${paneDelegate.width}" />
       </Pane>
-      <Label fx:id="fpsDelegate" alignment="TOP_RIGHT" text="FPS" textAlignment="CENTER" />
+      <Label fx:id="fpsDelegate" alignment="TOP_RIGHT" style="-fx-background-color: rgba(192, 192, 192, 0.3); -fx-background-radius: 3px;" text="FPS" textAlignment="CENTER">
+         <padding>
+            <Insets bottom="4.0" left="7.0" right="7.0" top="4.0" />
+         </padding></Label>
    </StackPane>
 </VBox>
