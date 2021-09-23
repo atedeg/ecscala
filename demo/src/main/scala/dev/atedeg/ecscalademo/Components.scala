@@ -1,6 +1,7 @@
 package dev.atedeg.ecscalademo
 
 import dev.atedeg.ecscala.Component
+import dev.atedeg.ecscalademo.{ Point, Vector }
 
 case class Color(r: Int, g: Int, b: Int) {
   require(r >= 0 && r <= 255)
