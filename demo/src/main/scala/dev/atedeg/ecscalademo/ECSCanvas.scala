@@ -1,8 +1,10 @@
 package dev.atedeg.ecscalademo
 
-import scalafx.scene.paint.Color
+import scalafx.scene.paint.Color as ColorFx
 import scalafx.scene.shape.ArcType
 import scalafx.scene.canvas.{ Canvas, GraphicsContext }
+
+import dev.atedeg.ecscalademo.Color
 
 trait ECSCanvas {
   def drawCircle(coordinates: Point, radius: Double, color: Color, lineWidth: Double): Unit
@@ -19,8 +21,8 @@ object ScalaFXCanvas {
     override def drawCircle(coordinates: Point, radius: Double, color: Color, lineWidth: Double): Unit = {
       graphicsContext.beginPath()
       graphicsContext.arc(coordinates.x, coordinates.y, radius, radius, 0, 360)
-      graphicsContext.setFill(color)
-      graphicsContext.setStroke(Color.Black)
+      graphicsContext.setFill(ColorFx.rgb(color.r, color.g, color.b))
+      graphicsContext.setStroke(ColorFx.Black)
       graphicsContext.lineWidth = lineWidth
       graphicsContext.fill()
       graphicsContext.stroke()
@@ -31,7 +33,7 @@ object ScalaFXCanvas {
       graphicsContext.moveTo(from.x, from.y)
       graphicsContext.lineTo(to.x, to.y)
       graphicsContext.lineWidth = lineWidth
-      graphicsContext.setStroke(color)
+      graphicsContext.setStroke(ColorFx.rgb(color.r, color.g, color.b))
       graphicsContext.stroke()
     }
 
