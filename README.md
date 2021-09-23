@@ -5,7 +5,7 @@ General-purpose ECS Scala framework
 [![GitHub release](https://img.shields.io/github/release/nicolasfara/ecscala.svg)](https://gitHub.com/nicolasfara/ecscala/releases/)
 ![example workflow](https://github.com/nicolasfara/ecscala/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/nicolasfara/ecscala/branch/develop/graph/badge.svg?token=0XZ4XF71AY)](https://codecov.io/gh/nicolasfara/ecscala)
-[![javadoc](https://javadoc.io/badge2/dev.atedeg/ecscala/javadoc.svg)](https://javadoc.io/doc/dev.atedeg/ecscala)
+[![javadoc](https://javadoc.io/badge2/dev.atedeg/ecscala_3/javadoc.svg)](https://javadoc.io/doc/dev.atedeg/ecscala_3)
 
 ## Getting Started
 

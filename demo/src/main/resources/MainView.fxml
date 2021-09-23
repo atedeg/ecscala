@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox minHeight="540.0" minWidth="960.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.atedeg.ecscalademo.controller.MainViewController">
+   <VBox spacing="10.0">
+      <Label text="Label" />
+      <HBox spacing="10.0">
+         <Button fx:id="playPauseBtnDelegate" mnemonicParsing="false" onAction="#onPlayPauseClickHandler" text="Play" />
+         <Button fx:id="addBallBtn" mnemonicParsing="false" text="Add Ball" />
+         <Button fx:id="selectBallBtn" mnemonicParsing="false" text="SelectBall" />
+      </HBox>
+      <Label text="Label" />
+      <HBox spacing="10.0">
+         <Button fx:id="moveBtn" mnemonicParsing="false" text="Move" />
+         <Button fx:id="changeVelBtn" mnemonicParsing="false" text="Change Velocity" />
+      </HBox>
+      <VBox.margin>
+         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      </VBox.margin>
+   </VBox>
+   <Separator />
+   <StackPane alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
+      <padding>
+         <Insets bottom="10.0" left="10.0" right="10.0" />
+      </padding>
+      <Pane fx:id="paneDelegate">
+         <Canvas fx:id="canvasDelegate" height="${paneDelegate.height}" onMouseMoved="#onMouseMovedHandler" onMousePressed="#onMousePressedHandler" onMouseReleased="#onMouseReleasedHandler" width="${paneDelegate.width}" />
+      </Pane>
+      <Label fx:id="fpsDelegate" alignment="TOP_RIGHT" style="-fx-background-color: rgba(192, 192, 192, 0.3); -fx-background-radius: 3px;" text="FPS" textAlignment="CENTER">
+         <padding>
+            <Insets bottom="4.0" left="7.0" right="7.0" top="4.0" />
+         </padding></Label>
+   </StackPane>
+</VBox>
