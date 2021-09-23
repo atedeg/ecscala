@@ -2,7 +2,7 @@ package dev.atedeg.ecscalademo.systems
 
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.{ Entity, World }
-import dev.atedeg.ecscalademo.fixture.WorldFixture
+import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import dev.atedeg.ecscalademo.{ Circle, MouseState, PlayState, Point, Position, StartingState }
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers

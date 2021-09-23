@@ -1,4 +1,4 @@
-package dev.atedeg.ecscalademo.fixture
+package dev.atedeg.ecscalademo.fixtures
 
 import dev.atedeg.ecscala.{ Entity, World }
 

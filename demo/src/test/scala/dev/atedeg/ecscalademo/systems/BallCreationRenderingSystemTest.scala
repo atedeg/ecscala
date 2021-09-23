@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
+import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import dev.atedeg.ecscalademo.{ PlayState, ScalaFXCanvas }
-import dev.atedeg.ecscalademo.fixture.WorldFixture
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import scalafx.scene.canvas.Canvas

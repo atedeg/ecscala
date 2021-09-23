@@ -5,7 +5,7 @@ import dev.atedeg.ecscala.Entity
 import dev.atedeg.ecscalademo.Position
 import dev.atedeg.ecscala.util.types
 import dev.atedeg.ecscalademo
-import dev.atedeg.ecscalademo.fixture.WorldFixture
+import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point }

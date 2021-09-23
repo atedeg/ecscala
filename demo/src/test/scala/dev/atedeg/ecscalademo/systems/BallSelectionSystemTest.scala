@@ -1,8 +1,8 @@
 package dev.atedeg.ecscalademo.systems
 
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import dev.atedeg.ecscalademo.{ Circle, MouseState, PlayState, Point, Position, StartingState }
-import dev.atedeg.ecscalademo.fixture.WorldFixture
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
