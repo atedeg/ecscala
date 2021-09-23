@@ -1,6 +1,6 @@
 package dev.atedeg.ecscalademo.util
 
-import dev.atedeg.ecscalademo.fixtures.SpacePartitionContainerFixture
+import dev.atedeg.ecscalademo.fixtures.RegionAssignmentFixture
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -8,19 +8,19 @@ import org.scalatest.wordspec.AnyWordSpec
 class SpacePartitionContainerTest extends AnyWordSpec with Matchers {
 
   "The space partition container" should {
-    "add entities with the required components" in new SpacePartitionContainerFixture {
+    "add entities with the required components" in new RegionAssignmentFixture {
       val container = WritableSpacePartitionContainer()
       container add entity1
       container add entity2
       container add entity3
       noException should be thrownBy container.build()
     }
-    "not add entities which don't have all the required components" in new SpacePartitionContainerFixture {
+    "not add entities which don't have all the required components" in new RegionAssignmentFixture {
       val container = WritableSpacePartitionContainer()
       an[IllegalArgumentException] should be thrownBy (container add entity4)
       an[IllegalArgumentException] should be thrownBy (container add entity5)
     }
-    "get added entities by their region" in new SpacePartitionContainerFixture {
+    "get added entities by their region" in new RegionAssignmentFixture {
       val container = WritableSpacePartitionContainer()
       container add entity1
       container add entity2
