@@ -1,21 +1,20 @@
 package dev.atedeg.ecscalademo.controller
 
 import dev.atedeg.ecscala.World
-import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState }
-import javafx.fxml.{ FXML, Initializable }
+import dev.atedeg.ecscalademo.{ECSCanvas, MouseState, PlayState, Point, ScalaFXCanvas}
+import javafx.fxml.{FXML, Initializable}
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.control.Button as JfxButton
 import javafx.scene.layout as jfx
 import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.layout.Pane as JfxPane
-import scalafx.scene.control.{ Button, Label }
-import scalafx.scene.canvas.{ Canvas, GraphicsContext }
+import scalafx.scene.control.{Button, Label}
+import scalafx.scene.canvas.{Canvas, GraphicsContext}
 import scalafx.scene.paint.Color
 import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
 import scalafx.animation.AnimationTimer
 import scalafx.util.converter.NumberStringConverter
-import dev.atedeg.ecscalademo.Point
 
 import java.net.URL
 import java.util.ResourceBundle
@@ -62,7 +61,7 @@ class MainViewController extends Initializable {
     fps = new Label(fpsDelegate)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
-    ECSCanvas(canvas)
+    ScalaFXCanvas(canvas)
   }
 
   def onMouseMovedHandler(event: MouseEvent): Unit = {
