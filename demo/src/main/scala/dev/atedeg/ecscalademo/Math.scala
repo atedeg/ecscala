@@ -6,6 +6,8 @@ case class Point(x: Double, y: Double) {
   def -(point: Point) = Vector(x - point.x, y - point.y)
 }
 
+given Conversion[(Double, Double), Point] = tuple => Point(tuple._1, tuple._2)
+
 case class Vector(x: Double, y: Double) {
   def +(vector: Vector) = Vector(x + vector.x, y + vector.y)
   def -(vector: Vector) = Vector(x - vector.x, y - vector.y)
@@ -17,6 +19,8 @@ case class Vector(x: Double, y: Double) {
   def norm = math.sqrt(squaredNorm)
   def normalized = this / norm
 }
+
+given Conversion[(Double, Double), Vector] = tuple => Vector(tuple._1, tuple._2)
 
 extension (scalar: Double) {
   def *(vector: Vector) = vector * scalar

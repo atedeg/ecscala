@@ -80,4 +80,17 @@ class MathTest extends AnyWordSpec with Matchers {
       0.clamped(10, 20) shouldBe 10
     }
   }
+
+  "A (Double, Double) tuple" can {
+    import scala.language.implicitConversions
+    import dev.atedeg.ecscalademo.given
+    "be converted to a vector" in {
+      val vector: Vector = (10.0, 20.0)
+      vector shouldBe Vector(10, 20)
+    }
+    "be converted to a point" in {
+      val point: Point = (10.0, 20.0)
+      point shouldBe Point(10, 20)
+    }
+  }
 }
