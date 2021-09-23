@@ -20,7 +20,7 @@ import java.net.URL
 import java.util.ResourceBundle
 import scala.language.postfixOps
 
-class MainViewController extends Initializable {
+class MainViewController(world: World) extends Initializable {
 
   @FXML
   private var playPauseBtnDelegate: JfxButton = _
@@ -46,7 +46,6 @@ class MainViewController extends Initializable {
   private var fpsDelegate: JfxLabel = _
   private var fps: Label = _
 
-  private val world: World = World()
   private var loop: GameLoop = _
 
   private var isRunning = false
