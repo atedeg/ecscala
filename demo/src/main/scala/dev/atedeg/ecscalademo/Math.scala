@@ -28,6 +28,7 @@ extension (scalar: Double) {
 
 extension [T](element: T)(using ord: Ordering[T]) {
 
-  def clamped(lowerBound: T, upperBound: T) =
+  def clamped(lowerBound: T, upperBound: T): T =
     if ord.gt(element, upperBound) then upperBound else if ord.lt(element, lowerBound) then lowerBound else element
+  def clamped(bounds: (T, T)): T = clamped(bounds._1, bounds._2)
 }

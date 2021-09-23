@@ -75,9 +75,9 @@ class MathTest extends AnyWordSpec with Matchers {
 
   "A number" can {
     "be clamped between a minimum and a maximum" in {
-      5.clamped(1, 10) shouldBe 5
-      10.clamped(2, 5) shouldBe 5
-      0.clamped(10, 20) shouldBe 10
+      5 clamped (1, 10) shouldBe 5
+      10 clamped (2, 5) shouldBe 5
+      0 clamped (10, 20) shouldBe 10
     }
   }
 
