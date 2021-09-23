@@ -3,7 +3,6 @@ package dev.atedeg.ecscalademo
 import scalafx.scene.paint.Color as ColorFx
 import scalafx.scene.shape.ArcType
 import scalafx.scene.canvas.{ Canvas, GraphicsContext }
-
 import dev.atedeg.ecscalademo.Color
 
 /**
@@ -38,6 +37,8 @@ trait ECSCanvas {
    * Remove all the elements from the Canvas.
    */
   def clear(): Unit
+  def width: Double
+  def height: Double
 }
 
 /**
@@ -69,5 +70,9 @@ object ScalaFXCanvas {
     }
 
     override def clear(): Unit = graphicsContext.clearRect(0, 0, canvas.getWidth, canvas.getHeight)
+
+    override def width: Double = canvas.getWidth
+
+    override def height: Double = canvas.getHeight
   }
 }
