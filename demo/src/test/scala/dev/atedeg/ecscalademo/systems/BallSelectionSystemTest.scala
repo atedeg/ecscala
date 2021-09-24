@@ -34,6 +34,8 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers {
     "a ball is selected" should {
       "set the ball as current selected" in new BallSelectionSystemFixture {
         enableSystemCondition
+        PlayState.selectedBall = None
+
         val entity1 = world.createEntity()
         val entity2 = world.createEntity()
         entity1.addComponent(Position(Point(10, 10)))
