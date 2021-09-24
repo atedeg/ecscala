@@ -8,7 +8,7 @@ class DragBallSystem extends EmptySystem {
 
   override def shouldRun: Boolean = !PlayState.playing && PlayState.selectedBall.isDefined && MouseState.clicked
 
-  override def update(): Unit = {
+  override def update(deltaTime: DeltaTime, world: World): Unit = {
     PlayState.selectedBall match {
       case Some(entity) => entity.addComponent(Position(MouseState.coordinates))
       case _ => ()

@@ -9,6 +9,10 @@ import dev.atedeg.ecscalademo.{ MouseState, PlayState }
 
 class DragBallSystemTest extends AnyWordSpec with Matchers {
 
+  trait DragBallSystemFixture extends WorldFixture {
+    lazy val dragBallSystem: DragBallSystem = DragBallSystem()
+  }
+
   "A drag ball system" when {
     "the game is running and the mouse is clicked" should {
       "not run" in new DragBallSystemFixture {
