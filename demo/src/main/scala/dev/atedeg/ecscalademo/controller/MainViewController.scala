@@ -24,6 +24,7 @@ import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.layout.Pane as JfxPane
 import scalafx.scene.control.{ Button, Label }
 import scalafx.scene.canvas.{ Canvas, GraphicsContext }
+import scalafx.scene.canvas.{Canvas, GraphicsContext}
 import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
 import scalafx.animation.AnimationTimer
