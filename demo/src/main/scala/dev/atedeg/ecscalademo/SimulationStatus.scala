@@ -1,5 +1,7 @@
 package dev.atedeg.ecscalademo
 
+import dev.atedeg.ecscala.Entity
+
 object MouseState {
   var coordinates = Point(0, 0)
   var clicked = false
@@ -9,5 +11,5 @@ object MouseState {
 
 object PlayState {
   var playing = false
-  var selectedBall = Option.empty
+  var selectedBall: Option[Entity] = Option.empty
 }
