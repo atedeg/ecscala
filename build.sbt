@@ -183,6 +183,7 @@ lazy val demo = project
     assembly / assemblyJarName := "ECScalaDemo.jar",
     githubWorkflowArtifactUpload := false,
     libraryDependencies ++= scalaTest,
+    libraryDependencies += "org.scalatestplus" %% "mockito-3-12" % "3.2.10.0" % "test",
     libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
     libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName),
   )
