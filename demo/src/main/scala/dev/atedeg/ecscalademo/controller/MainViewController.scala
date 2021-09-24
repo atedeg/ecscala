@@ -1,15 +1,15 @@
 package dev.atedeg.ecscalademo.controller
 
 import dev.atedeg.ecscala.World
-import dev.atedeg.ecscalademo.{ECSCanvas, MouseState, PlayState, Point, ScalaFXCanvas}
-import javafx.fxml.{FXML, Initializable}
+import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, Point, ScalaFXCanvas }
+import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.control.Button as JfxButton
 import javafx.scene.layout as jfx
 import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.layout.Pane as JfxPane
-import scalafx.scene.control.{Button, Label}
-import scalafx.scene.canvas.{Canvas, GraphicsContext}
+import scalafx.scene.control.{ Button, Label }
+import scalafx.scene.canvas.{ Canvas, GraphicsContext }
 import scalafx.scene.paint.Color
 import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
