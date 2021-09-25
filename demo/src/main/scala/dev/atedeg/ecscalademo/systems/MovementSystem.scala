@@ -13,6 +13,8 @@ class MovementSystem extends System[Position &: Velocity &: CNil] {
       world: World,
       view: View[Position &: Velocity &: CNil],
   ): Deletable[Position &: Velocity &: CNil] = {
-    components
+    val Position(point) &: Velocity(vector) &: CNil = components
+    val newPosition = point + (vector * deltaTime)
+    Position(newPosition) &: Velocity(vector) &: CNil
   }
 }

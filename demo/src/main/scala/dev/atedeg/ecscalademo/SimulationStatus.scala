@@ -14,7 +14,7 @@ object PlayState {
   var selectedBall: Option[Entity] = Option.empty
 }
 
-object InitialState {
+object StartingState {
 
   val startingPositions = List(
     Position(Point(147, 157)),

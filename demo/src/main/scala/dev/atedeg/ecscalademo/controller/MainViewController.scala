@@ -53,7 +53,7 @@ class MainViewController(world: World) extends Initializable with ECScalaDSL {
   private var isRunning = false
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
-    import dev.atedeg.ecscalademo.InitialState.*
+    import dev.atedeg.ecscalademo.StartingState.*
     for {
       (position, color) <- startingPositions zip startingColors
     } world hasAn entity withComponents { Circle(startingRadius, color) &: position }
@@ -67,7 +67,7 @@ class MainViewController(world: World) extends Initializable with ECScalaDSL {
     fps = new Label(fpsDelegate)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
-    world.addSystem(RenderSystem(ScalaFXCanvas(canvas)))
+    world hasA system(RenderSystem(ScalaFXCanvas(canvas)))
     loop.start
   }
 
