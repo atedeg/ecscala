@@ -1,8 +1,8 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.*
-import dev.atedeg.ecscalademo.{ Circle, MouseState, PlayState, Point, Position, StartingState }
+import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.*
 
 /**
  * This [[System]] is used to identify the selected ball. If a ball were selected, the [[PlayState.selectedBall]]

@@ -1,16 +1,14 @@
 package dev.atedeg.ecscalademo.systems
 
-import scala.language.implicitConversions
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.Entity
-import dev.atedeg.ecscalademo.Position
-import dev.atedeg.ecscala.util.types
-import dev.atedeg.ecscalademo
-import dev.atedeg.ecscalademo.fixtures.WorldFixture
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers
-import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point }
+import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.given
+import dev.atedeg.ecscalademo.fixtures.WorldFixture
+import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position }
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+
+import scala.language.implicitConversions
 
 class DragBallSystemTest extends AnyWordSpec with Matchers {
 

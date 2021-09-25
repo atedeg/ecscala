@@ -1,20 +1,9 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.*
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{
-  Circle,
-  Color,
-  Mass,
-  MouseState,
-  PlayState,
-  Point,
-  Position,
-  StartingState,
-  Vector,
-  Velocity,
-}
+import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.*
 
 /**
  * This [[System]] is used to create a new ball into the [[World]]. If the mouse pointer is in the area of another ball,
