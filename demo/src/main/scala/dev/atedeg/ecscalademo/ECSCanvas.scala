@@ -24,8 +24,6 @@ trait ECSCanvas {
   def drawCircle(coordinates: Point, radius: Double, color: Color, lineWidth: Double): Unit
 
   /**
-   * *
-   *
    * @param from
    *   The strating point from where draw the line.
    * @param to

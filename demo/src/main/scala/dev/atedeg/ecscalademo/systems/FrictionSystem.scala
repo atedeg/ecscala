@@ -7,6 +7,9 @@ import dev.atedeg.ecscalademo.Vector
 import dev.atedeg.ecscalademo.StartingState.*
 import dev.atedeg.ecscalademo.*
 
+/**
+ * The [[System]] that applies the friction to the balls that have a Velocity.
+ */
 class FrictionSystem() extends System[Velocity &: CNil] {
 
   override def shouldRun: Boolean = PlayState.playing

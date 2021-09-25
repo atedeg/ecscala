@@ -6,6 +6,9 @@ import dev.atedeg.ecscala.CNil
 import dev.atedeg.ecscalademo.{ PlayState, Position, Velocity }
 import dev.atedeg.ecscalademo.*
 
+/**
+ * The [[System]] that updates the balls Positions given the updated Velocities
+ */
 class MovementSystem extends System[Position &: Velocity &: CNil] {
   override def shouldRun: Boolean = PlayState.playing
 

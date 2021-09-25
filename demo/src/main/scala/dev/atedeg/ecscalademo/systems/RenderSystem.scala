@@ -5,6 +5,10 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ Circle, Color, ECSCanvas, PlayState, Point, Position }
 import dev.atedeg.ecscalademo.Vector
 
+/**
+ * The [[System]] that renders the balls on their updated Positions.
+ * @param ecsCanvas
+ */
 class RenderSystem(ecsCanvas: ECSCanvas) extends System[Circle &: Position &: CNil] {
 
   override def before(deltaTime: DeltaTime, world: World, view: View[Circle &: Position &: CNil]): Unit =
