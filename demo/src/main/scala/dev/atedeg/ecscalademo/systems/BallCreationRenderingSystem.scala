@@ -7,10 +7,10 @@ import scalafx.scene.paint.Color as SfxColor
 
 import scala.language.implicitConversions
 
-class BallCreationRenderingSystem(canvas: ECSCanvas) extends EmptySystem {
+class BallCreationRenderingSystem(private val canvas: ECSCanvas) extends EmptySystem {
 
   given Conversion[Color, SfxColor] with
-    def apply(color: Color): SfxColor = SfxColor(color.r, color.g, color.b, 1)
+    def apply(color: Color): SfxColor = SfxColor(color.r, color.g, color.b, 0.5)
 
   override def shouldRun: Boolean = !PlayState.playing
 
