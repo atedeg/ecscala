@@ -19,6 +19,11 @@ import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import dev.atedeg.ecscalademo
 import dev.atedeg.ecscalademo.given
 
+/**
+ * This system handles the collisions of balls on the walls. It should be run after the [[RegionAssignmentSystem]].
+ * @param canvas
+ *   the [[SpacePartitionContainer]] that will be read.
+ */
 class WallCollisionSystem(private val canvas: ECSCanvas) extends System[Position &: Velocity &: Circle &: CNil] {
 
   override def shouldRun: Boolean = PlayState.playing
