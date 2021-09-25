@@ -152,5 +152,5 @@ jobs:
           files: |
             core/target/scala-3.0.1/*.jar
             core/target/scala-3.0.1/*.pom
-            demo/target/scala-3.0.1/*.jar
+            demo/target/scala-3.0.1/ECScalaDemo.jar
             doc/ecscala-report.pdf

@@ -107,7 +107,7 @@ ThisBuild / githubWorkflowPublish := Seq(
       "repo_token" -> "${{ secrets.GITHUB_TOKEN }}",
       "prerelease" -> "false",
       "title" -> """Release - Version ${{ env.VERSION }}""",
-      "files" -> s"core/target/scala-$scala3Version/*.jar\ncore/target/scala-$scala3Version/*.pom\ndemo/target/scala-$scala3Version/*.jar\ndoc/ecscala-report.pdf",
+      "files" -> s"core/target/scala-$scala3Version/*.jar\ncore/target/scala-$scala3Version/*.pom\ndemo/target/scala-$scala3Version/ECScalaDemo.jar\ndoc/ecscala-report.pdf",
     ),
   ),
 )
