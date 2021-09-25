@@ -6,12 +6,45 @@ import scalafx.scene.canvas.{ Canvas, GraphicsContext }
 
 import dev.atedeg.ecscalademo.Color
 
+/**
+ * This trait is an abstraction of a Canvas that can be used to draw the demo components.
+ */
 trait ECSCanvas {
+
+  /**
+   * @param coordinates
+   *   The point where to draw the ball.
+   * @param radius
+   *   The ball radius.
+   * @param color
+   *   The ball color.
+   * @param lineWidth
+   *   The thickness of the ball's border.
+   */
   def drawCircle(coordinates: Point, radius: Double, color: Color, lineWidth: Double): Unit
+
+  /**
+   * *
+   *
+   * @param from
+   *   The strating point from where draw the line.
+   * @param to
+   *   The end point up to where draw the line.
+   * @param color
+   *   The line color.
+   * @param lineWidth
+   */
   def drawLine(from: Point, to: Point, color: Color, lineWidth: Double): Unit
+
+  /**
+   * Remove all the elements from the Canvas.
+   */
   def clear(): Unit
 }
 
+/**
+ * Object that uses the ScalaFX Canvas to draw the elements.
+ */
 object ScalaFXCanvas {
   def apply(canvas: Canvas): ECSCanvas = new ScalaFXCanvasImpl(canvas)
 
