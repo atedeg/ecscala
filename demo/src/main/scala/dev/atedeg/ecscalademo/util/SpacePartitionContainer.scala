@@ -1,13 +1,15 @@
 package dev.atedeg.ecscalademo.util
 
+import scala.collection
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.Entity
-import dev.atedeg.ecscalademo.{ Circle, Position }
+import dev.atedeg.ecscalademo.{ Circle, Mass, Position, Velocity }
 
-trait SpacePartitionContainer {
+trait SpacePartitionContainer extends Iterable[((Int, Int), Seq[Entity])] {
   def regionSize: Double
   def get(region: (Int, Int)): Seq[Entity]
+  def regionsIterator: Iterator[(Int, Int)]
 }
 
 trait WritableSpacePartitionContainer extends SpacePartitionContainer {
@@ -28,8 +30,12 @@ object WritableSpacePartitionContainer {
 
     override def add(entity: Entity): Unit = {
       val positionComponent = entity.getComponent[Position]
+      val velocityComponent = entity.getComponent[Velocity]
       val circleComponent = entity.getComponent[Circle]
-      require(positionComponent.isDefined && circleComponent.isDefined)
+      val massComponent = entity.getComponent[Mass]
+      require(
+        positionComponent.isDefined && velocityComponent.isDefined && circleComponent.isDefined && massComponent.isDefined,
+      )
       entities :+= entity
       _regionSize = math.max(_regionSize * regionSizeMultiplier, circleComponent.get.radius)
     }
@@ -43,6 +49,10 @@ object WritableSpacePartitionContainer {
     }
 
     override def get(region: (Int, Int)): Seq[Entity] = regions.getOrElse(region, Seq())
+
+    override def iterator: Iterator[((Int, Int), Seq[Entity])] = regions.iterator
+
+    override def regionsIterator: Iterator[(Int, Int)] = regions.keysIterator
 
     private def getRegionFromPosition(positionComponent: Position): (Int, Int) =
       (
