@@ -4,6 +4,10 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.*
 import dev.atedeg.ecscalademo.{ Circle, MouseState, PlayState, Point, Position, StartingState }
 
+/**
+ * This [[System]] is used to identify the selected ball. If a ball were selected, the [[PlayState.selectedBall]]
+ * contains the [[Entity]] associated to the selected ball.
+ */
 class BallSelectionSystem extends EmptySystem {
 
   override def shouldRun: Boolean = !PlayState.playing && MouseState.down

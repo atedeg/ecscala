@@ -16,6 +16,10 @@ import dev.atedeg.ecscalademo.{
   Velocity,
 }
 
+/**
+ * This [[System]] is used to create a new ball into the [[World]]. If the mouse pointer is in the area of another ball,
+ * no ball will be added.
+ */
 class BallCreationSystem extends EmptySystem with ECScalaDSL {
 
   override def shouldRun: Boolean = MouseState.clicked && !PlayState.playing

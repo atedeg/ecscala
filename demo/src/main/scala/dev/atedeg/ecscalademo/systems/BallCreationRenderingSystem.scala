@@ -7,6 +7,11 @@ import scalafx.scene.paint.Color as SfxColor
 
 import scala.language.implicitConversions
 
+/**
+ * This [[System]] is used to render the ball that is about to be added to the [[World]].
+ * @param canvas
+ *   the canvas to draw in.
+ */
 class BallCreationRenderingSystem(private val canvas: ECSCanvas) extends EmptySystem {
 
   given Conversion[Color, SfxColor] with
