@@ -56,19 +56,16 @@ class MainViewController() extends Initializable with ECScalaDSL {
     import dev.atedeg.ecscalademo.StartingState.*
     val world = World()
     for {
-      ((position, color), velocity) <- (startingPositions zip startingColors) zip startingVelocities
+      ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
     } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity }
 
+    addSystemsToWorld(world)
     loop = GameLoop(world.update(_))
 
     playPauseBtn = new Button(playPauseBtnDelegate)
     canvas = new Canvas(canvasDelegate)
     fps = new Label(fpsDelegate)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
-
-    world hasA system(FrictionSystem())
-    world hasA system(MovementSystem())
-    world hasA system(RenderSystem(ScalaFXCanvas(canvas)))
 
     loop.start
   }
@@ -97,5 +94,11 @@ class MainViewController() extends Initializable with ECScalaDSL {
       isRunning = true
       playPauseBtn.text = "Pause"
     }
+  }
+
+  def addSystemsToWorld(world: World) = {
+    world hasA system(FrictionSystem())
+    world hasA system(MovementSystem())
+    world hasA system(RenderSystem(ScalaFXCanvas(canvas)))
   }
 }
