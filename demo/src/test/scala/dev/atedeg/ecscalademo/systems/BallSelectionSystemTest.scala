@@ -1,6 +1,8 @@
 package dev.atedeg.ecscalademo.systems
 
+import scala.language.implicitConversions
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import dev.atedeg.ecscalademo.{ Circle, MouseState, PlayState, Point, Position, StartingState }
 import org.scalatest.matchers.should.Matchers
@@ -38,20 +40,20 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers {
 
         val entity1 = world.createEntity()
         val entity2 = world.createEntity()
-        entity1.addComponent(Position(Point(10, 10)))
+        entity1.addComponent(Position(10.0, 10.0))
         entity1.addComponent(Circle(20, StartingState.startingColor))
 
-        entity2.addComponent(Position(Point(70, 70)))
+        entity2.addComponent(Position(70.0, 70.0))
         entity2.addComponent(Circle(20, StartingState.startingColor))
 
         world.addSystem(system)
         PlayState.selectedBall shouldBe None
-        MouseState.coordinates = Point(10, 10)
+        MouseState.coordinates = Point(10.0, 10.0)
         world.update(10)
 
         PlayState.selectedBall shouldBe Some(entity1)
 
-        MouseState.coordinates = Point(65, 65)
+        MouseState.coordinates = Point(65.0, 65.0)
         world.update(10)
 
         PlayState.selectedBall shouldBe Some(entity2)

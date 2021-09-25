@@ -29,17 +29,17 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers {
     "enabled" should {
       "create a ball in a free position" in new BallCreationSystemFixture {
         enableSystemCondition()
-        simulateCreateBall(world, entity, creationSystem, Point(0, 0), Point(100, 100))
+        simulateCreateBall(world, entity, creationSystem, Point(0.0, 0.0), Point(100.0, 100.0))
         world.entitiesCount shouldBe 2
       }
       "not create a ball over another one" in new BallCreationSystemFixture {
         enableSystemCondition()
-        simulateCreateBall(world, entity, creationSystem, Point(10, 10), Point(10, 10))
+        simulateCreateBall(world, entity, creationSystem, Point(10.0, 10.0), Point(10.0, 10.0))
         world.entitiesCount shouldBe 1
       }
       "not create a ball when the mouse is inside other ball" in new BallCreationSystemFixture {
         enableSystemCondition()
-        simulateCreateBall(world, entity, creationSystem, Point(10, 10), Point(15, 15))
+        simulateCreateBall(world, entity, creationSystem, Point(10.0, 10.0), Point(15.0, 15.0))
         world.entitiesCount shouldBe 1
       }
     }
