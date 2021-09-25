@@ -2,7 +2,7 @@ package dev.atedeg.ecscalademo.controller
 
 import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{ Circle, Color, MouseState, PlayState, Point, Position, ScalaFXCanvas }
+import dev.atedeg.ecscalademo.{ Circle, Color, MouseState, PlayState, Point, Position, ScalaFXCanvas, Vector, Velocity }
 import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.control.Button as JfxButton
@@ -55,13 +55,10 @@ class MainViewController(world: World) extends Initializable with ECScalaDSL {
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
     import dev.atedeg.ecscalademo.StartingState.*
     for {
-      (position, color) <- startingPositions zip startingColors
-    } world hasAn entity withComponents { Circle(radius, color) &: position }
+      ((position, color), velocity) <- (startingPositions zip startingColors) zip startingVelocities
+    } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity }
 
-    loop = GameLoop(f => {
-      world.update(f.toFloat)
-
-    })
+    loop = GameLoop(world.update(_))
 
     playPauseBtn = new Button(playPauseBtnDelegate)
     canvas = new Canvas(canvasDelegate)
