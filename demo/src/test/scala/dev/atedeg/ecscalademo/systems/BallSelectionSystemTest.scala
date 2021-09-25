@@ -15,25 +15,25 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers {
   "A BallSelectionSystem" when {
     "the game is paused and the mouse is clicked" should {
       "be enabled" in new BallSelectionSystemFixture {
-        enableSystemCondition
+        enableSystemCondition()
         system.shouldRun shouldBe true
       }
     }
     "the game is paused and the mouse is not clicked" should {
       "not be enabled" in new BallSelectionSystemFixture {
-        disableSystemCondition
+        disableSystemCondition()
         system.shouldRun shouldBe false
       }
     }
     "the game is running" should {
-      "not enabled" in new BallSelectionSystemFixture {
+      "not be enabled" in new BallSelectionSystemFixture {
         PlayState.playing = true
         system.shouldRun shouldBe false
       }
     }
     "a ball is selected" should {
       "set the ball as current selected" in new BallSelectionSystemFixture {
-        enableSystemCondition
+        enableSystemCondition()
         PlayState.selectedBall = None
 
         val entity1 = world.createEntity()
@@ -59,12 +59,12 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers {
     }
   }
 
-  private def enableSystemCondition: Unit = {
+  private def enableSystemCondition(): Unit = {
     PlayState.playing = false
     MouseState.down = true
   }
 
-  private def disableSystemCondition: Unit = {
+  private def disableSystemCondition(): Unit = {
     PlayState.playing = false
     MouseState.down = false
   }

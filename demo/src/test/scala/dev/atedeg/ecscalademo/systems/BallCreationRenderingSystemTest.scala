@@ -16,16 +16,16 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers {
   "A RenderingCreationBallSystem" when {
     "the game is run" should {
       "enabled" in new BallCreationRenderingSystemFixture {
-        enableSystemCondition
+        enableSystemCondition()
         system.shouldRun shouldBe true
       }
       "disabled" in new BallCreationRenderingSystemFixture {
-        disableSystemCondition
+        disableSystemCondition()
         system.shouldRun shouldBe false
       }
     }
   }
 
-  private def enableSystemCondition: Unit = PlayState.playing = false
-  private def disableSystemCondition: Unit = PlayState.playing = true
+  private def enableSystemCondition(): Unit = PlayState.playing = false
+  private def disableSystemCondition(): Unit = PlayState.playing = true
 }
