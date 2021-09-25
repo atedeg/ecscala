@@ -30,8 +30,22 @@ sealed trait CList extends Product with Iterable[Component] {
 
 object CList {
 
+  /**
+   * Create an empty [[CList]].
+   * @return
+   *   the empty [[CList]]
+   */
   def apply(): CNil.type = CNil
 
+  /**
+   * Create a [[CList]] from a [[Component]].
+   * @param component
+   *   the component to build the [[CList]].
+   * @tparam C
+   *   the [[Component]] class.
+   * @return
+   *   the [[CList]]
+   */
   def apply[C <: Component: ComponentTag](component: C): C &: CNil = component &: CNil
 
   implicit class CListOps[L <: CList](list: L) {
