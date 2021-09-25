@@ -6,9 +6,9 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.Inspectors.forAll
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.mockito.Mockito.when
-import dev.atedeg.ecscala.{&:, CNil, World}
+import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ECSCanvas, EnvironmentState, PlayState, Point, Vector, Position, Velocity, given}
+import dev.atedeg.ecscalademo.{ given, ECSCanvas, EnvironmentState, PlayState, Point, Position, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.CollisionsFixture
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import scalafx.scene.paint.Color
@@ -25,9 +25,9 @@ class WallCollisionSystemTest extends AnyWordSpec with Matchers {
       world.update(1)
       val view = world.getView[Position &: Velocity &: CNil]
       forAll(view map (_._2)) { comps =>
-          val position &: _ &: CNil = comps
-          position.x should (be >= 10.0 and be <= 90.0)
-          position.y should (be >= 10.0 and be <= 90.0)
+        val position &: _ &: CNil = comps
+        position.x should (be >= 10.0 and be <= 90.0)
+        position.y should (be >= 10.0 and be <= 90.0)
       }
     }
     "change velocities to entities that collide with the canvas's borders" in new CollisionsFixture {

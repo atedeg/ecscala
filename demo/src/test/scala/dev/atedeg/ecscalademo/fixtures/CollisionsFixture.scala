@@ -3,7 +3,7 @@ package dev.atedeg.ecscalademo.fixtures
 import scala.language.implicitConversions
 import dev.atedeg.ecscala.World
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{Position, Velocity, Circle, Color, Mass}
+import dev.atedeg.ecscalademo.{ Circle, Color, Mass, Position, Velocity }
 import dev.atedeg.ecscalademo.given
 
 trait CollisionsFixture {

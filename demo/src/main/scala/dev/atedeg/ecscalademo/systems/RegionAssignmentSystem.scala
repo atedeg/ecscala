@@ -6,7 +6,8 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import dev.atedeg.ecscalademo.{ Circle, Position }
 
-class RegionAssignmentSystem(regions: WritableSpacePartitionContainer) extends System[Position &: Circle &: CNil] {
+class RegionAssignmentSystem(private val regions: WritableSpacePartitionContainer)
+    extends System[Position &: Circle &: CNil] {
 
   override def update(
       entity: Entity,
