@@ -1,4 +1,4 @@
-import sbtghactions.GenerativePlugin.autoImport.{ githubWorkflowPublishPreamble, WorkflowStep }
+import sbtghactions.GenerativePlugin.autoImport.WorkflowStep
 import xerial.sbt.Sonatype.autoImport.sonatypeRepository
 
 val scala3Version = "3.0.1"
@@ -75,19 +75,18 @@ ThisBuild / githubWorkflowBuild := Seq(
   ),
 )
 
-ThisBuild / githubWorkflowPublishPreamble ++= Seq(
-  WorkflowStep.Run(
-    List(
-      """VERSION=`sbt -Dsbt.ci=true 'inspect actual version' | grep "Setting: java.lang.String" | cut -d '=' -f2 | tr -d ' '`""",
-      """echo "VERSION=${VERSION}" >> $GITHUB_ENV""",
-      """IS_SNAPSHOT=`if [[ "${VERSION}" =~ "-" ]] ; then echo "true" ; else echo "false" ; fi`""",
-      """echo "IS_SNAPSHOT=${IS_SNAPSHOT}" >> $GITHUB_ENV""",
-    ),
-    name = Some("Setup environment variables"),
-  ),
-)
-
 ThisBuild / githubWorkflowPublish := Seq(
+  WorkflowStep.Use(
+    "xu-cheng",
+    "latex-action",
+    "v2",
+    name = Some("Build LaTeX report"),
+    params = Map(
+      "root_file" -> "ecscala-report.tex",
+      "args" -> "-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape",
+      "working_directory" -> "doc",
+    ),
+  ),
   WorkflowStep.Sbt(
     List("ci-release"),
     name = Some("Release to Sonatype"),
@@ -113,6 +112,11 @@ ThisBuild / githubWorkflowPublish := Seq(
   ),
 )
 
+val scalaTest = Seq(
+  "org.scalactic" %% "scalactic" % "3.2.9",
+  "org.scalatest" %% "scalatest" % "3.2.9" % "test",
+)
+
 lazy val root = project
   .in(file("."))
   .aggregate(core, benchmarks)
@@ -127,10 +131,7 @@ lazy val core = project
   .in(file("core"))
   .settings(
     name := "ecscala",
-    libraryDependencies := Seq(
-      "org.scalactic" %% "scalactic" % "3.2.9",
-      "org.scalatest" %% "scalatest" % "3.2.9" % "test",
-    ),
+    libraryDependencies := scalaTest,
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",
     ),
@@ -152,4 +153,36 @@ lazy val benchmarks = project
     publish / skip := true,
     test / skip := true,
     githubWorkflowArtifactUpload := false,
+  )
+
+// Determine OS version of JavaFX binaries
+lazy val osName = System.getProperty("os.name") match {
+  case n if n.startsWith("Linux") => "linux"
+  case n if n.startsWith("Mac") => "mac"
+  case n if n.startsWith("Windows") => "win"
+  case _ => throw new Exception("Unknown platform!")
+}
+
+// Add dependency on JavaFX libraries, OS dependent
+lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics", "web", "media", "swing")
+
+ThisBuild / assemblyMergeStrategy := {
+  case PathList("module-info.class") => MergeStrategy.discard
+  case x if x.endsWith("/module-info.class") => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
+    oldStrategy(x)
+}
+
+lazy val demo = project
+  .in(file("demo"))
+  .dependsOn(core)
+  .settings(
+    publish / skip := true,
+    test / skip := true,
+    assembly / assemblyJarName := "ECScalaDemo.jar",
+    githubWorkflowArtifactUpload := false,
+    libraryDependencies ++= scalaTest,
+    libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
+    libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName),
   )

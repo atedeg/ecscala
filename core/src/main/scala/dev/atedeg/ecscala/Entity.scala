@@ -19,8 +19,14 @@ sealed trait Entity {
   def addComponent[C <: Component: ComponentTag](component: C): Entity
 
   /**
-   * @param component
-   *   the [[Component]] to remove from the [[Entity]].
+   * @tparam C
+   *   the type of the [[Component]] to be retrieved.
+   * @return
+   *   the requested component (if present).
+   */
+  def getComponent[C <: Component: ComponentTag]: Option[C]
+
+  /**
    * @tparam C
    *   the type of the [[Component]] to be removed.
    * @return
@@ -54,6 +60,9 @@ object Entity {
       world += (this -> component)
       this
     }
+
+    override def getComponent[C <: Component](using ct: ComponentTag[C]): Option[C] =
+      world.getComponents(using ct) flatMap (_ get this)
 
     override def removeComponent[C <: Component](using ct: ComponentTag[C]): Entity = {
       val componentToRemove = world.getComponents(using ct) flatMap (_.get(this))
