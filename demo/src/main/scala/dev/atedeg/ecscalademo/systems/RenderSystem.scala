@@ -7,6 +7,9 @@ import dev.atedeg.ecscalademo.Vector
 
 class RenderSystem(ecsCanvas: ECSCanvas) extends System[Circle &: Position &: CNil] {
 
+  override def before(deltaTime: DeltaTime, world: World, view: View[Circle &: Position &: CNil]): Unit =
+    ecsCanvas.clear()
+
   override def update(entity: Entity, components: Circle &: Position &: CNil)(
       deltaTime: DeltaTime,
       world: World,
