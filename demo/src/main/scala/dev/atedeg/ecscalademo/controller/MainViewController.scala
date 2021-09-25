@@ -1,26 +1,28 @@
 package dev.atedeg.ecscalademo.controller
 
-import dev.atedeg.ecscala.World
-import dev.atedeg.ecscalademo.{ECSCanvas, MouseState, PlayState, Point, ScalaFXCanvas}
-import javafx.fxml.{FXML, Initializable}
+import dev.atedeg.ecscala.{ &:, CNil, World }
+import dev.atedeg.ecscala.dsl.ECScalaDSL
+import dev.atedeg.ecscalademo.{ Circle, Color, MouseState, PlayState, Point, Position, ScalaFXCanvas }
+import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.control.Button as JfxButton
 import javafx.scene.layout as jfx
 import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.layout.Pane as JfxPane
-import scalafx.scene.control.{Button, Label}
-import scalafx.scene.canvas.{Canvas, GraphicsContext}
-import scalafx.scene.paint.Color
+import scalafx.scene.control.{ Button, Label }
+import scalafx.scene.canvas.{ Canvas, GraphicsContext }
 import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
 import scalafx.animation.AnimationTimer
 import scalafx.util.converter.NumberStringConverter
+import dev.atedeg.ecscalademo.systems.RenderSystem
 
 import java.net.URL
 import java.util.ResourceBundle
 import scala.language.postfixOps
+import dev.atedeg.ecscala.util.types.given
 
-class MainViewController(world: World) extends Initializable {
+class MainViewController(world: World) extends Initializable with ECScalaDSL {
 
   @FXML
   private var playPauseBtnDelegate: JfxButton = _
@@ -51,6 +53,11 @@ class MainViewController(world: World) extends Initializable {
   private var isRunning = false
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
+    import dev.atedeg.ecscalademo.InitialState.*
+    for {
+      (position, color) <- startingPositions zip startingColors
+    } world hasAn entity withComponents { Circle(startingRadius, color) &: position }
+
     loop = GameLoop(f => {
       world.update(f.toFloat)
     })
@@ -60,7 +67,8 @@ class MainViewController(world: World) extends Initializable {
     fps = new Label(fpsDelegate)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
-    ScalaFXCanvas(canvas)
+    world.addSystem(RenderSystem(ScalaFXCanvas(canvas)))
+    loop.start
   }
 
   def onMouseMovedHandler(event: MouseEvent): Unit = {
@@ -82,12 +90,10 @@ class MainViewController(world: World) extends Initializable {
       PlayState.playing = false
       isRunning = false
       playPauseBtn.text = "Play"
-      loop.stop
     } else {
       PlayState.playing = true
       isRunning = true
       playPauseBtn.text = "Pause"
-      loop.start
     }
   }
 }
