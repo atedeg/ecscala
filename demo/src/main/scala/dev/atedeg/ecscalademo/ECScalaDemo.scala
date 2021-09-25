@@ -13,15 +13,11 @@ import javafx.scene.layout.VBox
 object ECScalaDemo extends JFXApp3 {
 
   override def start(): Unit = {
-    val world = World()
-    val mainViewController = new MainViewController(world)
-
-    val loader: FXMLLoader = FXMLLoader(getClass.getResource("/MainView.fxml"))
-    loader.setController(mainViewController)
+    val root: Parent = FXMLLoader.load(getClass.getResource("/MainView.fxml"))
 
     stage = new JFXApp3.PrimaryStage() {
       title = "ECScala Demo"
-      scene = new Scene(loader.load[VBox]())
+      scene = new Scene(root)
     }
     stage.setMinHeight(540)
     stage.setMinWidth(960)

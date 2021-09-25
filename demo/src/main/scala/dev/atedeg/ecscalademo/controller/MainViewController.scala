@@ -22,7 +22,7 @@ import java.util.ResourceBundle
 import scala.language.postfixOps
 import dev.atedeg.ecscala.util.types.given
 
-class MainViewController(world: World) extends Initializable with ECScalaDSL {
+class MainViewController() extends Initializable with ECScalaDSL {
 
   @FXML
   private var playPauseBtnDelegate: JfxButton = _
@@ -54,6 +54,7 @@ class MainViewController(world: World) extends Initializable with ECScalaDSL {
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
     import dev.atedeg.ecscalademo.StartingState.*
+    val world = World()
     for {
       ((position, color), velocity) <- (startingPositions zip startingColors) zip startingVelocities
     } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity }
