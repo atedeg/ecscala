@@ -1,11 +1,14 @@
 package dev.atedeg.ecscalademo.systems
 
+import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.Entity
+import dev.atedeg.ecscalademo.Position
 import dev.atedeg.ecscala.util.types
+import dev.atedeg.ecscalademo
 import dev.atedeg.ecscalademo.fixture.WorldFixture
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
-import dev.atedeg.ecscalademo.{ MouseState, PlayState }
+import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point }
 
 class DragBallSystemTest extends AnyWordSpec with Matchers {
 
@@ -44,6 +47,25 @@ class DragBallSystemTest extends AnyWordSpec with Matchers {
         PlayState.selectedBall = Some(entity)
       }
     }
-    //TODO cover other case test
+    "enabled" should {
+      "update the selectes entity's position" in new DragBallSystemFixture {
+        entity.addComponent(Position(Point(0, 0)))
+        entity.getComponent[Position] match {
+          case Some(position) => position
+          case _ => fail("A component should beee defined")
+        } shouldBe Position(Point(0, 0))
+
+        PlayState.selectedBall = Some(entity)
+        MouseState.coordinates = Point(10, 10)
+
+        world.addSystem(dragBallSystem)
+        world.update(10)
+
+        entity.getComponent[Position] match {
+          case Some(position) => position
+          case _ => fail("A component should been defined")
+        } shouldBe Position(Point(10, 10))
+      }
+    }
   }
 }
