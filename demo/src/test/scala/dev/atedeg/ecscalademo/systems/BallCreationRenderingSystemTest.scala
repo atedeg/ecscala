@@ -7,9 +7,9 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import scalafx.scene.canvas.Canvas
 import javafx.scene.canvas.Canvas as JfxCanvas
-import org.mockito.ArgumentMatchers.{ any, anyDouble, anyObject }
+import org.mockito.ArgumentMatchers.{ any, anyDouble }
 import org.scalatestplus.mockito.MockitoSugar
-import org.mockito.Mockito.*
+import org.mockito.Mockito.verify
 
 class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with MockitoSugar {
 
