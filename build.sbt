@@ -1,9 +1,11 @@
-import sbtghactions.GenerativePlugin.autoImport.{ githubWorkflowPublishPreamble, WorkflowStep }
+import sbtghactions.GenerativePlugin.autoImport.WorkflowStep
+import xerial.sbt.Sonatype.autoImport.sonatypeRepository
 
 val scala3Version = "3.0.1"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
+ThisBuild / homepage := Some(url("https://github.com/nicolasfara/ecscala"))
 ThisBuild / organization := "dev.atedeg"
 ThisBuild / licenses := List("MIT" -> url("https://opensource.org/licenses/MIT"))
 
@@ -36,7 +38,6 @@ ThisBuild / developers := List(
   ),
 )
 
-ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
 ThisBuild / githubWorkflowScalaVersions := Seq("3.0.1")
 ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@1.16")
 ThisBuild / githubWorkflowTargetBranches := Seq("master", "develop")
@@ -120,6 +121,9 @@ lazy val root = project
   .in(file("."))
   .aggregate(core, benchmarks)
   .settings(
+    sonatypeCredentialHost := "s01.oss.sonatype.org",
+    sonatypeRepository := "https://s01.oss.sonatype.org/service/local",
+    name := "ecscala",
     publish / skip := true,
   )
 
