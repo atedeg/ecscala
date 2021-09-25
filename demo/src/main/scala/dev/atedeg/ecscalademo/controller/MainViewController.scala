@@ -15,7 +15,7 @@ import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
 import scalafx.animation.AnimationTimer
 import scalafx.util.converter.NumberStringConverter
-import dev.atedeg.ecscalademo.systems.RenderSystem
+import dev.atedeg.ecscalademo.systems.*
 
 import java.net.URL
 import java.util.ResourceBundle
@@ -56,10 +56,11 @@ class MainViewController(world: World) extends Initializable with ECScalaDSL {
     import dev.atedeg.ecscalademo.StartingState.*
     for {
       (position, color) <- startingPositions zip startingColors
-    } world hasAn entity withComponents { Circle(startingRadius, color) &: position }
+    } world hasAn entity withComponents { Circle(radius, color) &: position }
 
     loop = GameLoop(f => {
       world.update(f.toFloat)
+
     })
 
     playPauseBtn = new Button(playPauseBtnDelegate)
@@ -67,7 +68,10 @@ class MainViewController(world: World) extends Initializable with ECScalaDSL {
     fps = new Label(fpsDelegate)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
+    world hasA system(FrictionSystem())
+    world hasA system(MovementSystem())
     world hasA system(RenderSystem(ScalaFXCanvas(canvas)))
+
     loop.start
   }
 

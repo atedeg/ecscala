@@ -46,5 +46,7 @@ object StartingState {
     Velocity(Vector(0, 0)),
   )
 
-  val startingRadius = 20
+  val radius = 20
+  val frictionCoefficient = 0.05
+  val gravity = 9.81
 }
