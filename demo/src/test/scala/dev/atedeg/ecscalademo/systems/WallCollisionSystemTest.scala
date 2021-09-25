@@ -8,7 +8,7 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 import org.mockito.Mockito.when
 import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ given, ECSCanvas, EnvironmentState, PlayState, Point, Position, Vector, Velocity }
+import dev.atedeg.ecscalademo.{ ECSCanvas, EnvironmentState, PlayState, Point, Position, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.CollisionsFixture
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import scalafx.scene.paint.Color
