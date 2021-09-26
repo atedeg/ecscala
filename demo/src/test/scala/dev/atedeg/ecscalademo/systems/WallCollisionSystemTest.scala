@@ -42,8 +42,8 @@ class WallCollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
       world.update(1)
       val view = getView[Position &: Velocity &: CNil] from world
       forAll(view map (_._2)) { comps =>
-        val Position(Point(x, y)) &: Velocity(velocity) &: CNil = comps
-        velocity shouldBe Vector(if x == 90.0 then -1 else 1, if y == 90.0 then -1 else 1)
+        val Position(x, y) &: Velocity(velocity) &: CNil = comps
+        velocity shouldBe (if x == 90.0 then -1 else 1, if y == 90.0 then -1 else 1)
       }
     }
   }

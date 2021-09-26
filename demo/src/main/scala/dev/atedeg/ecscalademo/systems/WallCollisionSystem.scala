@@ -33,34 +33,33 @@ class WallCollisionSystem(private val canvas: ECSCanvas) extends System[Position
       world: World,
       view: View[Position &: Velocity &: Circle &: CNil],
   ): Deletable[Position &: Velocity &: Circle &: CNil] = {
-    val position &: velocity &: circle &: CNil = components
-    val radius = circle.radius
-    val collidesLeftX = position.x < radius
-    val collidesRightX = position.x > canvas.width - radius
-    val collidesTopY = position.y < radius
-    val collidesBottomY = position.y > canvas.height - radius
-    lazy val mirroredHorizontalVelocity = -velocity.x * EnvironmentState.wallRestitution
-    lazy val mirroredVerticalVelocity = -velocity.y * EnvironmentState.wallRestitution
+    val Position(x, y) &: Velocity(vx, vy) &: Circle(radius, color) &: CNil = components
+    val collidesLeft = x < radius
+    val collidesRight = x > canvas.width - radius
+    val collidesTop = y < radius
+    val collidesBottom = y > canvas.height - radius
+    lazy val mirroredHorizontalVelocity = -vx * EnvironmentState.wallRestitution
+    lazy val mirroredVerticalVelocity = -vy * EnvironmentState.wallRestitution
     val newVelocity = Velocity(
-      if (collidesLeftX) {
-        if velocity.x < 0 then mirroredHorizontalVelocity else velocity.x
-      } else if (collidesRightX) {
-        if velocity.x > 0 then mirroredHorizontalVelocity else velocity.x
+      if (collidesLeft) {
+        if vx < 0 then mirroredHorizontalVelocity else vx
+      } else if (collidesRight) {
+        if vx > 0 then mirroredHorizontalVelocity else vx
       } else {
-        velocity.x
+        vx
       },
-      if (collidesTopY) {
-        if velocity.y < 0 then mirroredVerticalVelocity else velocity.y
-      } else if (collidesBottomY) {
-        if velocity.y > 0 then mirroredHorizontalVelocity else velocity.y
+      if (collidesTop) {
+        if vy < 0 then mirroredVerticalVelocity else vy
+      } else if (collidesBottom) {
+        if vy > 0 then mirroredHorizontalVelocity else vy
       } else {
-        velocity.y
+        vy
       },
     )
     val newPosition = Position(
-      position.x clamped (radius, canvas.width - radius),
-      position.y clamped (radius, canvas.height - radius),
+      x clamped (radius, canvas.width - radius),
+      y clamped (radius, canvas.height - radius),
     )
-    newPosition &: newVelocity &: circle &: CNil
+    newPosition &: newVelocity &: Circle(radius, color) &: CNil
   }
 }

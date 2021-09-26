@@ -46,6 +46,10 @@ class CollisionSystem(private val regions: WritableSpacePartitionContainer) exte
   private def isStuck(positions: (Point, Point), radii: (Double, Double)) =
     compareDistances(positions, radii)(_ < _)
 
+  private def compareDistances(positions: (Point, Point), radii: (Double, Double))(
+      comparer: (Double, Double) => Boolean,
+  ) = comparer((positions._1 - positions._2).squaredNorm, math.pow(radii._1 + radii._2, 2))
+
   private def unstuck(positions: (Point, Point), radii: (Double, Double)) = {
     val distanceVector = positions._1 - positions._2
     val distanceDirection = distanceVector.normalized
@@ -63,10 +67,6 @@ class CollisionSystem(private val regions: WritableSpacePartitionContainer) exte
     val projectedVelocity = deltaPositions * (deltaVelocities dot deltaPositions) / deltaPositions.squaredNorm
     (velA - projectedVelocity * (2 * massB / (massA + massB)), velB + projectedVelocity * (2 * massA / (massA + massB)))
   }
-
-  private def compareDistances(positions: (Point, Point), radii: (Double, Double))(
-      comparer: (Double, Double) => Boolean,
-  ) = comparer((positions._1 - positions._2).squaredNorm, math.pow(radii._1 + radii._2, 2))
 
   private def entitiesInNeighborRegions(region: (Int, Int)): Seq[Entity] = for {
     x <- -1 to 0

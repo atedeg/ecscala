@@ -1,5 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
+import dev.atedeg.ecscala.dsl.ECScalaDSL
+
 import scala.language.implicitConversions
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -9,23 +11,17 @@ import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Circle, Color, Mass, PlayState, Position, Vector, Velocity }
 
-class CollisionSystemTest extends AnyWordSpec with Matchers {
+class CollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "The CollisionSystem" should {
     "keep entities separated" in new CollisionsFixture {
       val black = Color(0, 0, 0)
-      val stuckEntity1 = world
-        .createEntity()
-        .addComponent(Position(0, 0))
-        .addComponent(Velocity(0, 0))
-        .addComponent(Circle(10, black))
-        .addComponent(Mass(1))
-      val stuckEntity2 = world
-        .createEntity()
-        .addComponent(Position(5, 0))
-        .addComponent(Velocity(0, 0))
-        .addComponent(Circle(10, black))
-        .addComponent(Mass(1))
+      val stuckEntity1 = world hasAn entity withComponents {
+        Position(0, 0) &: Velocity(0, 0) &: Circle(10, black) &: Mass(1)
+      }
+      val stuckEntity2 = world hasAn entity withComponents {
+        Position(5, 0) &: Velocity(0, 0) &: Circle(10, black) &: Mass(1)
+      }
 
       PlayState.playing = true
       world.update(1)
@@ -40,18 +36,12 @@ class CollisionSystemTest extends AnyWordSpec with Matchers {
     "compute the new velocities" in new CollisionsFixture {
       val black = Color(0, 0, 0)
 
-      val collidingEntity1 = world
-        .createEntity()
-        .addComponent(Position(20, 20))
-        .addComponent(Velocity(100, 0))
-        .addComponent(Circle(10, black))
-        .addComponent(Mass(1))
-      val collidingEntity2 = world
-        .createEntity()
-        .addComponent(Position(40, 20))
-        .addComponent(Velocity(0, 0))
-        .addComponent(Circle(10, black))
-        .addComponent(Mass(1))
+      val collidingEntity1 = world hasAn entity withComponents {
+        Position(20, 20) &: Velocity(100, 0) &: Circle(10, black) &: Mass(1)
+      }
+      val collidingEntity2 = world hasAn entity withComponents {
+        Position(40, 20) &: Velocity(0, 0) &: Circle(10, black) &: Mass(1)
+      }
 
       PlayState.playing = true
       world.update(1)

@@ -61,32 +61,33 @@ object WritableSpacePartitionContainer {
   private class WritableSpacePartitionContainerImpl() extends WritableSpacePartitionContainer {
     private var regions: Map[(Int, Int), Seq[Entity]] = Map()
     private var entities: Seq[Entity] = List()
-    private var _regionSize = 0.0d
+    private var _regionSize: Double = 0
     private val regionSizeMultiplier = 2
 
     override def regionSize: Double = _regionSize
 
     override def add(entity: Entity): Unit = {
-      val positionComponent = entity.getComponent[Position]
-      val velocityComponent = entity.getComponent[Velocity]
-      val circleComponent = entity.getComponent[Circle]
-      val massComponent = entity.getComponent[Mass]
+      val position = entity.getComponent[Position]
+      val velocity = entity.getComponent[Velocity]
+      val circle = entity.getComponent[Circle]
+      val mass = entity.getComponent[Mass]
       require(
-        positionComponent.isDefined && velocityComponent.isDefined && circleComponent.isDefined && massComponent.isDefined,
+        position.isDefined && velocity.isDefined && circle.isDefined && mass.isDefined,
       )
       entities :+= entity
-      _regionSize = math.max(_regionSize * regionSizeMultiplier, circleComponent.get.radius)
+      _regionSize = math.max(_regionSize * regionSizeMultiplier, circle.get.radius)
     }
 
     override def build(): Unit = {
       regions = entities.foldLeft(Map[(Int, Int), Seq[Entity]]()) { (acc, elem) =>
         val positionComponent = elem.getComponent[Position].get
         val region = getRegionFromPosition(positionComponent)
-        acc + (region -> (acc get region map (_ :+ elem) getOrElse List(elem)))
+        val regionEntities = acc get region map (_ :+ elem) getOrElse List(elem)
+        acc + (region -> regionEntities)
       }
     }
 
-    override def get(region: (Int, Int)): Seq[Entity] = regions.getOrElse(region, Seq())
+    override def get(region: (Int, Int)): Seq[Entity] = regions getOrElse (region, Seq())
 
     override def iterator: Iterator[((Int, Int), Seq[Entity])] = regions.iterator
 
