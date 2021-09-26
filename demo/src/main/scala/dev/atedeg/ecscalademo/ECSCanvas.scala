@@ -37,7 +37,17 @@ trait ECSCanvas {
    * Remove all the elements from the Canvas.
    */
   def clear(): Unit
+
+  /**
+   * @return
+   *   the width of the canvas.
+   */
   def width: Double
+
+  /**
+   * @return
+   *   the height of the canvas.
+   */
   def height: Double
 }
 
@@ -48,7 +58,7 @@ object ScalaFXCanvas {
   def apply(canvas: Canvas): ECSCanvas = new ScalaFXCanvasImpl(canvas)
 
   private class ScalaFXCanvasImpl(canvas: Canvas) extends ECSCanvas {
-    private var graphicsContext: GraphicsContext = canvas.graphicsContext2D
+    private val graphicsContext: GraphicsContext = canvas.graphicsContext2D
 
     override def drawCircle(coordinates: Point, radius: Double, color: Color, lineWidth: Double): Unit = {
       graphicsContext.beginPath()

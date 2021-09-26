@@ -20,12 +20,12 @@ trait RegionAssignmentFixture {
   entity1.addComponent(Circle(2, color))
   entity1.addComponent(Mass(1))
 
-  entity2.addComponent(Position(14.0, 14.0))
+  entity2.addComponent(Position(19.0, 19.0))
   entity2.addComponent(Velocity(0.0, 0.0))
   entity2.addComponent(Circle(10, color))
   entity2.addComponent(Mass(1))
 
-  entity3.addComponent(Position(15.0, 15.0))
+  entity3.addComponent(Position(20.0, 20.0))
   entity3.addComponent(Velocity(0.0, 0.0))
   entity3.addComponent(Circle(5, color))
   entity3.addComponent(Mass(1))

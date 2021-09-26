@@ -6,14 +6,52 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.Entity
 import dev.atedeg.ecscalademo.{ Circle, Mass, Position, Velocity }
 
+/**
+ * This trait represents a read-only version of a space partition container that assigns each added entity to a region
+ * according to its position.
+ */
 trait SpacePartitionContainer extends Iterable[((Int, Int), Seq[Entity])] {
+
+  /**
+   * Get the size of each region.
+   * @return
+   *   the size of each region.
+   */
   def regionSize: Double
+
+  /**
+   * Get all entities that belong to the specified region, if present.
+   * @param region
+   *   the specified region.
+   * @return
+   *   the entities that belong the the specified region.
+   */
   def get(region: (Int, Int)): Seq[Entity]
+
+  /**
+   * Return an iterator that iterates over the non-empty regions.
+   * @return
+   *   the iterator.
+   */
   def regionsIterator: Iterator[(Int, Int)]
 }
 
+/**
+ * This trait represents a writable version of the space partition container.
+ */
 trait WritableSpacePartitionContainer extends SpacePartitionContainer {
+
+  /**
+   * Add an entity to this space partition container. The entity must have the [[Position]], [[Velocity]], [[Mass]] and
+   * [[Circle]] components.
+   * @param entity
+   *   the entity to be added.
+   */
   def add(entity: Entity): Unit
+
+  /**
+   * Build the space partition container so that it can be used by other systems.
+   */
   def build(): Unit
 }
 
@@ -24,7 +62,7 @@ object WritableSpacePartitionContainer {
     private var regions: Map[(Int, Int), Seq[Entity]] = Map()
     private var entities: Seq[Entity] = List()
     private var _regionSize = 0.0d
-    private val regionSizeMultiplier = 1.5
+    private val regionSizeMultiplier = 2
 
     override def regionSize: Double = _regionSize
 
