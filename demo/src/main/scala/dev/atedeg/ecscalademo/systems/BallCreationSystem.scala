@@ -6,7 +6,7 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.*
 
 /**
- * This [[System]] is used to create a new ball into the [[World]]. If the mouse pointer is in the area of another ball,
+ * This [[System]] is used to add a new ball into the [[World]]. If the mouse pointer is in the area of another ball,
  * no ball will be added.
  */
 class BallCreationSystem extends EmptySystem with ECScalaDSL {
