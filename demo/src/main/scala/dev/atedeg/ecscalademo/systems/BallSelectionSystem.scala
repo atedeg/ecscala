@@ -23,5 +23,5 @@ class BallSelectionSystem extends EmptySystem {
   }
 
   private def isOverlapped(point: Point, radius: Double): Boolean =
-    (MouseState.coordinates - point).norm < (radius + StartingState.startingRadius)
+    (MouseState.coordinates - point).squaredNorm < Math.pow(radius + StartingState.startingRadius, 2)
 }

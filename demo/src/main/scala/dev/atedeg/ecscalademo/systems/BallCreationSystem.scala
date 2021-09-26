@@ -6,8 +6,8 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.*
 
 /**
- * This [[System]] is used to add a new ball into the [[World]]. If the mouse pointer is in the area of another ball,
- * no ball will be added.
+ * This [[System]] is used to add a new ball into the [[World]]. If the mouse pointer is in the area of another ball, no
+ * ball will be added.
  */
 class BallCreationSystem extends EmptySystem with ECScalaDSL {
 
@@ -29,5 +29,5 @@ class BallCreationSystem extends EmptySystem with ECScalaDSL {
   }
 
   private def isOverlapped(point: Point, radius: Double): Boolean =
-    (point - MouseState.coordinates).norm < (radius + StartingState.startingRadius)
+    (point - MouseState.coordinates).squaredNorm < Math.pow(radius + StartingState.startingRadius, 2)
 }
