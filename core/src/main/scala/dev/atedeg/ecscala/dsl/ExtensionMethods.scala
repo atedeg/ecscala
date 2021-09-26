@@ -37,16 +37,16 @@ trait ExtensionMethods {
      * entity + Component()
      * }}}
      */
-    def +[C <: Component: ComponentTag](component: C): Entity = entity.addComponent(component)
+    def +=[C <: Component: ComponentTag](component: C): Entity = entity.addComponent(component)
 
     /**
      * This method enables the following syntax:
      *
      * {{{
-     * entity - Component()
+     * entity -= Component()
      * }}}
      */
-    def -[C <: Component: ComponentTag](component: C): Entity = entity.removeComponent(component)
+    def -=[C <: Component: ComponentTag](component: C): Entity = entity.removeComponent(component)
   }
 
   extension (world: World) {

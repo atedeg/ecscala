@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.{ &:, fixtures, CNil, Component, Entity, System, World }
+import dev.atedeg.ecscala.{ &:, fixtures, CNil, Component, Deletable, DeltaTime, Entity, System, View, World }
 import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Position, Velocity, ViewFixture, WorldFixture }
 import dev.atedeg.ecscala.util.types.ComponentTag
 import org.scalatest.matchers.should.Matchers
@@ -32,16 +32,16 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
-  "myEntity - Component" should {
+  "myEntity -= Component" should {
     "work the same way as the entity.removeComponent() method" in new WorldFixture with ComponentsFixture {
       val position = Position(1, 2)
       val velocity = Velocity(3, 4)
       val entity1 = world hasAn entity
 
-      entity1 + position
+      entity1 += position
       world.getComponents[Position] should contain(Map(entity1 -> position))
 
-      entity1 - position
+      entity1 -= position
       world.getComponents[Position] shouldBe empty
     }
   }
@@ -118,6 +118,27 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
         (entity4, Position(3, 3) &: CNil),
         (entity5, Position(3, 3) &: CNil),
       )
+    }
+  }
+
+  "remove MySystem() from world" should {
+    "work the same way as the world.removeSystem method" in new WorldFixture {
+      val entity1 = world hasAn entity withComponent Position(1, 1)
+      val aSystem = new System[Position &: CNil] {
+        override def update(
+            entity: Entity,
+            components: Position &: CNil,
+        )(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]): Deletable[Position &: CNil] = {
+          val Position(x, y) &: CNil = components
+          Position(x + 1, y + 1) &: CNil
+        }
+      }
+      world hasA system(aSystem)
+      remove (aSystem) from world
+
+      world.update(10)
+
+      world.getView[Position &: CNil].toList shouldBe List((entity1, Position(1, 1) &: CNil))
     }
   }
 
