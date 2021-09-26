@@ -20,7 +20,7 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers {
         creationSystem.shouldRun shouldBe true
       }
     }
-    "the mouse is not clicked and game not run" should {
+    "the mouse is not clicked and game is not running" should {
       "not be executed" in new BallCreationSystemFixture {
         disableSystemCondition()
         creationSystem.shouldRun shouldBe false
