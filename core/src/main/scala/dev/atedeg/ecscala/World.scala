@@ -65,6 +65,15 @@ sealed trait World {
   def addSystem[L <: CList: CListTag](system: System[L]): Unit
 
   /**
+   * Remove a [[System]] from the [[World]].
+   * @param system
+   *   the system to remove.
+   * @tparam L
+   *   the [[CList]] of system components.
+   */
+  def removeSystem[L <: CList: CListTag](system: System[L]): Unit
+
+  /**
    * Update the world.
    * @param deltaTime
    *   the time between two updates.
@@ -118,6 +127,9 @@ object World {
 
     override def addSystem[L <: CList](system: System[L])(using clt: CListTag[L]): Unit =
       systems = systems :+ (clt -> system)
+
+    override def removeSystem[L <: CList](system: System[L])(using clt: CListTag[L]): Unit =
+      systems = systems filter (_ != (clt, system))
 
     override def update(deltaTime: DeltaTime): Unit = systems foreach (taggedSystem => {
       val (ct, system) = taggedSystem
