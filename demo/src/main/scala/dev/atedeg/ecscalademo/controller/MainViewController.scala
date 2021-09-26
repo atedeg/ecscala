@@ -65,6 +65,7 @@ class MainViewController() extends Initializable with ECScalaDSL {
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
     import dev.atedeg.ecscalademo.StartingState.*
+    import dev.atedeg.ecscalademo.EnvironmentState.*
     val world = World()
     for {
       ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities

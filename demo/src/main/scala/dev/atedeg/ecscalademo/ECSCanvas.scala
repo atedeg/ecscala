@@ -25,9 +25,9 @@ trait ECSCanvas {
 
   /**
    * @param from
-   *   The strating point from where draw the line.
+   *   The starting point of the line.
    * @param to
-   *   The end point up to where draw the line.
+   *   The end point of the line.
    * @param color
    *   The line color.
    * @param lineWidth

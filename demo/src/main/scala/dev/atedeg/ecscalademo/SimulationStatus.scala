@@ -45,7 +45,9 @@ object StartingState {
     Velocity(Vector(0, 0)),
     Velocity(Vector(0, 0)),
   )
+}
 
+object EnvironmentState {
   val radius = 20.0
   val frictionCoefficient = 0.05
   val gravity = 9.81

@@ -5,6 +5,7 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ PlayState, Velocity }
 import dev.atedeg.ecscalademo.Vector
 import dev.atedeg.ecscalademo.StartingState.*
+import dev.atedeg.ecscalademo.EnvironmentState.*
 import dev.atedeg.ecscalademo.*
 
 /**

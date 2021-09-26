@@ -10,6 +10,8 @@ import dev.atedeg.ecscalademo.Vector
  * @param ecsCanvas
  */
 class RenderSystem(ecsCanvas: ECSCanvas) extends System[Circle &: Position &: CNil] {
+  val selectedBallLineWidth = 3
+  val regularBallLineWidth = 1
 
   override def before(deltaTime: DeltaTime, world: World, view: View[Circle &: Position &: CNil]): Unit =
     ecsCanvas.clear()
@@ -19,7 +21,9 @@ class RenderSystem(ecsCanvas: ECSCanvas) extends System[Circle &: Position &: CN
       world: World,
       view: View[Circle &: Position &: CNil],
   ): Deletable[Circle &: Position &: CNil] = {
-    val lineWidth = PlayState.selectedBall match { case Some(`entity`) => 3; case _ => 1 }
+    val lineWidth = PlayState.selectedBall match {
+      case Some(`entity`) => selectedBallLineWidth; case _ => regularBallLineWidth
+    }
     val Circle(radius, color) &: Position(point) &: CNil = components
     ecsCanvas.drawCircle(point, radius, color, lineWidth)
     components
