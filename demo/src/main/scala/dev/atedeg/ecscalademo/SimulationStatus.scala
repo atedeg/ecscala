@@ -12,6 +12,7 @@ object MouseState {
 object PlayState {
   var playing = false
   var selectedBall: Option[Entity] = Option.empty
+  var addBallMode: Boolean = false
 }
 
 object StartingState {

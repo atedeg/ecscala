@@ -46,12 +46,12 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers {
   }
 
   private def enableSystemCondition(): Unit = {
-    PlayState.playing = false
+    PlayState.addBallMode = true
     MouseState.clicked = true
   }
 
   private def disableSystemCondition(): Unit = {
-    PlayState.playing = false
+    PlayState.addBallMode = true
     MouseState.clicked = false
   }
 

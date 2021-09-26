@@ -39,6 +39,6 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with Moc
     }
   }
 
-  private def enableSystemCondition(): Unit = PlayState.playing = false
-  private def disableSystemCondition(): Unit = PlayState.playing = true
+  private def enableSystemCondition(): Unit = PlayState.addBallMode = true
+  private def disableSystemCondition(): Unit = PlayState.addBallMode = false
 }

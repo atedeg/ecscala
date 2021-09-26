@@ -11,7 +11,7 @@ import dev.atedeg.ecscalademo.*
  */
 class BallCreationSystem extends EmptySystem with ECScalaDSL {
 
-  override def shouldRun: Boolean = MouseState.clicked && !PlayState.playing
+  override def shouldRun: Boolean = MouseState.clicked && PlayState.addBallMode
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     val canBeCreated = world.getView[Position &: Circle &: CNil] map (_._2) forall { cl =>
