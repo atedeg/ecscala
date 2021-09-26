@@ -50,10 +50,6 @@ class DragBallSystemTest extends AnyWordSpec with Matchers {
     "enabled" should {
       "update the selectes entity's position" in new DragBallSystemFixture {
         entity.addComponent(Position(0.0, 0.0))
-        entity.getComponent[Position] match {
-          case Some(position) => position
-          case _ => fail("A component should beee defined")
-        } shouldBe Position(Point(0, 0))
 
         PlayState.selectedBall = Some(entity)
         MouseState.coordinates = Point(10.0, 10.0)
