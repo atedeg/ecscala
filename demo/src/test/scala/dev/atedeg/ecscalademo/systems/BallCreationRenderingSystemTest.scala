@@ -1,5 +1,6 @@
 package dev.atedeg.ecscalademo.systems
 
+import dev.atedeg.ecscala.World
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import dev.atedeg.ecscalademo.{ ECSCanvas, PlayState, ScalaFXCanvas }
@@ -13,7 +14,8 @@ import scalafx.scene.canvas.Canvas
 
 class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with MockitoSugar {
 
-  trait BallCreationRenderingSystemFixture extends WorldFixture {
+  trait BallCreationRenderingSystemFixture {
+    val world = World()
     val canvasMock = mock[ECSCanvas]
     lazy val system = BallCreationRenderingSystem(canvasMock)
   }

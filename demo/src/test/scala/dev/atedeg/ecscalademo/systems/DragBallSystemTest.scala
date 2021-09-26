@@ -1,6 +1,8 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.Entity
+import dev.atedeg.ecscala.Deleted.entity
+import dev.atedeg.ecscala.dsl.ECScalaDSL
+import dev.atedeg.ecscala.{ Entity, World }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.fixtures.WorldFixture
@@ -10,9 +12,11 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import scala.language.implicitConversions
 
-class DragBallSystemTest extends AnyWordSpec with Matchers {
+class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
-  trait DragBallSystemFixture extends WorldFixture {
+  trait DragBallSystemFixture {
+    val world = World()
+    val entity1 = world hasAn entity
     lazy val dragBallSystem: DragBallSystem = DragBallSystem()
   }
 
@@ -37,21 +41,21 @@ class DragBallSystemTest extends AnyWordSpec with Matchers {
     "the game is not running and the mouse is clicked" should {
       "run" in new DragBallSystemFixture {
         PlayState.playing = false
-        PlayState.selectedBall = Some(entity)
+        PlayState.selectedBall = Some(entity1)
         MouseState.down = true
         MouseState.clicked = true
         dragBallSystem.shouldRun shouldBe true
       }
       "update the selectes entity's position" in new DragBallSystemFixture {
-        entity.addComponent(Position(0.0, 0.0))
+        entity1 withComponent Position(0.0, 0.0)
 
-        PlayState.selectedBall = Some(entity)
+        PlayState.selectedBall = Some(entity1)
         MouseState.coordinates = Point(10.0, 10.0)
 
         world.addSystem(dragBallSystem)
         world.update(10)
 
-        entity.getComponent[Position] match {
+        entity1.getComponent[Position] match {
           case Some(position) => position
           case _ => fail("A component should been defined")
         } shouldBe Position(10.0, 10.0)

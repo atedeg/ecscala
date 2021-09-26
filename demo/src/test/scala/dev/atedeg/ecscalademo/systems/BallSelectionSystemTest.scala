@@ -1,5 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
+import dev.atedeg.ecscala.World
+import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.fixtures.WorldFixture
@@ -9,9 +11,10 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import scala.language.implicitConversions
 
-class BallSelectionSystemTest extends AnyWordSpec with Matchers {
+class BallSelectionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
-  trait BallSelectionSystemFixture extends WorldFixture {
+  trait BallSelectionSystemFixture {
+    val world = World()
     lazy val system = BallSelectionSystem()
   }
 
@@ -39,15 +42,15 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers {
         enableSystemCondition()
         PlayState.selectedBall = None
 
-        val entity1 = world.createEntity()
-        val entity2 = world.createEntity()
-        entity1.addComponent(Position(10.0, 10.0))
-        entity1.addComponent(Circle(20, StartingState.startingColor))
-
-        entity2.addComponent(Position(70.0, 70.0))
-        entity2.addComponent(Circle(20, StartingState.startingColor))
+        val entity1 = world hasAn entity withComponents {
+          Position(10.0, 10.0) &: Circle(20, StartingState.startingColor)
+        }
+        val entity2 = world hasAn entity withComponents {
+          Position(70.0, 70.0) &: Circle(20, StartingState.startingColor)
+        }
 
         world.addSystem(system)
+
         PlayState.selectedBall shouldBe None
         MouseState.coordinates = Point(10.0, 10.0)
         world.update(10)
