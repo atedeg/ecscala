@@ -16,7 +16,7 @@ class DragBallSystemTest extends AnyWordSpec with Matchers {
     lazy val dragBallSystem: DragBallSystem = DragBallSystem()
   }
 
-  "A drag ball system" when {
+  "A DragBallSystem" when {
     "the game is running and the mouse is clicked" should {
       "not run" in new DragBallSystemFixture {
         PlayState.playing = true
@@ -42,12 +42,6 @@ class DragBallSystemTest extends AnyWordSpec with Matchers {
         MouseState.clicked = true
         dragBallSystem.shouldRun shouldBe true
       }
-      "update the selected entity's position" in new DragBallSystemFixture {
-        PlayState.playing = false
-        PlayState.selectedBall = Some(entity)
-      }
-    }
-    "enabled" should {
       "update the selectes entity's position" in new DragBallSystemFixture {
         entity.addComponent(Position(0.0, 0.0))
 
