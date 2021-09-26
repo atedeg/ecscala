@@ -35,7 +35,7 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers {
       }
     }
     "a ball is selected" should {
-      "set the ball as current selected" in new BallSelectionSystemFixture {
+      "set the ball as currently selected" in new BallSelectionSystemFixture {
         enableSystemCondition()
         PlayState.selectedBall = None
 
