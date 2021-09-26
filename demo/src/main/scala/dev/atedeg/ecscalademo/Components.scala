@@ -9,18 +9,16 @@ case class Color(r: Int, g: Int, b: Int) {
 }
 
 case class Position(position: Point) extends Component {
+  def this(x: Double, y: Double) = this(Point(x, y))
   def x: Double = position.x
   def y: Double = position.y
 }
 
-given Conversion[Position, Point] = _.position
-
 case class Velocity(velocity: Vector) extends Component {
+  def this(x: Double, y: Double) = this(Vector(x, y))
   def x: Double = velocity.x
   def y: Double = velocity.y
 }
-
-given Conversion[Velocity, Vector] = _.velocity
 
 case class Circle(radius: Double, color: Color) extends Component
 case class Mass(mass: Double) extends Component
