@@ -119,6 +119,13 @@ trait EmptySystem extends System[CNil] {
 
 object EmptySystem {
 
+  /**
+   * Create an [[EmptySystem]] from a lambda that specity the behaviuor of this [[System]].
+   * @param f
+   *   the behaviuor of the [[EmptySystem]] that takes [[DeltaTime]] and the [[World]] and return Unit.
+   * @return
+   *   the [[EmptySystem]]
+   */
   def apply(f: (DeltaTime, World) => Unit): EmptySystem = new EmptySystem {
     override def update(deltaTime: DeltaTime, world: World): Unit = f(deltaTime, world)
   }
