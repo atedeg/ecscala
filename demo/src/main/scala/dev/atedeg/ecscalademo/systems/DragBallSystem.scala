@@ -5,7 +5,7 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ MouseState, PlayState, Position }
 
 /**
- * This [[System]] is used to update selected ball's position according to the mouse pointer.
+ * This [[System]] is used to update the selected ball's [[Position]] according to the mouse pointer.
  */
 class DragBallSystem extends EmptySystem {
 
