@@ -1,6 +1,6 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.util.types
+import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import dev.atedeg.ecscalademo.{ ECSCanvas, PlayState, ScalaFXCanvas }
 import javafx.scene.canvas.Canvas as JfxCanvas

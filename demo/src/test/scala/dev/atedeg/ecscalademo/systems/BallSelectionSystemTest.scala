@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.util.types
-import dev.atedeg.ecscalademo
+import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import dev.atedeg.ecscalademo.*
 import org.scalatest.matchers.should.Matchers
