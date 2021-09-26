@@ -134,7 +134,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
         }
       }
       world hasA system(aSystem)
-      remove (aSystem) from world
+      remove(aSystem) from world
 
       world.update(10)
 

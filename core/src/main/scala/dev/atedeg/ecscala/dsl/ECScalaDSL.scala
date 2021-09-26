@@ -79,35 +79,36 @@ trait ECScalaDSL extends ExtensionMethods with Conversions with FromSyntax {
   /**
    * Keyword that enables the use of the word "getView" in the dsl.
    */
-  def getView[L <: CList](using clt: CListTag[L]): ViewFromWorld[L] = ViewFromWorld(using clt)
+  def getView[L <: CList](using clt: CListTag[L]): From[World, View[L]] = ViewFromWorld(using clt)
 
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove[L <: CList: CListTag](componentsList: L): FromSth[Entity] = FromEntity(componentsList)
+  def remove[L <: CList: CListTag](componentsList: L): From[Entity, Unit] = FromEntity(componentsList)
 
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove(entities: Seq[Entity]): FromSth[World] = EntitiesFromWorld(entities)
+  def remove(entities: Seq[Entity]): From[World, Unit] = EntitiesFromWorld(entities)
 
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove[L <: CList: CListTag](system: System[L]): FromSth[World] = SystemFromWorld(system)
+  def remove[L <: CList: CListTag](system: System[L]): From[World, Unit] = SystemFromWorld(system)
 
   /**
    * Keyword that enables the use of the word "clearAll" in the dsl.
    */
-  def clearAll: FromSth[World] = ClearAllFromWorld(ClearWord())
+  def clearAll: From[World, Unit] = ClearAllFromWorld(ClearWord())
 }
 
 private[dsl] trait FromSyntax {
+
   /**
    * This trait enables the use of the word "from" in the dsl
    */
-  trait FromSth[A] {
-    def from(element: A): Unit
+  trait From[A, B] {
+    def from(elem: A): B
   }
 
   /**
@@ -116,8 +117,8 @@ private[dsl] trait FromSyntax {
    *   remove (entity1, entity2) from world
    * }}}
    */
-  class EntitiesFromWorld(entities: Seq[Entity]) extends FromSth[World] {
-    override def from(world: World) = entities foreach { world.removeEntity(_) }
+  class EntitiesFromWorld(entities: Seq[Entity]) extends From[World, Unit] {
+    override def from(world: World): Unit = entities foreach { world.removeEntity(_) }
   }
 
   /**
@@ -126,8 +127,8 @@ private[dsl] trait FromSyntax {
    *   remove (system1) from world
    * }}}
    */
-  class SystemFromWorld[L <: CList: CListTag](system: System[L]) extends FromSth[World] {
-    override def from(world: World) = world.removeSystem(system)
+  class SystemFromWorld[L <: CList: CListTag](system: System[L]) extends From[World, Unit] {
+    override def from(world: World): Unit = world.removeSystem(system)
   }
 
   /**
@@ -136,35 +137,34 @@ private[dsl] trait FromSyntax {
    *   clearAll from world
    * }}}
    */
-  class ClearAllFromWorld(clearWord: ClearWord) extends FromSth[World] {
-    override def from(world: World) = world.clear()
+  class ClearAllFromWorld(clearWord: ClearWord) extends From[World, Unit] {
+    override def from(world: World): Unit = world.clear()
   }
 
-  class FromEntity[L <: CList](componentList: L)(using clt: CListTag[L]) extends FromSth[Entity] {
+  /**
+   * This case class enables the following syntax:
+   *
+   * {{{
+   *   remove (myComponent) from entity1
+   * }}}
+   */
+  class FromEntity[L <: CList](componentList: L)(using clt: CListTag[L]) extends From[Entity, Unit] {
 
-    /**
-     * This method enables the following syntax:
-     *
-     * {{{
-     *   remove (myComponent) from entity1
-     * }}}
-     */
-    override def from(entity: Entity) =
+    override def from(entity: Entity): Unit =
       componentList zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] foreach {
         entity.removeComponent(_)(using _)
       }
   }
 
-  class ViewFromWorld[L <: CList](using clt: CListTag[L]) {
-
-    /**
-     * This method enables the following syntax:
-     *
-     * {{{
-     *   getView[MyComponent1 &: MyComponent2 &: CNil] from world
-     * }}}
-     */
-    def from(world: World): View[L] = world.getView(using clt)
+  /**
+   * This case class enables the following syntax:
+   *
+   * {{{
+   *   getView[MyComponent1 &: MyComponent2 &: CNil] from world
+   * }}}
+   */
+  class ViewFromWorld[L <: CList](using clt: CListTag[L]) extends From[World, View[L]] {
+    override def from(world: World): View[L] = world.getView(using clt)
   }
 }
 
@@ -178,6 +178,7 @@ object Words {
    * }}}
    */
   case class EntityWord()
+
   /**
    * This case class enables the following syntax:
    *
