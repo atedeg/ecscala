@@ -105,7 +105,7 @@ trait ExcludingSystem[LIncluded <: CList, LExcluded <: CList](using
 }
 
 /**
- * A [[System]] that not iterate over any [[Component]].
+ * A [[System]] that does not iterate over any [[Component]].
  */
 trait EmptySystem extends System[CNil] {
   def update(deltaTime: DeltaTime, world: World): Unit
