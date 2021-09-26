@@ -6,7 +6,7 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ Circle, Color, Mass, Position, Velocity }
 import dev.atedeg.ecscalademo.given
 
-trait CollisionsFixture {
+trait WallCollisionsFixture {
   val world = World()
 
   val entities = for {

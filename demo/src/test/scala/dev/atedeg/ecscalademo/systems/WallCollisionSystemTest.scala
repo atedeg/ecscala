@@ -9,14 +9,14 @@ import org.mockito.Mockito.when
 import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ ECSCanvas, EnvironmentState, PlayState, Point, Position, Vector, Velocity }
-import dev.atedeg.ecscalademo.fixtures.CollisionsFixture
+import dev.atedeg.ecscalademo.fixtures.WallCollisionsFixture
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import scalafx.scene.paint.Color
 
 class WallCollisionSystemTest extends AnyWordSpec with Matchers {
 
   "The WallCollisionSystem" should {
-    "keep entities inside the canvas's borders" in new CollisionsFixture {
+    "keep entities inside the canvas's borders" in new WallCollisionsFixture {
       PlayState.playing = true
       val canvas = mock[ECSCanvas]
       when(canvas.width) thenReturn 100.0
@@ -30,7 +30,7 @@ class WallCollisionSystemTest extends AnyWordSpec with Matchers {
         position.y should (be >= 10.0 and be <= 90.0)
       }
     }
-    "change velocities to entities that collide with the canvas's borders" in new CollisionsFixture {
+    "change velocities to entities that collide with the canvas's borders" in new WallCollisionsFixture {
       PlayState.playing = true
       EnvironmentState.wallRestitution = 1
       val canvas = mock[ECSCanvas]
