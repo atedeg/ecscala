@@ -1,12 +1,12 @@
 package dev.atedeg.ecscalademo.systems
 
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{Circle, Color, ECSCanvas, MouseState, PlayState, Point, Position}
+import dev.atedeg.ecscalademo.{ Circle, Color, ECSCanvas, MouseState, PlayState, Point, Position }
 import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
-import org.mockito.Mockito.{verify, when}
+import org.mockito.Mockito.{ verify, when }
 import dev.atedeg.ecscala.util.types.given
 
 class RenderSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {

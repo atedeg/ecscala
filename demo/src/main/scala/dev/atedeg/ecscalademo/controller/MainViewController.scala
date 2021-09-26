@@ -59,7 +59,6 @@ class MainViewController() extends Initializable with ECScalaDSL {
       ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
     } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity }
 
-    addSystemsToWorld(world)
     loop = GameLoop(world.update(_))
 
     playPauseBtn = new Button(playPauseBtnDelegate)
@@ -67,6 +66,7 @@ class MainViewController() extends Initializable with ECScalaDSL {
     fps = new Label(fpsDelegate)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
+    addSystemsToWorld(world, canvas)
     loop.start
   }
 
@@ -96,7 +96,7 @@ class MainViewController() extends Initializable with ECScalaDSL {
     }
   }
 
-  def addSystemsToWorld(world: World) = {
+  def addSystemsToWorld(world: World, canvas: scalafx.scene.canvas.Canvas) = {
     world hasA system(FrictionSystem())
     world hasA system(MovementSystem())
     world hasA system(RenderSystem(ScalaFXCanvas(canvas)))
