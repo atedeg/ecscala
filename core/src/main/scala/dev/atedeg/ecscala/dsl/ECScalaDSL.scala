@@ -3,62 +3,72 @@ package dev.atedeg.ecscala.dsl
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity, System, View, World }
 import dev.atedeg.ecscala.dsl.Words.*
-import dev.atedeg.ecscala.util.types
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the ECScala framework operations using an
  * english-like syntax. Here's the things you can do:
  *
- * '''Create an entity in a world:'''
+ * '''Create an Entity in a World:'''
  * {{{
  * val world = World()
  * val entity1 = world hasAn entity
  * }}}
  *
- * '''Remove entities from a world:'''
+ * '''Remove Entities from a World:'''
  * {{{
  *   *  world - entity1
  *   *  remove (entity1) from world
  *   *  remove (List(entity1, entity2, entity3)) from world
  * }}}
  *
- * '''Create an entity in a world with a component:'''
+ * '''Create an Entity in a World with a Component:'''
  * {{{
  * val entity1 = world hasAn entity withComponent MyComponent()
  * }}}
  *
- * '''Create an entity in a world with multiple components:'''
+ * '''Create an Entity in a World with multiple Components:'''
  * {{{
  * val entity1 = world hasAn entity withComponents {
  *       MyComponent1() &: MyComponent2() &: MyComponent3()
  * }
  * }}}
  *
- * '''Add components to an entity:'''
+ * '''Add Components to an Entity:'''
  * {{{
  *   *  entity1 += MyComponent()
  *   *  entity1 withComponent MyComponent()
  *   *  entity1 withComponents { MyComponent1() &: MyComponent2() }
  * }}}
  *
- * '''Remove components from an entity:'''
+ * '''Remove Components from an Entity:'''
  * {{{
  *   *  remove { MyComponent() } from entity1
  *   *  entity1 -= MyComponent()
  *   *  remove { MyComponent1() &: MyComponent2() &: MyComponent3() } from entity1
  * }}}
  *
- * '''Add a system to a world:'''
+ * '''Add a System to a World:'''
  * {{{
- * world hasA system[MyComponent &: CNil] { (_,_,_) => {}}
+ *     * world hasA system[MyComponent &: CNil] { (_,_,_) => {}}
+ *     * world hasA system(MySistem())
  * }}}
  *
- * '''Get a view from a world:'''
+ * '''Remove a System from a World'''
+ * {{{
+ *   remove MySystem() from world
+ * }}}
+ *
+ * '''Get a View from a World:'''
  * {{{
  *   val view = getView[MyComponent1 &: MyComponent2 &: CNil] from world
  * }}}
  *
- * '''Remove all entities and their components from a world:'''
+ * '''Get a View without certain Components'''
+ * {{{
+ *   val view = getView[MyComponent1 &: CNil].excluding[MyComponent2 &: CNil] from world
+ * }}}
+ *
+ * '''Remove all Entities and their Components from a World:'''
  * {{{
  *   clearAll from world
  * }}}

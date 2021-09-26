@@ -119,6 +119,27 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
         (entity4, Position(3, 3) &: CNil),
         (entity5, Position(3, 3) &: CNil),
       )
+
+      val mySystem = new System[Position &: CNil] {
+        override def update(
+            entity: Entity,
+            components: Position &: CNil,
+        )(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]) = {
+          val Position(x, y) &: CNil = components
+          Position(x + 3, y + 3)
+        }
+      }
+
+      world hasA system(mySystem)
+      world.update(10)
+
+      world.getView[Position &: CNil] should contain theSameElementsAs List(
+        (entity1, Position(10, 10) &: CNil),
+        (entity3, Position(10, 10) &: CNil),
+        (entity4, Position(10, 10) &: CNil),
+        (entity5, Position(10, 10) &: CNil),
+      )
+
     }
   }
 
@@ -144,7 +165,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
   }
 
   "getView[Position &: CNil] from world" should {
-    "work the same way as the world.getView[Position &: CNil] method" in new ViewFixture with WorldFixture {
+    "work the same way as the world.getView[Position &: CNil] method" in new ViewFixture {
       val view = getView[Position &: Velocity &: CNil] from world
 
       view should contain theSameElementsAs List(
@@ -156,7 +177,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
   }
 
   "geView[Position &: CNil] excluding[Velocity &: CNil] from world" should {
-    "work the same way as the world.getView[]" in new ViewFixture with WorldFixture {
+    "work the same way as the world.getView[]" in new ViewFixture {
       val view = getView[Position &: Velocity &: CNil].excluding[Mass &: CNil] from world
 
       view should contain theSameElementsAs List(
