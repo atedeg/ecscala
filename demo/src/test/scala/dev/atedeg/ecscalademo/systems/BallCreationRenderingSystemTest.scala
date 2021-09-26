@@ -19,8 +19,8 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with Moc
   }
 
   "A RenderingCreationBallSystem" when {
-    "the game is run" should {
-      "enabled" in new BallCreationRenderingSystemFixture {
+    "the game is not running" should {
+      "be enabled" in new BallCreationRenderingSystemFixture {
         enableSystemCondition()
         system.shouldRun shouldBe true
       }
@@ -30,7 +30,9 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with Moc
         world.update(10)
         verify(canvasMock).drawCircle(any(), anyDouble(), any(), anyDouble())
       }
-      "disabled" in new BallCreationRenderingSystemFixture {
+    }
+    "the game is running" should {
+      "be disabled" in new BallCreationRenderingSystemFixture {
         disableSystemCondition()
         system.shouldRun shouldBe false
       }
