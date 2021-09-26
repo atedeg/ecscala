@@ -79,7 +79,7 @@ trait ECScalaDSL extends ExtensionMethods with Conversions with FromSyntax {
   /**
    * Keyword that enables the use of the word "getView" in the dsl.
    */
-  def getView[L <: CList](using clt: CListTag[L]): From[World, View[L]] = ViewFromWorld(using clt)
+  def getView[L <: CList](using clt: CListTag[L]): ViewFromWorld[L] = ViewFromWorld(using clt)
 
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
@@ -163,8 +163,17 @@ private[dsl] trait FromSyntax {
    *   getView[MyComponent1 &: MyComponent2 &: CNil] from world
    * }}}
    */
-  class ViewFromWorld[L <: CList](using clt: CListTag[L]) extends From[World, View[L]] {
-    override def from(world: World): View[L] = world.getView(using clt)
+  class ViewFromWorld[A <: CList](using cltA: CListTag[A]) extends From[World, View[A]] {
+    override def from(world: World): View[A] = world.getView(using cltA)
+
+    def excluding[B <: CList](using cltB: CListTag[B]): ExcludingViewFromWorld[A, B] = ExcludingViewFromWorld(using
+      cltA,
+    )(using cltB)
+  }
+
+  class ExcludingViewFromWorld[A <: CList, B <: CList](using cltA: CListTag[A])(using cltB: CListTag[B])
+      extends From[World, View[A]] {
+    def from(world: World) = world.getView(using cltA, cltB)
   }
 }
 
