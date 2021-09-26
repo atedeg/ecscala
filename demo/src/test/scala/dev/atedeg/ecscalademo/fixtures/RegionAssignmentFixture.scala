@@ -1,36 +1,28 @@
 package dev.atedeg.ecscalademo.fixtures
 
 import scala.language.implicitConversions
-import dev.atedeg.ecscala.given
+import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.World
+import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{ Circle, Color, Mass, Position, Velocity }
-import dev.atedeg.ecscalademo.given
+import dev.atedeg.ecscalademo
 
-trait RegionAssignmentFixture {
+trait RegionAssignmentFixture extends ECScalaDSL {
   private val color = Color(0, 0, 0)
   val world = World()
-  val entity1 = world.createEntity()
-  val entity2 = world.createEntity()
-  val entity3 = world.createEntity()
-  val entity4 = world.createEntity()
-  val entity5 = world.createEntity()
-  entity1.addComponent(Position(0.0, 0.0))
-  entity1.addComponent(Velocity(0.0, 0.0))
-  entity1.addComponent(Circle(2, color))
-  entity1.addComponent(Mass(1))
 
-  entity2.addComponent(Position(19.0, 19.0))
-  entity2.addComponent(Velocity(0.0, 0.0))
-  entity2.addComponent(Circle(10, color))
-  entity2.addComponent(Mass(1))
+  val entity1 = world hasAn entity withComponents {
+    Position(0, 0) &: Velocity(0, 0) &: Circle(2, color) &: Mass(1)
+  }
 
-  entity3.addComponent(Position(20.0, 20.0))
-  entity3.addComponent(Velocity(0.0, 0.0))
-  entity3.addComponent(Circle(5, color))
-  entity3.addComponent(Mass(1))
+  val entity2 = world hasAn entity withComponents {
+    Position(19, 19) &: Velocity(0, 0) &: Circle(10, color) &: Mass(1)
+  }
 
-  entity4.addComponent(Position(0.0, 0.0))
-
-  entity5.addComponent(Circle(10, color))
+  val entity3 = world hasAn entity withComponents {
+    Position(20, 20) &: Velocity(0, 0) &: Circle(5, color) &: Mass(1)
+  }
+  val entity4 = world hasAn entity withComponents { Position(0, 0) }
+  val entity5 = world hasAn entity withComponents { Circle(10, color) }
 }
