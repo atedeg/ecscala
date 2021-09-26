@@ -25,7 +25,7 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with Moc
         system.shouldRun shouldBe true
       }
       "render the ball" in new BallCreationRenderingSystemFixture {
-        PlayState.playing = false
+        enableSystemCondition()
         world.addSystem(system)
         world.update(10)
         verify(canvasMock).drawCircle(any(), anyDouble(), any(), anyDouble())
