@@ -18,8 +18,8 @@ class BallSelectionSystem extends EmptySystem {
       isOverlapped(point, radius)
     } map (_._1)
 
-    if (entitySelected.isEmpty) then PlayState.selectedBall = None
-    else PlayState.selectedBall = Some(entitySelected.get)
+    if (selectedEntity.isEmpty) then PlayState.selectedBall = None
+    else PlayState.selectedBall = Some(selectedEntity.get)
   }
 
   private def isOverlapped(point: Point, radius: Double): Boolean =
