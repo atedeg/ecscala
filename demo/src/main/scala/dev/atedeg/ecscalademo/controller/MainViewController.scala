@@ -2,7 +2,18 @@ package dev.atedeg.ecscalademo.controller
 
 import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{ Circle, Color, MouseState, PlayState, Point, Position, ScalaFXCanvas, Vector, Velocity }
+import dev.atedeg.ecscalademo.{
+  Circle,
+  Color,
+  Mass,
+  MouseState,
+  PlayState,
+  Point,
+  Position,
+  ScalaFXCanvas,
+  Vector,
+  Velocity,
+}
 import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.control.Button as JfxButton
@@ -57,7 +68,7 @@ class MainViewController() extends Initializable with ECScalaDSL {
     val world = World()
     for {
       ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
-    } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity }
+    } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity &: Mass(mass) }
 
     loop = GameLoop(world.update(_))
 
