@@ -13,7 +13,7 @@ class BallSelectionSystem extends EmptySystem {
   override def shouldRun: Boolean = !PlayState.playing && MouseState.down
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
-    val entitySelected: Option[Entity] = world.getView[Position &: Circle &: CNil] find { e =>
+    val selectedEntity: Option[Entity] = world.getView[Position &: Circle &: CNil] find { e =>
       val Position(point) &: Circle(radius, _) &: CNil = e._2
       isOverlapped(point, radius)
     } map (_._1)
