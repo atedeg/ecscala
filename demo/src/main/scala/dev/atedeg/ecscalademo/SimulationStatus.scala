@@ -18,4 +18,5 @@ object StartingState {
   val startingRadius: Double = 20.0
   val startingColor: Color = Color(255, 255, 0)
   val startingMass: Double = 1
+  val startingVelocity: Vector = Vector(0.0, 0.0)
 }

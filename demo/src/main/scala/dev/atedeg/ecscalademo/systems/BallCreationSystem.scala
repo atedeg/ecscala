@@ -22,7 +22,7 @@ class BallCreationSystem extends EmptySystem with ECScalaDSL {
       world hasAn entity withComponents {
         Position(MouseState.coordinates) &:
           Circle(StartingState.startingRadius, StartingState.startingColor) &:
-          Velocity(Vector(0, 0)) &:
+          Velocity(StartingState.startingVelocity) &:
           Mass(StartingState.startingMass)
       }
     }
