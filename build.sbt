@@ -179,7 +179,7 @@ lazy val demo = project
   .dependsOn(core)
   .settings(
     publish / skip := true,
-    test / skip := true,
+    Test / parallelExecution := false,
     assembly / assemblyJarName := "ECScalaDemo.jar",
     githubWorkflowArtifactUpload := false,
     libraryDependencies ++= scalaTest,
