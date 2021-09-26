@@ -1,6 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.{ &:, CNil }
+import com.sun.webkit.dom.DocumentImpl
+import dev.atedeg.ecscala.{ &:, CNil, View }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo
 import dev.atedeg.ecscalademo.{ PlayState, Point, Position, Vector, Velocity }
@@ -24,10 +25,10 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         world hasA system(frictionSystem)
 
         (0 to 2) foreach { _ => world.update(10) }
+        val view: View[Velocity &: CNil] = getView[Velocity &: CNil] from world
+        val Velocity(vector) &: CNil = view.head._2
 
-        getView[Velocity &: CNil] from world should contain theSameElementsAs List(
-          (ball, Velocity(Vector(298.5285, 0)) &: CNil),
-        )
+        vector.x should be < initialVelocity.x
       }
       "don't update the component's Velocity if its initial Velocity is 0" in new WorldFixture with SystemsFixture {
         PlayState.playing = true
