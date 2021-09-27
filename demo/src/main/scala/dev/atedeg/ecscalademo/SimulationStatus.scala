@@ -13,7 +13,7 @@ object PlayState {
   var playing = false
   var selectedBall: Option[Entity] = Option.empty
   var addBallMode: Boolean = false
-  var velocityChainging: Boolean = false
+  var velocityChanging: Boolean = false
 }
 
 object StartingState {
