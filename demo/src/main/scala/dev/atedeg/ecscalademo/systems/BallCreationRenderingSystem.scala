@@ -14,7 +14,7 @@ import scala.language.implicitConversions
  */
 class BallCreationRenderingSystem(private val canvas: ECSCanvas) extends EmptySystem {
 
-  override def shouldRun: Boolean = PlayState.addBallMode
+  override def shouldRun: Boolean = !PlayState.playing && PlayState.addBallMode
 
   override def update(deltaTime: DeltaTime, world: World): Unit =
     canvas.drawCircle(MouseState.coordinates, StartingState.startingRadius, StartingState.startingColor, 1)
