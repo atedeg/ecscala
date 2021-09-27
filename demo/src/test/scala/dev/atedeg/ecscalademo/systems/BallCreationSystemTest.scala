@@ -3,7 +3,6 @@ package dev.atedeg.ecscalademo.systems
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.{ CNil, Entity, World }
-import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import dev.atedeg.ecscalademo.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
