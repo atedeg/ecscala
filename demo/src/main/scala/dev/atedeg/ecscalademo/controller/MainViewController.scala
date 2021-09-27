@@ -34,7 +34,7 @@ import dev.atedeg.ecscalademo.systems.*
 import java.net.URL
 import java.util.ResourceBundle
 import scala.language.postfixOps
-import dev.atedeg.ecscala.util.types
+import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 
 class MainViewController extends Initializable with ECScalaDSL {
@@ -105,16 +105,17 @@ class MainViewController extends Initializable with ECScalaDSL {
   }
 
   private def addSystemsToWorld(world: World, canvas: scalafx.scene.canvas.Canvas) = {
+    val container = WritableSpacePartitionContainer()
     world hasA system(BallCreationSystem())
     world hasA system(BallCreationRenderingSystem(ScalaFXCanvas(canvas)))
     world hasA system(BallSelectionSystem())
     world hasA system(DragBallSystem())
     world hasA system(VelocityArrowSystem(ScalaFXCanvas(canvas)))
     world hasA system(VelocityEditingSystem())
-    world hasA system(RegionAssignmentSystem(WritableSpacePartitionContainer()))
+    world hasA system(RegionAssignmentSystem(container))
     world hasA system(FrictionSystem())
     world hasA system(MovementSystem())
-    world hasA system(CollisionSystem(WritableSpacePartitionContainer()))
+    world hasA system(CollisionSystem(container))
     world hasA system(WallCollisionSystem(ScalaFXCanvas(canvas)))
     world hasA system(RenderSystem(ScalaFXCanvas(canvas)))
   }

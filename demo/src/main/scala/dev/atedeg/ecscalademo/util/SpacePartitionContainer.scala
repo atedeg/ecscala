@@ -53,6 +53,11 @@ trait WritableSpacePartitionContainer extends SpacePartitionContainer {
    * Build the space partition container so that it can be used by other systems.
    */
   def build(): Unit
+
+  /**
+   * Clear the contents of the space partition container.
+   */
+  def clear(): Unit
 }
 
 object WritableSpacePartitionContainer {
@@ -85,6 +90,12 @@ object WritableSpacePartitionContainer {
         val regionEntities = acc get region map (_ :+ elem) getOrElse List(elem)
         acc + (region -> regionEntities)
       }
+    }
+
+    override def clear(): Unit = {
+      regions = Map()
+      entities = List()
+      _regionSize = 0
     }
 
     override def get(region: (Int, Int)): Seq[Entity] = regions getOrElse (region, Seq())
