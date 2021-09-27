@@ -104,19 +104,29 @@ trait ExcludingSystem[LIncluded <: CList, LExcluded <: CList](using
   override protected def getView(world: World): View[LIncluded] = world.getView(using cltIncl, cltExcl)
 }
 
+/**
+ * A [[System]] that does not iterate over any [[Component]].
+ */
 trait EmptySystem extends System[CNil] {
-  def update(): Unit
+  def update(deltaTime: DeltaTime, world: World): Unit
 
   override final def update(entity: Entity, components: CNil)(deltaTime: DeltaTime, world: World, view: View[CNil]) =
     throw new IllegalStateException("An EmptySystem's update method should never be called.")
 
-  override final def before(deltaTime: DeltaTime, world: World, view: View[CNil]): Unit = update()
+  override final def before(deltaTime: DeltaTime, world: World, view: View[CNil]): Unit = update(deltaTime, world)
   override final def after(deltaTime: DeltaTime, world: World, view: View[CNil]): Unit = ()
 }
 
 object EmptySystem {
 
-  def apply(f: () => Unit): EmptySystem = new EmptySystem {
-    override def update(): Unit = f()
+  /**
+   * Create an [[EmptySystem]] from a lambda that specity the behaviuor of this [[System]].
+   * @param f
+   *   the behaviuor of the [[EmptySystem]] that takes [[DeltaTime]] and the [[World]] and return Unit.
+   * @return
+   *   the [[EmptySystem]]
+   */
+  def apply(f: (DeltaTime, World) => Unit): EmptySystem = new EmptySystem {
+    override def update(deltaTime: DeltaTime, world: World): Unit = f(deltaTime, world)
   }
 }

@@ -1,5 +1,7 @@
 package dev.atedeg.ecscalademo.controller
 
+import dev.atedeg.ecscala.World
+import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, Point, ScalaFXCanvas }
 import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{

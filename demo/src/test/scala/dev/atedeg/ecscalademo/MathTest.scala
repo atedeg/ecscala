@@ -6,6 +6,16 @@ import org.scalatest.wordspec.AnyWordSpec
 class MathTest extends AnyWordSpec with Matchers {
 
   "A point" when {
+    "inside a radius of another point" should {
+      "overlapped" in {
+        Point(1, 1).isOverlappedWith(Point(2, 2), 10, 10) shouldBe true
+      }
+    }
+    "outside a radius of another point" should {
+      "not overlapped" in {
+        Point(1, 1).isOverlappedWith(Point(20, 20), 5, 5) shouldBe false
+      }
+    }
     "adding a vector" should {
       "return a point with summed components" in {
         Point(1, 1) + Vector(2, 3) shouldBe Point(3, 4)
@@ -75,9 +85,22 @@ class MathTest extends AnyWordSpec with Matchers {
 
   "A number" can {
     "be clamped between a minimum and a maximum" in {
-      5.clamped(1, 10) shouldBe 5
-      10.clamped(2, 5) shouldBe 5
-      0.clamped(10, 20) shouldBe 10
+      5 clamped (1, 10) shouldBe 5
+      10 clamped (2, 5) shouldBe 5
+      0 clamped (10, 20) shouldBe 10
+    }
+  }
+
+  "A (Double, Double) tuple" can {
+    import scala.language.implicitConversions
+    import dev.atedeg.ecscalademo.given
+    "be converted to a vector" in {
+      val vector: Vector = (10.0, 20.0)
+      vector shouldBe Vector(10, 20)
+    }
+    "be converted to a point" in {
+      val point: Point = (10.0, 20.0)
+      point shouldBe Point(10, 20)
     }
   }
 }
