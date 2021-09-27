@@ -5,7 +5,7 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.World
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.given
-import dev.atedeg.ecscalademo.{Point, Position, Vector, Velocity}
+import dev.atedeg.ecscalademo.{ Point, Position, Vector, Velocity }
 import dev.atedeg.ecscalademo.systems.VelocityEditingSystem
 
 trait VelocityFixture extends ECScalaDSL {

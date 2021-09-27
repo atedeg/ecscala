@@ -6,11 +6,12 @@ import scala.language.implicitConversions
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.fixtures.VelocityFixture
-import dev.atedeg.ecscalademo.{MouseState, PlayState, Point, Velocity}
+import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Velocity }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class VelocityEditingSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
+
   "A VelocityEditingSystem" should {
     "run when the simulation is not running, there is a selected ball and the game is in velocity editing mode" in new VelocityFixture {
       system.shouldRun shouldBe false

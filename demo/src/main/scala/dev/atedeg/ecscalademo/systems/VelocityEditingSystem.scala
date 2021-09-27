@@ -3,8 +3,8 @@ package dev.atedeg.ecscalademo.systems
 import scala.language.implicitConversions
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.{DeltaTime, EmptySystem, World}
-import dev.atedeg.ecscalademo.{MouseState, PlayState, Position, Vector, Velocity, clamped}
+import dev.atedeg.ecscala.{ DeltaTime, EmptySystem, World }
+import dev.atedeg.ecscalademo.{ clamped, MouseState, PlayState, Position, Vector, Velocity }
 
 class VelocityEditingSystem extends EmptySystem {
   val minVelocityIntensity = 0
@@ -12,6 +12,7 @@ class VelocityEditingSystem extends EmptySystem {
   val intensityMultiplier = 2
 
   override def shouldRun = !PlayState.playing && PlayState.selectedBall.isDefined && PlayState.velocityEditingMode
+
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     if (MouseState.clicked) {
       val selectedBall = PlayState.selectedBall.get
