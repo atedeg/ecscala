@@ -33,7 +33,7 @@ class WallCollisionSystem(private val canvas: ECSCanvas) extends System[Position
       world: World,
       view: View[Position &: Velocity &: Circle &: CNil],
   ): Deletable[Position &: Velocity &: Circle &: CNil] = {
-    val Position(x, y) &: Velocity(vx, vy) &: Circle(radius, color) &: CNil = components
+    val Position(Point(x, y)) &: Velocity(Vector(vx, vy)) &: Circle(radius, color) &: CNil = components
     val collidesLeft = x < radius
     val collidesRight = x > canvas.width - radius
     val collidesTop = y < radius

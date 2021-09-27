@@ -67,7 +67,7 @@ class MainViewController extends Initializable with ECScalaDSL {
     val world = World()
     for {
       ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
-    } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity &: Mass(mass) }
+    } world hasAn entity withComponents { Circle(startingRadius, color) &: position &: velocity &: Mass(startingMass) }
 
     addSystemsToWorld(world, canvas)
 

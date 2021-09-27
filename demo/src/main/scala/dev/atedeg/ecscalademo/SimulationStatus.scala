@@ -22,6 +22,9 @@ object StartingState {
   val startingMass: Double = 1
   val startingVelocity: Vector = Vector(0.0, 0.0)
 
+  val startingRadius = 20
+  val startingMass = 1
+
   val startingPositions = List(
     Position(Point(147, 157)),
     Position(Point(511, 157)),
@@ -54,8 +57,7 @@ object StartingState {
 }
 
 object EnvironmentState {
-  val radius = 20.0
-  val frictionCoefficient = 0.05
-  val gravity = 9.81
-  val mass = 1.0
+  val frictionCoefficient: Double = 0.05
+  var wallRestitution: Double = 0.5
+  val gravity: Double = 9.81
 }

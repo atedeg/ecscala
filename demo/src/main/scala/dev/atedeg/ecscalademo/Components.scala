@@ -16,9 +16,6 @@ case class Position(position: Point) extends Component {
 
 object Position {
   def apply(x: Double, y: Double): Position = Position(Point(x, y))
-
-  def unapply(position: Position): Option[(Double, Double)] =
-    if position eq null then None else Some(position.position.x, position.position.y)
 }
 
 given Conversion[Position, Point] = _.position
@@ -30,9 +27,6 @@ case class Velocity(velocity: Vector) extends Component {
 
 object Velocity {
   def apply(x: Double, y: Double): Velocity = Velocity(Vector(x, y))
-
-  def unapply(velocity: Velocity): Option[(Double, Double)] =
-    if velocity eq null then None else Some(velocity.velocity.x, velocity.velocity.y)
 }
 
 given Conversion[Velocity, Vector] = _.velocity
