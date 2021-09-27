@@ -5,7 +5,7 @@ As a framework user I want a working example of the framework,Handle balls colli
 ,Balls rendering,,Linda Vitali,1,1,1,1,1,1,0,0
 ,Handle balls creation,,Nicolas Farabegoli,2,2,2,2,2,0,0,0
 ,Handle balls drag and drop,,Nicolas Farabegoli,4,4,4,4,2,0,0,0
-,Handle balls velocity editing,,Giacomo Cavalieri,4,,,,,,,
+,Handle balls velocity editing,,Giacomo Cavalieri,4,4,4,4,4,4,2,0
 ,Create demo UI,,Linda Vitali,1,1,1,1,1,0,0,0
 As a framework user I would higly appreciate a handy DSL to perform these operations,Complete DSL for Systems,,Linda Vitali,1,1,1,1,1,1,1,1
-,Refactor World's interface,,Giacomo Cavalieri,15,,,,,,,
+,Refactor World's interface,,Giacomo Cavalieri,15,15,15,15,15,15,15,10
