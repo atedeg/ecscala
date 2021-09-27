@@ -54,8 +54,7 @@ object StartingState {
 }
 
 object EnvironmentState {
-  val radius = 20.0
-  val frictionCoefficient = 0.05
-  val gravity = 9.81
-  val mass = 1.0
+  val frictionCoefficient: Double = 0.05
+  var wallRestitution: Double = 0.5
+  val gravity: Double = 9.81
 }

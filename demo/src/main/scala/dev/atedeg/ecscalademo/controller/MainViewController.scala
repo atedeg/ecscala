@@ -24,6 +24,7 @@ import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.layout.Pane as JfxPane
 import scalafx.scene.control.{ Button, Label }
 import scalafx.scene.canvas.{ Canvas, GraphicsContext }
+import scalafx.scene.canvas.{ Canvas, GraphicsContext }
 import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
 import scalafx.animation.AnimationTimer
@@ -66,7 +67,7 @@ class MainViewController extends Initializable with ECScalaDSL {
     val world = World()
     for {
       ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
-    } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity &: Mass(mass) }
+    } world hasAn entity withComponents { Circle(startingRadius, color) &: position &: velocity &: Mass(startingMass) }
 
     addSystemsToWorld(world, canvas)
 
