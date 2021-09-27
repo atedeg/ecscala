@@ -12,9 +12,10 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class VelocityEditingSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
   "A VelocityEditingSystem" should {
-    "run when the simulation is not running and there is a selected ball" in new VelocityFixture {
+    "run when the simulation is not running, there is a selected ball and the game is in velocity editing mode" in new VelocityFixture {
       system.shouldRun shouldBe false
       PlayState.playing = false
+      PlayState.velocityEditingMode = true
       PlayState.selectedBall = Some(entity1)
       system.shouldRun shouldBe true
     }

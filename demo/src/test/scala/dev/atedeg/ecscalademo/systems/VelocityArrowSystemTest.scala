@@ -16,11 +16,12 @@ import dev.atedeg.ecscala.util.types.given
 
 class VelocityArrowSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
   "A VelocityArrowSystem" should {
-    "run if the game is paused and there is a selected ball" in new VelocityFixture {
+    "run if the game is paused, there is a selected ball and the game is in velocity editing mode" in new VelocityFixture {
       val canvas = mock[ECSCanvas]
       val arrowSystem = VelocityArrowSystem(canvas)
       arrowSystem.shouldRun shouldBe false
       PlayState.selectedBall = Some(entity1)
+      PlayState.velocityEditingMode = true
       PlayState.playing = false
       arrowSystem.shouldRun shouldBe true
     }

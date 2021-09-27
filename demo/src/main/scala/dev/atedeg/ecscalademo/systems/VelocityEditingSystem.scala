@@ -11,7 +11,7 @@ class VelocityEditingSystem extends EmptySystem {
   val maxVelocityIntensity = 1000
   val intensityMultiplier = 2
 
-  override def shouldRun = !PlayState.playing && PlayState.selectedBall.isDefined
+  override def shouldRun = !PlayState.playing && PlayState.selectedBall.isDefined && PlayState.velocityEditingMode
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     if (MouseState.clicked) {
       val selectedBall = PlayState.selectedBall.get
