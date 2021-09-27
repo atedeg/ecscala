@@ -10,8 +10,8 @@ import dev.atedeg.ecscalademo.Vector
  * @param ecsCanvas
  */
 class RenderSystem(ecsCanvas: ECSCanvas) extends System[Circle &: Position &: CNil] {
-  val selectedBallLineWidth = 3
-  val regularBallLineWidth = 1
+  private val selectedBallLineWidth = 3
+  private val regularBallLineWidth = 1
 
   override def before(deltaTime: DeltaTime, world: World, view: View[Circle &: Position &: CNil]): Unit =
     ecsCanvas.clear()
