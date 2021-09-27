@@ -15,6 +15,12 @@ import dev.atedeg.ecscalademo.{ Circle, Mass, Position, Velocity }
 class RegionAssignmentSystem(private val regions: WritableSpacePartitionContainer)
     extends System[Position &: Velocity &: Circle &: Mass &: CNil] {
 
+  override def before(
+      deltaTime: DeltaTime,
+      world: World,
+      view: View[Position &: Velocity &: Circle &: Mass &: CNil],
+  ): Unit = regions.clear()
+
   override def update(
       entity: Entity,
       components: Position &: Velocity &: Circle &: Mass &: CNil,
