@@ -80,8 +80,8 @@ object WritableSpacePartitionContainer {
 
     override def build(): Unit = {
       regions = entities.foldLeft(Map[(Int, Int), Seq[Entity]]()) { (acc, elem) =>
-        val positionComponent = elem.getComponent[Position].get
-        val region = getRegionFromPosition(positionComponent)
+        val position = elem.getComponent[Position].get
+        val region = getRegionFromPosition(position)
         val regionEntities = acc get region map (_ :+ elem) getOrElse List(elem)
         acc + (region -> regionEntities)
       }
