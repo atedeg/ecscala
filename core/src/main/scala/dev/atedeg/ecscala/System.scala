@@ -5,7 +5,7 @@ import dev.atedeg.ecscala.{ CList, Entity, View }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
-type DeltaTime = Float
+type DeltaTime = Double
 
 /**
  * Represent a way to iterate over entities with specific components (given by the type parameter L) and manupulate

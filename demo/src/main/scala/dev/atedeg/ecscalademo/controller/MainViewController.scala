@@ -28,12 +28,14 @@ import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
 import scalafx.animation.AnimationTimer
 import scalafx.util.converter.NumberStringConverter
+import dev.atedeg.ecscalademo.systems.*
 
 import java.net.URL
 import java.util.ResourceBundle
 import scala.language.postfixOps
+import dev.atedeg.ecscala.util.types.given
 
-class MainViewController extends Initializable {
+class MainViewController extends Initializable with ECScalaDSL {
 
   @FXML
   private var playPauseBtnDelegate: JfxButton = _
@@ -67,8 +69,6 @@ class MainViewController extends Initializable {
     } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity &: Mass(mass) }
 
     addSystemsToWorld(world, canvas)
-
-    fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
     loop = GameLoop(world.update)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
