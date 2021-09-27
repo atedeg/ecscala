@@ -7,8 +7,6 @@ import scalafx.Includes.*
 import scalafx.application.JFXApp3
 import scalafx.application.JFXApp3.PrimaryStage
 import scalafx.scene.Scene
-import dev.atedeg.ecscalademo.controller.MainViewController
-import javafx.scene.layout.VBox
 
 object ECScalaDemo extends JFXApp3 {
 

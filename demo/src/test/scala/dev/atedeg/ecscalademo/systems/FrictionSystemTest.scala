@@ -1,6 +1,5 @@
 package dev.atedeg.ecscalademo.systems
 
-import com.sun.webkit.dom.DocumentImpl
 import dev.atedeg.ecscala.{ &:, CNil, View }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo
@@ -18,9 +17,9 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
     "the simulation is playing" should {
       "update a ball's Velocity considering the friction" in new WorldFixture with SystemsFixture {
         PlayState.playing = true
-        val initialVelocity = Vector(300, 0)
+        val initialVelocity = Velocity(Vector(300, 0))
         val ball = world hasAn entity withComponents {
-          Velocity(initialVelocity)
+          initialVelocity
         }
         world hasA system(frictionSystem)
 
@@ -28,7 +27,7 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         val view: View[Velocity &: CNil] = getView[Velocity &: CNil] from world
         val Velocity(vector) &: CNil = view.head._2
 
-        vector.x should be < initialVelocity.x
+        vector.x should be < initialVelocity.velocity.x
       }
       "don't update the component's Velocity if its initial Velocity is 0" in new WorldFixture with SystemsFixture {
         PlayState.playing = true
