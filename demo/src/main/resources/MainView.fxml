@@ -11,11 +11,6 @@
       <HBox spacing="10.0">
          <Button fx:id="playPauseBtnDelegate" mnemonicParsing="false" onAction="#onPlayPauseClickHandler" text="Play" />
          <Button fx:id="addBallBtn" mnemonicParsing="false" text="Add Ball" />
-         <Button fx:id="selectBallBtn" mnemonicParsing="false" text="SelectBall" />
-      </HBox>
-      <Label text="Label" />
-      <HBox spacing="10.0">
-         <Button fx:id="moveBtn" mnemonicParsing="false" text="Move" />
          <Button fx:id="changeVelBtn" mnemonicParsing="false" text="Change Velocity" />
       </HBox>
       <VBox.margin>

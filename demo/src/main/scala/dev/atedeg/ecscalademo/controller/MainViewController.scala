@@ -33,32 +33,27 @@ import java.util.ResourceBundle
 import scala.language.postfixOps
 import dev.atedeg.ecscala.util.types.given
 
-class MainViewController() extends Initializable with ECScalaDSL {
+class MainViewController extends Initializable with ECScalaDSL {
 
   @FXML
   private var playPauseBtnDelegate: JfxButton = _
-  private var playPauseBtn: Button = _
+  private lazy val playPauseBtn: Button = new Button(playPauseBtnDelegate)
 
   @FXML
   private var addBallBtn: Button = _
-
-  @FXML
-  private var selectBallBtn: Button = _
-
-  @FXML
-  private var moveBtn: Button = _
 
   @FXML
   private var changeVelBtn: Button = _
 
   @FXML
   private var canvasDelegate: JfxCanvas = _
-  private var canvas: Canvas = _
+  private lazy val canvas: Canvas = new Canvas(canvasDelegate)
 
   @FXML
   private var fpsDelegate: JfxLabel = _
-  private var fps: Label = _
+  private lazy val fps: Label = new Label(fpsDelegate)
 
+  private val world: World = World()
   private var loop: GameLoop = _
 
   private var isRunning = false
@@ -73,9 +68,6 @@ class MainViewController() extends Initializable with ECScalaDSL {
 
     loop = GameLoop(world.update(_))
 
-    playPauseBtn = new Button(playPauseBtnDelegate)
-    canvas = new Canvas(canvasDelegate)
-    fps = new Label(fpsDelegate)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
     addSystemsToWorld(world, canvas)
@@ -108,7 +100,7 @@ class MainViewController() extends Initializable with ECScalaDSL {
     }
   }
 
-  def addSystemsToWorld(world: World, canvas: scalafx.scene.canvas.Canvas) = {
+  private def addSystemsToWorld(world: World, canvas: scalafx.scene.canvas.Canvas) = {
     world hasA system(FrictionSystem())
     world hasA system(MovementSystem())
     world hasA system(RenderSystem(ScalaFXCanvas(canvas)))
