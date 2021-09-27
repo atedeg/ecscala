@@ -2,6 +2,20 @@ package dev.atedeg.ecscalademo.controller
 
 import dev.atedeg.ecscala.World
 import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, Point, ScalaFXCanvas }
+import dev.atedeg.ecscala.{ &:, CNil, World }
+import dev.atedeg.ecscala.dsl.ECScalaDSL
+import dev.atedeg.ecscalademo.{
+  Circle,
+  Color,
+  Mass,
+  MouseState,
+  PlayState,
+  Point,
+  Position,
+  ScalaFXCanvas,
+  Vector,
+  Velocity,
+}
 import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.control.Button as JfxButton
@@ -10,7 +24,6 @@ import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.layout.Pane as JfxPane
 import scalafx.scene.control.{ Button, Label }
 import scalafx.scene.canvas.{ Canvas, GraphicsContext }
-import scalafx.scene.paint.Color
 import scalafx.scene.layout.Pane
 import javafx.scene.input.MouseEvent
 import scalafx.animation.AnimationTimer
@@ -46,11 +59,21 @@ class MainViewController extends Initializable {
   private var isRunning = false
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
-    loop = GameLoop(f => {
-      world.update(f.toFloat)
-    })
+    import dev.atedeg.ecscalademo.StartingState.*
+    import dev.atedeg.ecscalademo.EnvironmentState.*
+    val world = World()
+    for {
+      ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
+    } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity &: Mass(mass) }
+
+    addSystemsToWorld(world, canvas)
 
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
+
+    loop = GameLoop(world.update)
+    fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
+
+    loop.start
   }
 
   def onMouseMovedHandler(event: MouseEvent): Unit = {
@@ -72,12 +95,16 @@ class MainViewController extends Initializable {
       PlayState.playing = false
       isRunning = false
       playPauseBtn.text = "Play"
-      loop.stop
     } else {
       PlayState.playing = true
       isRunning = true
       playPauseBtn.text = "Pause"
-      loop.start
     }
+  }
+
+  private def addSystemsToWorld(world: World, canvas: scalafx.scene.canvas.Canvas) = {
+    world hasA system(FrictionSystem())
+    world hasA system(MovementSystem())
+    world hasA system(RenderSystem(ScalaFXCanvas(canvas)))
   }
 }
