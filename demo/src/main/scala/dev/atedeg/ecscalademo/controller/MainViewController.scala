@@ -66,11 +66,11 @@ class MainViewController extends Initializable with ECScalaDSL {
       ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
     } world hasAn entity withComponents { Circle(radius, color) &: position &: velocity &: Mass(mass) }
 
-    loop = GameLoop(world.update(_))
+    addSystemsToWorld(world, canvas)
 
+    loop = GameLoop(world.update)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
-    addSystemsToWorld(world, canvas)
     loop.start
   }
 
