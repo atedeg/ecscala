@@ -5,7 +5,6 @@ import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.{ Entity, World }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.given
-import dev.atedeg.ecscalademo.fixtures.WorldFixture
 import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -21,6 +20,16 @@ class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
   }
 
   "A DragBallSystem" when {
+    "the change velocity is set" should {
+      "not run" in new DragBallSystemFixture {
+        PlayState.selectedBall = Some(entity1)
+        PlayState.playing = false
+        MouseState.down = true
+        MouseState.clicked = true
+        PlayState.velocityChainging = true
+        dragBallSystem.shouldRun shouldBe false
+      }
+    }
     "the game is running and the mouse is clicked" should {
       "not run" in new DragBallSystemFixture {
         PlayState.playing = true
@@ -40,6 +49,7 @@ class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
     "the game is not running and the mouse is clicked" should {
       "run" in new DragBallSystemFixture {
+        PlayState.velocityChainging = false
         PlayState.playing = false
         PlayState.selectedBall = Some(entity1)
         MouseState.down = true
@@ -49,6 +59,7 @@ class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
       "update the selectes entity's position" in new DragBallSystemFixture {
         entity1 withComponent Position(0.0, 0.0)
 
+        PlayState.velocityChainging = false
         PlayState.selectedBall = Some(entity1)
         MouseState.coordinates = Point(10.0, 10.0)
 

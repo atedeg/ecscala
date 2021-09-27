@@ -9,7 +9,8 @@ import dev.atedeg.ecscalademo.{ MouseState, PlayState, Position }
  */
 class DragBallSystem extends EmptySystem {
 
-  override def shouldRun: Boolean = !PlayState.playing && PlayState.selectedBall.isDefined && MouseState.clicked
+  override def shouldRun: Boolean =
+    !PlayState.playing && PlayState.selectedBall.isDefined && MouseState.clicked && !PlayState.velocityChainging
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     PlayState.selectedBall match {
