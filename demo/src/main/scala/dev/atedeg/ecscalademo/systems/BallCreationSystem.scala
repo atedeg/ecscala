@@ -16,7 +16,7 @@ class BallCreationSystem extends EmptySystem with ECScalaDSL {
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     val canBeCreated = world.getView[Position &: Circle &: CNil] map (_._2) forall { cl =>
       val Position(point) &: Circle(radius, _) &: CNil = cl
-      !isOverlapped(point, radius)
+      !point.isOverlappedWith(MouseState.coordinates, radius, StartingState.startingRadius)
     }
     if (canBeCreated) {
       world hasAn entity withComponents {
@@ -27,7 +27,4 @@ class BallCreationSystem extends EmptySystem with ECScalaDSL {
       }
     }
   }
-
-  private def isOverlapped(point: Point, radius: Double): Boolean =
-    (point - MouseState.coordinates).squaredNorm < Math.pow(radius + StartingState.startingRadius, 2)
 }

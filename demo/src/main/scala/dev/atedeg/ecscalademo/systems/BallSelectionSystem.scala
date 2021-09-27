@@ -15,13 +15,10 @@ class BallSelectionSystem extends EmptySystem {
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     val selectedEntity: Option[Entity] = world.getView[Position &: Circle &: CNil] find { e =>
       val Position(point) &: Circle(radius, _) &: CNil = e._2
-      isOverlapped(point, radius)
+      MouseState.coordinates.isOverlappedWith(point, StartingState.startingRadius, radius)
     } map (_._1)
 
     if (selectedEntity.isEmpty) then PlayState.selectedBall = None
     else PlayState.selectedBall = Some(selectedEntity.get)
   }
-
-  private def isOverlapped(point: Point, radius: Double): Boolean =
-    (MouseState.coordinates - point).squaredNorm < Math.pow(radius + StartingState.startingRadius, 2)
 }
