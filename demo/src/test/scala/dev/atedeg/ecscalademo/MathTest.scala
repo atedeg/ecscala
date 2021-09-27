@@ -6,6 +6,16 @@ import org.scalatest.wordspec.AnyWordSpec
 class MathTest extends AnyWordSpec with Matchers {
 
   "A point" when {
+    "inside a radius of another point" should {
+      "overlapped" in {
+        Point(1, 1).isOverlappedWith(Point(2, 2), 10, 10) shouldBe true
+      }
+    }
+    "outside a radius of another point" should {
+      "not overlapped" in {
+        Point(1, 1).isOverlappedWith(Point(20, 20), 5, 5) shouldBe false
+      }
+    }
     "adding a vector" should {
       "return a point with summed components" in {
         Point(1, 1) + Vector(2, 3) shouldBe Point(3, 4)

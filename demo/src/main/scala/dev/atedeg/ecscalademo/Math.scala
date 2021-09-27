@@ -4,6 +4,9 @@ case class Point(x: Double, y: Double) {
   def +(vector: Vector) = Point(x + vector.x, y + vector.y)
   def -(vector: Vector) = Point(x - vector.x, y - vector.y)
   def -(point: Point) = Vector(x - point.x, y - point.y)
+
+  def isOverlappedWith(otherPoint: Point, thisRadius: Double, otherRadius: Double): Boolean =
+    (this - otherPoint).squaredNorm < Math.pow(thisRadius + otherRadius, 2)
 }
 
 given Conversion[(Double, Double), Point] = tuple => Point(tuple._1, tuple._2)
