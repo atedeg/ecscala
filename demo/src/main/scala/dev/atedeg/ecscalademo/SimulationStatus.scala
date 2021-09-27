@@ -23,13 +23,13 @@ object StartingState {
   val startingVelocity: Vector = Vector(0.0, 0.0)
 
   val startingPositions = List(
-    Position(Point(147, 157)),
-    Position(Point(511, 157)),
-    Position(Point(546, 177)),
-    Position(Point(546, 136)),
-    Position(Point(581, 157)),
-    Position(Point(581, 117)),
-    Position(Point(581, 198)),
+    Position(147, 157),
+    Position(511, 157),
+    Position(546, 177),
+    Position(546, 136),
+    Position(581, 157),
+    Position(581, 117),
+    Position(581, 198),
   )
 
   val startingColors = List(
@@ -43,13 +43,13 @@ object StartingState {
   )
 
   val startingVelocities = List(
-    Velocity(Vector(1000, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
+    Velocity(1000, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
   )
 }
 

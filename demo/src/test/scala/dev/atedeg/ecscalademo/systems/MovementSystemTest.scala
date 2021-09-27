@@ -13,22 +13,22 @@ class MovementSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
   "A MovementSystem" should {
     "not run when the game isn't playing" in new WorldFixture with SystemsFixture {
       PlayState.playing = false
-      val ball = world hasAn entity withComponents { Position(Point(0, 0)) &: Velocity(Vector(300, 0)) }
+      val ball = world hasAn entity withComponents { Position(0, 0) &: Velocity(300, 0) }
       addSystemToWorld(world, movementSystem)
 
       movementSystem.shouldRun shouldBe false
       getView[Position &: Velocity &: CNil] from world should contain theSameElementsAs List(
-        (ball, Position(Point(0, 0)) &: Velocity(Vector(300, 0)) &: CNil),
+        (ball, Position(0, 0) &: Velocity(300, 0) &: CNil),
       )
     }
     "update an entity Position when the game is playing" in new WorldFixture with SystemsFixture {
       PlayState.playing = true
-      val ball = world hasAn entity withComponents { Position(Point(0, 0)) &: Velocity(Vector(300, 0)) }
+      val ball = world hasAn entity withComponents { Position(0, 0) &: Velocity(300, 0) }
       addSystemToWorld(world, movementSystem)
 
       movementSystem.shouldRun shouldBe true
       getView[Position &: Velocity &: CNil] from world should contain theSameElementsAs List(
-        (ball, Position(Point(3000, 0)) &: Velocity(Vector(300, 0)) &: CNil),
+        (ball, Position(3000, 0) &: Velocity(300, 0) &: CNil),
       )
     }
   }
