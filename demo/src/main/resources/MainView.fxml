@@ -5,17 +5,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox minHeight="540.0" minWidth="960.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.atedeg.ecscalademo.controller.MainViewController">
+<VBox minHeight="540.0" minWidth="960.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.atedeg.ecscalademo.controller.MainViewController" >
    <VBox spacing="10.0">
       <Label text="Label" />
       <HBox spacing="10.0">
          <Button fx:id="playPauseBtnDelegate" mnemonicParsing="false" onAction="#onPlayPauseClickHandler" text="Play" />
          <Button fx:id="addBallBtn" mnemonicParsing="false" text="Add Ball" />
-         <Button fx:id="selectBallBtn" mnemonicParsing="false" text="SelectBall" />
-      </HBox>
-      <Label text="Label" />
-      <HBox spacing="10.0">
-         <Button fx:id="moveBtn" mnemonicParsing="false" text="Move" />
          <Button fx:id="changeVelBtn" mnemonicParsing="false" text="Change Velocity" />
       </HBox>
       <VBox.margin>
