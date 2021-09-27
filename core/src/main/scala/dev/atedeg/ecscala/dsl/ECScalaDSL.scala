@@ -170,7 +170,8 @@ private[dsl] trait FromSyntax {
    * This case class enables the following syntax:
    *
    * {{{
-   *   getView[MyComponent1 &: MyComponent2 &: CNil] from world
+   *   * getView[MyComponent1 &: MyComponent2 &: CNil] from world
+   *   * getView[MyComponent1 &: MyComponent2 &: CNil].exluding[MyComponent3 &: CNil] from world
    * }}}
    */
   class ViewFromWorld[A <: CList](using cltA: CListTag[A]) extends From[World, View[A]] {
