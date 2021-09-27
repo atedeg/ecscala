@@ -15,7 +15,7 @@ class RenderSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
     "call the drawCircle method with the correct parameters" in new WorldFixture {
       val canvas = mock[ECSCanvas]
       val renderSystem = new RenderSystem(canvas)
-      val position = Position(Point(0, 0))
+      val position = Position(0, 0)
       val circle = Circle(20, Color(255, 0, 0))
 
       val ball = world hasAn entity withComponents { circle &: position }

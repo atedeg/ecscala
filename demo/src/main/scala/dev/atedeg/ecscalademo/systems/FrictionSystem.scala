@@ -24,7 +24,7 @@ class FrictionSystem() extends System[Velocity &: CNil] {
       val frictionDirection = -1 * velocity.normalized
       val friction = (frictionCoefficient * gravity) * frictionDirection
       val newVelocity = velocity + friction
-      if (velocity dot newVelocity) < 0 then Velocity(Vector(0, 0)) &: CNil else Velocity(newVelocity) &: CNil
+      if (velocity dot newVelocity) < 0 then Velocity(0, 0) &: CNil else Velocity(newVelocity) &: CNil
     } else {
       components
     }
