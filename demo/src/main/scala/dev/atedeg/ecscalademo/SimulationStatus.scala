@@ -22,9 +22,6 @@ object StartingState {
   val startingMass: Double = 1
   val startingVelocity: Vector = Vector(0.0, 0.0)
 
-  val startingRadius = 20
-  val startingMass = 1
-
   val startingPositions = List(
     Position(Point(147, 157)),
     Position(Point(511, 157)),
