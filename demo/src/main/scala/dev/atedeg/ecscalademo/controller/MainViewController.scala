@@ -1,12 +1,11 @@
 package dev.atedeg.ecscalademo.controller
 
 import dev.atedeg.ecscala.World
-import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, Point, ScalaFXCanvas }
-import dev.atedeg.ecscala.{ &:, CNil, World }
-import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{
   Circle,
   Color,
+  ECSCanvas,
+  EnvironmentState,
   Mass,
   MouseState,
   PlayState,
@@ -16,13 +15,16 @@ import dev.atedeg.ecscalademo.{
   Vector,
   Velocity,
 }
+import dev.atedeg.ecscala.{ &:, CNil, World }
+import dev.atedeg.ecscala.dsl.ECScalaDSL
 import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.control.Label as JfxLabel
 import javafx.scene.control.Button as JfxButton
+import javafx.scene.control.Slider as JfxSlider
 import javafx.scene.layout as jfx
 import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.layout.Pane as JfxPane
-import scalafx.scene.control.{ Button, Label }
+import scalafx.scene.control.{ Button, Label, Slider }
 import scalafx.scene.canvas.{ Canvas, GraphicsContext }
 import scalafx.scene.canvas.{ Canvas, GraphicsContext }
 import scalafx.scene.layout.Pane
@@ -37,6 +39,8 @@ import scala.language.postfixOps
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.StartingState.{ startingMass, startingPositions, startingRadius }
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
+
+import java.text.DecimalFormat
 
 class MainViewController extends Initializable with ECScalaDSL {
 
@@ -64,6 +68,22 @@ class MainViewController extends Initializable with ECScalaDSL {
   private var fpsDelegate: JfxLabel = _
   private lazy val fps: Label = new Label(fpsDelegate)
 
+  @FXML
+  private var wrSliderDelegate: JfxSlider = _
+  private lazy val wrSlider = new Slider(wrSliderDelegate)
+
+  @FXML
+  private var fcSliderDelegate: JfxSlider = _
+  private lazy val fcSlider = new Slider(fcSliderDelegate)
+
+  @FXML
+  private var fcLabelDelegate: JfxLabel = _
+  private lazy val fcLabel = new Label(fcLabelDelegate)
+
+  @FXML
+  private var wrLabelDelegate: JfxLabel = _
+  private lazy val wrLabel = new Label(wrLabelDelegate)
+
   private lazy val ecsCanvas = ScalaFXCanvas(canvas)
   private val world: World = World()
   private var loop: GameLoop = _
@@ -90,7 +110,15 @@ class MainViewController extends Initializable with ECScalaDSL {
         changeVelBtn.disable = true
       }
     })
+
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
+    EnvironmentState.frictionCoefficient <== fcSlider.value
+    EnvironmentState.wallRestitution <== wrSlider.value
+    val decimalFormat = new DecimalFormat()
+    decimalFormat.setMaximumFractionDigits(2)
+    decimalFormat.setMinimumFractionDigits(2)
+    fcLabel.text.bindBidirectional(fcSlider.value, new NumberStringConverter(decimalFormat))
+    wrLabel.text.bindBidirectional(wrSlider.value, new NumberStringConverter(decimalFormat))
 
     loop.start
   }
@@ -122,6 +150,8 @@ class MainViewController extends Initializable with ECScalaDSL {
     changeVelBtn.disable = isRunning
     addBallBtn.disable = isRunning
     addBallBtn.text = addBallButtonLabel
+    wrSlider.disable = isRunning
+    fcSlider.disable = isRunning
     if (!isRunning) {
       PlayState.velocityEditingMode = false
       PlayState.addBallMode = false

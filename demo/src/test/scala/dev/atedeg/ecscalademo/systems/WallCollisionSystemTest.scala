@@ -34,7 +34,7 @@ class WallCollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
     }
     "change velocities to entities that collide with the canvas's borders" in new WallCollisionsFixture {
       PlayState.playing = true
-      EnvironmentState.wallRestitution = 1
+      EnvironmentState.wallRestitution.value = 1
       val canvas = mock[ECSCanvas]
       when(canvas.width) thenReturn 100.0
       when(canvas.height) thenReturn 100.0
