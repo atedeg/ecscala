@@ -91,7 +91,9 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
 
 object System {
   def apply[L <: CList: CListTag](f: (Entity, L, DeltaTime) => Deletable[L]): System[L] = SystemBuilder[L].withUpdate(f)
-  def apply[L <: CList: CListTag](f: (Entity, L, DeltaTime, World, View[L]) => Deletable[L]): System[L] = SystemBuilder[L].withUpdate(f)
+
+  def apply[L <: CList: CListTag](f: (Entity, L, DeltaTime, World, View[L]) => Deletable[L]): System[L] =
+    SystemBuilder[L].withUpdate(f)
   def apply[L <: CList: CListTag]: SystemBuilder[L] = SystemBuilder[L]
   def empty(f: (DeltaTime, World) => Unit) = EmptySystem(f)
 }
@@ -112,8 +114,13 @@ trait ExcludingSystem[LIncluded <: CList, LExcluded <: CList](using
 }
 
 object ExcludingSystem {
-  def apply[L <: CList: CListTag, E <: CList: CListTag](f: (Entity, L, DeltaTime) => Deletable[L]): System[L] = SystemBuilder[L].excluding[E].withUpdate(f)
-  def apply[L <: CList: CListTag, E <: CList: CListTag](f: (Entity, L, DeltaTime, World, View[L]) => Deletable[L]): System[L] = SystemBuilder[L].excluding[E].withUpdate(f)
+
+  def apply[L <: CList: CListTag, E <: CList: CListTag](f: (Entity, L, DeltaTime) => Deletable[L]): System[L] =
+    SystemBuilder[L].excluding[E].withUpdate(f)
+
+  def apply[L <: CList: CListTag, E <: CList: CListTag](
+      f: (Entity, L, DeltaTime, World, View[L]) => Deletable[L],
+  ): System[L] = SystemBuilder[L].excluding[E].withUpdate(f)
   def apply[L <: CList: CListTag, E <: CList: CListTag]: ExcludingSystemBuilder[L, E] = ExcludingSystemBuilder[L, E]
 }
 
