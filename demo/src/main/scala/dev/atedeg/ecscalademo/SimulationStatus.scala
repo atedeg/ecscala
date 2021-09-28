@@ -1,6 +1,7 @@
 package dev.atedeg.ecscalademo
 
 import dev.atedeg.ecscala.Entity
+import scalafx.beans.property.DoubleProperty
 
 object MouseState {
   var coordinates = Point(0, 0)
@@ -55,7 +56,7 @@ object StartingState {
 }
 
 object EnvironmentState {
-  val frictionCoefficient: Double = 0.05
-  var wallRestitution: Double = 0.5
+  val frictionCoefficient = DoubleProperty(0.05)
+  var wallRestitution = DoubleProperty(0.5)
   val gravity: Double = 9.81
 }

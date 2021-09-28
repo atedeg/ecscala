@@ -38,8 +38,8 @@ class WallCollisionSystem(private val canvas: ECSCanvas) extends System[Position
     val collidesRight = x > canvas.width - radius
     val collidesTop = y < radius
     val collidesBottom = y > canvas.height - radius
-    lazy val mirroredHorizontalVelocity = -vx * EnvironmentState.wallRestitution
-    lazy val mirroredVerticalVelocity = -vy * EnvironmentState.wallRestitution
+    lazy val mirroredHorizontalVelocity = -vx * EnvironmentState.wallRestitution.value
+    lazy val mirroredVerticalVelocity = -vy * EnvironmentState.wallRestitution.value
     val newVelocity = Velocity(
       if (collidesLeft && vx < 0) || (collidesRight && vx > 0) then mirroredHorizontalVelocity else vx,
       if (collidesTop && vy < 0) || (collidesBottom && vy > 0) then mirroredVerticalVelocity else vy,
