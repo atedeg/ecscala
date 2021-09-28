@@ -24,9 +24,11 @@ class VelocityEditingSystemTest extends AnyWordSpec with Matchers with ECScalaDS
     "limit the maximum velocity" in testNewExpectedVelocity(Point(3000, 0), Velocity(2000, 0))
   }
 
-  def testNewExpectedVelocity(mouseCoordinates: Point, expectedVelocity: Velocity): Unit = new VelocityFixture {
+  private def testNewExpectedVelocity(mouseCoordinates: Point, expectedVelocity: Velocity): Unit = new VelocityFixture {
+    PlayState.playing = false
     PlayState.selectedBall = Some(entity1)
     MouseState.clicked = true
+    PlayState.velocityEditingMode = true
     MouseState.coordinates = mouseCoordinates
     world.update(10)
     entity1.getComponent[Velocity].get shouldBe expectedVelocity
