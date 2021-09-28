@@ -10,7 +10,7 @@ class SystemBuilderTest extends AnyWordSpec with Matchers {
   def using = afterWord("using")
 
   "A SystemBuilder" should {
-    "work with short update" in new SystemBuilderFixture {
+    "work with the update with the partial parameter list" in new SystemBuilderFixture {
       var updateExecuted = false
       world.addSystem(SystemBuilder[Position &: CNil].withUpdate { (_, c, _) =>
         updateExecuted = true; c
@@ -18,7 +18,7 @@ class SystemBuilderTest extends AnyWordSpec with Matchers {
       world.update(10)
       updateExecuted shouldBe true
     }
-    "work with full update" in new SystemBuilderFixture {
+    "work with the update with the complete parameter list" in new SystemBuilderFixture {
       var updateExecuted = false
       world.addSystem(SystemBuilder[Position &: CNil].withUpdate { (_, c, _, _, _) =>
         updateExecuted = true; c
@@ -105,7 +105,7 @@ class SystemBuilderTest extends AnyWordSpec with Matchers {
   }
 
   "An ExcludingSystemBuilder" should {
-    "work with short update" in new SystemBuilderFixture {
+    "work with the update with the partial parameter list" in new SystemBuilderFixture {
       var updateExecuted = false
       world.addSystem(ExcludingSystemBuilder[Position &: CNil, Velocity &: CNil].withUpdate { (_, c, _) =>
         updateExecuted = true; c
@@ -113,7 +113,7 @@ class SystemBuilderTest extends AnyWordSpec with Matchers {
       world.update(10)
       updateExecuted shouldBe false
     }
-    "work with full update" in new SystemBuilderFixture {
+    "work with the update with the full parameter list" in new SystemBuilderFixture {
       var updateExecuted = false
       world.addSystem(ExcludingSystemBuilder[Position &: CNil, Velocity &: CNil].withUpdate { (_, c, _, _, _) =>
         updateExecuted = true; c
