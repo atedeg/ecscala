@@ -10,7 +10,8 @@ import dev.atedeg.ecscalademo.*
  */
 class BallSelectionSystem extends EmptySystem {
 
-  override def shouldRun: Boolean = !PlayState.playing && MouseState.down && !PlayState.velocityEditingMode
+  override def shouldRun: Boolean =
+    !PlayState.playing && MouseState.down && !PlayState.velocityEditingMode && !PlayState.addBallMode
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     val selectedEntity: Option[Entity] = world.getView[Position &: Circle &: CNil] find { e =>
