@@ -30,10 +30,10 @@ class SystemTest extends AnyWordSpec with Matchers {
     }
     "executing its update" should beAbleTo {
       "update components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil]((_, comps, _) => {
+        world.addSystem[Position &: Velocity &: CNil](System((_, comps, _) => {
           val Position(x, y) &: Velocity(vx, vy) &: CNil = comps
           Position(x + 1, y + 1) &: Velocity(vx + 1, vy + 1) &: CNil
-        })
+        }))
         world.update(10)
 
         world.getView[Position &: Velocity &: CNil] should contain theSameElementsAs List(
@@ -43,15 +43,15 @@ class SystemTest extends AnyWordSpec with Matchers {
         )
       }
       "remove components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil]((_, _, _) => Deleted &: Deleted &: CNil)
+        world.addSystem[Position &: Velocity &: CNil](System((_, _, _) => Deleted &: Deleted &: CNil))
         world.update(10)
         world.getView[Position &: Velocity &: CNil] shouldBe empty
       }
       "add components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil]((entity, comps, _) => {
+        world.addSystem[Position &: Velocity &: CNil](System((entity, comps, _) => {
           entity addComponent Mass(10)
           comps
-        })
+        }))
         world.update(10)
 
         world.getView[Mass &: CNil] should contain theSameElementsAs List(
@@ -63,28 +63,28 @@ class SystemTest extends AnyWordSpec with Matchers {
         )
       }
       "add entities to its world" in new ViewFixture {
-        world.addSystem[Position &: CNil]((_, comps, _, w, _) => {
+        world.addSystem[Position &: CNil](System((_, comps, _, w, _) => {
           w.createEntity()
           comps
-        })
+        }))
         world.update(10)
         world.entitiesCount shouldBe 9
       }
       "remove entities from its world" in new ViewFixture {
-        world.addSystem[Position &: CNil]((entity, comps, _, w, _) => {
+        world.addSystem[Position &: CNil](System((entity, comps, _, w, _) => {
           w.removeEntity(entity)
           comps
-        })
+        }))
         world.update(10)
         world.entitiesCount shouldBe 1
       }
     }
     "executing its update" should {
       "have the correct delta time" in new ViewFixture {
-        world.addSystem[Position &: CNil]((_, comps, dt) => {
+        world.addSystem[Position &: CNil](System((_, comps, dt) => {
           dt shouldBe 10
           comps
-        })
+        }))
         world.update(10)
       }
       "execute its before and after handlers in the correct order" in new ViewFixture {
@@ -122,10 +122,10 @@ class SystemTest extends AnyWordSpec with Matchers {
   "An ExcludingSystem" when {
     "executing its update" should beAbleTo {
       "update components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil, Mass &: CNil]((_, comps, _) => {
+        world.addSystem(ExcludingSystem[Position &: Velocity &: CNil, Mass &: CNil]((_, comps, _) => {
           val Position(x, y) &: Velocity(vx, vy) &: CNil = comps
           Position(x + 1, y + 1) &: Velocity(vx + 1, vy + 1) &: CNil
-        })
+        }))
         world.update(10)
 
         world.getView[Position &: Velocity &: CNil, Mass &: CNil] should contain theSameElementsAs List(
@@ -137,9 +137,9 @@ class SystemTest extends AnyWordSpec with Matchers {
   }
 
   "An EmptySystem" should {
-    "execute its update" in new ViewFixture {
+    "execute when updating" in new ViewFixture {
       var success = false
-      world.addSystem(EmptySystem((_, _) => success = true))
+      world.addSystem(System.empty((_, _) => success = true))
       world.update(10)
       success shouldBe true
     }

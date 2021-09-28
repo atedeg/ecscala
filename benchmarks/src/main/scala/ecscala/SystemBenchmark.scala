@@ -11,10 +11,10 @@ class SystemBenchmark extends JmhSettings {
 
   @Setup
   def init: Unit = {
-    world.addSystem[Position &: Velocity &: CNil]((_, comps, _) => {
+    world.addSystem[Position &: Velocity &: CNil](System((_, comps, _) => {
       val Position(x, y) &: Velocity(v1, v2) &: CNil = comps
       Position(x + 1, y) &: Velocity(v1, v2)
-    })
+    }))
   }
 
   @Benchmark
