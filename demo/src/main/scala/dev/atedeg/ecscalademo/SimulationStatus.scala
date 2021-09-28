@@ -14,6 +14,7 @@ object PlayState {
   var selectedBall: Option[Entity] = Option.empty
   var addBallMode: Boolean = false
   var velocityEditingMode: Boolean = false
+  var isDragging = false
 }
 
 object StartingState {

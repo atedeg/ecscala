@@ -20,7 +20,7 @@
    <Separator />
    <StackPane alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
       <Pane fx:id="paneDelegate">
-         <Canvas fx:id="canvasDelegate" height="${paneDelegate.height}" onMouseDragged="#onMouseMovedHandler" onMouseMoved="#onMouseMovedHandler" onMousePressed="#onMousePressedHandler" onMouseReleased="#onMouseReleasedHandler" width="${paneDelegate.width}" />
+         <Canvas fx:id="canvasDelegate" height="${paneDelegate.height}" onMouseDragged="#onDragDetectedHandler" onMouseMoved="#onMouseMovedHandler" onMousePressed="#onMousePressedHandler" onMouseReleased="#onMouseReleasedHandler" width="${paneDelegate.width}" />
          <StackPane.margin>
             <Insets />
          </StackPane.margin>
