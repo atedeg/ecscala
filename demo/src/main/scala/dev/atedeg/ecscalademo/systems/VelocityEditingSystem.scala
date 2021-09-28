@@ -21,6 +21,7 @@ class VelocityEditingSystem extends EmptySystem {
       val newDirection = newVelocity.normalized
       val newIntensity = newVelocity.norm clamped (minVelocityIntensity, maxVelocityIntensity)
       selectedBall.addComponent(Velocity(newDirection * newIntensity * intensityMultiplier))
+      PlayState.velocityEditingMode = false
     }
   }
 }

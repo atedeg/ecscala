@@ -44,10 +44,12 @@ class MainViewController extends Initializable with ECScalaDSL {
   private lazy val playPauseBtn: Button = new Button(playPauseBtnDelegate)
 
   @FXML
-  private var addBallBtn: Button = _
+  private var addBallBtnDelegate: JfxButton = _
+  private lazy val addBallBtn: Button = new Button(addBallBtnDelegate)
 
   @FXML
-  private var changeVelBtn: Button = _
+  private var changeVelBtnDelegate: JfxButton = _
+  private lazy val changeVelBtn: Button = new Button(changeVelBtnDelegate)
 
   @FXML
   private var canvasDelegate: JfxCanvas = _
@@ -74,7 +76,11 @@ class MainViewController extends Initializable with ECScalaDSL {
 
     addSystemsToWorld(world, ecsCanvas)
 
-    loop = GameLoop(world.update)
+    loop = GameLoop(dt => {
+      world.update(dt)
+      MouseState.down = false
+      MouseState.up = false
+    })
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
     loop.start
@@ -99,16 +105,29 @@ class MainViewController extends Initializable with ECScalaDSL {
       PlayState.playing = false
       isRunning = false
       playPauseBtn.text = "Play"
+      changeVelBtn.disable = false
+      addBallBtn.disable = false
     } else {
       PlayState.playing = true
       isRunning = true
       playPauseBtn.text = "Pause"
+      changeVelBtn.disable = true
+      addBallBtn.disable = true
+      PlayState.velocityEditingMode = false
+      PlayState.addBallMode = false
     }
   }
 
   def onAddBallButtonHandler(): Unit = {
     PlayState.addBallMode = true
     PlayState.velocityEditingMode = false
+    changeVelBtn.disable = true
+  }
+
+  def onChangeVelocityButtonHandler(): Unit = {
+    PlayState.addBallMode = false
+    PlayState.velocityEditingMode = true
+    addBallBtn.disable = true
   }
 
   private def addSystemsToWorld(world: World, ecsCanvas: ECSCanvas) = {
@@ -116,10 +135,10 @@ class MainViewController extends Initializable with ECScalaDSL {
     world hasA system(ClearCanvasSystem(ecsCanvas))
     world hasA system(BallCreationSystem())
     world hasA system(BallCreationRenderingSystem(ecsCanvas))
-    world hasA system(BallSelectionSystem())
     world hasA system(DragBallSystem())
-    world hasA system(VelocityArrowSystem(ecsCanvas))
     world hasA system(VelocityEditingSystem())
+    world hasA system(VelocityArrowSystem(ecsCanvas))
+    world hasA system(BallSelectionSystem())
     world hasA system(RegionAssignmentSystem(container))
     world hasA system(FrictionSystem())
     world hasA system(MovementSystem())
