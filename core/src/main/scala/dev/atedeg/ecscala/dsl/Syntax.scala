@@ -8,7 +8,7 @@ import dev.atedeg.ecscala.dsl.Words.*
 trait Syntax {
 
   /**
-   * This trait enables the use of the word "from" in the dsl
+   * This trait enables the use of the word "from" in the dsl.
    */
   trait From[A, B] {
     def from(elem: A): B

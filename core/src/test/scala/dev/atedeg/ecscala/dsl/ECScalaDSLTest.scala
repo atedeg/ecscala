@@ -1,13 +1,26 @@
 package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala
-import dev.atedeg.ecscala.{ &:, fixtures, CNil, Component, Deletable, DeltaTime, Entity, System, View, World }
+import dev.atedeg.ecscala.{
+  &:,
+  fixtures,
+  CNil,
+  Component,
+  Deletable,
+  DeltaTime,
+  Entity,
+  System,
+  SystemBuilder,
+  View,
+  World,
+}
 import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Mass, Position, Velocity, ViewFixture, WorldFixture }
 import dev.atedeg.ecscala.util.types.ComponentTag
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
+
 import scala.language.implicitConversions
 
 class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
@@ -120,14 +133,11 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
         (entity5, Position(3, 3) &: CNil),
       )
 
-      val mySystem = new System[Position &: CNil] {
-        override def update(
-            entity: Entity,
-            components: Position &: CNil,
-        )(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]) = {
-          val Position(x, y) &: CNil = components
-          Position(x + 3, y + 3)
-        }
+      val mySystem = SystemBuilder[Position &: CNil].withBefore { (_, _, _) => () }.withAfter { (_, _, _) =>
+        ()
+      }.withUpdate { (_, c, _) =>
+        val Position(x, y) &: CNil = c
+        Position(x + 3, y + 3)
       }
 
       world hasA system(mySystem)
@@ -146,15 +156,13 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
   "remove MySystem() from world" should {
     "work the same way as the world.removeSystem method" in new WorldFixture {
       val entity1 = world hasAn entity withComponent Position(1, 1)
-      val aSystem = new System[Position &: CNil] {
-        override def update(
-            entity: Entity,
-            components: Position &: CNil,
-        )(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]): Deletable[Position &: CNil] = {
-          val Position(x, y) &: CNil = components
-          Position(x + 1, y + 1) &: CNil
-        }
+      val aSystem = SystemBuilder[Position &: CNil].withBefore { (_, _, _) => () }.withAfter { (_, _, _) =>
+        ()
+      }.withUpdate { (_, c, _) =>
+        val Position(x, y) &: CNil = c
+        Position(x + 1, y + 1) &: CNil
       }
+
       world hasA system(aSystem)
       remove(aSystem) from world
 
@@ -176,7 +184,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
-  "geView[Position &: CNil] excluding[Velocity &: CNil] from world" should {
+  "geView[Position &: CNil].excluding[Velocity &: CNil] from world" should {
     "work the same way as the world.getView[]" in new ViewFixture {
       val view = getView[Position &: Velocity &: CNil].excluding[Mass &: CNil] from world
 

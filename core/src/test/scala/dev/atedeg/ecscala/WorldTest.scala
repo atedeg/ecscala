@@ -106,15 +106,13 @@ class WorldTest extends AnyWordSpec with Matchers {
       "not execute its update" in new WorldFixture {
         val entity = world.createEntity()
         entity.addComponent(Position(1, 1))
-        val system = new System[Position &: CNil] {
-          override def update(
-              entity: Entity,
-              components: Position &: CNil,
-          )(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]): Deletable[Position &: CNil] = {
-            val Position(x, y) &: CNil = components
-            Position(x + 1, y + 1) &: CNil
-          }
+        val system = SystemBuilder[Position &: CNil].withBefore { (_, _, _) => () }.withAfter { (_, _, _) =>
+          ()
+        }.withUpdate { (_, c, _) =>
+          val Position(x, y) &: CNil = c
+          Position(x + 1, y + 1) &: CNil
         }
+
         world.addSystem(system)
         world.removeSystem(system)
         world.update(10)
