@@ -53,7 +53,8 @@ class MainViewController extends Initializable with ECScalaDSL {
   private lazy val changeVelBtn: Button = new Button(changeVelBtnDelegate)
 
   @FXML
-  private var resetBtn: Button = _
+  private var resetBtnDelegate: JfxButton = _
+  private lazy val resetBtn = new Button(resetBtnDelegate)
 
   @FXML
   private var canvasDelegate: JfxCanvas = _
@@ -77,6 +78,11 @@ class MainViewController extends Initializable with ECScalaDSL {
       world.update(dt)
       MouseState.down = false
       MouseState.up = false
+      if (!PlayState.playing && PlayState.selectedBall.isDefined) {
+        changeVelBtn.disable = false
+      } else {
+        changeVelBtn.disable = true
+      }
     })
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
 
@@ -104,25 +110,21 @@ class MainViewController extends Initializable with ECScalaDSL {
   }
 
   def onPlayPauseClickHandler(): Unit = {
-    if (isRunning) {
-      PlayState.playing = false
-      isRunning = false
-      playPauseBtn.text = "Play"
-      changeVelBtn.disable = false
-      addBallBtn.disable = false
-    } else {
-      PlayState.playing = true
-      isRunning = true
-      playPauseBtn.text = "Pause"
-      changeVelBtn.disable = true
-      addBallBtn.disable = true
+    PlayState.playing = !isRunning
+    isRunning = !isRunning
+    playPauseBtn.text = if isRunning then "Pause" else "Play"
+    changeVelBtn.disable = isRunning
+    addBallBtn.disable = isRunning
+    if (!isRunning) {
       PlayState.velocityEditingMode = false
       PlayState.addBallMode = false
     }
+    resetBtn.disable = isRunning
   }
 
   def onAddBallButtonHandler(): Unit = {
-    PlayState.addBallMode = true
+    PlayState.addBallMode = !PlayState.addBallMode
+    addBallBtn.text = if PlayState.addBallMode then "Stop adding" else "Add ball"
     PlayState.velocityEditingMode = false
     changeVelBtn.disable = true
   }
