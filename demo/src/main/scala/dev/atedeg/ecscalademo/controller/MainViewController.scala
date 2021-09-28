@@ -145,6 +145,7 @@ class MainViewController extends Initializable with ECScalaDSL {
 
   def onPlayPauseClickHandler(): Unit = {
     PlayState.playing = !isRunning
+    PlayState.selectedBall = None
     isRunning = !isRunning
     playPauseBtn.text = if isRunning then pauseButtonLabel else playButtonLabel
     changeVelBtn.disable = isRunning
