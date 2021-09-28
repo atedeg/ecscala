@@ -70,7 +70,9 @@ class MainViewController extends Initializable with ECScalaDSL {
       ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
     } world hasAn entity withComponents { Circle(startingRadius, color) &: position &: velocity &: Mass(startingMass) }
 
-    addSystemsToWorld(world, canvas)
+    val ecsCanvas = ScalaFXCanvas(canvas)
+
+    addSystemsToWorld(world, ecsCanvas)
 
     loop = GameLoop(world.update)
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
@@ -104,19 +106,25 @@ class MainViewController extends Initializable with ECScalaDSL {
     }
   }
 
-  private def addSystemsToWorld(world: World, canvas: scalafx.scene.canvas.Canvas) = {
+  def onAddBallButtonHandler(): Unit = {
+    PlayState.addBallMode = true
+    PlayState.velocityEditingMode = false
+  }
+
+  private def addSystemsToWorld(world: World, ecsCanvas: ECSCanvas) = {
     val container = WritableSpacePartitionContainer()
+    world hasA system(ClearCanvasSystem(ecsCanvas))
     world hasA system(BallCreationSystem())
-    world hasA system(BallCreationRenderingSystem(ScalaFXCanvas(canvas)))
+    world hasA system(BallCreationRenderingSystem(ecsCanvas))
     world hasA system(BallSelectionSystem())
     world hasA system(DragBallSystem())
-    world hasA system(VelocityArrowSystem(ScalaFXCanvas(canvas)))
+    world hasA system(VelocityArrowSystem(ecsCanvas))
     world hasA system(VelocityEditingSystem())
     world hasA system(RegionAssignmentSystem(container))
     world hasA system(FrictionSystem())
     world hasA system(MovementSystem())
     world hasA system(CollisionSystem(container))
-    world hasA system(WallCollisionSystem(ScalaFXCanvas(canvas)))
-    world hasA system(RenderSystem(ScalaFXCanvas(canvas)))
+    world hasA system(WallCollisionSystem(ecsCanvas))
+    world hasA system(RenderSystem(ecsCanvas))
   }
 }
