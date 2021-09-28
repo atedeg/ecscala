@@ -73,13 +73,6 @@ trait ECScalaDSL extends ExtensionMethods with Conversions with FromSyntax {
   /**
    * Keyword that enables the use of the word "system" in the dsl.
    */
-  def system[L <: CList](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L])(using
-      clt: CListTag[L],
-  )(using world: World): Unit = world.addSystem(system)(using clt)
-
-  /**
-   * Keyword that enables the use of the word "system" in the dsl.
-   */
   def system[L <: CList](system: System[L])(using clt: CListTag[L])(using world: World): Unit =
     world.addSystem(system)(using clt)
 
