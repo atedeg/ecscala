@@ -12,7 +12,7 @@
          <Button fx:id="playPauseBtnDelegate" mnemonicParsing="false" onAction="#onPlayPauseClickHandler" text="Play" />
          <Button fx:id="addBallBtnDelegate" mnemonicParsing="false" onAction="#onAddBallButtonHandler" text="Add Ball" />
          <Button fx:id="changeVelBtnDelegate" mnemonicParsing="false" onAction="#onChangeVelocityButtonHandler" text="Change Velocity" />
-         <Button mnemonicParsing="false" onAction="#onResetClickHandler" text="Reset">
+         <Button fx:id="resetBtnDelegate" mnemonicParsing="false" onAction="#onResetClickHandler" text="Reset">
             <HBox.margin>
                <Insets />
             </HBox.margin>
