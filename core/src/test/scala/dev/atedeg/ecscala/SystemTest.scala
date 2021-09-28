@@ -137,7 +137,7 @@ class SystemTest extends AnyWordSpec with Matchers {
   }
 
   "An EmptySystem" should {
-    "execute its update" in new ViewFixture {
+    "execute when updating" in new ViewFixture {
       var success = false
       world.addSystem(EmptySystem((_, _) => success = true))
       world.update(10)

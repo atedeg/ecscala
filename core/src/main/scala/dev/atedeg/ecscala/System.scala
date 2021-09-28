@@ -89,6 +89,13 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
   }
 }
 
+object System {
+  def apply[L <: CList: CListTag](f: (Entity, L, DeltaTime) => Deletable[L]): System[L] = SystemBuilder[L].withUpdate(f)
+  def apply[L <: CList: CListTag](f: (Entity, L, DeltaTime, World, View[L]) => Deletable[L]): System[L] = SystemBuilder[L].withUpdate(f)
+  def withComponents[L <: CList: CListTag]: SystemBuilder[L] = SystemBuilder[L]
+  def empty(f: (DeltaTime, World) => Unit) = EmptySystem(f)
+}
+
 /**
  * Represent a way to iterate over entities with specific components (given by the type parameter LIncluded) and without
  * specific components (given by the type parameter LExcluded) and manipulate them.
