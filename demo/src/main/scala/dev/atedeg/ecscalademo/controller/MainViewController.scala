@@ -95,6 +95,12 @@ class MainViewController extends Initializable with ECScalaDSL {
   def onMouseReleasedHandler(event: MouseEvent): Unit = {
     MouseState.up = true
     MouseState.clicked = false
+    PlayState.isDragging = false
+  }
+
+  def onDragDetectedHandler(event: MouseEvent): Unit = {
+    MouseState.coordinates = Point(event.getX, event.getY)
+    PlayState.isDragging = true
   }
 
   def onPlayPauseClickHandler(): Unit = {
