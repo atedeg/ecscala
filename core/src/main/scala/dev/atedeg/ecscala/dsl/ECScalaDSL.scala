@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.dsl.Words.{ ClearWord, EntityWord }
+import dev.atedeg.ecscala.dsl.Words.EntityWord
 import dev.atedeg.ecscala.dsl.Syntax
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity, System, View, World }
@@ -110,5 +110,5 @@ trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax {
   /**
    * Keyword that enables the use of the word "clearAll" in the dsl.
    */
-  def clearAll: From[World, Unit] = ClearAllFromWorld(ClearWord())
+  def clearAll: From[World, Unit] = ClearAllFromWorld()
 }

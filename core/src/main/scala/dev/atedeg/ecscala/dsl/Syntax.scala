@@ -41,7 +41,7 @@ trait Syntax {
    *   clearAll from world
    * }}}
    */
-  case class ClearAllFromWorld(clearWord: ClearWord) extends From[World, Unit] {
+  case class ClearAllFromWorld() extends From[World, Unit] {
     override def from(world: World): Unit = world.clear()
   }
 
@@ -101,12 +101,4 @@ object Words {
    */
   case class EntityWord()
 
-  /**
-   * This case class enables the following syntax:
-   *
-   * {{{
-   * clearAll from world
-   * }}}
-   */
-  private[dsl] case class ClearWord()
 }
