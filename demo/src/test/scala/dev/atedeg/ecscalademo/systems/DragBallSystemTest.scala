@@ -48,18 +48,19 @@ class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
     "the game is not running and the mouse is clicked" should {
       "run" in new DragBallSystemFixture {
-        PlayState.velocityEditingMode = false
         PlayState.playing = false
         PlayState.selectedBall = Some(entity1)
-        MouseState.down = true
-        MouseState.clicked = true
+        PlayState.isDragging = true
+        PlayState.velocityEditingMode = false
         dragBallSystem.shouldRun shouldBe true
       }
       "update the selectes entity's position" in new DragBallSystemFixture {
         entity1 withComponent Position(0.0, 0.0)
 
-        PlayState.velocityEditingMode = false
+        PlayState.playing = false
         PlayState.selectedBall = Some(entity1)
+        PlayState.isDragging = true
+        PlayState.velocityEditingMode = false
         MouseState.coordinates = Point(10.0, 10.0)
 
         world.addSystem(dragBallSystem)
