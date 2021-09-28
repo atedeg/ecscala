@@ -83,6 +83,7 @@ class MainViewController extends Initializable with ECScalaDSL {
       world.update(dt)
       MouseState.down = false
       MouseState.up = false
+      // This check is made here because we cannot pass buttons to the systems
       if (!PlayState.playing && PlayState.selectedBall.isDefined) {
         changeVelBtn.disable = false
       } else {
@@ -138,7 +139,7 @@ class MainViewController extends Initializable with ECScalaDSL {
   def onChangeVelocityButtonHandler(): Unit = {
     PlayState.addBallMode = false
     PlayState.velocityEditingMode = true
-    addBallBtn.disable = true
+    addBallBtn.disable = false
   }
 
   def onResetClickHandler(): Unit = {
