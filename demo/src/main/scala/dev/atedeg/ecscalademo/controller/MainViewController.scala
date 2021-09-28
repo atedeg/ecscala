@@ -70,6 +70,11 @@ class MainViewController extends Initializable with ECScalaDSL {
 
   private var isRunning = false
 
+  private val addBallButtonLabel = "Add Ball"
+  private val stopAddingButtonLabel = "Stop Adding"
+  private val playButtonLabel = "Play"
+  private val pauseButtonLabel = "Pause"
+
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
     createEntitiesWithComponents()
     addSystemsToWorld()
@@ -112,9 +117,10 @@ class MainViewController extends Initializable with ECScalaDSL {
   def onPlayPauseClickHandler(): Unit = {
     PlayState.playing = !isRunning
     isRunning = !isRunning
-    playPauseBtn.text = if isRunning then "Pause" else "Play"
+    playPauseBtn.text = if isRunning then pauseButtonLabel else playButtonLabel
     changeVelBtn.disable = isRunning
     addBallBtn.disable = isRunning
+    addBallBtn.text = addBallButtonLabel
     if (!isRunning) {
       PlayState.velocityEditingMode = false
       PlayState.addBallMode = false
@@ -124,7 +130,7 @@ class MainViewController extends Initializable with ECScalaDSL {
 
   def onAddBallButtonHandler(): Unit = {
     PlayState.addBallMode = !PlayState.addBallMode
-    addBallBtn.text = if PlayState.addBallMode then "Stop adding" else "Add ball"
+    addBallBtn.text = if PlayState.addBallMode then stopAddingButtonLabel else addBallButtonLabel
     PlayState.velocityEditingMode = false
     changeVelBtn.disable = true
   }
