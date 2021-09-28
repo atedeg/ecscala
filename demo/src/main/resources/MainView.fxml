@@ -10,8 +10,8 @@
       <Label text="Label" />
       <HBox spacing="10.0">
          <Button fx:id="playPauseBtnDelegate" mnemonicParsing="false" onAction="#onPlayPauseClickHandler" text="Play" />
-         <Button fx:id="addBallBtn" mnemonicParsing="false" text="Add Ball" onAction="#onAddBallButtonHandler" />
-         <Button fx:id="changeVelBtn" mnemonicParsing="false" text="Change Velocity" />
+         <Button fx:id="addBallBtnDelegate" mnemonicParsing="false" text="Add Ball" onAction="#onAddBallButtonHandler" />
+         <Button fx:id="changeVelBtnDelegate" mnemonicParsing="false" text="Change Velocity" onAction="#onChangeVelocityButtonHandler" />
       </HBox>
       <VBox.margin>
          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
