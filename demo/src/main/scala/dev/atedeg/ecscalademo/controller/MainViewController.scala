@@ -35,6 +35,7 @@ import java.net.URL
 import java.util.ResourceBundle
 import scala.language.postfixOps
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.StartingState.{ startingMass, startingPositions, startingRadius }
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 
 class MainViewController extends Initializable with ECScalaDSL {
@@ -52,6 +53,9 @@ class MainViewController extends Initializable with ECScalaDSL {
   private lazy val changeVelBtn: Button = new Button(changeVelBtnDelegate)
 
   @FXML
+  private var resetBtn: Button = _
+
+  @FXML
   private var canvasDelegate: JfxCanvas = _
   private lazy val canvas: Canvas = new Canvas(canvasDelegate)
 
@@ -59,22 +63,15 @@ class MainViewController extends Initializable with ECScalaDSL {
   private var fpsDelegate: JfxLabel = _
   private lazy val fps: Label = new Label(fpsDelegate)
 
+  private lazy val ecsCanvas = ScalaFXCanvas(canvas)
   private val world: World = World()
   private var loop: GameLoop = _
 
   private var isRunning = false
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
-    import dev.atedeg.ecscalademo.StartingState.*
-    import dev.atedeg.ecscalademo.EnvironmentState.*
-    val world = World()
-    for {
-      ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
-    } world hasAn entity withComponents { Circle(startingRadius, color) &: position &: velocity &: Mass(startingMass) }
-
-    val ecsCanvas = ScalaFXCanvas(canvas)
-
-    addSystemsToWorld(world, ecsCanvas)
+    createEntitiesWithComponents()
+    addSystemsToWorld()
 
     loop = GameLoop(dt => {
       world.update(dt)
@@ -130,7 +127,24 @@ class MainViewController extends Initializable with ECScalaDSL {
     addBallBtn.disable = true
   }
 
-  private def addSystemsToWorld(world: World, ecsCanvas: ECSCanvas) = {
+  def onResetClickHandler(): Unit = {
+    if (!PlayState.playing) {
+      PlayState.selectedBall = Option.empty
+      ecsCanvas.clear()
+      clearAll from world
+      createEntitiesWithComponents()
+    }
+  }
+
+  private def createEntitiesWithComponents() = {
+    import dev.atedeg.ecscalademo.StartingState.*
+    import dev.atedeg.ecscalademo.EnvironmentState.*
+    for {
+      ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
+    } world hasAn entity withComponents { Circle(startingRadius, color) &: position &: velocity &: Mass(startingMass) }
+  }
+
+  private def addSystemsToWorld() = {
     val container = WritableSpacePartitionContainer()
     world hasA system(ClearCanvasSystem(ecsCanvas))
     world hasA system(BallCreationSystem())
