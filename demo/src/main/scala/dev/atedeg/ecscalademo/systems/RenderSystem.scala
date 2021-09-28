@@ -13,9 +13,6 @@ class RenderSystem(ecsCanvas: ECSCanvas) extends System[Circle &: Position &: CN
   private val selectedBallLineWidth = 3
   private val regularBallLineWidth = 1
 
-  override def before(deltaTime: DeltaTime, world: World, view: View[Circle &: Position &: CNil]): Unit =
-    ecsCanvas.clear()
-
   override def update(entity: Entity, components: Circle &: Position &: CNil)(
       deltaTime: DeltaTime,
       world: World,
