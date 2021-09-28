@@ -15,9 +15,7 @@ class DragBallSystem extends EmptySystem {
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     PlayState.selectedBall match {
-      case Some(entity) => {
-        entity.addComponent(Position(MouseState.coordinates))
-      }
+      case Some(entity) => entity.addComponent(Position(MouseState.coordinates))
       case _ => ()
     }
   }
