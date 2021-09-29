@@ -19,18 +19,25 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
     } {
       val ((candidateAEntity, candidateAComps), (candidateBEntity, candidateBComps)) = candidateColliders
       // We are sure we have those components because we checked for them when adding these entities to the space partition container
-      val positionA &: velocityA &: circleA &: massA &: CNil = candidateAComps
-      val positionB &: velocityB &: circleB &: massB &: CNil = candidateBComps
+      var positionA &: velocityA &: circleA &: massA &: CNil = candidateAComps
+      var positionB &: velocityB &: circleB &: massB &: CNil = candidateBComps
       if (isColliding((positionA, positionB), (circleA.radius, circleB.radius))) {
         if (isStuck((positionA, positionB), (circleA.radius, circleB.radius))) {
           val (newPositionA, newPositionB) = unstuck((positionA, positionB), (circleA.radius, circleB.radius))
-          candidateAEntity addComponent Position(newPositionA)
-          candidateBEntity addComponent Position(newPositionB)
+          candidateAEntity addComponent newPositionA
+          candidateBEntity addComponent newPositionB
+          // Update the positions for correctly calculating the collision velocities
+          positionA = newPositionA
+          positionB = newPositionB
         }
         val (newVelocityA, newVelocityB) =
           newVelocities((positionA, positionB), (velocityA, velocityB), (circleA.radius, circleB.radius))
-        candidateAEntity addComponent Velocity(newVelocityA)
-        candidateBEntity addComponent Velocity(newVelocityB)
+        candidateAEntity addComponent newVelocityA
+        candidateBEntity addComponent newVelocityB
+        // Update the space partition container with the new components for the next collision iterations
+        regions add (candidateAEntity, positionA &: newVelocityA &: circleA &: massA &: CNil)
+        regions add (candidateBEntity, positionB &: newVelocityB &: circleB &: massB &: CNil)
+        regions.build()
       }
     }
   }
@@ -42,18 +49,18 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
     compareDistances(positions, radii)(_ <= _)
 
   private def isStuck(positions: (Point, Point), radii: (Double, Double)) =
-    compareDistances(positions, radii)(_ < _)
+    compareDistances(positions, radii)(_ - _ < 0.001)
 
   private def compareDistances(positions: (Point, Point), radii: (Double, Double))(
       comparer: (Double, Double) => Boolean,
-  ) = comparer((positions._1 - positions._2).squaredNorm, math.pow(radii._1 + radii._2, 2))
+  ) = comparer((positions._1 - positions._2).norm, math.pow(radii._1 + radii._2, 1))
 
   private def unstuck(positions: (Point, Point), radii: (Double, Double)) = {
     val distanceVector = positions._1 - positions._2
     val distanceDirection = distanceVector.normalized
     val moveFactor = radii._1 + radii._2 - distanceVector.norm
     val deltaPosition = distanceDirection * moveFactor / 2
-    (positions._1 + deltaPosition, positions._2 - deltaPosition)
+    (Position(positions._1 + deltaPosition), Position(positions._2 - deltaPosition))
   }
 
   private def newVelocities(positions: (Point, Point), velocities: (Vector, Vector), masses: (Double, Double)) = {
@@ -63,7 +70,7 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
     val deltaPositions = posA - posB
     val deltaVelocities = velA - velB
     val projectedVelocity = deltaPositions * (deltaVelocities dot deltaPositions) / deltaPositions.squaredNorm
-    (velA - projectedVelocity * (2 * massB / (massA + massB)), velB + projectedVelocity * (2 * massA / (massA + massB)))
+    (Velocity(velA - projectedVelocity * (2 * massB / (massA + massB))), Velocity(velB + projectedVelocity * (2 * massA / (massA + massB))))
   }
 
   private def entitiesInNeighborRegions(region: (Int, Int)): Seq[(Entity, SpacePartitionComponents)] = for {
