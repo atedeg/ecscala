@@ -1,12 +1,26 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.{ &:, fixtures, CNil, Component, Entity, System, World }
-import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Position, Velocity, ViewFixture, WorldFixture }
+import dev.atedeg.ecscala
+import dev.atedeg.ecscala.{
+  &:,
+  fixtures,
+  CNil,
+  Component,
+  Deletable,
+  DeltaTime,
+  Entity,
+  System,
+  SystemBuilder,
+  View,
+  World,
+}
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Mass, Position, Velocity, ViewFixture, WorldFixture }
 import dev.atedeg.ecscala.util.types.ComponentTag
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
+
 import scala.language.implicitConversions
 
 class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
@@ -32,16 +46,16 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
-  "myEntity - Component" should {
+  "myEntity -= Component" should {
     "work the same way as the entity.removeComponent() method" in new WorldFixture with ComponentsFixture {
       val position = Position(1, 2)
       val velocity = Velocity(3, 4)
       val entity1 = world hasAn entity
 
-      entity1 + position
+      entity1 += position
       world.getComponents[Position] should contain(Map(entity1 -> position))
 
-      entity1 - position
+      entity1 -= position
       world.getComponents[Position] shouldBe empty
     }
   }
@@ -118,11 +132,48 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
         (entity4, Position(3, 3) &: CNil),
         (entity5, Position(3, 3) &: CNil),
       )
+
+      val mySystem = SystemBuilder[Position &: CNil].withBefore { (_, _, _) => () }.withAfter { (_, _, _) =>
+        ()
+      }.withUpdate { (_, c, _) =>
+        val Position(x, y) &: CNil = c
+        Position(x + 3, y + 3)
+      }
+
+      world hasA system(mySystem)
+      world.update(10)
+
+      world.getView[Position &: CNil] should contain theSameElementsAs List(
+        (entity1, Position(10, 10) &: CNil),
+        (entity3, Position(10, 10) &: CNil),
+        (entity4, Position(10, 10) &: CNil),
+        (entity5, Position(10, 10) &: CNil),
+      )
+
+    }
+  }
+
+  "remove MySystem() from world" should {
+    "work the same way as the world.removeSystem method" in new WorldFixture {
+      val entity1 = world hasAn entity withComponent Position(1, 1)
+      val aSystem = SystemBuilder[Position &: CNil].withBefore { (_, _, _) => () }.withAfter { (_, _, _) =>
+        ()
+      }.withUpdate { (_, c, _) =>
+        val Position(x, y) &: CNil = c
+        Position(x + 1, y + 1) &: CNil
+      }
+
+      world hasA system(aSystem)
+      remove(aSystem) from world
+
+      world.update(10)
+
+      world.getView[Position &: CNil].toList shouldBe List((entity1, Position(1, 1) &: CNil))
     }
   }
 
   "getView[Position &: CNil] from world" should {
-    "work the same way as the world.getView[Position &: CNil] method" in new ViewFixture with WorldFixture {
+    "work the same way as the world.getView[Position &: CNil] method" in new ViewFixture {
       val view = getView[Position &: Velocity &: CNil] from world
 
       view should contain theSameElementsAs List(
@@ -130,6 +181,20 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
         (entity3, Position(1, 1) &: Velocity(1, 1) &: CNil),
         (entity4, Position(1, 1) &: Velocity(1, 1) &: CNil),
       )
+    }
+  }
+
+  "geView[Position &: CNil].excluding[Velocity &: CNil] from world" should {
+    "work the same way as the world.getView[]" in new ViewFixture {
+      val view = getView[Position &: Velocity &: CNil].excluding[Mass &: CNil] from world
+
+      view should contain theSameElementsAs List(
+        (entity1, Position(1, 1) &: Velocity(1, 1) &: CNil),
+        (entity4, Position(1, 1) &: Velocity(1, 1) &: CNil),
+      )
+
+      val view2 = getView[Velocity &: CNil].excluding[Position &: CNil] from world
+      view2 shouldBe empty
     }
   }
 

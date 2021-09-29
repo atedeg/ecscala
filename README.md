@@ -29,7 +29,7 @@ object AnObject extends ECScalaDSL {
     Position(1, 2) &: Velocity(3, 4) &: Gravity(9.8)
   }
   
-  entity1 + Position(3, 6)
+  entity1 += Position(3, 6)
 }
 ```
 

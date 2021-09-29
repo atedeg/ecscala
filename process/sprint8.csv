@@ -4,9 +4,7 @@ Product Backlog Item,Sprint Task,URL,Volunteer,Initial estimate of effort,1,2,3,
 Nicolas Farabegoli
 Giacomo Cavalieri
 Linda Vitali",20,,,,,,,
-,Use new System builder in DSL test,,Linda Vitali,1,,,,,,,
 ,Improve CList implementation,,Giacomo Cavalieri,2,,,,,,,
-,Remove DSL methods (world -= entity;world += system;world -= system),,Linda Vitali,1,,,,,,,
 As a framework user I want a working example of the framework,Improve PlayState in demo,,Nicolò Di Domenico Nicolas Farabegoli,3,,,,,,,
 ,Add parameters tuning to demo,,Nicolas Farabegoli,1,,,,,,,
 ,Use new System builder in demo test,,"Nicolò Di Domenico
@@ -15,3 +13,5 @@ Giacomo Cavalieri
 Linda Vitali",1,,,,,,,
 As a framework user I would higly appreciate a handy DSL to perform these operations,Complete DSL for Systems,,Linda Vitali,1,0,0,0,0,0,0,0
 ,Refactor World's interface,,Giacomo Cavalieri,10,0,0,0,0,0,0,0
+,Use new System builder in DSL test,,Linda Vitali,1,,,,,,,
+,Remove DSL methods (world -= entity;world += system;world -= system),,Linda Vitali,1,,,,,,,

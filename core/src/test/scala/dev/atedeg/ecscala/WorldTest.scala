@@ -102,5 +102,23 @@ class WorldTest extends AnyWordSpec with Matchers {
         )
       }
     }
+    "a System is removed" should {
+      "not execute its update" in new WorldFixture {
+        val entity = world.createEntity()
+        entity.addComponent(Position(1, 1))
+        val system = SystemBuilder[Position &: CNil].withBefore { (_, _, _) => () }.withAfter { (_, _, _) =>
+          ()
+        }.withUpdate { (_, c, _) =>
+          val Position(x, y) &: CNil = c
+          Position(x + 1, y + 1) &: CNil
+        }
+
+        world.addSystem(system)
+        world.removeSystem(system)
+        world.update(10)
+
+        world.getView[Position &: CNil].toList shouldBe List((entity, Position(1, 1) &: CNil))
+      }
+    }
   }
 }
