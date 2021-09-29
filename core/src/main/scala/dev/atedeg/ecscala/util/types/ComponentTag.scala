@@ -24,13 +24,16 @@ private def deriveComponentTagImpl[C: Type](using quotes: Quotes): Expr[Componen
   else if !(typeReprOfC <:< TypeRepr.of[Component]) then
     report.error(s"${typeReprOfC.show} must be a subtype of Component")
 
+  val computedString = typeReprOfC.show
+  val computedHashCode = computedString.hashCode
   '{
     new ComponentTag[C] {
-      override def toString: String = ${ Expr(typeReprOfC.show) }
-      override def hashCode: Int = this.toString.hashCode
+      override def toString: String = ${ Expr(computedString) }
+      override def hashCode: Int = ${ Expr(computedHashCode) }
       override def equals(obj: Any) = obj match {
-        case that: ComponentTag[_] => that.toString == this.toString
-        case _ => false
+          case that: ComponentTag[_] =>
+            (this eq that) || (this.hashCode == that.hashCode && this.toString == that.toString)
+          case _ => false
       }
     }
   }
