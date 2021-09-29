@@ -1,6 +1,6 @@
 package dev.atedeg.ecscalademo.util
 
-import scala.collection
+import scala.collection.{ immutable, mutable }
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.{ Entity, &:, CNil }
@@ -12,7 +12,7 @@ type SpacePartitionComponents = Position &: Velocity &: Circle &: Mass &: CNil
  * This trait represents a read-only version of a space partition container that assigns each added entity to a region
  * according to its position.
  */
-trait SpacePartitionContainer extends Iterable[((Int, Int), Seq[(Entity, SpacePartitionComponents)])] {
+trait SpacePartitionContainer extends Iterable[((Int, Int), Iterable[(Entity, SpacePartitionComponents)])] {
 
   /**
    * Get the size of each region.
@@ -28,7 +28,7 @@ trait SpacePartitionContainer extends Iterable[((Int, Int), Seq[(Entity, SpacePa
    * @return
    *   the entities that belong the the specified region.
    */
-  def get(region: (Int, Int)): Seq[(Entity, SpacePartitionComponents)]
+  def get(region: (Int, Int)): Iterable[(Entity, SpacePartitionComponents)]
 
   /**
    * Return an iterator that iterates over the non-empty regions.
@@ -66,8 +66,8 @@ object WritableSpacePartitionContainer {
   def apply(): WritableSpacePartitionContainer = new WritableSpacePartitionContainerImpl()
 
   private class WritableSpacePartitionContainerImpl() extends WritableSpacePartitionContainer {
-    private var regions: Map[(Int, Int), Seq[(Entity, SpacePartitionComponents)]] = Map()
-    private var entities: Seq[(Entity, SpacePartitionComponents)] = List()
+    private val regions: mutable.Map[(Int, Int), immutable.Map[Entity, SpacePartitionComponents]] = mutable.Map.empty
+    private val entities: mutable.Map[Entity, SpacePartitionComponents] = mutable.Map.empty
     private var _regionSize: Double = 0
     private val regionSizeMultiplier = 2
 
@@ -76,28 +76,33 @@ object WritableSpacePartitionContainer {
     override def add(entityComponentsPair: (Entity, SpacePartitionComponents)): Unit = {
       val (_, components) = entityComponentsPair
       val _ &: _ &: Circle(radius, _) &: _ &: CNil = components
-      entities :+= entityComponentsPair
-      _regionSize = math.max(_regionSize * regionSizeMultiplier, radius)
+      entities += entityComponentsPair
+      _regionSize = math.max(_regionSize, radius * regionSizeMultiplier)
     }
 
     override def build(): Unit = {
-      regions = entities.foldLeft(Map[(Int, Int), Seq[(Entity, SpacePartitionComponents)]]()) { (acc, elem) =>
-        val position &: _ &: _ &: _ &: CNil = elem._2
+      regions.clear()
+      for ((entity, components) <- entities) {
+        val position &: _ &: Circle(_, color) &: _ &: CNil = components
         val region = getRegionFromPosition(position)
-        val regionEntities = acc get region map (_ :+ elem) getOrElse List(elem)
-        acc + (region -> regionEntities)
+        val regionEntities = regions get region
+        val regionNewEntities = regionEntities match {
+          case Some(entitiesInRegion) => entitiesInRegion + (entity -> components)
+          case None => Map(entity -> components)
+        }
+        regions += region -> regionNewEntities
       }
     }
 
     override def clear(): Unit = {
-      regions = Map()
-      entities = List()
+      regions.clear()
+      entities.clear()
       _regionSize = 0
     }
 
-    override def get(region: (Int, Int)): Seq[(Entity, SpacePartitionComponents)] = regions getOrElse (region, Seq())
+    override def get(region: (Int, Int)): Iterable[(Entity, SpacePartitionComponents)] = regions getOrElse (region, Map())
 
-    override def iterator: Iterator[((Int, Int), Seq[(Entity, SpacePartitionComponents)])] = regions.iterator
+    override def iterator: Iterator[((Int, Int), Iterable[(Entity, SpacePartitionComponents)])] = regions.iterator
 
     override def regionsIterator: Iterator[(Int, Int)] = regions.keysIterator
 
