@@ -4,7 +4,7 @@ import scala.language.implicitConversions
 import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, EmptySystem, Entity, View, World }
 import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
+import dev.atedeg.ecscalademo.util.{ SpacePartitionComponents, WritableSpacePartitionContainer }
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Point, Position, State, Vector, Velocity }
 
@@ -15,31 +15,28 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     for {
       region <- regions.regionsIterator
-      candidateColliders <- entitiesInNeighborRegions(region).combinations(2)
+      candidateColliders <- combinations2(entitiesInNeighborRegions(region))
     } {
-      val Seq(candidateA, candidateB) = candidateColliders
+      val ((candidateAEntity, candidateAComps), (candidateBEntity, candidateBComps)) = candidateColliders
       // We are sure we have those components because we checked for them when adding these entities to the space partition container
-      val positionA = candidateA.getComponent[Position].get
-      val positionB = candidateB.getComponent[Position].get
-      val velocityA = candidateA.getComponent[Velocity].get
-      val velocityB = candidateB.getComponent[Velocity].get
-      val circleA = candidateA.getComponent[Circle].get
-      val circleB = candidateB.getComponent[Circle].get
-      val massA = candidateA.getComponent[Mass].get
-      val massB = candidateB.getComponent[Mass].get
+      val positionA &: velocityA &: circleA &: massA &: CNil = candidateAComps
+      val positionB &: velocityB &: circleB &: massB &: CNil = candidateBComps
       if (isColliding((positionA, positionB), (circleA.radius, circleB.radius))) {
         if (isStuck((positionA, positionB), (circleA.radius, circleB.radius))) {
           val (newPositionA, newPositionB) = unstuck((positionA, positionB), (circleA.radius, circleB.radius))
-          candidateA addComponent Position(newPositionA)
-          candidateB addComponent Position(newPositionB)
+          candidateAEntity addComponent Position(newPositionA)
+          candidateBEntity addComponent Position(newPositionB)
         }
         val (newVelocityA, newVelocityB) =
           newVelocities((positionA, positionB), (velocityA, velocityB), (circleA.radius, circleB.radius))
-        candidateA addComponent Velocity(newVelocityA)
-        candidateB addComponent Velocity(newVelocityB)
+        candidateAEntity addComponent Velocity(newVelocityA)
+        candidateBEntity addComponent Velocity(newVelocityB)
       }
     }
   }
+
+  private def getComponents(entity: Entity): (Position, Velocity, Circle, Mass) =
+    (entity.getComponent[Position].get, entity.getComponent[Velocity].get, entity.getComponent[Circle].get, entity.getComponent[Mass].get)
 
   private def isColliding(positions: (Point, Point), radii: (Double, Double)) =
     compareDistances(positions, radii)(_ <= _)
@@ -69,9 +66,15 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
     (velA - projectedVelocity * (2 * massB / (massA + massB)), velB + projectedVelocity * (2 * massA / (massA + massB)))
   }
 
-  private def entitiesInNeighborRegions(region: (Int, Int)): Seq[Entity] = for {
+  private def entitiesInNeighborRegions(region: (Int, Int)): Seq[(Entity, SpacePartitionComponents)] = for {
     x <- -1 to 0
     y <- -1 to 1
-    entity <- regions get (region._1 + x, region._2 + y) if x != 0 || y != 1
-  } yield entity
+    ecp <- regions get (region._1 + x, region._2 + y) if x != 0 || y != 1
+  } yield ecp
+
+  private def combinations2[T](seq: Seq[T]): Iterator[(T, T)] =
+    seq.tails flatMap {
+      case h +: t => t.iterator map ((h, _))
+      case Nil => Iterator.empty
+    }
 }

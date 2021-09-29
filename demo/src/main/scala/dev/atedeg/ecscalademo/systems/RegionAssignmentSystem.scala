@@ -29,7 +29,7 @@ class RegionAssignmentSystem(private val regions: WritableSpacePartitionContaine
       world: World,
       view: View[Position &: Velocity &: Circle &: Mass &: CNil],
   ): Deletable[Position &: Velocity &: Circle &: Mass &: CNil] = {
-    regions add entity
+    regions add (entity, components)
     components
   }
 
