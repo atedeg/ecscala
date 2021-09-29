@@ -86,6 +86,8 @@ object Entity {
     }
 
     override def toString: String = s"Entity($id)"
+
+    override def hashCode(): Id = id
   }
 
   private object IdGenerator {
