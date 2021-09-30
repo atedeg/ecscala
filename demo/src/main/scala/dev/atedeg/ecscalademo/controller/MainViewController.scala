@@ -125,45 +125,39 @@ class MainViewController extends Initializable with ECScalaDSL {
       case State.Play => {
         playPauseBtn.text = "Pause"
         addBallBtn.text = addBallButtonLabel
-        playPauseBtn.disable = false
-        addBallBtn.disable = true
-        changeVelBtn.disable = true
-        resetBtn.disable = true
+        setButtonState(false, true, true, true)
       }
       case State.Pause => {
         playPauseBtn.text = "Play"
         addBallBtn.text = addBallButtonLabel
-        playPauseBtn.disable = false
-        addBallBtn.disable = false
-        changeVelBtn.disable = true
-        resetBtn.disable = false
+        setButtonState(false, false, true, false)
       }
       case State.AddBalls => {
         addBallBtn.text = stopAddingButtonLabel
-        playPauseBtn.disable = false
-        addBallBtn.disable = false
-        changeVelBtn.disable = true
-        resetBtn.disable = false
+        setButtonState(false, false, true, false)
       }
       case State.ChangeVelocity => {
-        playPauseBtn.disable = false
-        addBallBtn.disable = true
-        changeVelBtn.disable = false
-        resetBtn.disable = false
+        setButtonState(false, true, false, false)
       }
       case State.Dragging => {
-        playPauseBtn.disable = true
-        addBallBtn.disable = true
-        changeVelBtn.disable = true
-        resetBtn.disable = true
+        setButtonState(true, true, true, true)
       }
       case State.SelectBall => {
-        playPauseBtn.disable = false
-        addBallBtn.disable = false
-        changeVelBtn.disable = false
-        resetBtn.disable = false
+        setButtonState(false, false, false, false)
       }
     }
+  }
+
+  private def setButtonState(
+      isPlayPauseDisable: Boolean,
+      isAddBallDiasable: Boolean,
+      isChangeVelDisable: Boolean,
+      isResetDisable: Boolean,
+  ): Unit = {
+    playPauseBtn.disable = isPlayPauseDisable
+    addBallBtn.disable = isAddBallDiasable
+    changeVelBtn.disable = isChangeVelDisable
+    resetBtn.disable = isResetDisable
   }
 
   def onMouseMovedHandler(event: MouseEvent): Unit = mouseState.coordinates = Point(event.getX, event.getY)
