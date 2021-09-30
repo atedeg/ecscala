@@ -3,8 +3,6 @@ package dev.atedeg.ecscala.fixtures
 import dev.atedeg.ecscala.{ &:, CNil, SystemBuilder, World }
 import dev.atedeg.ecscala.util.types.given
 
-//import scala.language.implicitConversions
-
 trait SystemFixture {
   lazy val world = World()
 
