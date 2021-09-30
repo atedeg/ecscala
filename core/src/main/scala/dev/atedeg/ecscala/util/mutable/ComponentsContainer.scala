@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.util.mutable
 
 import dev.atedeg.ecscala.util.types.ComponentTag
-import dev.atedeg.ecscala.{Component, Entity}
+import dev.atedeg.ecscala.{ Component, Entity }
 
 import scala.collection.Map
 import scala.collection.mutable.AnyRefMap
