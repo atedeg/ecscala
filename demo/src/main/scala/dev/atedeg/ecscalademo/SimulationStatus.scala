@@ -3,19 +3,28 @@ package dev.atedeg.ecscalademo
 import dev.atedeg.ecscala.Entity
 import scalafx.beans.property.DoubleProperty
 
-object MouseState {
+enum State {
+  case Pause, Play, AddBalls, SelectBall, ChangeVelocity, Dragging
+}
+
+trait MouseState {
   var coordinates = Point(0, 0)
   var clicked = false
   var down = false
   var up = false
 }
 
-object PlayState {
-  var playing = false
+object MouseState {
+  def apply(): MouseState = new MouseState {}
+}
+
+trait PlayState {
+  var gameState: State = State.Pause
   var selectedBall: Option[Entity] = Option.empty
-  var addBallMode: Boolean = false
-  var velocityEditingMode: Boolean = false
-  var isDragging = false
+}
+
+object PlayState {
+  def apply(): PlayState = new PlayState {}
 }
 
 object StartingState {
@@ -55,8 +64,12 @@ object StartingState {
   )
 }
 
-object EnvironmentState {
+trait EnvironmentState {
   val frictionCoefficient = DoubleProperty(0.05)
-  var wallRestitution = DoubleProperty(0.5)
+  val wallRestitution = DoubleProperty(0.5)
   val gravity: Double = 9.81
+}
+
+object EnvironmentState {
+  def apply(): EnvironmentState = new EnvironmentState {}
 }
