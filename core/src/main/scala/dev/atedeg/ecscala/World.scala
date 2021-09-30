@@ -139,7 +139,6 @@ object World {
     private[ecscala] override def getComponents[C <: Component: ComponentTag]: Option[Map[Entity, C]] =
       componentsContainer[C]
 
-    @targetName("addComponent")
     private[ecscala] override def addComponent[C <: Component: ComponentTag](
         entityComponentPair: (Entity, C),
     ): World = {
@@ -147,7 +146,6 @@ object World {
       this
     }
 
-    @targetName("removeComponent")
     private[ecscala] override def removeComponent[C <: Component: ComponentTag](
         entityComponentPair: (Entity, C),
     ): World = {
