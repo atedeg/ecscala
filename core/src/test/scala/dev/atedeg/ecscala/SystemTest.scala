@@ -17,7 +17,10 @@ class SystemTest extends AnyWordSpec with Matchers {
             .withPrecondition(false)
             .withBefore { (_, _, _) => success = false }
             .withAfter { (_, _, _) => success = false }
-            .withUpdate { (_, components, _) => success = false; components }
+            .withUpdate { (_, components, _) =>
+              success = false
+              components
+            },
         )
         world.update(10)
         success shouldBe true
@@ -84,20 +87,17 @@ class SystemTest extends AnyWordSpec with Matchers {
       }
       "execute its before and after handlers in the correct order" in new ViewFixture {
         type Comps = Position &: Velocity &: CNil
-        val testSystem = System[Comps]
-          .withBefore { (deltaTime, world, view) =>
-            view foreach (entityComponentsPair => {
-              val (entity, Position(px, py) &: _) = entityComponentsPair
-              entity.addComponent(Position(px * 2, py * 2))
-            })
-          }
-          .withAfter { (deltaTime, world, view) =>
-            view foreach (entityComponentsPair => {
-              val (entity, Position(px, py) &: _) = entityComponentsPair
-              entity.addComponent(Position(px + 1, py + 1))
-            })
-          }
-          .withUpdate { (_, components, _) => components }
+        val testSystem = System[Comps].withBefore { (deltaTime, world, view) =>
+          view foreach (entityComponentsPair => {
+            val (entity, Position(px, py) &: _) = entityComponentsPair
+            entity.addComponent(Position(px * 2, py * 2))
+          })
+        }.withAfter { (deltaTime, world, view) =>
+          view foreach (entityComponentsPair => {
+            val (entity, Position(px, py) &: _) = entityComponentsPair
+            entity.addComponent(Position(px + 1, py + 1))
+          })
+        }.withUpdate { (_, components, _) => components }
 
         world.addSystem(testSystem)
         world.update(10)
