@@ -57,7 +57,7 @@ import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity
  *
  * '''Remove a System from a World'''
  * {{{
- *   * remove mySystem from world
+ *   * remove (mySystem) from world
  *   * world -= mySystem
  * }}}
  *

@@ -165,7 +165,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
-  "remove mySystem from world" should {
+  "remove (mySystem) from world" should {
     "work the same way as the world.removeSystem method" in new SystemFixture {
       world hasA system(mySystem2)
       remove(mySystem2) from world
@@ -213,7 +213,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
-  "clearAll from world" should {
+  "clearAllEntities from world" should {
     "work the same way as the world.clearEntities method" in new WorldFixture {
       val entity1 = world hasAn entity withComponent Position(1, 2)
       val entity2 = world hasAn entity withComponent Position(3, 4)

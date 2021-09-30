@@ -6,7 +6,7 @@ import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 trait Conversions {
 
   /**
-   * This conversion enable the removal of a single component from an entity with the following syntax:
+   * This conversion enables the removal of a single component from an entity with the following syntax:
    *
    * remove { myComponent } from myEntity
    */
@@ -14,7 +14,7 @@ trait Conversions {
     def apply(component: C): C &: CNil = component &: CNil
 
   /**
-   * This conversion enable the removal of a single entity from the world with the following syntax:
+   * This conversion enables the removal of a single entity from the world with the following syntax:
    *
    * remove { myEntity } from world
    */
