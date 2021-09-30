@@ -12,7 +12,7 @@ trait Conversions {
    */
   given componentToClist[C <: Component: ComponentTag]: Conversion[C, C &: CNil] with
     def apply(component: C): C &: CNil = component &: CNil
-  
+
   /**
    * This conversion enable the removal of a single entity from the world with the following syntax:
    *

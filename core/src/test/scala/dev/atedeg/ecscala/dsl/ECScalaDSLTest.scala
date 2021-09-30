@@ -146,6 +146,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
   }
 
   object CheckView extends ViewFixture {
+
     def check(world: World): Unit = {
       world.getView[Position &: CNil] should contain theSameElementsAs List(
         (entity1, Position(4, 4) &: CNil),

@@ -140,13 +140,17 @@ object World {
       componentsContainer[C]
 
     @targetName("addComponent")
-    private[ecscala] override def addComponent[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World = {
+    private[ecscala] override def addComponent[C <: Component: ComponentTag](
+        entityComponentPair: (Entity, C),
+    ): World = {
       componentsContainer += entityComponentPair
       this
     }
 
     @targetName("removeComponent")
-    private[ecscala] override def removeComponent[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World = {
+    private[ecscala] override def removeComponent[C <: Component: ComponentTag](
+        entityComponentPair: (Entity, C),
+    ): World = {
       componentsContainer -= entityComponentPair
       this
     }
