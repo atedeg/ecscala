@@ -9,20 +9,20 @@ import dev.atedeg.ecscalademo.{
   PlayState,
   Position,
   StartingState,
+  State,
 }
 import dev.atedeg.ecscala.util.types.given
 
 /**
  * This [[System]] is used to update the selected ball's [[Position]] according to the mouse pointer.
  */
-class DragBallSystem extends EmptySystem {
+class DragBallSystem(private val playState: PlayState, private val mouseState: MouseState) extends EmptySystem {
 
-  override def shouldRun: Boolean =
-    !PlayState.playing && PlayState.selectedBall.isDefined && PlayState.isDragging && !PlayState.velocityEditingMode
+  override def shouldRun: Boolean = playState.gameState == State.Dragging
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
-    PlayState.selectedBall match {
-      case Some(entity) => entity.addComponent(Position(MouseState.coordinates))
+    playState.selectedBall match {
+      case Some(entity) => entity.addComponent(Position(mouseState.coordinates))
       case _ => ()
     }
   }
