@@ -1,15 +1,24 @@
 package dev.atedeg.ecscala.util.types
 
-import dev.atedeg.ecscala.{ &:, CList, CNil, Component }
+import scala.annotation.targetName
+import scala.quoted.{ Expr, Quotes, Type }
+import dev.atedeg.ecscala.{ &:, CList, CNil, Component, Deletable }
 import dev.atedeg.ecscala.util.types
 
-import scala.quoted.{ Expr, Quotes, Type }
 
 sealed trait CListTag[L <: CList] {
-  def tags: Seq[ComponentTag[? <: Component]]
+  def tags: Seq[ComponentTag[Component]]
 }
 
 inline given [L <: CList]: CListTag[L] = ${ deriveCListTagImpl[L] }
+
+extension [L <: CList: CListTag](list: L)
+  def taggedWith(clt: CListTag[L]): Iterable[(Component, ComponentTag[Component])] = list zip clt.tags
+
+extension [L <: CList: CListTag](list: Deletable[L])
+  @targetName("deletableTaggedWith")
+  def taggedWith(clt: CListTag[L]): Iterable[(Component, ComponentTag[Component])] = list zip clt.tags
+
 
 private def deriveCListTagImpl[L <: CList: Type](using quotes: Quotes): Expr[CListTag[L]] = {
   import quotes.reflect.*
@@ -33,10 +42,10 @@ private def deriveCListTagImpl[L <: CList: Type](using quotes: Quotes): Expr[CLi
   }
 }
 
-inline private def getTags[L <: CList]: Seq[ComponentTag[? <: Component]] = {
+inline private def getTags[L <: CList]: Seq[ComponentTag[Component]] = {
   import scala.compiletime.erasedValue
   inline erasedValue[L] match {
-    case _: (head &: tail) => summon[ComponentTag[head]] +: getTags[tail]
+    case _: (head &: tail) => summon[ComponentTag[head]].asInstanceOf[ComponentTag[Component]] +: getTags[tail]
     case _ => Seq()
   }
 }

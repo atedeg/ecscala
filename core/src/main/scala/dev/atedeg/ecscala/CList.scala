@@ -3,7 +3,7 @@ package dev.atedeg.ecscala
 import scala.annotation.{ showAsInfix, tailrec }
 import scala.collection.IterableOps
 import dev.atedeg.ecscala.{ Component, Deleted }
-import dev.atedeg.ecscala.util.types.ComponentTag
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
 /**
  * Represents a CList whose elements can either be a standard [[Component]] or a special [[Deleted]] component,

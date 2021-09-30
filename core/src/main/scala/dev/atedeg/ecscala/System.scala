@@ -3,7 +3,7 @@ package dev.atedeg.ecscala
 import scala.annotation.tailrec
 import dev.atedeg.ecscala.{ CList, Entity, View }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
+import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag, taggedWith }
 
 type DeltaTime = Double
 
@@ -78,9 +78,8 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
   protected def getView(world: World): View[L] = world.getView(using clt)
 
   private def updateComponents[L <: CList](components: Deletable[L])(entity: Entity)(using clt: CListTag[L]): Unit = {
-    val taggedComponents = clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] zip components
-    taggedComponents foreach { taggedComponent =>
-      val (ct, component) = taggedComponent
+    components.taggedWith(clt) foreach { taggedComponent =>
+      val (component, ct) = taggedComponent
       component match {
         case Deleted => entity.removeComponent(using ct)
         case _ => entity.addComponent(component)(using ct)

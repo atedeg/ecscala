@@ -4,6 +4,7 @@ import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 import dev.atedeg.ecscala.{ CList, Component, Entity, System, World }
 import dev.atedeg.ecscala.dsl.Words.EntityWord
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.util.types.taggedWith
 
 trait ExtensionMethods {
 
@@ -17,7 +18,7 @@ trait ExtensionMethods {
      * }}}
      */
     def withComponents[L <: CList](componentList: L)(using clt: CListTag[L]): Entity = {
-      componentList zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] foreach { entity.addComponent(_)(using _) }
+      componentList.taggedWith(clt) foreach { entity.addComponent(_)(using _) }
       entity
     }
 
