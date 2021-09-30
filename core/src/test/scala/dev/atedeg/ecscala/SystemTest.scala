@@ -130,8 +130,9 @@ class SystemTest extends AnyWordSpec with Matchers {
       "not run its update" in new ViewFixture {
         var updateExecuted = false
         world.addSystem(
-          System[Position &: CNil].excluding[Position &: CNil]
-            .withUpdate { (_, cs, _) => updateExecuted = true; cs }
+          System[Position &: CNil].excluding[Position &: CNil].withUpdate { (_, cs, _) =>
+            updateExecuted = true; cs
+          },
         )
         updateExecuted shouldBe false
       }
@@ -144,6 +145,12 @@ class SystemTest extends AnyWordSpec with Matchers {
       world.addSystem(System.empty((_, _) => success = true))
       world.update(10)
       success shouldBe true
+    }
+    "throw an exception" when {
+      "calling the wrong update" in new ViewFixture {
+        an[IllegalStateException] should be thrownBy
+          EmptySystem((_, _) => ()).update(entity1, CNil)(10, world, world.getView[CNil])
+      }
     }
   }
 }
