@@ -5,7 +5,6 @@ import scala.quoted.{ Expr, Quotes, Type }
 import dev.atedeg.ecscala.{ &:, CList, CNil, Component, Deletable }
 import dev.atedeg.ecscala.util.types
 
-
 sealed trait CListTag[L <: CList] {
   def tags: Seq[ComponentTag[Component]]
 }
@@ -16,9 +15,9 @@ extension [L <: CList: CListTag](list: L)
   def taggedWith(clt: CListTag[L]): Iterable[(Component, ComponentTag[Component])] = list zip clt.tags
 
 extension [L <: CList: CListTag](list: Deletable[L])
+
   @targetName("deletableTaggedWith")
   def taggedWith(clt: CListTag[L]): Iterable[(Component, ComponentTag[Component])] = list zip clt.tags
-
 
 private def deriveCListTagImpl[L <: CList: Type](using quotes: Quotes): Expr[CListTag[L]] = {
   import quotes.reflect.*
