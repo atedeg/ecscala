@@ -24,6 +24,7 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with Moc
   "A RenderingCreationBallSystem" when {
     "the game is not running" should {
       "be enabled" in new BallCreationRenderingSystemFixture {
+        system.shouldRun shouldBe false
         enableSystemCondition(playState)
         system.shouldRun shouldBe true
       }
@@ -42,6 +43,6 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with Moc
     }
   }
 
-  private def enableSystemCondition(playState: PlayState): Unit = playState.gameState == State.AddBalls
-  private def disableSystemCondition(playState: PlayState): Unit = playState.gameState == State.AddBalls
+  private def enableSystemCondition(playState: PlayState): Unit = playState.gameState = State.AddBalls
+  private def disableSystemCondition(playState: PlayState): Unit = playState.gameState = State.Pause
 }
