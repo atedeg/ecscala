@@ -56,10 +56,28 @@ trait ExtensionMethods {
      * This method enables the following syntax:
      *
      * {{{
-     * world - entity
+     * world -= myEntity
      * }}}
      */
-    def -(entity: Entity) = world.removeEntity(entity)
+    def -=(entity: Entity) = world.removeEntity(entity)
+
+    /**
+     * This method enables the following syntax:
+     *
+     * {{{
+     * world += mySystem
+     * }}}
+     */
+    def +=[L <: CList: CListTag](system: System[L]) = world.addSystem(system)
+
+    /**
+     * This method enables the following syntax:
+     *
+     * {{{
+     * world -= mySystem
+     * }}}
+     */
+    def -=[L <: CList: CListTag](system: System[L]) = world.removeSystem(system)
 
     /**
      * This method enables the following syntax:
