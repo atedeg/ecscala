@@ -59,6 +59,8 @@ object ScalaFXCanvas {
 
   private class ScalaFXCanvasImpl(canvas: Canvas) extends ECSCanvas {
     private val graphicsContext: GraphicsContext = canvas.graphicsContext2D
+    private val defaultCanvasWidth = 760.0
+    private val defaultCanvasHeight = 467.0
 
     override def drawCircle(coordinates: Point, radius: Double, color: Color, lineWidth: Double): Unit = {
       graphicsContext.beginPath()
@@ -81,8 +83,8 @@ object ScalaFXCanvas {
 
     override def clear(): Unit = graphicsContext.clearRect(0, 0, canvas.getWidth, canvas.getHeight)
 
-    override def width: Double = canvas.getWidth
+    override def width: Double = if canvas.getWidth == 0.0 then defaultCanvasWidth else canvas.getWidth
 
-    override def height: Double = canvas.getHeight
+    override def height: Double = if canvas.getHeight == 0.0 then defaultCanvasHeight else canvas.getHeight
   }
 }
