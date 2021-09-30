@@ -12,18 +12,16 @@ class SystemTest extends AnyWordSpec with Matchers {
     "with a false precondition" should {
       "not execute" in new ViewFixture {
         var success = true
-        world.addSystem(new System[Position &: CNil] {
-          override def shouldRun = false
-          override def before(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]): Unit = success = false
-          override def after(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]): Unit = success = false
-          override def update(
-              entity: Entity,
-              components: Position &: CNil,
-          )(deltaTime: DeltaTime, world: World, view: View[Position &: CNil]) = {
-            success = false
-            components
-          }
-        })
+        world.addSystem(
+          System[Position &: CNil]
+            .withPrecondition(false)
+            .withBefore { (_, _, _) => success = false }
+            .withAfter { (_, _, _) => success = false }
+            .withUpdate { (_, components, _) =>
+              success = false
+              components
+            },
+        )
         world.update(10)
         success shouldBe true
       }
@@ -89,24 +87,18 @@ class SystemTest extends AnyWordSpec with Matchers {
       }
       "execute its before and after handlers in the correct order" in new ViewFixture {
         type Comps = Position &: Velocity &: CNil
-        val testSystem = new System[Comps] {
-          override def before(deltaTime: DeltaTime, world: World, view: View[Comps]) =
-            view foreach (entityComponentsPair => {
-              val (entity, Position(px, py) &: _) = entityComponentsPair
-              entity.addComponent(Position(px * 2, py * 2))
-            })
+        val testSystem = System[Comps].withBefore { (deltaTime, world, view) =>
+          view foreach (entityComponentsPair => {
+            val (entity, Position(px, py) &: _) = entityComponentsPair
+            entity.addComponent(Position(px * 2, py * 2))
+          })
+        }.withAfter { (deltaTime, world, view) =>
+          view foreach (entityComponentsPair => {
+            val (entity, Position(px, py) &: _) = entityComponentsPair
+            entity.addComponent(Position(px + 1, py + 1))
+          })
+        }.withUpdate { (_, components, _) => components }
 
-          override def after(deltaTime: DeltaTime, world: World, view: View[Comps]) =
-            view foreach (entityComponentsPair => {
-              val (entity, Position(px, py) &: _) = entityComponentsPair
-              entity.addComponent(Position(px + 1, py + 1))
-            })
-
-          override def update(
-              entity: Entity,
-              components: Comps,
-          )(deltaTime: DeltaTime, world: World, view: View[Comps]) = components
-        }
         world.addSystem(testSystem)
         world.update(10)
 
