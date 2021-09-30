@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.util.immutable.ComponentsContainer
+import dev.atedeg.ecscala.util.mutable.ComponentsContainer
 import dev.atedeg.ecscala.util.types.ComponentTag
 
 /**
