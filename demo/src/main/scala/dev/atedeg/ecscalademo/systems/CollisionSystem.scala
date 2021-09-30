@@ -6,10 +6,11 @@ import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import dev.atedeg.ecscalademo.given
-import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Point, Position, Vector, Velocity }
+import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Point, Position, State, Vector, Velocity }
 
-class CollisionSystem(private val regions: WritableSpacePartitionContainer) extends EmptySystem {
-  override def shouldRun: Boolean = PlayState.playing
+class CollisionSystem(private val playState: PlayState, private val regions: WritableSpacePartitionContainer)
+    extends EmptySystem {
+  override def shouldRun: Boolean = playState.gameState == State.Play
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     for {
