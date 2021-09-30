@@ -152,51 +152,5 @@ object World {
       componentsContainer -= entityComponentPair
       this
     }
-
-    private def convertFunctionToSystem[L <: CList](
-        system: (Entity, L, DeltaTime) => Deletable[L],
-    )(using clt: CListTag[L]): System[L] =
-      new System[L](using clt) {
-
-        override def update(
-            entity: Entity,
-            components: L,
-        )(deltaTime: DeltaTime, world: World, view: View[L]): Deletable[L] = system(entity, components, deltaTime)
-      }
-
-    private def convertFunctionToSystem[L <: CList](
-        system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L],
-    )(using clt: CListTag[L]): System[L] = new System[L](using clt) {
-
-      override def update(
-          entity: Entity,
-          components: L,
-      )(deltaTime: DeltaTime, world: World, view: View[L]): Deletable[L] =
-        system(entity, components, deltaTime, world, view)
-    }
-
-    private def convertFunctionToSystem[LIncluded <: CList, LExcluded <: CList](
-        system: (Entity, LIncluded, DeltaTime) => Deletable[LIncluded],
-    )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): ExcludingSystem[LIncluded, LExcluded] =
-      new ExcludingSystem[LIncluded, LExcluded](using cltIncl, cltExcl) {
-
-        override def update(
-            entity: Entity,
-            components: LIncluded,
-        )(deltaTime: DeltaTime, world: World, view: View[LIncluded]): Deletable[LIncluded] =
-          system(entity, components, deltaTime)
-      }
-
-    private def convertFunctionToSystem[LIncluded <: CList, LExcluded <: CList](
-        system: (Entity, LIncluded, DeltaTime, World, View[LIncluded]) => Deletable[LIncluded],
-    )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): ExcludingSystem[LIncluded, LExcluded] =
-      new ExcludingSystem[LIncluded, LExcluded] {
-
-        override def update(
-            entity: Entity,
-            components: LIncluded,
-        )(deltaTime: DeltaTime, world: World, view: View[LIncluded]): Deletable[LIncluded] =
-          system(entity, components, deltaTime, world, view)
-      }
   }
 }
