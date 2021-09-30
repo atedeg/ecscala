@@ -57,7 +57,7 @@ object Entity {
 
     override def addComponent[C <: Component](component: C)(using ct: ComponentTag[C]): Entity = {
       component.setEntity(Some(this))
-      world += (this -> component)
+      world addComponent (this -> component)
       this
     }
 
@@ -69,7 +69,7 @@ object Entity {
       componentToRemove match {
         case Some(component) =>
           component.setEntity(None)
-          world -= (this -> component)
+          world removeComponent (this -> component)
         case None => ()
       }
       this
@@ -79,7 +79,7 @@ object Entity {
       component.entity match {
         case Some(entity) if entity == this =>
           component.setEntity(None)
-          world -= (this -> component)
+          world removeComponent (this -> component)
         case _ => ()
       }
       this
