@@ -114,7 +114,7 @@ class SystemTest extends AnyWordSpec with Matchers {
   "An ExcludingSystem" when {
     "executing its update" should beAbleTo {
       "update components" in new ViewFixture {
-        world.addSystem(ExcludingSystem[Position &: Velocity &: CNil, Mass &: CNil]((_, comps, _) => {
+        world.addSystem(ExcludingSystem[Position &: Velocity &: CNil, Mass &: CNil]((_, comps, _, _, _) => {
           val Position(x, y) &: Velocity(vx, vy) &: CNil = comps
           Position(x + 1, y + 1) &: Velocity(vx + 1, vy + 1) &: CNil
         }))
@@ -124,6 +124,16 @@ class SystemTest extends AnyWordSpec with Matchers {
           (entity1, Position(2, 2) &: Velocity(2, 2)),
           (entity4, Position(2, 2) &: Velocity(2, 2)),
         )
+      }
+    }
+    "excludes included components" should {
+      "not run its update" in new ViewFixture {
+        var updateExecuted = false
+        world.addSystem(
+          System[Position &: CNil].excluding[Position &: CNil]
+            .withUpdate { (_, cs, _) => updateExecuted = true; cs }
+        )
+        updateExecuted shouldBe false
       }
     }
   }
