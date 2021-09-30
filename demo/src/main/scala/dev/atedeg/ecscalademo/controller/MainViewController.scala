@@ -70,20 +70,20 @@ class MainViewController extends Initializable with ECScalaDSL {
   private lazy val fps: Label = new Label(fpsDelegate)
 
   @FXML
-  private var wrSliderDelegate: JfxSlider = _
-  private lazy val wrSlider = new Slider(wrSliderDelegate)
+  private var wallRestitutionSliderDelegate: JfxSlider = _
+  private lazy val wallRestitutionSlider = new Slider(wallRestitutionSliderDelegate)
 
   @FXML
-  private var fcSliderDelegate: JfxSlider = _
-  private lazy val fcSlider = new Slider(fcSliderDelegate)
+  private var frictionCoefficientSliderDelegate: JfxSlider = _
+  private lazy val frictionCoefficientSlider = new Slider(frictionCoefficientSliderDelegate)
 
   @FXML
-  private var fcLabelDelegate: JfxLabel = _
-  private lazy val fcLabel = new Label(fcLabelDelegate)
+  private var wallRestitutionLabelDelegate: JfxLabel = _
+  private lazy val wallRestitutionLabel = new Label(wallRestitutionLabelDelegate)
 
   @FXML
-  private var wrLabelDelegate: JfxLabel = _
-  private lazy val wrLabel = new Label(wrLabelDelegate)
+  private var frictionCoefficientLabelDelegate: JfxLabel = _
+  private lazy val frictionCoefficientLabel = new Label(frictionCoefficientLabelDelegate)
 
   private lazy val ecsCanvas = ScalaFXCanvas(canvas)
   private val world: World = World()
@@ -109,13 +109,14 @@ class MainViewController extends Initializable with ECScalaDSL {
     })
 
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
-    environmentState.frictionCoefficient <== fcSlider.value
-    environmentState.wallRestitution <== wrSlider.value
+    environmentState.frictionCoefficient <== frictionCoefficientSlider.value
+    environmentState.wallRestitution <== wallRestitutionSlider.value
     val decimalFormat = new DecimalFormat()
     decimalFormat.setMaximumFractionDigits(2)
     decimalFormat.setMinimumFractionDigits(2)
-    fcLabel.text.bindBidirectional(fcSlider.value, new NumberStringConverter(decimalFormat))
-    wrLabel.text.bindBidirectional(wrSlider.value, new NumberStringConverter(decimalFormat))
+    frictionCoefficientLabel.text
+      .bindBidirectional(frictionCoefficientSlider.value, new NumberStringConverter(decimalFormat))
+    wallRestitutionLabel.text.bindBidirectional(wallRestitutionSlider.value, new NumberStringConverter(decimalFormat))
 
     loop.start
   }
