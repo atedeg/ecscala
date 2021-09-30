@@ -49,14 +49,37 @@ trait Syntax {
    * This case class enables the following syntax:
    *
    * {{{
-   *   * remove (myComponent) from entity1
-   *   * remove { myComponent1 &: myComponent2 } from entity1
+   *   remove { myComponent1 &: myComponent2 } from entity1
    * }}}
    */
-  case class FromEntity[L <: CList](componentList: L)(using clt: CListTag[L]) extends From[Entity, Unit] {
+  case class ComponentsFromEntity[L <: CList](componentList: L)(using clt: CListTag[L]) extends From[Entity, Unit] {
 
     override def from(entity: Entity): Unit =
       componentList.taggedWith(clt) foreach { entity.removeComponent(_)(using _) }
+  }
+
+  /**
+   * This class enables the following syntax:
+   *
+   * {{{
+   *   remove[Component] from entity1
+   * }}}
+   */
+
+  class ComponentTagFromEntity[C <: Component](using ct: ComponentTag[C]) extends From[Entity, Unit] {
+    override def from(entity: Entity): Unit = entity.removeComponent(using ct)
+  }
+
+  /**
+   * This class enables the following syntax:
+   *
+   * {{{
+   *   remove[Component1 &: Component2 &: CNil ] from entity1
+   * }}}
+   */
+  class ComponentsTagFromEntity[L <: CList](using clt: CListTag[L]) extends From[Entity, Unit] {
+
+    override def from(entity: Entity): Unit = clt.tags foreach { entity.removeComponent(using _) }
   }
 
   /**

@@ -84,6 +84,16 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
+  "remove[Component] from world" should {
+    "work the same way as the entity.removeComponent() method" in new WorldFixture with ComponentsFixture {
+      val entity1 = world hasAn entity withComponents { Position(1, 2) &: Velocity(3, 4) }
+      remove[Position] from entity1
+
+      world.getComponents[Position] shouldBe empty
+      world.getComponents[Velocity] should contain (Map(entity1 -> Velocity(3, 4)))
+    }
+  }
+
   "remove { myComponent1 &: myComponent2 } from world" should {
     "work the same way as multiple entity.removeComponent() method calls" in new WorldFixture with ComponentsFixture {
       val position = Position(1, 2)
@@ -92,6 +102,16 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
       entity1 withComponents { position &: velocity }
       remove { position &: velocity } from entity1
+
+      world.getComponents[Position] shouldBe empty
+      world.getComponents[Velocity] shouldBe empty
+    }
+  }
+
+  "remove[Component1 &: Component2 &: CNil] from world" should {
+    "work the same way as multiple entity.removeComponent() method calls" in new WorldFixture with ComponentsFixture {
+      val entity1 = world hasAn entity withComponents { Position(1, 2) &: Velocity(3, 4) }
+      remove[Position &: Velocity &: CNil] from entity1
 
       world.getComponents[Position] shouldBe empty
       world.getComponents[Velocity] shouldBe empty

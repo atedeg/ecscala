@@ -97,7 +97,17 @@ trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax {
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
    */
-  def remove[L <: CList: CListTag](componentsList: L): From[Entity, Unit] = FromEntity(componentsList)
+  def remove[L <: CList: CListTag](componentsList: L): From[Entity, Unit] = ComponentsFromEntity(componentsList)
+
+  /**
+   * Keyword that enables the use of the word "remove" in the dsl.
+   */
+  def remove[L <: CList: CListTag]: ComponentsTagFromEntity[L] = ComponentsTagFromEntity()
+
+  /**
+   * Keyword that enables the use of the word "remove" in the dsl.
+   */
+  def remove[C <: Component: ComponentTag]: From[Entity, Unit] = ComponentTagFromEntity()
 
   /**
    * Keyword that enables the use of the word "remove" in the dsl.
