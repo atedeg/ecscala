@@ -6,6 +6,7 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar.mock
 
 import scala.language.implicitConversions
 
@@ -15,6 +16,7 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
     val world = World()
     val playState = PlayState()
     val mouseState = MouseState()
+    val startingState = StartingState(mock[ECSCanvas])
     lazy val system = BallSelectionSystem(playState, mouseState)
   }
 
@@ -43,10 +45,10 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
         playState.selectedBall = None
 
         val entity1 = world hasAn entity withComponents {
-          Position(10.0, 10.0) &: Circle(20, StartingState.startingColor)
+          Position(10.0, 10.0) &: Circle(startingState.startingRadius, startingState.startingColor)
         }
         val entity2 = world hasAn entity withComponents {
-          Position(70.0, 70.0) &: Circle(20, StartingState.startingColor)
+          Position(70.0, 70.0) &: Circle(startingState.startingRadius, startingState.startingColor)
         }
 
         world.addSystem(system)
