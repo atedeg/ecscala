@@ -48,13 +48,13 @@
          </HBox.margin>
          <Label text="Friction coefficent" />
          <HBox>
-            <Slider fx:id="fcSliderDelegate" blockIncrement="0.01" max="0.5" value="0.05" />
-            <Label fx:id="fcLabelDelegate" />
+            <Slider fx:id="frictionCoefficientSliderDelegate" blockIncrement="0.01" max="0.5" value="0.05" />
+            <Label fx:id="frictionCoefficientLabelDelegate" />
          </HBox>
          <Label text="Wall restitution" />
          <HBox spacing="5.0">
-            <Slider fx:id="wrSliderDelegate" blockIncrement="0.05" max="1" value="0.5" />
-            <Label fx:id="wrLabelDelegate" />
+            <Slider fx:id="wallRestitutionSliderDelegate" blockIncrement="0.05" max="1" value="0.5" />
+            <Label fx:id="wallRestitutionLabelDelegate" />
             <VBox.margin>
                <Insets />
             </VBox.margin>
