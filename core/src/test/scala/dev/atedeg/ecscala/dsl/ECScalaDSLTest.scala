@@ -90,7 +90,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
       remove[Position] from entity1
 
       world.getComponents[Position] shouldBe empty
-      world.getComponents[Velocity] should contain (Map(entity1 -> Velocity(3, 4)))
+      world.getComponents[Velocity] should contain(Map(entity1 -> Velocity(3, 4)))
     }
   }
 
@@ -165,45 +165,47 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
+  def testAddSystem(world: World): Unit = {
+    val entity1 = world hasAn entity withComponent Position(1, 1)
+    world.update(10)
+    world.getView[Position &: CNil] should contain theSameElementsAs List(
+      (entity1, Position(4, 4) &: CNil),
+    )
+  }
+
   "world hasA system(mySystem)" should {
-    "work the same way as the world.addSystem() method" in new SystemFixture {
+    "work the same way as the world.addSystem() method" in new SystemFixture with WorldFixture {
       world hasA system(mySystem1)
-      world.update(10)
-      world.getView[Position &: CNil] should contain theSameElementsAs List(
-        (entity1, Position(4, 4) &: CNil),
-      )
+      testAddSystem(world)
     }
   }
 
   "world += mySystem" should {
-    "work the same way as the world.addSystem() method" in new SystemFixture {
+    "work the same way as the world.addSystem() method" in new SystemFixture with WorldFixture {
       world += mySystem1
-      world.update(10)
-      world.getView[Position &: CNil] should contain theSameElementsAs List(
-        (entity1, Position(4, 4) &: CNil),
-      )
+      testAddSystem(world)
     }
   }
 
+  def testRemoveSystem(world: World): Unit = {
+    val entity1 = world hasAn entity withComponent Position(1, 1)
+    world.update(10)
+    world.getView[Position &: CNil].toList shouldBe List((entity1, Position(1, 1) &: CNil))
+  }
+
   "remove (mySystem) from world" should {
-    "work the same way as the world.removeSystem method" in new SystemFixture {
+    "work the same way as the world.removeSystem method" in new SystemFixture with WorldFixture {
       world hasA system(mySystem2)
       remove(mySystem2) from world
-
-      world.update(10)
-
-      world.getView[Position &: CNil].toList shouldBe List((entity1, Position(1, 1) &: CNil))
+      testRemoveSystem(world)
     }
   }
 
   "world -= mySystem" should {
-    "work the same way as the world.addSystem() method" in new SystemFixture {
+    "work the same way as the world.addSystem() method" in new SystemFixture with WorldFixture {
       world hasA system(mySystem2)
       world -= mySystem2
-
-      world.update(10)
-
-      world.getView[Position &: CNil].toList shouldBe List((entity1, Position(1, 1) &: CNil))
+      testRemoveSystem(world)
     }
   }
 
