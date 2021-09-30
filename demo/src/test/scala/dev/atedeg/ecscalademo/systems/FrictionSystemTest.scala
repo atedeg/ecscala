@@ -3,7 +3,7 @@ package dev.atedeg.ecscalademo.systems
 import dev.atedeg.ecscala.{ &:, CNil, View }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo
-import dev.atedeg.ecscalademo.{ PlayState, Point, Position, Vector, Velocity }
+import dev.atedeg.ecscalademo.{ PlayState, Point, Position, State, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.{ SystemsFixture, WorldFixture }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -16,7 +16,7 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
   "A FrictionSystem" when {
     "the simulation is playing" should {
       "update a ball's Velocity considering the friction" in new WorldFixture with SystemsFixture {
-        PlayState.playing = true
+        playState.gameState = State.Play
         val initialVelocity = Velocity(300, 0)
         val ball = world hasAn entity withComponents {
           initialVelocity
@@ -30,7 +30,7 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         vector.x should be < initialVelocity.velocity.x
       }
       "don't update the component's Velocity if its initial Velocity is 0" in new WorldFixture with SystemsFixture {
-        PlayState.playing = true
+        playState.gameState = State.Play
         val ball = world hasAn entity withComponent Velocity(0, 0)
         world hasA system(frictionSystem)
 
@@ -43,7 +43,7 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
     "the simulation is not playing" should {
       "not update the components" in new WorldFixture with SystemsFixture {
-        PlayState.playing = false
+        playState.gameState = State.Pause
         val ball = world hasAn entity withComponent Velocity(300, 0)
         world hasA system(frictionSystem)
 

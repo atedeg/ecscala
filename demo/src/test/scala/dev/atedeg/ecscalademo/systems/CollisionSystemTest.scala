@@ -9,7 +9,7 @@ import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.fixtures.CollisionsFixture
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import dev.atedeg.ecscalademo.given
-import dev.atedeg.ecscalademo.{ Circle, Color, Mass, PlayState, Position, Vector, Velocity }
+import dev.atedeg.ecscalademo.{ Circle, Color, Mass, PlayState, Position, State, Vector, Velocity }
 
 class CollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
@@ -23,7 +23,7 @@ class CollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         Position(5, 0) &: Velocity(0, 0) &: Circle(10, black) &: Mass(1)
       }
 
-      PlayState.playing = true
+      playState.gameState = State.Play
       world.update(1)
       val stuckPosition1 = stuckEntity1.getComponent[Position].get
       val stuckPosition2 = stuckEntity2.getComponent[Position].get
@@ -43,7 +43,7 @@ class CollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         Position(40, 20) &: Velocity(0, 0) &: Circle(10, black) &: Mass(1)
       }
 
-      PlayState.playing = true
+      playState.gameState = State.Play
       world.update(1)
       val velocity1 = collidingEntity1.getComponent[Velocity].get
       val velocity2 = collidingEntity2.getComponent[Velocity].get

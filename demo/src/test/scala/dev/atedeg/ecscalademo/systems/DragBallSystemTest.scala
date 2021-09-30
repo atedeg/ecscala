@@ -4,7 +4,7 @@ import dev.atedeg.ecscala.Deleted.entity
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.{ Entity, World }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position }
+import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position, State }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -15,53 +15,51 @@ class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
   trait DragBallSystemFixture {
     val world = World()
     val entity1 = world hasAn entity
-    lazy val dragBallSystem: DragBallSystem = DragBallSystem()
+    val playState = PlayState()
+    val mouseState = MouseState()
+    lazy val dragBallSystem: DragBallSystem = new DragBallSystem(playState, mouseState)
   }
 
   "A DragBallSystem" when {
     "the change velocity is set" should {
       "not run" in new DragBallSystemFixture {
-        PlayState.selectedBall = Some(entity1)
-        PlayState.playing = false
-        MouseState.down = true
-        MouseState.clicked = true
-        PlayState.velocityEditingMode = true
+        playState.selectedBall = Some(entity1)
+        playState.gameState = State.ChangeVelocity
+        mouseState.down = true
+        mouseState.clicked = true
         dragBallSystem.shouldRun shouldBe false
       }
     }
     "the game is running and the mouse is clicked" should {
       "not run" in new DragBallSystemFixture {
-        PlayState.playing = true
-        MouseState.down = true
-        MouseState.clicked = true
+        playState.gameState = State.Play
+        mouseState.down = true
+        mouseState.clicked = true
         dragBallSystem.shouldRun shouldBe false
 
       }
     }
     "the game is running and the mouse is not clicked" should {
       "not run" in new DragBallSystemFixture {
-        PlayState.playing = true
-        MouseState.up = true
-        MouseState.clicked = false
+        playState.gameState = State.Play
+        mouseState.up = true
+        mouseState.clicked = false
         dragBallSystem.shouldRun shouldBe false
       }
     }
     "the game is not running and the mouse is clicked" should {
       "run" in new DragBallSystemFixture {
-        PlayState.playing = false
-        PlayState.selectedBall = Some(entity1)
-        PlayState.isDragging = true
-        PlayState.velocityEditingMode = false
+        playState.gameState = State.Dragging
+        playState.selectedBall = Some(entity1)
+        mouseState.clicked = true
         dragBallSystem.shouldRun shouldBe true
       }
       "update the selectes entity's position" in new DragBallSystemFixture {
         entity1 withComponent Position(0.0, 0.0)
 
-        PlayState.playing = false
-        PlayState.selectedBall = Some(entity1)
-        PlayState.isDragging = true
-        PlayState.velocityEditingMode = false
-        MouseState.coordinates = Point(10.0, 10.0)
+        playState.gameState = State.Dragging
+        playState.selectedBall = Some(entity1)
+        mouseState.coordinates = Point(10.0, 10.0)
 
         world.addSystem(dragBallSystem)
         world.update(10)

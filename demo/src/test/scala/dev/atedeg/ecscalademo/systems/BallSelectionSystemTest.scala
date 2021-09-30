@@ -13,32 +13,34 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
 
   trait BallSelectionSystemFixture {
     val world = World()
-    lazy val system = BallSelectionSystem()
+    val playState = PlayState()
+    val mouseState = MouseState()
+    lazy val system = BallSelectionSystem(playState, mouseState)
   }
 
   "A BallSelectionSystem" when {
     "the game is paused and the mouse is clicked" should {
       "be enabled" in new BallSelectionSystemFixture {
-        enableSystemCondition()
+        enableSystemCondition(playState, mouseState)
         system.shouldRun shouldBe true
       }
     }
     "the game is paused and the mouse is not clicked" should {
       "not be enabled" in new BallSelectionSystemFixture {
-        disableSystemCondition()
+        disableSystemCondition(playState, mouseState)
         system.shouldRun shouldBe false
       }
     }
     "the game is running" should {
       "not be enabled" in new BallSelectionSystemFixture {
-        PlayState.playing = true
+        playState.gameState = State.Pause
         system.shouldRun shouldBe false
       }
     }
     "a ball is selected" should {
       "set the ball as currently selected" in new BallSelectionSystemFixture {
-        enableSystemCondition()
-        PlayState.selectedBall = None
+        enableSystemCondition(playState, mouseState)
+        playState.selectedBall = None
 
         val entity1 = world hasAn entity withComponents {
           Position(10.0, 10.0) &: Circle(20, StartingState.startingColor)
@@ -49,27 +51,27 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
 
         world.addSystem(system)
 
-        PlayState.selectedBall shouldBe None
-        MouseState.coordinates = Point(10.0, 10.0)
+        playState.selectedBall shouldBe None
+        mouseState.coordinates = Point(10.0, 10.0)
         world.update(10)
 
-        PlayState.selectedBall shouldBe Some(entity1)
+        playState.selectedBall shouldBe Some(entity1)
 
-        MouseState.coordinates = Point(65.0, 65.0)
+        mouseState.coordinates = Point(65.0, 65.0)
         world.update(10)
 
-        PlayState.selectedBall shouldBe Some(entity2)
+        playState.selectedBall shouldBe Some(entity2)
       }
     }
   }
 
-  private def enableSystemCondition(): Unit = {
-    PlayState.playing = false
-    MouseState.down = true
+  private def enableSystemCondition(playState: PlayState, mouseState: MouseState): Unit = {
+    playState.gameState = State.Play
+    mouseState.down = true
   }
 
-  private def disableSystemCondition(): Unit = {
-    PlayState.playing = false
-    MouseState.down = false
+  private def disableSystemCondition(playState: PlayState, mouseState: MouseState): Unit = {
+    playState.gameState = State.Pause
+    mouseState.down = false
   }
 }
