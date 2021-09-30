@@ -3,16 +3,14 @@ package dev.atedeg.ecscalademo.util
 import scala.collection.{ immutable, mutable }
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.{ Entity, &:, CNil }
+import dev.atedeg.ecscala.{ &:, CNil, Entity }
 import dev.atedeg.ecscalademo.{ Circle, Mass, Position, Velocity }
-
-type SpacePartitionComponents = Position &: Velocity &: Circle &: Mass &: CNil
 
 /**
  * This trait represents a read-only version of a space partition container that assigns each added entity to a region
  * according to its position.
  */
-trait SpacePartitionContainer extends Iterable[((Int, Int), Iterable[(Entity, SpacePartitionComponents)])] {
+trait SpacePartitionContainer extends Iterable[((Int, Int), Iterable[Entity])] {
 
   /**
    * Get the size of each region.
@@ -28,7 +26,7 @@ trait SpacePartitionContainer extends Iterable[((Int, Int), Iterable[(Entity, Sp
    * @return
    *   the entities that belong the the specified region.
    */
-  def get(region: (Int, Int)): Iterable[(Entity, SpacePartitionComponents)]
+  def get(region: (Int, Int)): Iterable[Entity]
 
   /**
    * Return an iterator that iterates over the non-empty regions.
@@ -42,6 +40,8 @@ trait SpacePartitionContainer extends Iterable[((Int, Int), Iterable[(Entity, Sp
  * This trait represents a writable version of the space partition container.
  */
 trait WritableSpacePartitionContainer extends SpacePartitionContainer {
+
+  type SpacePartitionComponents = Position &: Velocity &: Circle &: Mass &: CNil
 
   /**
    * Add an entity to this space partition container. The entity must have the [[Position]], [[Velocity]], [[Mass]] and
@@ -66,7 +66,7 @@ object WritableSpacePartitionContainer {
   def apply(): WritableSpacePartitionContainer = new WritableSpacePartitionContainerImpl()
 
   private class WritableSpacePartitionContainerImpl() extends WritableSpacePartitionContainer {
-    private val regions: mutable.Map[(Int, Int), immutable.Map[Entity, SpacePartitionComponents]] = mutable.Map.empty
+    private val regions: mutable.Map[(Int, Int), mutable.Set[Entity]] = mutable.Map.empty
     private val entities: mutable.Map[Entity, SpacePartitionComponents] = mutable.Map.empty
     private var _regionSize: Double = 0
     private val regionSizeMultiplier = 2
@@ -87,8 +87,8 @@ object WritableSpacePartitionContainer {
         val region = getRegionFromPosition(position)
         val regionEntities = regions get region
         val regionNewEntities = regionEntities match {
-          case Some(entitiesInRegion) => entitiesInRegion + (entity -> components)
-          case None => Map(entity -> components)
+          case Some(entitiesInRegion) => entitiesInRegion += entity
+          case None => mutable.Set(entity)
         }
         regions += region -> regionNewEntities
       }
@@ -100,9 +100,9 @@ object WritableSpacePartitionContainer {
       _regionSize = 0
     }
 
-    override def get(region: (Int, Int)): Iterable[(Entity, SpacePartitionComponents)] = regions getOrElse (region, Map())
+    override def get(region: (Int, Int)): Iterable[Entity] = regions getOrElse (region, mutable.Set())
 
-    override def iterator: Iterator[((Int, Int), Iterable[(Entity, SpacePartitionComponents)])] = regions.iterator
+    override def iterator: Iterator[((Int, Int), Iterable[Entity])] = regions.iterator
 
     override def regionsIterator: Iterator[(Int, Int)] = regions.keysIterator
 
