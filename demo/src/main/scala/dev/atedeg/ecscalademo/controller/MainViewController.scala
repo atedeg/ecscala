@@ -12,6 +12,7 @@ import dev.atedeg.ecscalademo.{
   Point,
   Position,
   ScalaFXCanvas,
+  StartingState,
   State,
   Vector,
   Velocity,
@@ -38,7 +39,6 @@ import java.net.URL
 import java.util.ResourceBundle
 import scala.language.postfixOps
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.StartingState.{ startingMass, startingPositions, startingRadius }
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 
 import java.text.DecimalFormat
@@ -91,6 +91,7 @@ class MainViewController extends Initializable with ECScalaDSL {
   private var mouseState: MouseState = MouseState()
   private var playState: PlayState = PlayState()
   private var environmentState = EnvironmentState()
+  private var startingState: StartingState = _
 
   private var isRunning = false
 
@@ -98,6 +99,11 @@ class MainViewController extends Initializable with ECScalaDSL {
   private val stopAddingButtonLabel = "Stop Adding"
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
+    startingState = StartingState(ecsCanvas)
+
+    canvas.widthProperty().addListener(e => startingState = StartingState(ecsCanvas))
+    canvas.heightProperty().addListener(e => startingState = StartingState(ecsCanvas))
+
     createEntitiesWithComponents()
     addSystemsToWorld()
 
@@ -235,15 +241,18 @@ class MainViewController extends Initializable with ECScalaDSL {
     import dev.atedeg.ecscalademo.StartingState.*
     import dev.atedeg.ecscalademo.EnvironmentState.*
     for {
-      ((position, color), velocity) <- startingPositions zip startingColors zip startingVelocities
-    } world hasAn entity withComponents { Circle(startingRadius, color) &: position &: velocity &: Mass(startingMass) }
+      ((position, color), velocity) <-
+        startingState.startingPosition zip startingState.startingColors zip startingState.startingVelocities
+    } world hasAn entity withComponents {
+      Circle(startingState.startingRadius, color) &: position &: velocity &: Mass(startingState.startingMass)
+    }
   }
 
   private def addSystemsToWorld() = {
     val container = WritableSpacePartitionContainer()
     world hasA system(ClearCanvasSystem(ecsCanvas))
-    world hasA system(BallCreationSystem(playState, mouseState))
-    world hasA system(BallCreationRenderingSystem(playState, mouseState, ecsCanvas))
+    world hasA system(BallCreationSystem(playState, mouseState, startingState))
+    world hasA system(BallCreationRenderingSystem(playState, mouseState, startingState, ecsCanvas))
     world hasA system(VelocityEditingSystem(playState, mouseState))
     world hasA system(VelocityArrowSystem(playState, mouseState, ecsCanvas))
     world hasA system(BallSelectionSystem(playState, mouseState))
