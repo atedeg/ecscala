@@ -2,7 +2,7 @@ package dev.atedeg.ecscalademo.systems
 
 import dev.atedeg.ecscala.World
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, ScalaFXCanvas, State }
+import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, ScalaFXCanvas, StartingState, State }
 import javafx.scene.canvas.Canvas as JfxCanvas
 import org.mockito.ArgumentMatchers.{ any, anyDouble }
 import org.mockito.Mockito.verify
@@ -18,7 +18,8 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with Moc
     val canvasMock = mock[ECSCanvas]
     val playState = PlayState()
     val mouseState = MouseState()
-    lazy val system = new BallCreationRenderingSystem(playState, mouseState, canvasMock)
+    val startingState = StartingState(canvasMock)
+    lazy val system = new BallCreationRenderingSystem(playState, mouseState, startingState, canvasMock)
   }
 
   "A RenderingCreationBallSystem" when {

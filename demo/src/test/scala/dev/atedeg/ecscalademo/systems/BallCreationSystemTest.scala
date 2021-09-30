@@ -6,6 +6,7 @@ import dev.atedeg.ecscala.{ CNil, Entity, World }
 import dev.atedeg.ecscalademo.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar.mock
 
 class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
@@ -14,7 +15,8 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
     val entity1 = world hasAn entity
     val playState = PlayState()
     val mouseState = MouseState()
-    lazy val creationSystem: BallCreationSystem = new BallCreationSystem(playState, mouseState)
+    val startingState = StartingState(mock[ECSCanvas])
+    lazy val creationSystem: BallCreationSystem = new BallCreationSystem(playState, mouseState, startingState)
   }
 
   "A BallCreationSystem" when {
@@ -33,17 +35,41 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
     "enabled" should {
       "create a ball in a free position" in new BallCreationSystemFixture {
         enableSystemCondition(playState, mouseState)
-        simulateCreateBall(world, entity1, creationSystem, Point(0.0, 0.0), Point(100.0, 100.0), mouseState)
+        simulateCreateBall(
+          world,
+          entity1,
+          creationSystem,
+          Point(0.0, 0.0),
+          Point(100.0, 100.0),
+          mouseState,
+          startingState,
+        )
         world.entitiesCount shouldBe 2
       }
       "not create a ball over another one" in new BallCreationSystemFixture {
         enableSystemCondition(playState, mouseState)
-        simulateCreateBall(world, entity1, creationSystem, Point(10.0, 10.0), Point(10.0, 10.0), mouseState)
+        simulateCreateBall(
+          world,
+          entity1,
+          creationSystem,
+          Point(10.0, 10.0),
+          Point(10.0, 10.0),
+          mouseState,
+          startingState,
+        )
         world.entitiesCount shouldBe 1
       }
       "not create a ball when the mouse is inside another ball" in new BallCreationSystemFixture {
         enableSystemCondition(playState, mouseState)
-        simulateCreateBall(world, entity1, creationSystem, Point(10.0, 10.0), Point(15.0, 15.0), mouseState)
+        simulateCreateBall(
+          world,
+          entity1,
+          creationSystem,
+          Point(10.0, 10.0),
+          Point(15.0, 15.0),
+          mouseState,
+          startingState,
+        )
         world.entitiesCount shouldBe 1
       }
     }
@@ -66,9 +92,10 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
       existingPosition: Point,
       mousePosition: Point,
       mouseState: MouseState,
+      startingState: StartingState,
   ): Unit = {
     existingEntity withComponents {
-      Position(existingPosition) &: Circle(StartingState.startingRadius, StartingState.startingColor) &: CNil
+      Position(existingPosition) &: Circle(startingState.startingRadius, startingState.startingColor) &: CNil
     }
     world.update(10)
     mouseState.coordinates = mousePosition
