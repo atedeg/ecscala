@@ -10,7 +10,7 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 import org.mockito.Mockito.when
 import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ ECSCanvas, EnvironmentState, PlayState, Point, Position, Vector, Velocity }
+import dev.atedeg.ecscalademo.{ ECSCanvas, EnvironmentState, PlayState, Point, Position, State, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.WallCollisionsFixture
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import scalafx.scene.paint.Color
@@ -19,11 +19,11 @@ class WallCollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
 
   "The WallCollisionSystem" should {
     "keep entities inside the canvas's borders" in new WallCollisionsFixture {
-      PlayState.playing = true
+      playState.gameState = State.Play
       val canvas = mock[ECSCanvas]
       when(canvas.width) thenReturn 100.0
       when(canvas.height) thenReturn 100.0
-      world addSystem (new WallCollisionSystem(canvas))
+      world addSystem (new WallCollisionSystem(playState, environmentState, canvas))
       world.update(1)
       val view = getView[Position &: Velocity &: CNil] from world
       forAll(view map (_._2)) { comps =>
@@ -33,12 +33,12 @@ class WallCollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
       }
     }
     "change velocities to entities that collide with the canvas's borders" in new WallCollisionsFixture {
-      PlayState.playing = true
-      EnvironmentState.wallRestitution.value = 1
+      playState.gameState = State.Play
+      environmentState.wallRestitution.value = 1
       val canvas = mock[ECSCanvas]
       when(canvas.width) thenReturn 100.0
       when(canvas.height) thenReturn 100.0
-      world addSystem (new WallCollisionSystem(canvas))
+      world addSystem (new WallCollisionSystem(playState, environmentState, canvas))
       world.update(1)
       val view = getView[Position &: Velocity &: CNil] from world
       forAll(view map (_._2)) { comps =>

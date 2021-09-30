@@ -2,7 +2,7 @@ package dev.atedeg.ecscalademo.systems
 
 import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{ PlayState, Point, Position, Vector, Velocity }
+import dev.atedeg.ecscalademo.{ PlayState, Point, Position, State, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.{ SystemsFixture, WorldFixture }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -12,7 +12,7 @@ class MovementSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "A MovementSystem" should {
     "not run when the game isn't playing" in new WorldFixture with SystemsFixture {
-      PlayState.playing = false
+      playState.gameState = State.Pause
       val ball = world hasAn entity withComponents { Position(0, 0) &: Velocity(300, 0) }
       addSystemToWorld(world, movementSystem)
 
@@ -22,7 +22,7 @@ class MovementSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
       )
     }
     "update an entity Position when the game is playing" in new WorldFixture with SystemsFixture {
-      PlayState.playing = true
+      playState.gameState = State.Play
       val ball = world hasAn entity withComponents { Position(0, 0) &: Velocity(300, 0) }
       addSystemToWorld(world, movementSystem)
 

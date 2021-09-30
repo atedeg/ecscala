@@ -1,8 +1,11 @@
 package dev.atedeg.ecscalademo.fixtures
 
+import dev.atedeg.ecscalademo.{ EnvironmentState, PlayState }
 import dev.atedeg.ecscalademo.systems.*
 
 trait SystemsFixture {
-  lazy val movementSystem = new MovementSystem()
-  lazy val frictionSystem = new FrictionSystem()
+  val playState = PlayState()
+  val environmentState = EnvironmentState()
+  lazy val movementSystem = new MovementSystem(playState)
+  lazy val frictionSystem = new FrictionSystem(playState, environmentState)
 }
