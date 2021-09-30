@@ -10,4 +10,4 @@ As a framework user I want a working example of the framework,Improve PlayState 
 As a framework user I would higly appreciate a handy DSL to perform these operations,Complete DSL for Systems,,Linda Vitali,1,0,0,0,0,0,0,0
 ,Refactor World's interface,,Giacomo Cavalieri,10,0,0,0,0,0,0,0
 ,Use new System builder in tests,,Giacomo Cavalieri,1,1,1,0,0,0,0,0
-,Remove DSL methods (world -= entity;world += system;world -= system),,Linda Vitali,1,,,,,,,
+,Add DSL methods (world -= entity;world += system;world -= system),,Linda Vitali,1,1,1,1,0,0,0,0

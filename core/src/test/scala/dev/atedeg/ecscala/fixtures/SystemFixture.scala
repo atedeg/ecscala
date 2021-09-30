@@ -1,11 +1,12 @@
 package dev.atedeg.ecscala.fixtures
 
-import dev.atedeg.ecscala.{ &:, CNil, SystemBuilder }
+import dev.atedeg.ecscala.{ &:, CNil, SystemBuilder, World }
 import dev.atedeg.ecscala.util.types.given
 
 //import scala.language.implicitConversions
 
 trait SystemFixture {
+  lazy val world = World()
 
   lazy val mySystem1 = SystemBuilder[Position &: CNil].withBefore { (_, _, _) => () }.withAfter { (_, _, _) =>
     ()

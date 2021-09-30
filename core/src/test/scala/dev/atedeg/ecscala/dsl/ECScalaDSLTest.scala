@@ -145,36 +145,35 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
     }
   }
 
-  "world hasA system(mySystem)" should {
-    "work the same way as the world.addSystem() method" in new SystemFixture with ViewFixture {
-      world hasA system(mySystem1)
-      world.update(10)
-
+  object CheckView extends ViewFixture {
+    def check(world: World): Unit = {
       world.getView[Position &: CNil] should contain theSameElementsAs List(
         (entity1, Position(4, 4) &: CNil),
         (entity3, Position(4, 4) &: CNil),
         (entity4, Position(4, 4) &: CNil),
         (entity5, Position(4, 4) &: CNil),
       )
+    }
+  }
+
+  "world hasA system(mySystem)" should {
+    "work the same way as the world.addSystem() method" in new SystemFixture {
+      world hasA system(mySystem1)
+      world.update(10)
+      CheckView.check(world)
     }
   }
 
   "world += mySystem" should {
-    "work the same way as the world.addSystem() method" in new SystemFixture with ViewFixture {
+    "work the same way as the world.addSystem() method" in new SystemFixture {
       world += mySystem1
       world.update(10)
-
-      world.getView[Position &: CNil] should contain theSameElementsAs List(
-        (entity1, Position(4, 4) &: CNil),
-        (entity3, Position(4, 4) &: CNil),
-        (entity4, Position(4, 4) &: CNil),
-        (entity5, Position(4, 4) &: CNil),
-      )
+      CheckView.check(world)
     }
   }
 
   "remove mySystem from world" should {
-    "work the same way as the world.removeSystem method" in new WorldFixture with SystemFixture {
+    "work the same way as the world.removeSystem method" in new SystemFixture {
       val entity1 = world hasAn entity withComponent Position(1, 1)
       world hasA system(mySystem2)
       remove(mySystem2) from world
@@ -186,7 +185,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
   }
 
   "world -= mySystem" should {
-    "work the same way as the world.addSystem() method" in new SystemFixture with WorldFixture {
+    "work the same way as the world.addSystem() method" in new SystemFixture {
       val entity1 = world hasAn entity withComponent Position(1, 1)
       world hasA system(mySystem2)
       world -= mySystem2
