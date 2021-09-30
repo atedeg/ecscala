@@ -27,20 +27,21 @@ object PlayState {
   def apply(): PlayState = new PlayState {}
 }
 
-object StartingState {
+trait StartingState {
   val startingRadius: Double = 20.0
   val startingColor: Color = Color(255, 255, 0)
   val startingMass: Double = 1
   val startingVelocity: Vector = Vector(0.0, 0.0)
+  val startingPosition: Seq[Position]
 
-  val startingPositions = List(
-    Position(147, 157),
-    Position(511, 157),
-    Position(546, 177),
-    Position(546, 136),
-    Position(581, 157),
-    Position(581, 117),
-    Position(581, 198),
+  val startingVelocities = List(
+    Velocity(1000, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
   )
 
   val startingColors = List(
@@ -52,16 +53,22 @@ object StartingState {
     Color(255, 69, 0),
     Color(34, 139, 34),
   )
+}
 
-  val startingVelocities = List(
-    Velocity(1000, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
-  )
+object StartingState {
+
+  def apply(canvas: ECSCanvas): StartingState = new StartingState {
+
+    override val startingPosition = Seq(
+      Position(canvas.width / 3, canvas.height / 2),
+      Position(0.66 * canvas.width, canvas.height / 2),
+      Position(0.66 * canvas.width, canvas.height / 2 - (2 * startingRadius + 4)),
+      Position(0.66 * canvas.width, canvas.height / 2 + (2 * startingRadius + 4)),
+      Position(0.66 * canvas.width - 2 * startingRadius, canvas.height / 2 - (startingRadius + 2)),
+      Position(0.66 * canvas.width - 2 * startingRadius, canvas.height / 2 + (startingRadius + 2)),
+      Position(0.66 * canvas.width - 4 * startingRadius, canvas.height / 2),
+    )
+  }
 }
 
 trait EnvironmentState {
