@@ -66,7 +66,7 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
   }
 
   private def enableSystemCondition(playState: PlayState, mouseState: MouseState): Unit = {
-    playState.gameState = State.Play
+    playState.gameState = State.SelectBall
     mouseState.down = true
   }
 
