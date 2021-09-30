@@ -17,46 +17,48 @@ import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity
  *
  * '''Remove Entities from a World:'''
  * {{{
- *   *  world - entity1
+ *   *  world -= entity1
  *   *  remove (entity1) from world
  *   *  remove (List(entity1, entity2, entity3)) from world
  * }}}
  *
  * '''Create an Entity in a World with a Component:'''
  * {{{
- * val entity1 = world hasAn entity withComponent MyComponent()
+ * val entity1 = world hasAn entity withComponent myComponent
  * }}}
  *
  * '''Create an Entity in a World with multiple Components:'''
  * {{{
  * val entity1 = world hasAn entity withComponents {
- *       MyComponent1() &: MyComponent2() &: MyComponent3()
+ *       myComponent1 &: myComponent2 &: myComponent3
  * }
  * }}}
  *
  * '''Add Components to an Entity:'''
  * {{{
- *   *  entity1 += MyComponent()
- *   *  entity1 withComponent MyComponent()
- *   *  entity1 withComponents { MyComponent1() &: MyComponent2() }
+ *   *  entity1 += myComponent
+ *   *  entity1 withComponent myComponent
+ *   *  entity1 withComponents { myComponent1 &: myComponent2 }
  * }}}
  *
  * '''Remove Components from an Entity:'''
  * {{{
- *   *  remove { MyComponent() } from entity1
- *   *  entity1 -= MyComponent()
- *   *  remove { MyComponent1() &: MyComponent2() &: MyComponent3() } from entity1
+ *   *  remove { myComponent } from entity1
+ *   *  entity1 -= myComponent
+ *   *  remove { myComponent1 &: myComponent2 &: myComponent3 } from entity1
  * }}}
  *
  * '''Add a System to a World:'''
  * {{{
  *     * world hasA system[MyComponent &: CNil] { (_,_,_) => {}}
- *     * world hasA system(MySistem())
+ *     * world hasA system(mySistem)
+ *     * world += mySystem
  * }}}
  *
  * '''Remove a System from a World'''
  * {{{
- *   remove MySystem() from world
+ *   * remove mySystem from world
+ *   * world -= mySystem
  * }}}
  *
  * '''Get a View from a World:'''
@@ -71,7 +73,7 @@ import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity
  *
  * '''Remove all Entities and their Components from a World:'''
  * {{{
- *   clearAll from world
+ *   clearAllEntities from world
  * }}}
  */
 trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax {
@@ -108,7 +110,7 @@ trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax {
   def remove[L <: CList: CListTag](system: System[L]): From[World, Unit] = SystemFromWorld(system)
 
   /**
-   * Keyword that enables the use of the word "clearAll" in the dsl.
+   * Keyword that enables the use of the word "clearAllEntities" in the dsl.
    */
-  def clearAll: From[World, Unit] = ClearAllFromWorld()
+  def clearAllEntities: From[World, Unit] = ClearAllFromWorld()
 }
