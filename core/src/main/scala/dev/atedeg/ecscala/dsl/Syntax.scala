@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala.{ CList, Component, Entity, System, View, World }
-import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
+import dev.atedeg.ecscala.util.types.{ taggedWith, CListTag, ComponentTag }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.dsl.Words.*
 
@@ -56,9 +56,7 @@ trait Syntax {
   case class FromEntity[L <: CList](componentList: L)(using clt: CListTag[L]) extends From[Entity, Unit] {
 
     override def from(entity: Entity): Unit =
-      componentList zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] foreach {
-        entity.removeComponent(_)(using _)
-      }
+      componentList.taggedWith(clt) foreach { entity.removeComponent(_)(using _) }
   }
 
   /**
