@@ -17,6 +17,7 @@ trait RegionAssignmentFixture extends ECScalaDSL with WorldFixture {
   val entity1 = world hasAn entity withComponents {
     Position(0, 0) &: Velocity(0, 0) &: Circle(2, color) &: Mass(1)
   }
+
   val entity1Components = entity1.getComponent[Position].get
     &: entity1.getComponent[Velocity].get
     &: entity1.getComponent[Circle].get
@@ -26,6 +27,7 @@ trait RegionAssignmentFixture extends ECScalaDSL with WorldFixture {
   val entity2 = world hasAn entity withComponents {
     Position(19, 19) &: Velocity(0, 0) &: Circle(10, color) &: Mass(1)
   }
+
   val entity2Components = entity2.getComponent[Position].get
     &: entity2.getComponent[Velocity].get
     &: entity2.getComponent[Circle].get
@@ -35,6 +37,7 @@ trait RegionAssignmentFixture extends ECScalaDSL with WorldFixture {
   val entity3 = world hasAn entity withComponents {
     Position(20, 20) &: Velocity(0, 0) &: Circle(5, color) &: Mass(1)
   }
+
   val entity3Components = entity3.getComponent[Position].get
     &: entity3.getComponent[Velocity].get
     &: entity3.getComponent[Circle].get

@@ -22,8 +22,8 @@ class SpacePartitionContainerTest extends AnyWordSpec with Matchers {
       container add (entity3, entity3Components)
       container.build()
       container.regionSize shouldBe 20
-      container get (0, 0) map (_._1) should contain theSameElementsAs List(entity1, entity2)
-      container get (1, 1) map (_._1) should contain theSameElementsAs List(entity3)
+      container get (0, 0) should contain theSameElementsAs List(entity1, entity2)
+      container get (1, 1) should contain theSameElementsAs List(entity3)
       container get (2, 2) shouldBe empty
     }
   }

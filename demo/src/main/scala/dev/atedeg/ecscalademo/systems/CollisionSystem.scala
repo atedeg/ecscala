@@ -4,7 +4,7 @@ import scala.language.implicitConversions
 import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, EmptySystem, Entity, View, World }
 import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.util.{ SpacePartitionComponents, WritableSpacePartitionContainer }
+import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Point, Position, State, Vector, Velocity }
 
@@ -17,10 +17,16 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
       region <- regions.regionsIterator
       candidateColliders <- combinations2(entitiesInNeighborRegions(region))
     } {
-      val ((candidateAEntity, candidateAComps), (candidateBEntity, candidateBComps)) = candidateColliders
+      val (candidateAEntity, candidateBEntity) = candidateColliders
       // We are sure we have those components because we checked for them when adding these entities to the space partition container
-      var positionA &: velocityA &: circleA &: massA &: CNil = candidateAComps
-      var positionB &: velocityB &: circleB &: massB &: CNil = candidateBComps
+      var positionA = candidateAEntity.getComponent[Position].get
+      val velocityA = candidateAEntity.getComponent[Velocity].get
+      val circleA = candidateAEntity.getComponent[Circle].get
+      val massA = candidateAEntity.getComponent[Mass].get
+      var positionB = candidateBEntity.getComponent[Position].get
+      val velocityB = candidateBEntity.getComponent[Velocity].get
+      val circleB = candidateBEntity.getComponent[Circle].get
+      val massB = candidateBEntity.getComponent[Mass].get
       if (isColliding((positionA, positionB), (circleA.radius, circleB.radius))) {
         if (isStuck((positionA, positionB), (circleA.radius, circleB.radius))) {
           val (newPositionA, newPositionB) = unstuck((positionA, positionB), (circleA.radius, circleB.radius))
@@ -34,16 +40,17 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
           newVelocities((positionA, positionB), (velocityA, velocityB), (circleA.radius, circleB.radius))
         candidateAEntity addComponent newVelocityA
         candidateBEntity addComponent newVelocityB
-        // Update the space partition container with the new components for the next collision iterations
-        regions add (candidateAEntity, positionA &: newVelocityA &: circleA &: massA &: CNil)
-        regions add (candidateBEntity, positionB &: newVelocityB &: circleB &: massB &: CNil)
-        regions.build()
       }
     }
   }
 
   private def getComponents(entity: Entity): (Position, Velocity, Circle, Mass) =
-    (entity.getComponent[Position].get, entity.getComponent[Velocity].get, entity.getComponent[Circle].get, entity.getComponent[Mass].get)
+    (
+      entity.getComponent[Position].get,
+      entity.getComponent[Velocity].get,
+      entity.getComponent[Circle].get,
+      entity.getComponent[Mass].get,
+    )
 
   private def isColliding(positions: (Point, Point), radii: (Double, Double)) =
     compareDistances(positions, radii)(_ <= _)
@@ -70,10 +77,13 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
     val deltaPositions = posA - posB
     val deltaVelocities = velA - velB
     val projectedVelocity = deltaPositions * (deltaVelocities dot deltaPositions) / deltaPositions.squaredNorm
-    (Velocity(velA - projectedVelocity * (2 * massB / (massA + massB))), Velocity(velB + projectedVelocity * (2 * massA / (massA + massB))))
+    (
+      Velocity(velA - projectedVelocity * (2 * massB / (massA + massB))),
+      Velocity(velB + projectedVelocity * (2 * massA / (massA + massB))),
+    )
   }
 
-  private def entitiesInNeighborRegions(region: (Int, Int)): Seq[(Entity, SpacePartitionComponents)] = for {
+  private def entitiesInNeighborRegions(region: (Int, Int)): Seq[Entity] = for {
     x <- -1 to 0
     y <- -1 to 1
     ecp <- regions get (region._1 + x, region._2 + y) if x != 0 || y != 1
