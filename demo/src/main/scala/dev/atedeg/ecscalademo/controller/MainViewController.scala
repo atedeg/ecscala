@@ -125,25 +125,55 @@ class MainViewController extends Initializable with ECScalaDSL {
       case State.Play => {
         playPauseBtn.text = "Pause"
         addBallBtn.text = addBallButtonLabel
-        setButtonState(false, true, true, true)
+        setButtonState(
+          isPlayPauseDisable = false,
+          isAddBallDiasable = true,
+          isChangeVelDisable = true,
+          isResetDisable = true,
+        )
       }
       case State.Pause => {
         playPauseBtn.text = "Play"
         addBallBtn.text = addBallButtonLabel
-        setButtonState(false, false, true, false)
+        setButtonState(
+          isPlayPauseDisable = false,
+          isAddBallDiasable = false,
+          isChangeVelDisable = true,
+          isResetDisable = false,
+        )
       }
       case State.AddBalls => {
         addBallBtn.text = stopAddingButtonLabel
-        setButtonState(false, false, true, false)
+        setButtonState(
+          isPlayPauseDisable = false,
+          isAddBallDiasable = false,
+          isChangeVelDisable = true,
+          isResetDisable = false,
+        )
       }
       case State.ChangeVelocity => {
-        setButtonState(false, true, false, false)
+        setButtonState(
+          isPlayPauseDisable = false,
+          isAddBallDiasable = true,
+          isChangeVelDisable = false,
+          isResetDisable = false,
+        )
       }
       case State.Dragging => {
-        setButtonState(true, true, true, true)
+        setButtonState(
+          isPlayPauseDisable = true,
+          isAddBallDiasable = true,
+          isChangeVelDisable = true,
+          isResetDisable = true,
+        )
       }
       case State.SelectBall => {
-        setButtonState(false, false, false, false)
+        setButtonState(
+          isPlayPauseDisable = false,
+          isAddBallDiasable = false,
+          isChangeVelDisable = false,
+          isResetDisable = false,
+        )
       }
     }
   }
