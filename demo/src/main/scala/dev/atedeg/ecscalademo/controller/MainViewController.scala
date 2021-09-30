@@ -12,6 +12,7 @@ import dev.atedeg.ecscalademo.{
   Point,
   Position,
   ScalaFXCanvas,
+  State,
   Vector,
   Velocity,
 }
@@ -87,13 +88,14 @@ class MainViewController extends Initializable with ECScalaDSL {
   private lazy val ecsCanvas = ScalaFXCanvas(canvas)
   private val world: World = World()
   private var loop: GameLoop = _
+  private var mouseState: MouseState = MouseState()
+  private var playState: PlayState = PlayState()
+  private var environmentState = EnvironmentState()
 
   private var isRunning = false
 
   private val addBallButtonLabel = "Add Ball"
   private val stopAddingButtonLabel = "Stop Adding"
-  private val playButtonLabel = "Play"
-  private val pauseButtonLabel = "Pause"
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
     createEntitiesWithComponents()
@@ -101,19 +103,14 @@ class MainViewController extends Initializable with ECScalaDSL {
 
     loop = GameLoop(dt => {
       world.update(dt)
-      MouseState.down = false
-      MouseState.up = false
-      // This check is made here because we cannot pass buttons to the systems
-      if (!PlayState.playing && PlayState.selectedBall.isDefined) {
-        changeVelBtn.disable = false
-      } else {
-        changeVelBtn.disable = true
-      }
+      mouseState.down = false
+      mouseState.up = false
+      refreshUiElements()
     })
 
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
-    EnvironmentState.frictionCoefficient <== fcSlider.value
-    EnvironmentState.wallRestitution <== wrSlider.value
+    environmentState.frictionCoefficient <== fcSlider.value
+    environmentState.wallRestitution <== wrSlider.value
     val decimalFormat = new DecimalFormat()
     decimalFormat.setMaximumFractionDigits(2)
     decimalFormat.setMinimumFractionDigits(2)
@@ -123,62 +120,89 @@ class MainViewController extends Initializable with ECScalaDSL {
     loop.start
   }
 
-  def onMouseMovedHandler(event: MouseEvent): Unit = {
-    MouseState.coordinates = Point(event.getX, event.getY)
+  private def refreshUiElements(): Unit = {
+    playState.gameState match {
+      case State.Play => {
+        playPauseBtn.text = "Pause"
+        addBallBtn.text = addBallButtonLabel
+        playPauseBtn.disable = false
+        addBallBtn.disable = true
+        changeVelBtn.disable = true
+        resetBtn.disable = true
+      }
+      case State.Pause => {
+        playPauseBtn.text = "Play"
+        addBallBtn.text = addBallButtonLabel
+        playPauseBtn.disable = false
+        addBallBtn.disable = false
+        changeVelBtn.disable = true
+        resetBtn.disable = false
+      }
+      case State.AddBalls => {
+        addBallBtn.text = stopAddingButtonLabel
+        playPauseBtn.disable = false
+        addBallBtn.disable = false
+        changeVelBtn.disable = true
+        resetBtn.disable = false
+      }
+      case State.ChangeVelocity => {
+        playPauseBtn.disable = false
+        addBallBtn.disable = true
+        changeVelBtn.disable = false
+        resetBtn.disable = false
+      }
+      case State.Dragging => {
+        playPauseBtn.disable = true
+        addBallBtn.disable = true
+        changeVelBtn.disable = true
+        resetBtn.disable = true
+      }
+      case State.SelectBall => {
+        playPauseBtn.disable = false
+        addBallBtn.disable = false
+        changeVelBtn.disable = false
+        resetBtn.disable = false
+      }
+    }
   }
 
+  def onMouseMovedHandler(event: MouseEvent): Unit = mouseState.coordinates = Point(event.getX, event.getY)
+
   def onMousePressedHandler(event: MouseEvent): Unit = {
-    MouseState.down = true
-    MouseState.clicked = true
+    mouseState.down = true
+    mouseState.clicked = true
   }
 
   def onMouseReleasedHandler(event: MouseEvent): Unit = {
-    MouseState.up = true
-    MouseState.clicked = false
-    PlayState.isDragging = false
+    mouseState.up = true
+    mouseState.clicked = false
+    playState.gameState = if playState.gameState == State.Dragging then State.SelectBall else playState.gameState
   }
 
   def onDragDetectedHandler(event: MouseEvent): Unit = {
-    MouseState.coordinates = Point(event.getX, event.getY)
-    PlayState.isDragging = true
+    mouseState.coordinates = Point(event.getX, event.getY)
+    playState.gameState = if playState.gameState == State.AddBalls then playState.gameState else State.Dragging
   }
 
   def onPlayPauseClickHandler(): Unit = {
-    PlayState.playing = !isRunning
-    PlayState.selectedBall = None
     isRunning = !isRunning
-    playPauseBtn.text = if isRunning then pauseButtonLabel else playButtonLabel
-    changeVelBtn.disable = isRunning
-    addBallBtn.disable = isRunning
-    addBallBtn.text = addBallButtonLabel
-    wrSlider.disable = isRunning
-    fcSlider.disable = isRunning
-    if (!isRunning) {
-      PlayState.velocityEditingMode = false
-      PlayState.addBallMode = false
-    }
-    resetBtn.disable = isRunning
+    playState.gameState = if isRunning then State.Play else State.Pause
   }
 
-  def onAddBallButtonHandler(): Unit = {
-    PlayState.addBallMode = !PlayState.addBallMode
-    addBallBtn.text = if PlayState.addBallMode then stopAddingButtonLabel else addBallButtonLabel
-    PlayState.velocityEditingMode = false
-    changeVelBtn.disable = true
-  }
+  def onAddBallButtonHandler(): Unit = playState.gameState =
+    if playState.gameState == State.AddBalls then State.Pause else State.AddBalls
 
-  def onChangeVelocityButtonHandler(): Unit = {
-    PlayState.addBallMode = false
-    PlayState.velocityEditingMode = true
-    addBallBtn.disable = false
-  }
+  def onChangeVelocityButtonHandler(): Unit = playState.gameState =
+    if playState.gameState == State.SelectBall then State.ChangeVelocity else State.Pause
 
   def onResetClickHandler(): Unit = {
-    if (!PlayState.playing) {
-      PlayState.selectedBall = Option.empty
-      ecsCanvas.clear()
-      clearAll from world
-      createEntitiesWithComponents()
+    playState.gameState match {
+      case State.Play | State.Dragging => ()
+      case _ => {
+        playState.selectedBall = None
+        clearAll from world
+        createEntitiesWithComponents()
+      }
     }
   }
 
@@ -193,17 +217,17 @@ class MainViewController extends Initializable with ECScalaDSL {
   private def addSystemsToWorld() = {
     val container = WritableSpacePartitionContainer()
     world hasA system(ClearCanvasSystem(ecsCanvas))
-    world hasA system(BallCreationSystem())
-    world hasA system(BallCreationRenderingSystem(ecsCanvas))
-    world hasA system(VelocityEditingSystem())
-    world hasA system(VelocityArrowSystem(ecsCanvas))
-    world hasA system(BallSelectionSystem())
-    world hasA system(DragBallSystem())
+    world hasA system(BallCreationSystem(playState, mouseState))
+    world hasA system(BallCreationRenderingSystem(playState, mouseState, ecsCanvas))
+    world hasA system(VelocityEditingSystem(playState, mouseState))
+    world hasA system(VelocityArrowSystem(playState, mouseState, ecsCanvas))
+    world hasA system(BallSelectionSystem(playState, mouseState))
+    world hasA system(DragBallSystem(playState, mouseState))
+    world hasA system(FrictionSystem(playState, environmentState))
+    world hasA system(MovementSystem(playState))
     world hasA system(RegionAssignmentSystem(container))
-    world hasA system(FrictionSystem())
-    world hasA system(MovementSystem())
-    world hasA system(CollisionSystem(container))
-    world hasA system(WallCollisionSystem(ecsCanvas))
-    world hasA system(RenderSystem(ecsCanvas))
+    world hasA system(CollisionSystem(playState, container))
+    world hasA system(WallCollisionSystem(playState, environmentState, ecsCanvas))
+    world hasA system(RenderSystem(playState, ecsCanvas))
   }
 }
