@@ -72,11 +72,17 @@ object StartingState {
 }
 
 trait EnvironmentState {
-  val frictionCoefficient = DoubleProperty(0.05)
-  val wallRestitution = DoubleProperty(0.5)
+  def frictionCoefficient: Double
+  def wallRestitution: Double
   val gravity: Double = 9.81
 }
 
 object EnvironmentState {
-  def apply(): EnvironmentState = new EnvironmentState {}
+
+  def apply(frictionCoefficentProperty: DoubleProperty, wallRestitutionProperty: DoubleProperty): EnvironmentState =
+    new EnvironmentState {
+      override def frictionCoefficient: Double = frictionCoefficentProperty.value
+
+      override def wallRestitution: Double = wallRestitutionProperty.value
+    }
 }
