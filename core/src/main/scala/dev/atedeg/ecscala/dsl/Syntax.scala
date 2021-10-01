@@ -66,7 +66,7 @@ trait Syntax {
    * }}}
    */
 
-  class ComponentTagFromEntity[C <: Component](using ct: ComponentTag[C]) extends From[Entity, Unit] {
+  class ComponentTypeFromEntity[C <: Component](using ct: ComponentTag[C]) extends From[Entity, Unit] {
     override def from(entity: Entity): Unit = entity.removeComponent(using ct)
   }
 
@@ -77,7 +77,7 @@ trait Syntax {
    *   remove[Component1 &: Component2 &: CNil ] from entity1
    * }}}
    */
-  class ComponentsTagFromEntity[L <: CList](using clt: CListTag[L]) extends From[Entity, Unit] {
+  class ComponentsTypeFromEntity[L <: CList](using clt: CListTag[L]) extends From[Entity, Unit] {
 
     override def from(entity: Entity): Unit = clt.tags foreach { entity.removeComponent(using _) }
   }
