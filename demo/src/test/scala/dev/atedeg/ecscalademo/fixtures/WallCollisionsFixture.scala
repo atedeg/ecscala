@@ -6,11 +6,16 @@ import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ Circle, Color, EnvironmentState, Mass, PlayState, Position, Velocity }
 import dev.atedeg.ecscalademo
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
+import scalafx.beans.property.DoubleProperty
 
 trait WallCollisionsFixture extends ECScalaDSL {
   val world = World()
   val playState = PlayState()
-  val environmentState = EnvironmentState()
+  val environmentState = EnvironmentState(mock[DoubleProperty], mock[DoubleProperty])
+  when(environmentState.frictionCoefficient) thenReturn 0.05
+  when(environmentState.wallRestitution) thenReturn 1.0
 
   val entities = for {
     x <- Seq(-1.0, 50.0, 101.0)
