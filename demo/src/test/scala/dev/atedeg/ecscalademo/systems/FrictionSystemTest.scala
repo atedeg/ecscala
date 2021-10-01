@@ -8,10 +8,12 @@ import dev.atedeg.ecscalademo.fixtures.{ SystemsFixture, WorldFixture }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 
 import scala.language.implicitConversions
 
-class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
+class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with MockitoSugar {
 
   "A FrictionSystem" when {
     "the simulation is playing" should {
