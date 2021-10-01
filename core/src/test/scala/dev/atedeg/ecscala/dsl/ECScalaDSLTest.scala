@@ -38,9 +38,7 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
   "world hasAn entity withComponents { Component1 &: Component2 }" should {
     "work the same way as the world.createEntity() &: entity.addComponent() methods" in new WorldFixture
       with ComponentsFixture {
-      val entity1 = world hasAn entity withComponents {
-        Position(1, 2) &: Velocity(3, 4) &: Gravity(9)
-      }
+      val entity1 = world hasAn entity withComponents { Position(1, 2) &: Velocity(3, 4) &: Gravity(9) }
       val entity2 = world hasAn entity withComponent Gravity(24)
 
       val world2 = World()
@@ -144,12 +142,12 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "world hasA system[Component &: CNil] { () => {} }" should {
     "work the same way as the world.addSystem() method" in new ViewFixture {
-      world hasA system[Position &: CNil](System((_, comps, _, _, _) => {
+      world hasA system[Position &: CNil](System((_, comps, _) => {
         val Position(px, py) &: CNil = comps
         Position(px * 2, py * 2) &: CNil
       }))
 
-      world hasA system[Position &: CNil](System((_, comps, _, _, _) => {
+      world hasA system[Position &: CNil](System((_, comps, _) => {
         val Position(x, y) &: CNil = comps
         Position(x + 1, y + 1) &: CNil
       }))
