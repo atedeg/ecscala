@@ -40,6 +40,7 @@ import java.util.ResourceBundle
 import scala.language.postfixOps
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
+import scalafx.beans.property.DoubleProperty
 
 import java.text.DecimalFormat
 
@@ -88,9 +89,9 @@ class MainViewController extends Initializable with ECScalaDSL {
   private lazy val ecsCanvas = ScalaFXCanvas(canvas)
   private val world: World = World()
   private var loop: GameLoop = _
-  private var mouseState: MouseState = MouseState()
-  private var playState: PlayState = PlayState()
-  private var environmentState = EnvironmentState()
+  private val mouseState: MouseState = MouseState()
+  private val playState: PlayState = PlayState()
+  private var environmentState: EnvironmentState = _
   private var startingState: StartingState = _
 
   private var isRunning = false
@@ -100,6 +101,9 @@ class MainViewController extends Initializable with ECScalaDSL {
 
   override def initialize(url: URL, resourceBundle: ResourceBundle): Unit = {
     startingState = StartingState(ecsCanvas)
+    val frictionCoefficentProperty = DoubleProperty(0.05)
+    val wallRestitutionProperty = DoubleProperty(0.5)
+    environmentState = EnvironmentState(frictionCoefficentProperty, wallRestitutionProperty)
 
     canvas.widthProperty().addListener(e => startingState = StartingState(ecsCanvas))
     canvas.heightProperty().addListener(e => startingState = StartingState(ecsCanvas))
@@ -115,8 +119,8 @@ class MainViewController extends Initializable with ECScalaDSL {
     })
 
     fps.text.bindBidirectional(loop.fps, new NumberStringConverter("FPS: "))
-    environmentState.frictionCoefficient <== frictionCoefficientSlider.value
-    environmentState.wallRestitution <== wallRestitutionSlider.value
+    frictionCoefficentProperty <== frictionCoefficientSlider.value
+    wallRestitutionProperty <== wallRestitutionSlider.value
     val decimalFormat = new DecimalFormat()
     decimalFormat.setMaximumFractionDigits(2)
     decimalFormat.setMinimumFractionDigits(2)
