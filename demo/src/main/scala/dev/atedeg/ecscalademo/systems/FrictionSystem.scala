@@ -23,7 +23,7 @@ class FrictionSystem(private val playState: PlayState, private val environmentSt
     val Velocity(velocity) &: CNil = components
     if (velocity.norm > 0) {
       val frictionDirection = -1 * velocity.normalized
-      val friction = (environmentState.frictionCoefficient.value * environmentState.gravity) * frictionDirection
+      val friction = (environmentState.frictionCoefficient * environmentState.gravity) * frictionDirection
       val newVelocity = velocity + friction
       if (velocity dot newVelocity) < 0 then Velocity(0, 0) &: CNil else Velocity(newVelocity) &: CNil
     } else {
