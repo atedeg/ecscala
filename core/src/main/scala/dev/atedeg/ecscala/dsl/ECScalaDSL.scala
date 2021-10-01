@@ -43,7 +43,7 @@ import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity
  *
  * '''Remove Components from an Entity:'''
  * {{{
- *   *  remove { myComponent } from entity1
+ *   *  remove (myComponent) from entity1
  *   *  entity1 -= myComponent
  *   *  remove { myComponent1 &: myComponent2 &: myComponent3 } from entity1
  * }}}
@@ -79,43 +79,46 @@ import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity
 trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax {
 
   /**
-   * Keyword that enables the use of the word "entity" in the dsl.
+   * Keyword that enables the use of the word "entity".
    */
   def entity: EntityWord = EntityWord()
 
   /**
-   * Keyword that enables the use of the word "system" in the dsl.
+   * Keyword that enables the use of the word "system".
    */
   def system[L <: CList](system: System[L])(using clt: CListTag[L])(using world: World): Unit =
     world.addSystem(system)(using clt)
 
   /**
-   * Keyword that enables the use of the word "getView" in the dsl.
+   * Keyword that enables the use of the word "getView".
    */
   def getView[L <: CList](using clt: CListTag[L]): ViewFromWorld[L] = ViewFromWorld(using clt)
 
   /**
-   * Keyword that enables the use of the word "remove" in the dsl.
+   * Keyword that enables the use of the word "remove" for the removal of a [[Clist]] of [[Component]] from an
+   * [[Entity]].
    */
   def remove[L <: CList: CListTag](componentsList: L): From[Entity, Unit] = ComponentsFromEntity(componentsList)
 
   /**
-   * Keyword that enables the use of the word "remove" in the dsl.
+   * Keyword that enables the use of the word "remove" for the removal of a [[CList]] of [[Component]] specifing their
+   * type from an [[Entity]].
    */
   def remove[L <: CList: CListTag]: ComponentsTypeFromEntity[L] = ComponentsTypeFromEntity()
 
   /**
-   * Keyword that enables the use of the word "remove" in the dsl.
+   * Keyword that enables the use of the word "remove" for the removal of a [[Component]] specifing its type from an
+   * [[Entity]].
    */
   def remove[C <: Component: ComponentTag]: From[Entity, Unit] = ComponentTypeFromEntity()
 
   /**
-   * Keyword that enables the use of the word "remove" in the dsl.
+   * Keyword that enables the use of the word "remove" for the removal of an [[Entity]] from a [[World]].
    */
   def remove(entities: Seq[Entity]): From[World, Unit] = EntitiesFromWorld(entities)
 
   /**
-   * Keyword that enables the use of the word "remove" in the dsl.
+   * Keyword that enables the use of the word "remove" for the removal of a [[System]] from a [[World]].
    */
   def remove[L <: CList: CListTag](system: System[L]): From[World, Unit] = SystemFromWorld(system)
 
