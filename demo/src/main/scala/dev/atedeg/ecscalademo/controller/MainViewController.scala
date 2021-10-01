@@ -136,6 +136,8 @@ class MainViewController extends Initializable with ECScalaDSL {
       case State.Play => {
         playPauseBtn.text = "Pause"
         addBallBtn.text = addBallButtonLabel
+        frictionCoefficientSlider.disable = true
+        wallRestitutionSlider.disable = true
         setButtonState(
           isPlayPauseDisable = false,
           isAddBallDiasable = true,
@@ -146,6 +148,8 @@ class MainViewController extends Initializable with ECScalaDSL {
       case State.Pause => {
         playPauseBtn.text = "Play"
         addBallBtn.text = addBallButtonLabel
+        frictionCoefficientSlider.disable = false
+        wallRestitutionSlider.disable = false
         setButtonState(
           isPlayPauseDisable = false,
           isAddBallDiasable = false,
