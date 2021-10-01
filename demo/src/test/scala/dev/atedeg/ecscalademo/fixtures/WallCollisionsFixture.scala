@@ -13,9 +13,7 @@ import scalafx.beans.property.DoubleProperty
 trait WallCollisionsFixture extends ECScalaDSL {
   val world = World()
   val playState = PlayState()
-  val environmentState = EnvironmentState(mock[DoubleProperty], mock[DoubleProperty])
-  when(environmentState.frictionCoefficient) thenReturn 0.05
-  when(environmentState.wallRestitution) thenReturn 1.0
+  val environmentState = mock[EnvironmentState]
 
   val entities = for {
     x <- Seq(-1.0, 50.0, 101.0)
@@ -25,4 +23,7 @@ trait WallCollisionsFixture extends ECScalaDSL {
       Position(x, y) &: Velocity(1, 1) &: Circle(10, Color(0, 0, 0)) &: Mass(1)
     }
   }
+  when(environmentState.frictionCoefficient) thenReturn 0.05
+  when(environmentState.wallRestitution) thenReturn 1.0
+  when(environmentState.gravity) thenReturn 9.81
 }

@@ -7,11 +7,14 @@ import dev.atedeg.ecscalademo.fixtures.{ SystemsFixture, WorldFixture }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
+import org.mockito.Mockito.when
 
 class MovementSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "A MovementSystem" should {
     "not run when the game isn't playing" in new WorldFixture with SystemsFixture {
+      when(environmentState.frictionCoefficient) thenReturn 0.05
+      when(environmentState.wallRestitution) thenReturn 0.5
       playState.gameState = State.Pause
       val ball = world hasAn entity withComponents { Position(0, 0) &: Velocity(300, 0) }
       addSystemToWorld(world, movementSystem)
@@ -22,6 +25,8 @@ class MovementSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
       )
     }
     "update an entity Position when the game is playing" in new WorldFixture with SystemsFixture {
+      when(environmentState.frictionCoefficient) thenReturn 0.05
+      when(environmentState.wallRestitution) thenReturn 0.5
       playState.gameState = State.Play
       val ball = world hasAn entity withComponents { Position(0, 0) &: Velocity(300, 0) }
       addSystemToWorld(world, movementSystem)

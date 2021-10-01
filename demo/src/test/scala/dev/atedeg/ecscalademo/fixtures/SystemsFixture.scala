@@ -8,9 +8,7 @@ import org.mockito.Mockito.when
 
 trait SystemsFixture {
   val playState = PlayState()
-  val environmentState = EnvironmentState(mock[DoubleProperty], mock[DoubleProperty])
-  when(environmentState.frictionCoefficient) thenReturn 0.05
-  when(environmentState.wallRestitution) thenReturn 0.5
+  val environmentState = mock[EnvironmentState]
   lazy val movementSystem = new MovementSystem(playState)
   lazy val frictionSystem = new FrictionSystem(playState, environmentState)
 }
