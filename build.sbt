@@ -194,4 +194,8 @@ lazy val demo = project
     libraryDependencies += "org.scalatestplus" %% "mockito-3-12" % "3.2.10.0" % "test",
     libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
     libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName),
+    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
+    libraryDependencies += "org.testfx" % "testfx-core" % "4.0.16-alpha",
+    libraryDependencies += "org.testfx" % "testfx-junit5" % "4.0.16-alpha",
+    libraryDependencies += "org.junit.jupiter" % "junit-jupiter-api" % "5.8.1",
   )
