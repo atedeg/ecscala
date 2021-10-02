@@ -4,6 +4,7 @@ import dev.atedeg.ecscala.Deleted.entity
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.{ Entity, World }
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.fixtures.DragBallSystemFixture
 import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position, State }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -11,14 +12,6 @@ import org.scalatest.wordspec.AnyWordSpec
 import scala.language.implicitConversions
 
 class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
-
-  trait DragBallSystemFixture {
-    val world = World()
-    val entity1 = world hasAn entity
-    val playState = PlayState()
-    val mouseState = MouseState()
-    lazy val dragBallSystem: DragBallSystem = new DragBallSystem(playState, mouseState)
-  }
 
   "A DragBallSystem" when {
     "the change velocity is set" should {
@@ -61,7 +54,6 @@ class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         playState.selectedBall = Some(entity1)
         mouseState.coordinates = Point(10.0, 10.0)
 
-        world.addSystem(dragBallSystem)
         world.update(10)
 
         entity1.getComponent[Position] match {

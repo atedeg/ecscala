@@ -4,6 +4,7 @@ import dev.atedeg.ecscala.World
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.*
+import dev.atedeg.ecscalademo.fixtures.BallSelectionSystemFixture
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
@@ -12,31 +13,23 @@ import scala.language.implicitConversions
 
 class BallSelectionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
-  trait BallSelectionSystemFixture {
-    val world = World()
-    val playState = PlayState()
-    val mouseState = MouseState()
-    val startingState = StartingState(mock[ECSCanvas])
-    lazy val system = BallSelectionSystem(playState, mouseState)
-  }
-
   "A BallSelectionSystem" when {
     "the game is paused and the mouse is clicked" should {
       "be enabled" in new BallSelectionSystemFixture {
         enableSystemCondition(playState, mouseState)
-        system.shouldRun shouldBe true
+        ballSelectionSystem.shouldRun shouldBe true
       }
     }
     "the game is paused and the mouse is not clicked" should {
       "not be enabled" in new BallSelectionSystemFixture {
         disableSystemCondition(playState, mouseState)
-        system.shouldRun shouldBe false
+        ballSelectionSystem.shouldRun shouldBe false
       }
     }
     "the game is running" should {
       "not be enabled" in new BallSelectionSystemFixture {
         playState.gameState = State.Pause
-        system.shouldRun shouldBe false
+        ballSelectionSystem.shouldRun shouldBe false
       }
     }
     "a ball is selected" should {
@@ -50,8 +43,6 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
         val entity2 = world hasAn entity withComponents {
           Position(70.0, 70.0) &: Circle(startingState.startingRadius, startingState.startingColor)
         }
-
-        world.addSystem(system)
 
         playState.selectedBall shouldBe None
         mouseState.coordinates = Point(10.0, 10.0)
