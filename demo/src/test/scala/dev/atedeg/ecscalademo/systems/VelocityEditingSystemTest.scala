@@ -15,17 +15,17 @@ class VelocityEditingSystemTest extends AnyWordSpec with Matchers {
 
   "A VelocityEditingSystem" should {
     "run when the simulation is not running, there is a selected ball and the game is in velocity editing mode" in new VelocityFixture {
-      system.shouldRun shouldBe false
+      velocityEditingSystem.shouldRun shouldBe false
       playState.gameState = State.ChangeVelocity
       playState.selectedBall = Some(entity1)
       mouseState.clicked = true
-      system.shouldRun shouldBe true
+      velocityEditingSystem.shouldRun shouldBe true
     }
     "correctly update the velocity" in new VelocityFixture {
-      testNewExpectedVelocity(world, system, playState, mouseState, Point(1, 2), Velocity(2, 4))
+      testNewExpectedVelocity(world, velocityEditingSystem, playState, mouseState, Point(1, 2), Velocity(2, 4))
     }
     "limit the maximum velocity" in new VelocityFixture {
-      testNewExpectedVelocity(world, system, playState, mouseState, Point(3000, 0), Velocity(2000, 0))
+      testNewExpectedVelocity(world, velocityEditingSystem, playState, mouseState, Point(3000, 0), Velocity(2000, 0))
     }
   }
 

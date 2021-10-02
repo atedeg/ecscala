@@ -7,7 +7,7 @@ import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position, Vector, 
 import dev.atedeg.ecscalademo.systems.VelocityEditingSystem
 
 trait VelocityFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {
-  val system = VelocityEditingSystem(playState, mouseState)
+  val velocityEditingSystem = VelocityEditingSystem(playState, mouseState)
   val entity1 = world hasAn entity withComponents { Position(0, 0) &: Velocity(0, 0) }
-  world hasA system(system)
+  world hasA system(velocityEditingSystem)
 }

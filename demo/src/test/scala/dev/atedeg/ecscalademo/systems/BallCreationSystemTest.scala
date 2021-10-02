@@ -4,32 +4,24 @@ import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.{ CNil, Entity, World }
 import dev.atedeg.ecscalademo.*
+import dev.atedeg.ecscalademo.fixtures.BallCreationSystemFixture
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 
 class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
-  trait BallCreationSystemFixture {
-    val world = World()
-    val entity1 = world hasAn entity
-    val playState = PlayState()
-    val mouseState = MouseState()
-    val startingState = StartingState(mock[ECSCanvas])
-    lazy val creationSystem: BallCreationSystem = new BallCreationSystem(playState, mouseState, startingState)
-  }
-
   "A BallCreationSystem" when {
     "the mouse is clicked and the game is not running" should {
       "be executed" in new BallCreationSystemFixture {
         enableSystemCondition(playState, mouseState)
-        creationSystem.shouldRun shouldBe true
+        ballCreationSystem.shouldRun shouldBe true
       }
     }
     "the mouse is not clicked and game is not running" should {
       "not be executed" in new BallCreationSystemFixture {
         disableSystemCondition(playState, mouseState)
-        creationSystem.shouldRun shouldBe false
+        ballCreationSystem.shouldRun shouldBe false
       }
     }
     "enabled" should {
@@ -38,7 +30,7 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         simulateCreateBall(
           world,
           entity1,
-          creationSystem,
+          ballCreationSystem,
           Point(0.0, 0.0),
           Point(100.0, 100.0),
           mouseState,
@@ -51,7 +43,7 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         simulateCreateBall(
           world,
           entity1,
-          creationSystem,
+          ballCreationSystem,
           Point(10.0, 10.0),
           Point(10.0, 10.0),
           mouseState,
@@ -64,7 +56,7 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         simulateCreateBall(
           world,
           entity1,
-          creationSystem,
+          ballCreationSystem,
           Point(10.0, 10.0),
           Point(15.0, 15.0),
           mouseState,

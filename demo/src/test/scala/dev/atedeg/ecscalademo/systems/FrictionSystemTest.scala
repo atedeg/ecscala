@@ -4,7 +4,7 @@ import dev.atedeg.ecscala.{ &:, CNil, View }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo
 import dev.atedeg.ecscalademo.{ PlayState, Point, Position, State, Vector, Velocity }
-import dev.atedeg.ecscalademo.fixtures.{ FrictionSystemFixture, SystemsFixture, WorldFixture }
+import dev.atedeg.ecscalademo.fixtures.{ FrictionSystemFixture, WorldFixture }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
