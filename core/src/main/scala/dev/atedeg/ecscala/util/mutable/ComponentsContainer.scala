@@ -1,10 +1,9 @@
 package dev.atedeg.ecscala.util.mutable
 
-import dev.atedeg.ecscala.util.types.ComponentTag
-import dev.atedeg.ecscala.{ Component, Entity }
-
 import scala.collection.Map
 import scala.collection.mutable.AnyRefMap
+import dev.atedeg.ecscala.util.types.ComponentTag
+import dev.atedeg.ecscala.{ Component, Entity }
 
 /**
  * This trait represents a container of multiple [[scala.collection.immutable.Map]] [Entity, T], with T subtype of
@@ -74,14 +73,11 @@ private[ecscala] object ComponentsContainer {
         AnyRefMap(),
   ) extends ComponentsContainer {
 
-    override def apply[C <: Component](using ct: ComponentTag[C]): Option[AnyRefMap[Entity, C]] =
-      // This cast is needed to return a map with the appropriate type and not a generic "Component" type.
-      // It is always safe to perform such a cast since the ComponentTag holds the type of the retrieved map's components.
-      componentsMap get ct map (_.asInstanceOf[AnyRefMap[Entity, C]]) filter (!_.isEmpty)
+    override def apply[C <: Component](using ct: ComponentTag[C]): Option[Map[Entity, C]] = getContainer[C](using ct)
 
     override def addComponent[C <: Component](entityComponentPair: (Entity, C))(using ct: ComponentTag[C]) = {
       val componentMap: AnyRefMap[Entity, C] =
-        this.apply[C] map (_ += entityComponentPair) getOrElse (AnyRefMap(entityComponentPair))
+        getContainer[C] map (_ += entityComponentPair) getOrElse (AnyRefMap(entityComponentPair))
       componentsMap += ct -> componentMap
       this
     }
@@ -118,7 +114,7 @@ private[ecscala] object ComponentsContainer {
     }
 
     override def removeComponent[C <: Component](entityComponentPair: (Entity, C))(using ct: ComponentTag[C]) = {
-      this.apply[C] flatMap (_ -?= entityComponentPair) match {
+      getContainer[C] flatMap (_ -?= entityComponentPair) match {
         case Some(componentMap) => ()
         case None => componentsMap -= ct
       }
@@ -134,5 +130,11 @@ private[ecscala] object ComponentsContainer {
     }
 
     override def toString: String = componentsMap.toString
+
+    private def getContainer[C <: Component](using ct: ComponentTag[C]): Option[AnyRefMap[Entity, C]] = {
+      // This cast is needed to return a map with the appropriate type and not a generic "Component" type.
+      // It is always safe to perform such a cast since the ComponentTag holds the type of the retrieved map's components.
+      componentsMap get ct map (_.asInstanceOf[AnyRefMap[Entity, C]]) filter (!_.isEmpty)
+    }
   }
 }

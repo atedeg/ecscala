@@ -86,8 +86,8 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
   private def entitiesInNeighborRegions(region: (Int, Int)): Seq[Entity] = for {
     x <- -1 to 0
     y <- -1 to 1
-    ecp <- regions get (region._1 + x, region._2 + y) if x != 0 || y != 1
-  } yield ecp
+    entity <- regions get (region._1 + x, region._2 + y) if x != 0 || y != 1
+  } yield entity
 
   private def combinations2[T](seq: Seq[T]): Iterator[(T, T)] =
     seq.tails flatMap {
