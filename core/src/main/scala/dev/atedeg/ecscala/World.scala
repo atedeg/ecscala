@@ -32,7 +32,7 @@ sealed trait World {
   /**
    * Remove all the entites and their respective components from the [[World]]
    */
-  def clear(): Unit
+  def clearEntities(): Unit
 
   /**
    * A [[View]] on this [[World]] that allows to iterate over its entities with components of the type specified in L.
@@ -82,11 +82,9 @@ sealed trait World {
 
   private[ecscala] def getComponents[C <: Component: ComponentTag]: Option[Map[Entity, C]]
 
-  @targetName("addComponent")
-  private[ecscala] def +=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World
+  private[ecscala] def addComponent[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World
 
-  @targetName("removeComponent")
-  private[ecscala] def -=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World
+  private[ecscala] def removeComponent[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World
 }
 
 /**
@@ -113,7 +111,7 @@ object World {
       componentsContainer -= entity
     }
 
-    override def clear(): Unit = {
+    override def clearEntities(): Unit = {
       entities foreach { componentsContainer -= _ }
       entities = Set()
     }
@@ -141,14 +139,16 @@ object World {
     private[ecscala] override def getComponents[C <: Component: ComponentTag]: Option[Map[Entity, C]] =
       componentsContainer[C]
 
-    @targetName("addComponent")
-    private[ecscala] override def +=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World = {
+    private[ecscala] override def addComponent[C <: Component: ComponentTag](
+        entityComponentPair: (Entity, C),
+    ): World = {
       componentsContainer += entityComponentPair
       this
     }
 
-    @targetName("removeComponent")
-    private[ecscala] override def -=[C <: Component: ComponentTag](entityComponentPair: (Entity, C)): World = {
+    private[ecscala] override def removeComponent[C <: Component: ComponentTag](
+        entityComponentPair: (Entity, C),
+    ): World = {
       componentsContainer -= entityComponentPair
       this
     }

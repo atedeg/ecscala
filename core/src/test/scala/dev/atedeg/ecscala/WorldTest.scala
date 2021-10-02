@@ -45,7 +45,7 @@ class WorldTest extends AnyWordSpec with Matchers {
           val entity1 = world.createEntity()
           val entity2 = world.createEntity()
 
-          world.clear()
+          world.clearEntities()
 
           world.entitiesCount shouldBe 0
         }
@@ -56,7 +56,7 @@ class WorldTest extends AnyWordSpec with Matchers {
         entity.addComponent(Position(1, 2))
         entity1.addComponent(Position(3, 4))
 
-        world.clear()
+        world.clearEntities()
 
         world.getComponents[Position] shouldBe empty
       }

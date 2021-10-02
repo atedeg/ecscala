@@ -18,7 +18,7 @@ trait Syntax {
    * This case class enables the following syntax:
    * {{{
    *   * remove (entity1) from world
-   *   * remove (Seq(entity1, entity2)) from world
+   *   * remove (Seq(myEntity1, myEntity2)) from world
    * }}}
    */
   case class EntitiesFromWorld(entities: Seq[Entity]) extends From[World, Unit] {
@@ -28,7 +28,7 @@ trait Syntax {
   /**
    * This case class enables the following syntax:
    * {{{
-   *   remove (system1) from world
+   *   remove (mySystem) from world
    * }}}
    */
   case class SystemFromWorld[L <: CList: CListTag](system: System[L]) extends From[World, Unit] {
@@ -42,21 +42,44 @@ trait Syntax {
    * }}}
    */
   case class ClearAllFromWorld() extends From[World, Unit] {
-    override def from(world: World): Unit = world.clear()
+    override def from(world: World): Unit = world.clearEntities()
   }
 
   /**
    * This case class enables the following syntax:
    *
    * {{{
-   *   * remove (MyComponent()) from entity1
-   *   * remove { MyComponent1() &: MyComponent2() } from entity1
+   *   remove { myComponent1 &: myComponent2 } from entity1
    * }}}
    */
-  case class FromEntity[L <: CList](componentList: L)(using clt: CListTag[L]) extends From[Entity, Unit] {
+  case class ComponentsFromEntity[L <: CList](componentList: L)(using clt: CListTag[L]) extends From[Entity, Unit] {
 
     override def from(entity: Entity): Unit =
       componentList.taggedWith(clt) foreach { entity.removeComponent(_)(using _) }
+  }
+
+  /**
+   * This class enables the following syntax:
+   *
+   * {{{
+   *   remove[Component] from entity1
+   * }}}
+   */
+
+  class ComponentTypeFromEntity[C <: Component](using ct: ComponentTag[C]) extends From[Entity, Unit] {
+    override def from(entity: Entity): Unit = entity.removeComponent(using ct)
+  }
+
+  /**
+   * This class enables the following syntax:
+   *
+   * {{{
+   *   remove[Component1 &: Component2 &: CNil ] from entity1
+   * }}}
+   */
+  class ComponentsTypeFromEntity[L <: CList](using clt: CListTag[L]) extends From[Entity, Unit] {
+
+    override def from(entity: Entity): Unit = clt.tags foreach { entity.removeComponent(using _) }
   }
 
   /**
