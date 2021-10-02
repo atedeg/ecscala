@@ -24,7 +24,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         scala: [3.0.1]
-        java: [adopt@1.8, adopt@1.11, adopt@1.16]
+        java: [adopt@1.11, adopt@1.16]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
@@ -59,11 +59,11 @@ jobs:
         run: sbt ++${{ matrix.scala }} test
 
       - name: Generate JaCoCo report
-        if: ${{ matrix.java }} == 'adopt@1.8' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'
+        if: ${{ matrix.java }} == 'adopt@1.11' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'
         run: sbt ++${{ matrix.scala }} 'core / jacoco'
 
       - name: Publish coverage to codecov
-        if: ${{ matrix.java }} == 'adopt@1.8' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'
+        if: ${{ matrix.java }} == 'adopt@1.11' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -94,7 +94,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         scala: [3.0.1]
-        java: [adopt@1.8]
+        java: [adopt@1.11]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)

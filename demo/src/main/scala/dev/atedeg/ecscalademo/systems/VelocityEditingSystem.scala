@@ -4,23 +4,22 @@ import scala.language.implicitConversions
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.{ DeltaTime, EmptySystem, World }
-import dev.atedeg.ecscalademo.{ clamped, MouseState, PlayState, Position, Vector, Velocity }
+import dev.atedeg.ecscalademo.{ clamped, MouseState, PlayState, Position, State, Vector, Velocity }
 
-class VelocityEditingSystem extends EmptySystem {
+class VelocityEditingSystem(private val playState: PlayState, private val mouseState: MouseState) extends EmptySystem {
   val minVelocityIntensity = 0
   val maxVelocityIntensity = 1000
   val intensityMultiplier = 2
 
-  override def shouldRun = !PlayState.playing && PlayState.selectedBall.isDefined && PlayState.velocityEditingMode
+  override def shouldRun = playState.gameState == State.ChangeVelocity && mouseState.clicked
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
-    if (MouseState.clicked) {
-      val selectedBall = PlayState.selectedBall.get
-      val selectedBallPosition = selectedBall.getComponent[Position].get
-      val newVelocity = MouseState.coordinates - selectedBallPosition
-      val newDirection = newVelocity.normalized
-      val newIntensity = newVelocity.norm clamped (minVelocityIntensity, maxVelocityIntensity)
-      selectedBall.addComponent(Velocity(newDirection * newIntensity * intensityMultiplier))
-    }
+    val selectedBall = playState.selectedBall.get
+    val selectedBallPosition = selectedBall.getComponent[Position].get
+    val newVelocity = mouseState.coordinates - selectedBallPosition
+    val newDirection = newVelocity.normalized
+    val newIntensity = newVelocity.norm clamped (minVelocityIntensity, maxVelocityIntensity)
+    selectedBall.addComponent(Velocity(newDirection * newIntensity * intensityMultiplier))
+    playState.gameState = State.Pause
   }
 }

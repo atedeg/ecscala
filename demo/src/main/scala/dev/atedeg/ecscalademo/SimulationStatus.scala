@@ -1,35 +1,47 @@
 package dev.atedeg.ecscalademo
 
 import dev.atedeg.ecscala.Entity
+import scalafx.beans.property.DoubleProperty
 
-object MouseState {
+enum State {
+  case Pause, Play, AddBalls, SelectBall, ChangeVelocity, Dragging
+}
+
+trait MouseState {
   var coordinates = Point(0, 0)
   var clicked = false
   var down = false
   var up = false
 }
 
-object PlayState {
-  var playing = false
-  var selectedBall: Option[Entity] = Option.empty
-  var addBallMode: Boolean = false
-  var velocityEditingMode: Boolean = false
+object MouseState {
+  def apply(): MouseState = new MouseState {}
 }
 
-object StartingState {
+trait PlayState {
+  var gameState: State = State.Pause
+  var selectedBall: Option[Entity] = Option.empty
+}
+
+object PlayState {
+  def apply(): PlayState = new PlayState {}
+}
+
+trait StartingState {
   val startingRadius: Double = 20.0
   val startingColor: Color = Color(255, 255, 0)
   val startingMass: Double = 1
   val startingVelocity: Vector = Vector(0.0, 0.0)
+  val startingPosition: Seq[Position]
 
-  val startingPositions = List(
-    Position(Point(147, 157)),
-    Position(Point(511, 157)),
-    Position(Point(546, 177)),
-    Position(Point(546, 136)),
-    Position(Point(581, 157)),
-    Position(Point(581, 117)),
-    Position(Point(581, 198)),
+  val startingVelocities = List(
+    Velocity(1000, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
+    Velocity(0, 0),
   )
 
   val startingColors = List(
@@ -41,20 +53,36 @@ object StartingState {
     Color(255, 69, 0),
     Color(34, 139, 34),
   )
+}
 
-  val startingVelocities = List(
-    Velocity(Vector(1000, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
-    Velocity(Vector(0, 0)),
-  )
+object StartingState {
+
+  def apply(canvas: ECSCanvas): StartingState = new StartingState {
+
+    override val startingPosition = Seq(
+      Position(canvas.width / 3, canvas.height / 2),
+      Position(0.66 * canvas.width, canvas.height / 2),
+      Position(0.66 * canvas.width, canvas.height / 2 - (2 * startingRadius + 4)),
+      Position(0.66 * canvas.width, canvas.height / 2 + (2 * startingRadius + 4)),
+      Position(0.66 * canvas.width - 2 * startingRadius, canvas.height / 2 - (startingRadius + 2)),
+      Position(0.66 * canvas.width - 2 * startingRadius, canvas.height / 2 + (startingRadius + 2)),
+      Position(0.66 * canvas.width - 4 * startingRadius, canvas.height / 2),
+    )
+  }
+}
+
+trait EnvironmentState {
+  def frictionCoefficient: Double
+  def wallRestitution: Double
+  val gravity: Double = 9.81
 }
 
 object EnvironmentState {
-  val frictionCoefficient: Double = 0.05
-  var wallRestitution: Double = 0.5
-  val gravity: Double = 9.81
+
+  def apply(frictionCoefficentProperty: DoubleProperty, wallRestitutionProperty: DoubleProperty): EnvironmentState =
+    new EnvironmentState {
+      override def frictionCoefficient: Double = frictionCoefficentProperty.value
+
+      override def wallRestitution: Double = wallRestitutionProperty.value
+    }
 }

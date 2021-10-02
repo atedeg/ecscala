@@ -39,8 +39,8 @@ ThisBuild / developers := List(
   ),
 )
 
-ThisBuild / githubWorkflowScalaVersions := Seq("3.0.1")
-ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@1.16")
+ThisBuild / githubWorkflowScalaVersions := Seq(scala3Version)
+ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.11", "adopt@1.16")
 ThisBuild / githubWorkflowTargetBranches := Seq("master", "develop")
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")))
@@ -57,14 +57,14 @@ ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep.Sbt(
     List("core / jacoco"),
     cond = Some(
-      "${{ matrix.java }} == 'adopt@1.8' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'",
+      "${{ matrix.java }} == 'adopt@1.11' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'",
     ),
     name = Some("Generate JaCoCo report"),
   ),
   WorkflowStep.Use(
     UseRef.Public("codecov", "codecov-action", "v2"),
     cond = Some(
-      "${{ matrix.java }} == 'adopt@1.8' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'",
+      "${{ matrix.java }} == 'adopt@1.11' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'",
     ),
     name = Some("Publish coverage to codecov"),
     params = Map(
@@ -188,7 +188,6 @@ lazy val demo = project
   .dependsOn(core)
   .settings(
     publish / skip := true,
-    Test / parallelExecution := false,
     assembly / assemblyJarName := "ECScalaDemo.jar",
     githubWorkflowArtifactUpload := false,
     libraryDependencies ++= scalaTest,

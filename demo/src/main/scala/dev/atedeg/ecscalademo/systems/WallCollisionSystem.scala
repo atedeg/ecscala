@@ -12,6 +12,7 @@ import dev.atedeg.ecscalademo.{
   PlayState,
   Point,
   Position,
+  State,
   Vector,
   Velocity,
 }
@@ -24,9 +25,13 @@ import dev.atedeg.ecscalademo.given
  * @param canvas
  *   the [[SpacePartitionContainer]] that will be read.
  */
-class WallCollisionSystem(private val canvas: ECSCanvas) extends System[Position &: Velocity &: Circle &: CNil] {
+class WallCollisionSystem(
+    private val playState: PlayState,
+    private val environmentState: EnvironmentState,
+    private val canvas: ECSCanvas,
+) extends System[Position &: Velocity &: Circle &: CNil] {
 
-  override def shouldRun: Boolean = PlayState.playing
+  override def shouldRun: Boolean = playState.gameState == State.Play
 
   override def update(entity: Entity, components: Position &: Velocity &: Circle &: CNil)(
       deltaTime: DeltaTime,
@@ -38,8 +43,8 @@ class WallCollisionSystem(private val canvas: ECSCanvas) extends System[Position
     val collidesRight = x > canvas.width - radius
     val collidesTop = y < radius
     val collidesBottom = y > canvas.height - radius
-    lazy val mirroredHorizontalVelocity = -vx * EnvironmentState.wallRestitution
-    lazy val mirroredVerticalVelocity = -vy * EnvironmentState.wallRestitution
+    lazy val mirroredHorizontalVelocity = -vx * environmentState.wallRestitution
+    lazy val mirroredVerticalVelocity = -vy * environmentState.wallRestitution
     val newVelocity = Velocity(
       if (collidesLeft && vx < 0) || (collidesRight && vx > 0) then mirroredHorizontalVelocity else vx,
       if (collidesTop && vy < 0) || (collidesBottom && vy > 0) then mirroredVerticalVelocity else vy,

@@ -2,7 +2,8 @@ package dev.atedeg.ecscalademo.systems
 
 import dev.atedeg.ecscala.World
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ ECSCanvas, PlayState, ScalaFXCanvas }
+import dev.atedeg.ecscalademo.fixtures.BallCreationRenderingSystemFixture
+import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, ScalaFXCanvas, StartingState, State }
 import javafx.scene.canvas.Canvas as JfxCanvas
 import org.mockito.ArgumentMatchers.{ any, anyDouble }
 import org.mockito.Mockito.verify
@@ -13,33 +14,27 @@ import scalafx.scene.canvas.Canvas
 
 class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with MockitoSugar {
 
-  trait BallCreationRenderingSystemFixture {
-    val world = World()
-    val canvasMock = mock[ECSCanvas]
-    lazy val system = BallCreationRenderingSystem(canvasMock)
-  }
-
   "A RenderingCreationBallSystem" when {
-    "the game is not running" should {
-      "be enabled" in new BallCreationRenderingSystemFixture {
-        enableSystemCondition()
-        system.shouldRun shouldBe true
-      }
-      "render the ball" in new BallCreationRenderingSystemFixture {
-        enableSystemCondition()
-        world.addSystem(system)
-        world.update(10)
-        verify(canvasMock).drawCircle(any(), anyDouble(), any(), anyDouble())
-      }
-    }
     "the game is running" should {
       "be disabled" in new BallCreationRenderingSystemFixture {
-        disableSystemCondition()
-        system.shouldRun shouldBe false
+        disableSystemCondition(playState)
+        ballCreationRenderingSystem.shouldRun shouldBe false
+      }
+    }
+    "the game is not running" should {
+      "be enabled" in new BallCreationRenderingSystemFixture {
+        ballCreationRenderingSystem.shouldRun shouldBe false
+        enableSystemCondition(playState)
+        ballCreationRenderingSystem.shouldRun shouldBe true
+      }
+      "render the ball" in new BallCreationRenderingSystemFixture {
+        enableSystemCondition(playState)
+        world.update(10)
+        verify(canvas).drawCircle(any(), anyDouble(), any(), anyDouble())
       }
     }
   }
 
-  private def enableSystemCondition(): Unit = PlayState.addBallMode = true
-  private def disableSystemCondition(): Unit = PlayState.addBallMode = false
+  private def enableSystemCondition(playState: PlayState): Unit = playState.gameState = State.AddBalls
+  private def disableSystemCondition(playState: PlayState): Unit = playState.gameState = State.Pause
 }

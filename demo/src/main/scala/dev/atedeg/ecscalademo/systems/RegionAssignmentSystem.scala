@@ -4,7 +4,7 @@ import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, System, View
 import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
-import dev.atedeg.ecscalademo.{ Circle, Mass, Position, Velocity }
+import dev.atedeg.ecscalademo.{ Circle, Mass, Position, State, Velocity }
 
 /**
  * This system populates the [[SpacePartitionContainer]] with all the required entities. This system is to be run before
@@ -14,6 +14,12 @@ import dev.atedeg.ecscalademo.{ Circle, Mass, Position, Velocity }
  */
 class RegionAssignmentSystem(private val regions: WritableSpacePartitionContainer)
     extends System[Position &: Velocity &: Circle &: Mass &: CNil] {
+
+  override def before(
+      deltaTime: DeltaTime,
+      world: World,
+      view: View[Position &: Velocity &: Circle &: Mass &: CNil],
+  ): Unit = regions.clear()
 
   override def update(
       entity: Entity,
