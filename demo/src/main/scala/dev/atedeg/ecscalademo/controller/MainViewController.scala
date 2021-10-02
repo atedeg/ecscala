@@ -238,8 +238,7 @@ class MainViewController extends Initializable with ECScalaDSL {
       case State.Play | State.Dragging => ()
       case _ => {
         playState.selectedBall = None
-        //clearAll from world
-        world.clear()
+        clearAllEntities from world
         createEntitiesWithComponents()
       }
     }
