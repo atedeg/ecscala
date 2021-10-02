@@ -39,7 +39,7 @@ ThisBuild / developers := List(
   ),
 )
 
-ThisBuild / githubWorkflowScalaVersions := Seq("3.0.1")
+ThisBuild / githubWorkflowScalaVersions := Seq(scala3Version)
 ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.11", "adopt@1.16")
 ThisBuild / githubWorkflowTargetBranches := Seq("master", "develop")
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
