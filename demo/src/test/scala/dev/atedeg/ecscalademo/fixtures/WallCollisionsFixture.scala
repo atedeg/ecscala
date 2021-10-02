@@ -10,10 +10,7 @@ import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import scalafx.beans.property.DoubleProperty
 
-trait WallCollisionsFixture extends ECScalaDSL {
-  val world = World()
-  val playState = PlayState()
-  val environmentState = mock[EnvironmentState]
+trait WallCollisionsFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {
 
   val entities = for {
     x <- Seq(-1.0, 50.0, 101.0)

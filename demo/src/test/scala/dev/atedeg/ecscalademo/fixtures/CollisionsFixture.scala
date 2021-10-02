@@ -8,10 +8,8 @@ import dev.atedeg.ecscalademo
 import dev.atedeg.ecscalademo.systems.{ CollisionSystem, RegionAssignmentSystem }
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 
-trait CollisionsFixture {
+trait CollisionsFixture extends WorldFixture with WorldStateFixture {
   private val spacePartition = WritableSpacePartitionContainer()
-  val world = World()
-  val playState = PlayState()
 
   world addSystem (new RegionAssignmentSystem(spacePartition))
   world addSystem (new CollisionSystem(playState, spacePartition))
