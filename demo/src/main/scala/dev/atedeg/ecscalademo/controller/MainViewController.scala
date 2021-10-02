@@ -219,7 +219,9 @@ class MainViewController extends Initializable with ECScalaDSL {
 
   def onDragDetectedHandler(event: MouseEvent): Unit = {
     mouseState.coordinates = Point(event.getX, event.getY)
-    playState.gameState = if playState.gameState == State.AddBalls then playState.gameState else State.Dragging
+    playState.gameState =
+      if (playState.gameState == State.AddBalls || playState.gameState == State.Play) then playState.gameState
+      else State.Dragging
   }
 
   def onPlayPauseClickHandler(): Unit = {
