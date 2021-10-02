@@ -15,7 +15,18 @@ trait MouseState {
 }
 
 object MouseState {
-  def apply(): MouseState = new MouseState {}
+  def apply(
+    coordinates: Point = Point(0, 0),
+    clicked: Boolean = false,
+    down: Boolean = false,
+    up: Boolean = false
+  ): MouseState = {
+    val mouseState = new MouseState {}
+    mouseState.clicked = clicked
+    mouseState.down = down
+    mouseState.up = up
+    mouseState
+  }
 }
 
 trait PlayState {
