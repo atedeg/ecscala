@@ -10,21 +10,16 @@ class SpacePartitionContainerTest extends AnyWordSpec with Matchers {
   "The space partition container" should {
     "add entities with the required components" in new RegionAssignmentFixture {
       val container = WritableSpacePartitionContainer()
-      container add entity1
-      container add entity2
-      container add entity3
+      container add (entity1, entity1Components)
+      container add (entity2, entity2Components)
+      container add (entity3, entity3Components)
       noException should be thrownBy container.build()
-    }
-    "not add entities which don't have all the required components" in new RegionAssignmentFixture {
-      val container = WritableSpacePartitionContainer()
-      an[IllegalArgumentException] should be thrownBy (container add entity4)
-      an[IllegalArgumentException] should be thrownBy (container add entity5)
     }
     "get added entities by their region" in new RegionAssignmentFixture {
       val container = WritableSpacePartitionContainer()
-      container add entity1
-      container add entity2
-      container add entity3
+      container add (entity1, entity1Components)
+      container add (entity2, entity2Components)
+      container add (entity3, entity3Components)
       container.build()
       container.regionSize shouldBe 20
       container get (0, 0) should contain theSameElementsAs List(entity1, entity2)
