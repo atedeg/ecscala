@@ -12,7 +12,6 @@ import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 
 trait RegionAssignmentFixture extends ECScalaDSL with WorldFixture {
   private val color = Color(0, 0, 0)
-  val world = World()
 
   val entity1 = world hasAn entity withComponents {
     Position(0, 0) &: Velocity(0, 0) &: Circle(2, color) &: Mass(1)
