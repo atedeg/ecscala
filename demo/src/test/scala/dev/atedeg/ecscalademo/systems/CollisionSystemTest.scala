@@ -12,10 +12,10 @@ import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Circle, Color, Mass, PlayState, Position, State, Vector, Velocity }
 
 class CollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
+  private val black = Color(0, 0, 0)
 
   "The CollisionSystem" should {
     "keep entities separated" in new CollisionsFixture {
-      val black = Color(0, 0, 0)
       val stuckEntity1 = world hasAn entity withComponents {
         Position(0, 0) &: Velocity(0, 0) &: Circle(10, black) &: Mass(1)
       }
@@ -34,8 +34,6 @@ class CollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
       distanceBetweenStuckBalls shouldBe (stuckRadius1 + stuckRadius2) +- 0.001
     }
     "compute the new velocities" in new CollisionsFixture {
-      val black = Color(0, 0, 0)
-
       val collidingEntity1 = world hasAn entity withComponents {
         Position(20, 20) &: Velocity(100, 0) &: Circle(10, black) &: Mass(1)
       }

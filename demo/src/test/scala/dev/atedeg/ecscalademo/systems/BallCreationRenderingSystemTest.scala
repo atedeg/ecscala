@@ -15,6 +15,12 @@ import scalafx.scene.canvas.Canvas
 class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with MockitoSugar {
 
   "A RenderingCreationBallSystem" when {
+    "the game is running" should {
+      "be disabled" in new BallCreationRenderingSystemFixture {
+        disableSystemCondition(playState)
+        ballCreationRenderingSystem.shouldRun shouldBe false
+      }
+    }
     "the game is not running" should {
       "be enabled" in new BallCreationRenderingSystemFixture {
         ballCreationRenderingSystem.shouldRun shouldBe false
@@ -25,12 +31,6 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with Moc
         enableSystemCondition(playState)
         world.update(10)
         verify(canvas).drawCircle(any(), anyDouble(), any(), anyDouble())
-      }
-    }
-    "the game is running" should {
-      "be disabled" in new BallCreationRenderingSystemFixture {
-        disableSystemCondition(playState)
-        ballCreationRenderingSystem.shouldRun shouldBe false
       }
     }
   }

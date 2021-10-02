@@ -44,15 +44,12 @@ class BallSelectionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
           Position(70.0, 70.0) &: Circle(startingState.startingRadius, startingState.startingColor)
         }
 
-        playState.selectedBall shouldBe None
         mouseState.coordinates = Point(10.0, 10.0)
         world.update(10)
-
         playState.selectedBall shouldBe Some(entity1)
 
         mouseState.coordinates = Point(65.0, 65.0)
         world.update(10)
-
         playState.selectedBall shouldBe Some(entity2)
       }
     }

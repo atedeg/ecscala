@@ -28,8 +28,6 @@ class VelocityArrowSystemTest extends AnyWordSpec with Matchers with ECScalaDSL 
       playState.gameState = State.ChangeVelocity
       playState.selectedBall = Some(entity1)
       mouseState.coordinates = (10.0, 10.0)
-
-      arrowSystem.shouldRun shouldBe true
       world.update(10)
       verify(canvas).drawLine(is(Point(0, 0)), is(Point(10, 10)), any(), anyDouble())
     }
