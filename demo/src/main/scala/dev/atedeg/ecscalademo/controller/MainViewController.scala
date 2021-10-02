@@ -1,6 +1,5 @@
 package dev.atedeg.ecscalademo.controller
 
-import dev.atedeg.ecscala.World
 import dev.atedeg.ecscalademo.{
   Circle,
   Color,
@@ -239,7 +238,8 @@ class MainViewController extends Initializable with ECScalaDSL {
       case State.Play | State.Dragging => ()
       case _ => {
         playState.selectedBall = None
-        clearAll from world
+        //clearAll from world
+        world.clear()
         createEntitiesWithComponents()
       }
     }
