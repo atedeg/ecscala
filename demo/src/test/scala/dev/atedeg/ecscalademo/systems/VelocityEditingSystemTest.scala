@@ -21,28 +21,17 @@ class VelocityEditingSystemTest extends AnyWordSpec with Matchers {
       mouseState.clicked = true
       velocityEditingSystem.shouldRun shouldBe true
     }
-    "correctly update the velocity" in new VelocityFixture {
-      testNewExpectedVelocity(world, velocityEditingSystem, playState, mouseState, Point(1, 2), Velocity(2, 4))
-    }
-    "limit the maximum velocity" in new VelocityFixture {
-      testNewExpectedVelocity(world, velocityEditingSystem, playState, mouseState, Point(3000, 0), Velocity(2000, 0))
-    }
+    "correctly update the velocity" in testNewExpectedVelocity(Point(1, 2), Velocity(2, 4))
+    "limit the maximum velocity" in testNewExpectedVelocity(Point(3000, 0), Velocity(2000, 0))
   }
 
-  private def testNewExpectedVelocity(
-      wrld: World,
-      sys: VelocityEditingSystem,
-      pState: PlayState,
-      mState: MouseState,
-      mouseCoordinates: Point,
-      expectedVelocity: Velocity,
-  ): Unit = new VelocityFixture {
-    pState.gameState = State.ChangeVelocity
-    pState.selectedBall = Some(entity1)
-    mState.clicked = true
-    mState.coordinates = mouseCoordinates
-    sys.shouldRun shouldBe true
-    wrld.update(10)
+  private def testNewExpectedVelocity(mouseCoordinates: Point, expectedVelocity: Velocity): Unit = new VelocityFixture {
+    playState.gameState = State.ChangeVelocity
+    playState.selectedBall = Some(entity1)
+    mouseState.clicked = true
+    mouseState.coordinates = mouseCoordinates
+    velocityEditingSystem.shouldRun shouldBe true
+    world.update(10)
     entity1.getComponent[Velocity].get shouldBe expectedVelocity
   }
 }

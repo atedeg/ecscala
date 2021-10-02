@@ -80,18 +80,17 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
   private def simulateCreateBall(
       world: World,
       existingEntity: Entity,
-      system: BallCreationSystem,
+      ballCreationSystem: BallCreationSystem,
       existingPosition: Point,
       mousePosition: Point,
       mouseState: MouseState,
       startingState: StartingState,
   ): Unit = {
     existingEntity withComponents {
-      Position(existingPosition) &: Circle(startingState.startingRadius, startingState.startingColor) &: CNil
+      Position(existingPosition) &: Circle(startingState.startingRadius, startingState.startingColor)
     }
-    world.update(10)
     mouseState.coordinates = mousePosition
-    world.addSystem(system)
+    world hasA system(ballCreationSystem)
     world.update(10)
   }
 }
