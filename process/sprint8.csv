@@ -1,8 +1,8 @@
 Sprint 8 (da 28/09/2021 a 05/09/2021),,,,,,,,,,,
 Product Backlog Item,Sprint Task,URL,Volunteer,Initial estimate of effort,1,2,3,4,5,6,7
 ,Improve CList implementation,,Giacomo Cavalieri,2,2,2,0,0,0,0,0
-As a framework user I want a working example of the framework,Improve PlayState in demo,,Nicolò Di Domenico Nicolas Farabegoli,3,,,,,,,
-,Add parameters tuning to demo,,Nicolas Farabegoli,1,,,,,,,
+As a framework user I want a working example of the framework,Improve PlayState in demo,,Nicolò Di Domenico Nicolas Farabegoli,3,3,3,3,3,3,0,0
+,Add parameters tuning to demo,,Nicolas Farabegoli,1,1,1,0,0,0,0,0
 As a framework user I would higly appreciate a handy DSL to perform these operations,Complete DSL for Systems,,Linda Vitali,1,0,0,0,0,0,0,0
 ,Refactor World's interface,,Giacomo Cavalieri,10,0,0,0,0,0,0,0
 ,Use new System builder in tests,,Giacomo Cavalieri,1,1,1,0,0,0,0,0
