@@ -20,10 +20,7 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with 
       "update a ball's Velocity considering the friction" in new FrictionSystemFixture {
         playState.gameState = State.Play
         val initialVelocity = Velocity(300, 0)
-        val ball = world hasAn entity withComponents {
-          initialVelocity
-        }
-        world hasA system(frictionSystem)
+        val ball = world hasAn entity withComponent initialVelocity
 
         (0 to 2) foreach { _ => world.update(10) }
         val view: View[Velocity &: CNil] = getView[Velocity &: CNil] from world
@@ -34,7 +31,6 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with 
       "don't update the component's Velocity if its initial Velocity is 0" in new FrictionSystemFixture {
         playState.gameState = State.Play
         val ball = world hasAn entity withComponent Velocity(0, 0)
-        world hasA system(frictionSystem)
 
         world.update(10)
 
@@ -47,7 +43,6 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with 
       "not update the components" in new FrictionSystemFixture {
         playState.gameState = State.Pause
         val ball = world hasAn entity withComponent Velocity(300, 0)
-        world hasA system(frictionSystem)
 
         world.update(10)
 

@@ -8,9 +8,8 @@ import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{ Circle, Color, Mass, Position, Velocity }
 import dev.atedeg.ecscalademo
 
-trait RegionAssignmentFixture extends ECScalaDSL {
+trait RegionAssignmentFixture extends ECScalaDSL with WorldFixture {
   private val color = Color(0, 0, 0)
-  val world = World()
 
   val entity1 = world hasAn entity withComponents {
     Position(0, 0) &: Velocity(0, 0) &: Circle(2, color) &: Mass(1)
