@@ -6,6 +6,6 @@ import dev.atedeg.ecscala.util.types.given
 trait SystemBuilderFixture {
   val world = World()
   val entity = world.createEntity()
-  entity.addComponent(Position(1, 1))
-  entity.addComponent(Velocity(1, 1))
+  entity.setComponent(Position(1, 1))
+  entity.setComponent(Velocity(1, 1))
 }

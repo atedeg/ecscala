@@ -47,7 +47,7 @@ class SystemTest extends AnyWordSpec with Matchers {
       }
       "add components" in new ViewFixture {
         world.addSystem[Position &: Velocity &: CNil](System((entity, comps, _) => {
-          entity addComponent Mass(10)
+          entity setComponent Mass(10)
           comps
         }))
         world.update(10)
@@ -90,12 +90,12 @@ class SystemTest extends AnyWordSpec with Matchers {
         val testSystem = System[Comps].withBefore { (deltaTime, world, view) =>
           view foreach (entityComponentsPair => {
             val (entity, Position(px, py) &: _) = entityComponentsPair
-            entity.addComponent(Position(px * 2, py * 2))
+            entity.setComponent(Position(px * 2, py * 2))
           })
         }.withAfter { (deltaTime, world, view) =>
           view foreach (entityComponentsPair => {
             val (entity, Position(px, py) &: _) = entityComponentsPair
-            entity.addComponent(Position(px + 1, py + 1))
+            entity.setComponent(Position(px + 1, py + 1))
           })
         }.withUpdate { (_, components, _) => components }
 

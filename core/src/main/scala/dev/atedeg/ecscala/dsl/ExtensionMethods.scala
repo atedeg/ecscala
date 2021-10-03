@@ -18,7 +18,7 @@ trait ExtensionMethods {
      * }}}
      */
     def withComponents[L <: CList](componentList: L)(using clt: CListTag[L]): Entity = {
-      componentList.taggedWith(clt) foreach { entity.addComponent(_)(using _) }
+      componentList.taggedWith(clt) foreach { entity.setComponent(_)(using _) }
       entity
     }
 
@@ -29,7 +29,7 @@ trait ExtensionMethods {
      * entity withComponent Component()
      * }}}
      */
-    def withComponent[C <: Component: ComponentTag](component: C): Entity = entity.addComponent(component)
+    def withComponent[C <: Component: ComponentTag](component: C): Entity = entity.setComponent(component)
 
     /**
      * This method enables the following syntax:
@@ -38,7 +38,7 @@ trait ExtensionMethods {
      * entity += Component()
      * }}}
      */
-    def +=[C <: Component: ComponentTag](component: C): Entity = entity.addComponent(component)
+    def +=[C <: Component: ComponentTag](component: C): Entity = entity.setComponent(component)
 
     /**
      * This method enables the following syntax:

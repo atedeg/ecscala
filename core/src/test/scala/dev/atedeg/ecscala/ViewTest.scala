@@ -53,7 +53,7 @@ class ViewTest extends AnyWordSpec with Matchers {
     }
     "allow to change the entities and reflect the changes on successive iteration" in new ViewFixture {
       val view = world.getView[Velocity &: Mass &: CNil]
-      view foreach (_.head.addComponent(Mass(11)))
+      view foreach (_.head.setComponent(Mass(11)))
       view should contain theSameElementsAs List((entity3, Velocity(1, 1) &: Mass(11)))
     }
   }

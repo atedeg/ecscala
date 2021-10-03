@@ -25,7 +25,7 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with 
         vector.x should be < initialVelocity.velocity.x
       }
       "don't update the component's Velocity if its initial Velocity is 0" in new FrictionSystemFixture {
-        ball addComponent Velocity(0, 0)
+        ball setComponent Velocity(0, 0)
         playState.gameState = State.Play
         world.update(10)
         getView[Velocity &: CNil] from world should contain theSameElementsAs List((ball, Velocity(0, 0) &: CNil))
