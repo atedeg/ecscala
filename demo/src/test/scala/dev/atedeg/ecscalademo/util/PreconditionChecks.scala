@@ -29,8 +29,6 @@ def checkAllStates(systemBuilder: (PlayState, MouseState) => System[?])(enabled:
   import StateUtils.*
   val enabledStates = expandStates(enabled*)
   val disabledStates = allStates -- enabledStates
-  println(enabledStates)
-  println(disabledStates)
   checkStates(systemBuilder)(enabledStates)(true)
   checkStates(systemBuilder)(disabledStates)(false)
 }
