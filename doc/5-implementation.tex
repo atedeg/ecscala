@@ -1,5 +1,6 @@
 \chapter{Implementazione}\label{ch:implementazione}
 \section{Scala 3}\label{sec:scala-3}
+In questa sezione vengono esaminati in che modo e dove sono stati utilizzati i nuovi costrutti di Scala 3 nel progetto.
 
 \subsection{Impliciti}\label{subsec:impliciti}
 
@@ -14,6 +15,19 @@
 \subsection{Extension method}\label{subsec:extension-method}
 
 \subsection{Problemi riscontrati}\label{subsec:problemi-riscontrati}
+Nella libreria \texttt{scalatest} è stato riscontrato un bug nel costrutto~\texttt{shouldNot typeCheck}.
+Questo costrutto consente di verificare che una espressione, definita come stringa, non passi il controllo del type
+checker e di conseguenza il codice in esame non compili.
+Questo controllo risulta utile nel verificare il corretto "unpacking" delle~\texttt{CList}, nello specifico si è testato
+che un unpacking che contiene più elementi di quelli contenuti nella \texttt{CList} non compili;
+a tal proposito si è definito il seguente test:
+\lstinputlisting[label={lst:lstinputlisting22}, caption=Test per la verifica dell'unpacking delle CList.]
+{./code/scalatest-bug.scala}
+Nella prima asserzione si verifica l'unpacking con meno elementi di quelli nella \texttt{CList};
+nella seconda si testa lo scenario opposto, quindi l'unpacking con più elementi di quelli presenti nella \texttt{CList}.
+Per entrambi i due scenari appena descritti, la compilazione deve fallire a causa di un mismatch di tipi.
+Tuttavia questo non accade poiché in entrambi i casi le espressioni vengono valutate erroneamente come valide.
+Il bug è stato segnatato agli sviluppatori della libreria mediante una issue~\cite{scalatest-bug}.
 Si segnala che, essendo il rilascio di Scala 3 relativamente recente, non è stato possibile utilizzare
 le seguenti librerie per problemi di compatibilità:
 \begin{itemize}
