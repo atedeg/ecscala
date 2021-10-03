@@ -16,7 +16,7 @@ sealed trait Entity {
    * @return
    *   itself.
    */
-  def addComponent[C <: Component: ComponentTag](component: C): Entity
+  def setComponent[C <: Component: ComponentTag](component: C): Entity
 
   /**
    * @tparam C
@@ -55,7 +55,7 @@ object Entity {
 
   private case class EntityImpl(private val id: Id, private val world: World) extends Entity {
 
-    override def addComponent[C <: Component](component: C)(using ct: ComponentTag[C]): Entity = {
+    override def setComponent[C <: Component](component: C)(using ct: ComponentTag[C]): Entity = {
       component.setEntity(Some(this))
       world addComponent (this -> component)
       this

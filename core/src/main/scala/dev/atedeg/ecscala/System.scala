@@ -82,7 +82,7 @@ trait System[L <: CList](using private val clt: CListTag[L]) {
       val (component, ct) = taggedComponent
       component match {
         case Deleted => entity.removeComponent(using ct)
-        case _ => entity.addComponent(component)(using ct)
+        case _ => entity.setComponent(component)(using ct)
       }
     }
   }
