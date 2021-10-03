@@ -7,9 +7,9 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.fixtures.CollisionsFixture
-import dev.atedeg.ecscalademo.util.{AnyValue, WritableSpacePartitionContainer, checkAllStates}
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
 import dev.atedeg.ecscalademo.given
-import dev.atedeg.ecscalademo.{Circle, Color, Mass, PlayState, Position, State, Vector, Velocity}
+import dev.atedeg.ecscalademo.{ Circle, Color, Mass, PlayState, Position, State, Vector, Velocity }
 import org.scalatestplus.mockito.MockitoSugar.mock
 
 class CollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {

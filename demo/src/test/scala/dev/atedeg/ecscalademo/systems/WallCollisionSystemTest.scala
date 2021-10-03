@@ -12,7 +12,7 @@ import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ ECSCanvas, EnvironmentState, PlayState, Point, Position, State, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.WallCollisionsFixture
-import dev.atedeg.ecscalademo.util.{AnyValue, checkAllStates, WritableSpacePartitionContainer}
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import scalafx.scene.paint.Color
@@ -36,7 +36,7 @@ class WallCollisionSystemTest
     "run" when {
       "in an enabled state" in
         checkAllStates((playState, _) => WallCollisionSystem(playState, mock[EnvironmentState], mock[ECSCanvas]))(
-          (State.Play, AnyValue, AnyValue, AnyValue)
+          (State.Play, AnyValue, AnyValue, AnyValue),
         )
     }
 

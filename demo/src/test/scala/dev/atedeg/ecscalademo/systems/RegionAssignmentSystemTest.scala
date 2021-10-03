@@ -4,9 +4,9 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.World
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{EnvironmentState, State}
+import dev.atedeg.ecscalademo.{ EnvironmentState, State }
 import dev.atedeg.ecscalademo.fixtures.RegionAssignmentFixture
-import dev.atedeg.ecscalademo.util.{AnyValue, WritableSpacePartitionContainer, checkAllStates}
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
 import org.scalatestplus.mockito.MockitoSugar.mock
 
 class RegionAssignmentSystemTest extends AnyWordSpec with Matchers {

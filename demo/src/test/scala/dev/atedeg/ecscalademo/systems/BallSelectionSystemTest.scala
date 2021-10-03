@@ -5,7 +5,7 @@ import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.*
 import dev.atedeg.ecscalademo.fixtures.BallSelectionSystemFixture
-import dev.atedeg.ecscalademo.util.{ AnyValue, checkAllStates }
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock

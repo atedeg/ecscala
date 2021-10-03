@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo.util
 
 import dev.atedeg.ecscala.System
-import dev.atedeg.ecscalademo.{MouseState, PlayState, State}
+import dev.atedeg.ecscalademo.{ MouseState, PlayState, State }
 import org.scalatest.Assertions.withClue
 import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatest.prop.TableDrivenPropertyChecks.*
@@ -16,7 +16,9 @@ type StateDescription = (TestState[State], ClickedState, DownState, UpState)
 
 private given defaultBooleanValues: Set[Boolean] = Set(true, false)
 private given defaultStateValues: Set[State] = Set.from(State.values)
-extension[T] (state: TestState[T]) {
+
+extension [T](state: TestState[T]) {
+
   def values(using defaultValues: Set[T]): Set[T] = state match {
     case AnyValue => defaultValues
     case t => Set(t.asInstanceOf[T])
@@ -34,12 +36,14 @@ def checkAllStates(systemBuilder: (PlayState, MouseState) => System[?])(enabled:
 }
 
 private object StateUtils {
-  def checkStates(systemBuilder: (PlayState, MouseState) => System[?])
-                         (states: Set[(PlayState, MouseState)])
-                         (shouldRun: Boolean) = {
+
+  def checkStates(
+      systemBuilder: (PlayState, MouseState) => System[?],
+  )(states: Set[(PlayState, MouseState)])(shouldRun: Boolean) = {
     val table = Table(("playState", "mouseState"), states.toSeq*)
     forAll(table) { (playState, mouseState) =>
-      val errorClue = s"System expected to be ${if shouldRun then "enabled, instead was disabled" else "disabled, instead was enabled" }."
+      val errorClue =
+        s"System expected to be ${if shouldRun then "enabled, instead was disabled" else "disabled, instead was enabled"}."
       withClue(errorClue) { systemBuilder(playState, mouseState).shouldRun shouldBe shouldRun }
     }
   }

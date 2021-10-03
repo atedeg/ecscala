@@ -15,22 +15,24 @@ trait MouseState {
 
   override def toString: String = s"MouseState(clicked: $clicked, down: $down, up: $up, coordinates: $coordinates)"
   override def hashCode = (coordinates, clicked, down, up).hashCode
+
   override def equals(obj: Any) = obj match {
     case that: MouseState =>
-      this.coordinates == that.coordinates
-      && this.clicked == that.clicked
-      && this.down == that.down
-      && this.up == that.up
+      this.coordinates == that.coordinates &&
+        this.clicked == that.clicked &&
+        this.down == that.down &&
+        this.up == that.up
     case _ => false
   }
 }
 
 object MouseState {
+
   def apply(
-    coordinates: Point = Point(0, 0),
-    clicked: Boolean = false,
-    down: Boolean = false,
-    up: Boolean = false
+      coordinates: Point = Point(0, 0),
+      clicked: Boolean = false,
+      down: Boolean = false,
+      up: Boolean = false,
   ): MouseState = {
     val mouseState = new MouseState {}
     mouseState.clicked = clicked
@@ -46,6 +48,7 @@ trait PlayState {
 
   override def toString: String = s"PlayState(gameState: $gameState)"
   override def hashCode = (gameState, selectedBall).hashCode
+
   override def equals(obj: Any) = obj match {
     case that: PlayState => this.gameState == that.gameState && this.selectedBall == that.selectedBall
     case _ => false
@@ -53,6 +56,7 @@ trait PlayState {
 }
 
 object PlayState {
+
   def apply(gameState: State = State.Pause): PlayState = {
     val playState = new PlayState {}
     playState.gameState = gameState
