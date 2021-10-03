@@ -13,7 +13,7 @@ import org.mockito.ArgumentMatchers.{ any, anyDouble, eq as is }
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.fixtures.{ VelocityArrowSystemFixture, VelocityFixture }
 import dev.atedeg.ecscalademo.{ Color, ECSCanvas, MouseState, PlayState, Point, Position, State, Velocity }
-import dev.atedeg.ecscalademo.util.{AnyValue, checkAllStates}
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 import dev.atedeg.ecscala.util.types.given
 
 class VelocityArrowSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {

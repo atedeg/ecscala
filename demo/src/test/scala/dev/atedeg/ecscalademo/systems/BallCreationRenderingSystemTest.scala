@@ -19,7 +19,7 @@ class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with Moc
     "run" when {
       "in an enabled state" in
         checkAllStates(BallCreationRenderingSystem(_, _, mock[StartingState], mock[ECSCanvas]))(
-          (State.AddBalls, AnyValue, AnyValue, AnyValue)
+          (State.AddBalls, AnyValue, AnyValue, AnyValue),
         )
     }
   }

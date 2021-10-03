@@ -2,10 +2,10 @@ package dev.atedeg.ecscalademo.systems
 
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.{CNil, Entity, World}
+import dev.atedeg.ecscala.{ CNil, Entity, World }
 import dev.atedeg.ecscalademo.*
 import dev.atedeg.ecscalademo.fixtures.BallCreationSystemFixture
-import dev.atedeg.ecscalademo.util.{ AnyValue, checkAllStates }
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
@@ -16,7 +16,7 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
     "run" when {
       "in an enabled state" in
         checkAllStates(BallCreationSystem(_, _, mock[StartingState]))(
-          (State.AddBalls, true, AnyValue, AnyValue)
+          (State.AddBalls, true, AnyValue, AnyValue),
         )
     }
   }
