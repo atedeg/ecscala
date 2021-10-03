@@ -29,7 +29,7 @@ trait ExtensionMethods {
      * entity withComponent Component()
      * }}}
      */
-    def withComponent[C <: Component: ComponentTag](component: C): Entity = entity.setComponent(component)
+    def withComponent[C <: Component: ComponentTag](component: C): Entity = entity setComponent component
 
     /**
      * This method enables the following syntax:
