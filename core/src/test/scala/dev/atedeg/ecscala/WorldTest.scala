@@ -31,8 +31,8 @@ class WorldTest extends AnyWordSpec with Matchers {
       "not have a component of a removed entity" in new WorldFixture {
         val entity = world.createEntity()
         val entity1 = world.createEntity()
-        entity.setComponent(Position(1, 2))
-        entity1.setComponent(Position(1, 2))
+        entity setComponent Position(1, 2)
+        entity1 setComponent Position(1, 2)
         world.removeEntity(entity)
 
         world.getComponents[Position] should contain(Map(entity1 -> Position(1, 2)))
@@ -53,8 +53,8 @@ class WorldTest extends AnyWordSpec with Matchers {
       "not have the components from the removed entities" in new WorldFixture {
         val entity = world.createEntity()
         val entity1 = world.createEntity()
-        entity.setComponent(Position(1, 2))
-        entity1.setComponent(Position(3, 4))
+        entity setComponent Position(1, 2)
+        entity1 setComponent Position(3, 4)
 
         world.clearEntities()
 
@@ -105,7 +105,7 @@ class WorldTest extends AnyWordSpec with Matchers {
     "a System is removed" should {
       "not execute its update" in new WorldFixture {
         val entity = world.createEntity()
-        entity.setComponent(Position(1, 1))
+        entity setComponent Position(1, 1)
         val system = SystemBuilder[Position &: CNil].withBefore { (_, _, _) => () }.withAfter { (_, _, _) =>
           ()
         }.withUpdate { (_, c, _) =>

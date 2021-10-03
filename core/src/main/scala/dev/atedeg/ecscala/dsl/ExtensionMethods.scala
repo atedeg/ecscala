@@ -38,7 +38,7 @@ trait ExtensionMethods {
      * entity += Component()
      * }}}
      */
-    def +=[C <: Component: ComponentTag](component: C): Entity = entity.setComponent(component)
+    def +=[C <: Component: ComponentTag](component: C): Entity = entity setComponent component
 
     /**
      * This method enables the following syntax:
