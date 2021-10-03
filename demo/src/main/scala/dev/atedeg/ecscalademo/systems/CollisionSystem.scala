@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
 import scala.language.implicitConversions
-import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, System, Entity, View, World }
+import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, System, View, World }
 import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer

@@ -1,8 +1,31 @@
 package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala
-import dev.atedeg.ecscala.{&:, CNil, Component, Deletable, DeltaTime, Entity, IteratingSystem, System, SystemBuilder, View, World, fixtures}
-import dev.atedeg.ecscala.fixtures.{ComponentsFixture, Gravity, Mass, Position, SystemBuilderFixture, SystemFixture, Velocity, ViewFixture, WorldFixture}
+import dev.atedeg.ecscala.{
+  &:,
+  fixtures,
+  CNil,
+  Component,
+  Deletable,
+  DeltaTime,
+  Entity,
+  IteratingSystem,
+  System,
+  SystemBuilder,
+  View,
+  World,
+}
+import dev.atedeg.ecscala.fixtures.{
+  ComponentsFixture,
+  Gravity,
+  Mass,
+  Position,
+  SystemBuilderFixture,
+  SystemFixture,
+  Velocity,
+  ViewFixture,
+  WorldFixture,
+}
 import dev.atedeg.ecscala.util.types.ComponentTag
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
