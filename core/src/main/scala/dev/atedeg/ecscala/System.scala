@@ -8,9 +8,10 @@ import dev.atedeg.ecscala.util.types.{ taggedWith, CListTag, ComponentTag }
 type DeltaTime = Double
 
 /**
- * This trait represents a system, which can update the [[World]]'s state.
+ * This trait represents a system, which can update the [[World]] 's state.
  */
 trait System {
+
   private[ecscala] final def apply(deltaTime: DeltaTime, world: World): Unit = {
     if (shouldRun) {
       update(deltaTime, world)
@@ -48,12 +49,13 @@ object System {
 
   /**
    * Create a [[SystemBuilder]].
-   * @tparam L a [[CList]] representing the Components to be iterated.
-   * @return the [[SystemBuilder]].
+   * @tparam L
+   *   a [[CList]] representing the Components to be iterated.
+   * @return
+   *   the [[SystemBuilder]].
    */
   def apply[L <: CList: CListTag]: SystemBuilder[L] = SystemBuilder[L]
 }
-
 
 /**
  * Represent a way to iterate over entities with specific components (given by the type parameter L) and manupulate
@@ -86,7 +88,8 @@ trait IteratingSystem[L <: CList](using private val clt: CListTag[L]) extends Sy
   def after(deltaTime: DeltaTime, world: World, view: View[L]): Unit = {}
 
   /**
-   * Describes how this [[IteratingSystem]] updates the components (described by the type of the System) of an [[Entity]].
+   * Describes how this [[IteratingSystem]] updates the components (described by the type of the System) of an
+   * [[Entity]].
    * @param entity
    *   the [[Entity]] whose components are being updated.
    * @param components
@@ -105,7 +108,7 @@ trait IteratingSystem[L <: CList](using private val clt: CListTag[L]) extends Sy
    */
   def update(entity: Entity, components: L)(deltaTime: DeltaTime, world: World, view: View[L]): Deletable[L]
 
-  final override def update(deltaTime: DeltaTime, world: World): Unit = {
+  override final def update(deltaTime: DeltaTime, world: World): Unit = {
     val view = getView(world)
     before(deltaTime, world, view)
     view foreach { (entity, components) =>
@@ -129,7 +132,9 @@ trait IteratingSystem[L <: CList](using private val clt: CListTag[L]) extends Sy
 }
 
 object IteratingSystem {
-  def apply[L <: CList: CListTag](f: (Entity, L, DeltaTime) => Deletable[L]): IteratingSystem[L] = SystemBuilder[L].withUpdate(f)
+
+  def apply[L <: CList: CListTag](f: (Entity, L, DeltaTime) => Deletable[L]): IteratingSystem[L] =
+    SystemBuilder[L].withUpdate(f)
 
   def apply[L <: CList: CListTag](f: (Entity, L, DeltaTime, World, View[L]) => Deletable[L]): IteratingSystem[L] =
     SystemBuilder[L].withUpdate(f)
@@ -152,7 +157,9 @@ trait ExcludingSystem[LIncluded <: CList, LExcluded <: CList](using
 
 object ExcludingSystem {
 
-  def apply[L <: CList: CListTag, E <: CList: CListTag](f: (Entity, L, DeltaTime) => Deletable[L]): ExcludingSystem[L, E] =
+  def apply[L <: CList: CListTag, E <: CList: CListTag](
+      f: (Entity, L, DeltaTime) => Deletable[L],
+  ): ExcludingSystem[L, E] =
     SystemBuilder[L].excluding[E].withUpdate(f)
 
   def apply[L <: CList: CListTag, E <: CList: CListTag](
