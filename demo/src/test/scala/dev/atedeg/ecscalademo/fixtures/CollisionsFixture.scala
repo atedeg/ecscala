@@ -11,7 +11,7 @@ import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 
 trait CollisionsFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {
   private val spacePartition = WritableSpacePartitionContainer()
-  val regionAssignmentSystem = RegionAssignmentSystem(spacePartition)
+  val regionAssignmentSystem = RegionAssignmentSystem(playState, spacePartition)
   val collisionSystem = CollisionSystem(playState, spacePartition)
 
   world hasA system(regionAssignmentSystem)

@@ -266,7 +266,7 @@ class MainViewController extends Initializable with ECScalaDSL {
     world hasA system(DragBallSystem(playState, mouseState))
     world hasA system(FrictionSystem(playState, environmentState))
     world hasA system(MovementSystem(playState))
-    world hasA system(RegionAssignmentSystem(container))
+    world hasA system(RegionAssignmentSystem(playState, container))
     world hasA system(CollisionSystem(playState, container))
     world hasA system(WallCollisionSystem(playState, environmentState, ecsCanvas))
     world hasA system(RenderSystem(playState, ecsCanvas))

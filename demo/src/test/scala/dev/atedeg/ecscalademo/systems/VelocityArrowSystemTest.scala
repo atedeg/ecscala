@@ -13,17 +13,19 @@ import org.mockito.ArgumentMatchers.{ any, anyDouble, eq as is }
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.fixtures.{ VelocityArrowSystemFixture, VelocityFixture }
 import dev.atedeg.ecscalademo.{ Color, ECSCanvas, MouseState, PlayState, Point, Position, State, Velocity }
+import dev.atedeg.ecscalademo.util.{AnyValue, checkAllStates}
 import dev.atedeg.ecscala.util.types.given
 
 class VelocityArrowSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "A VelocityArrowSystem" should {
-    "run if the game is paused, there is a selected ball and the game is in velocity editing mode" in new VelocityArrowSystemFixture {
-      arrowSystem.shouldRun shouldBe false
-      playState.selectedBall = Some(entity1)
-      playState.gameState = State.ChangeVelocity
-      arrowSystem.shouldRun shouldBe true
+    "run" when {
+      "in an enabled state" in
+        checkAllStates(VelocityArrowSystem(_, _, mock[ECSCanvas]))(
+          (State.ChangeVelocity, AnyValue, AnyValue, AnyValue),
+        )
     }
+
     "draw an arrow in the canvas" in new VelocityArrowSystemFixture {
       playState.gameState = State.ChangeVelocity
       playState.selectedBall = Some(entity1)
