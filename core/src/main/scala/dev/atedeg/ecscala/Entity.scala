@@ -16,7 +16,7 @@ sealed trait Entity {
    * @return
    *   itself.
    */
-  def addComponent[C <: Component: ComponentTag](component: C): Entity
+  def setComponent[C <: Component: ComponentTag](component: C): Entity
 
   /**
    * @tparam C
@@ -55,8 +55,12 @@ object Entity {
 
   private case class EntityImpl(private val id: Id, private val world: World) extends Entity {
 
-    override def addComponent[C <: Component](component: C)(using ct: ComponentTag[C]): Entity = {
-      component.setEntity(Some(this))
+    override def setComponent[C <: Component](component: C)(using ct: ComponentTag[C]): Entity = {
+      require(
+        component.entity.isEmpty || component.entity.get == this,
+        "The given component already belongs to a different entity",
+      )
+      component.entity = Some(this)
       world addComponent (this -> component)
       this
     }
@@ -68,7 +72,7 @@ object Entity {
       val componentToRemove = world.getComponents(using ct) flatMap (_.get(this))
       componentToRemove match {
         case Some(component) =>
-          component.setEntity(None)
+          component.entity = None
           world removeComponent (this -> component)
         case None => ()
       }
@@ -78,7 +82,7 @@ object Entity {
     override def removeComponent[C <: Component](component: C)(using ct: ComponentTag[C]): Entity = {
       component.entity match {
         case Some(entity) if entity == this =>
-          component.setEntity(None)
+          component.entity = None
           world removeComponent (this -> component)
         case _ => ()
       }

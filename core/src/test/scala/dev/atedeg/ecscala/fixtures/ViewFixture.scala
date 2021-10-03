@@ -10,18 +10,18 @@ trait ViewFixture extends ComponentsFixture with WorldFixture {
   val entity4 = world.createEntity()
   val entity5 = world.createEntity()
 
-  entity1.addComponent(Position(1, 1))
-  entity1.addComponent(Velocity(1, 1))
+  entity1 setComponent Position(1, 1)
+  entity1 setComponent Velocity(1, 1)
 
-  entity2.addComponent(Mass(1))
+  entity2 setComponent Mass(1)
 
-  entity3.addComponent(Position(1, 1))
-  entity3.addComponent(Velocity(1, 1))
-  entity3.addComponent(Mass(1))
+  entity3 setComponent Position(1, 1)
+  entity3 setComponent Velocity(1, 1)
+  entity3 setComponent Mass(1)
 
-  entity4.addComponent(Position(1, 1))
-  entity4.addComponent(Velocity(1, 1))
+  entity4 setComponent Position(1, 1)
+  entity4 setComponent Velocity(1, 1)
 
-  entity5.addComponent(Position(1, 1))
-  entity5.addComponent(Mass(1))
+  entity5 setComponent Position(1, 1)
+  entity5 setComponent Mass(1)
 }

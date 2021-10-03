@@ -19,7 +19,7 @@ class VelocityEditingSystem(private val playState: PlayState, private val mouseS
     val newVelocity = mouseState.coordinates - selectedBallPosition
     val newDirection = newVelocity.normalized
     val newIntensity = newVelocity.norm clamped (minVelocityIntensity, maxVelocityIntensity)
-    selectedBall.addComponent(Velocity(newDirection * newIntensity * intensityMultiplier))
+    selectedBall setComponent Velocity(newDirection * newIntensity * intensityMultiplier)
     playState.gameState = State.Pause
   }
 }

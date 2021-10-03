@@ -12,6 +12,6 @@ class ViewBenchmark extends JmhSettings {
   @Benchmark
   def viewIterationBenchmark: Unit = {
     val view = world.getView[Position &: Velocity &: CNil]
-    view foreach (_.head.addComponent(Position(2, 3)))
+    view foreach (_.head setComponent Position(2, 3))
   }
 }

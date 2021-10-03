@@ -30,16 +30,16 @@ class CollisionSystem(private val playState: PlayState, private val regions: Wri
       if (isColliding((positionA, positionB), (circleA.radius, circleB.radius))) {
         if (isStuck((positionA, positionB), (circleA.radius, circleB.radius))) {
           val (newPositionA, newPositionB) = unstuck((positionA, positionB), (circleA.radius, circleB.radius))
-          candidateAEntity addComponent newPositionA
-          candidateBEntity addComponent newPositionB
+          candidateAEntity setComponent newPositionA
+          candidateBEntity setComponent newPositionB
           // Update the positions for correctly calculating the collision velocities
           positionA = newPositionA
           positionB = newPositionB
         }
         val (newVelocityA, newVelocityB) =
           newVelocities((positionA, positionB), (velocityA, velocityB), (circleA.radius, circleB.radius))
-        candidateAEntity addComponent newVelocityA
-        candidateBEntity addComponent newVelocityB
+        candidateAEntity setComponent newVelocityA
+        candidateBEntity setComponent newVelocityB
       }
     }
   }

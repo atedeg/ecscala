@@ -14,13 +14,20 @@ class EntityTest extends AnyWordSpec with Matchers {
         entities shouldBe entities.distinct
       }
     }
+    "forbid having an already assigned component" in new WorldFixture {
+      val component = Position(0, 0)
+      val entity1 = world.createEntity()
+      val entity2 = world.createEntity()
+      entity1 setComponent component
+      an[IllegalArgumentException] shouldBe thrownBy(entity2 setComponent component)
+    }
     "get its components correctly" in new WorldFixture {
       val entity1 = world.createEntity()
       val entity2 = world.createEntity()
       val c1 = Position(1, 1)
       val c2 = Position(2, 2)
-      entity1 addComponent c1
-      entity2 addComponent c2
+      entity1 setComponent c1
+      entity2 setComponent c2
       entity1.getComponent[Position] shouldBe Some(c1)
       entity1.getComponent[Position] flatMap (_.entity) shouldBe Some(entity1)
       entity2.getComponent[Position] shouldBe Some(c2)
@@ -32,7 +39,7 @@ class EntityTest extends AnyWordSpec with Matchers {
         val entity = world.createEntity()
         val component = Position(1, 1)
         component.entity shouldBe empty
-        entity addComponent component
+        entity setComponent component
         component.entity should contain(entity)
         removal(entity, component)
         component.entity shouldBe empty
