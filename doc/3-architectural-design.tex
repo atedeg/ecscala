@@ -1,6 +1,6 @@
 \chapter{Design architetturale}\label{ch:design-architetturale}
 A seguito dell'analisi dei requisiti definiti nel capitolo precedente, si è realizzato il design architetturale
-di massima riportato in Figura.
+di massima riportato in Figura~\ref{fig:architecture}.
 
 \begin{figure}[H]
     \centering
@@ -11,12 +11,13 @@ di massima riportato in Figura.
 I principali componenti individuati sono:
 \begin{itemize}
     \item \texttt{World}: permette la registrazione e rimozione di \texttt{Entity} e \texttt{System}.
-    Il metodo \texttt{update} rappresenta la principale modalità di aggiornamento dello stato di un \texttt{World}: infatti, comporta la modifica dei \texttt{Component} delle \texttt{Entity} registrate secondo la logica descritta dai \texttt{System}.
+    Il metodo \texttt{update} rappresenta la principale modalità di aggiornamento dello stato di un~\texttt{World}: infatti, comporta la modifica dei \texttt{Component} delle \texttt{Entity} registrate secondo la logica descritta dai \texttt{System}.
     Inoltre, è possibile ottenere dal \texttt{World} delle \texttt{View} sulle \texttt{Entity} registrate
     \item \texttt{View}: permette di selezionare le \texttt{Entity} di un \texttt{World} che abbiano tutti i \texttt{Component} specificati
     \item \texttt{ExcludingView}: rappresenta una specializzazione di una \texttt{View} che permette di specificare un ulteriore filtro andando ad indicare i \texttt{Component} che una \texttt{Entity} non deve avere per essere parte della \texttt{View}
-    \item \texttt{System}: è un wrapper di una \texttt{View} che, indicando una specifica logica di aggiornamento, si occupa di iterare tutte le \texttt{Entity} selezionate aggiornandone i componenti
-    \item \texttt{ExcludingSystem}: in maniera analoga a \texttt{System}, è un wrapper di una \texttt{ExcludingView}
+    \item \texttt{IteratingSystem}: è un wrapper di una \texttt{View} che, indicando una specifica logica di aggiornamento, si occupa di iterare tutte le \texttt{Entity} selezionate aggiornandone i componenti
+    \item \texttt{System}: descrive un'operazione che viene eseguita ogni volta che viene effettuata l'\texttt{update} del \texttt{World} in cui è registrato
+    \item \item \texttt{ExcludingSystem}: in maniera analoga a \texttt{IteratingSystem}, è un wrapper di una \texttt{ExcludingView}
     \item \texttt{Entity}: permette l'aggiunta e rimozione di \texttt{Component} e il loro aggiornamento.
     Non può trovarsi in più \texttt{World} contemporaneamente;
     mantiene un riferimento al \texttt{World} di appartenenza
@@ -30,6 +31,8 @@ In Figura è riportato il diagramma di sequenza che descrive le principali inter
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{./img/Sequence}
-    \caption{HH}\label{fig:figure}
+    \caption{Diagramma di sequenza dell'aggiornamento dei componenti nel world.}\label{fig:figure}
 \end{figure}
+
+%TODOç descrivere diagramma di sequenza
 
