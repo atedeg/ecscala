@@ -2,28 +2,26 @@ package dev.atedeg.ecscalademo.systems
 
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.{ CNil, Entity, World }
+import dev.atedeg.ecscala.{CNil, Entity, World}
 import dev.atedeg.ecscalademo.*
 import dev.atedeg.ecscalademo.fixtures.BallCreationSystemFixture
+import dev.atedeg.ecscalademo.util.{ AnyValue, checkAllStates }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 
 class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
+  "A BallCreationSystem" should {
+    "run" when {
+      "in an enabled state" in
+        checkAllStates(BallCreationSystem(_, _, mock[StartingState]))(
+          (State.AddBalls, true, AnyValue, AnyValue)
+        )
+    }
+  }
+
   "A BallCreationSystem" when {
-    "the mouse is clicked and the game is not running" should {
-      "be executed" in new BallCreationSystemFixture {
-        enableSystemCondition(playState, mouseState)
-        ballCreationSystem.shouldRun shouldBe true
-      }
-    }
-    "the mouse is not clicked and game is not running" should {
-      "not be executed" in new BallCreationSystemFixture {
-        disableSystemCondition(playState, mouseState)
-        ballCreationSystem.shouldRun shouldBe false
-      }
-    }
     "enabled" should {
       "create a ball in a free position" in new BallCreationSystemFixture {
         enableSystemCondition(playState, mouseState)
@@ -70,11 +68,6 @@ class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
   private def enableSystemCondition(playState: PlayState, mouseState: MouseState): Unit = {
     playState.gameState = State.AddBalls
     mouseState.clicked = true
-  }
-
-  private def disableSystemCondition(playState: PlayState, mouseState: MouseState): Unit = {
-    playState.gameState = State.Play
-    mouseState.clicked = false
   }
 
   private def simulateCreateBall(

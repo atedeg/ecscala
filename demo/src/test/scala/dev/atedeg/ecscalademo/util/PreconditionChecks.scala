@@ -24,6 +24,7 @@ extension[T] (state: TestState[T]) {
 }
 
 def checkAllStates(systemBuilder: (PlayState, MouseState) => System[?])(enabled: StateDescription*): Unit = {
+  import StateUtils.*
   val enabledStates = expandStates(enabled*)
   val disabledStates = allStates -- enabledStates
   println(enabledStates)

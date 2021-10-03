@@ -10,6 +10,6 @@ trait RenderSystemFixture extends ECScalaDSL with WorldFixture with WorldStateFi
   val position = Position(0, 0)
   val circle = Circle(20, Color(255, 0, 0))
   val ball = world hasAn entity withComponents { circle &: position }
-  val renderSystem = new RenderSystem(playState, canvas)
+  val renderSystem = RenderSystem(playState, canvas)
   world hasA system(renderSystem)
 }

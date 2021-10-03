@@ -5,12 +5,11 @@ import dev.atedeg.ecscala.{ &:, CNil }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.World
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{ Circle, Color, Mass, Position, Velocity }
-import dev.atedeg.ecscalademo
+import dev.atedeg.ecscalademo.{ State, Circle, Color, Mass, Position, Velocity }
 import dev.atedeg.ecscalademo.systems.RegionAssignmentSystem
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 
-trait RegionAssignmentFixture extends ECScalaDSL with WorldFixture {
+trait RegionAssignmentFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {
   private val color = Color(0, 0, 0)
 
   val entity1 = world hasAn entity withComponents {
@@ -44,6 +43,6 @@ trait RegionAssignmentFixture extends ECScalaDSL with WorldFixture {
     &: CNil
 
   val spacePartition = WritableSpacePartitionContainer()
-  val regionAssignmentSystem = RegionAssignmentSystem(spacePartition)
+  val regionAssignmentSystem = RegionAssignmentSystem(playState, spacePartition)
   world hasA system(regionAssignmentSystem)
 }

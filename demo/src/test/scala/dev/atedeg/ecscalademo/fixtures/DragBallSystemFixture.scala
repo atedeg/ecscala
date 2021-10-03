@@ -8,6 +8,6 @@ import dev.atedeg.ecscalademo.systems.DragBallSystem
 
 trait DragBallSystemFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {
   val entity1 = world hasAn entity withComponent Position(0, 0)
-  val dragBallSystem = new DragBallSystem(playState, mouseState)
+  val dragBallSystem = DragBallSystem(playState, mouseState)
   world hasA system(dragBallSystem)
 }

@@ -9,6 +9,6 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 
 trait BallCreationSystemFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {
   val entity1 = world hasAn entity
-  val ballCreationSystem = new BallCreationSystem(playState, mouseState, startingState)
+  val ballCreationSystem = BallCreationSystem(playState, mouseState, startingState)
   world hasA system(ballCreationSystem)
 }
