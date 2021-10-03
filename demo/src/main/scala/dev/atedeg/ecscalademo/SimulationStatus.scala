@@ -12,6 +12,17 @@ trait MouseState {
   var clicked = false
   var down = false
   var up = false
+
+  override def toString: String = s"MouseState(clicked: $clicked, down: $down, up: $up, coordinates: $coordinates)"
+  override def hashCode = (coordinates, clicked, down, up).hashCode
+  override def equals(obj: Any) = obj match {
+    case that: MouseState =>
+      this.coordinates == that.coordinates
+      && this.clicked == that.clicked
+      && this.down == that.down
+      && this.up == that.up
+    case _ => false
+  }
 }
 
 object MouseState {
@@ -32,10 +43,21 @@ object MouseState {
 trait PlayState {
   var gameState: State = State.Pause
   var selectedBall: Option[Entity] = Option.empty
+
+  override def toString: String = s"PlayState(gameState: $gameState)"
+  override def hashCode = (gameState, selectedBall).hashCode
+  override def equals(obj: Any) = obj match {
+    case that: PlayState => this.gameState == that.gameState && this.selectedBall == that.selectedBall
+    case _ => false
+  }
 }
 
 object PlayState {
-  def apply(): PlayState = new PlayState {}
+  def apply(gameState: State = State.Pause): PlayState = {
+    val playState = new PlayState {}
+    playState.gameState = gameState
+    playState
+  }
 }
 
 trait StartingState {
