@@ -15,7 +15,7 @@ class BallCreationRenderingSystem(
     private val mouseState: MouseState,
     private val startingState: StartingState,
     private val canvas: ECSCanvas,
-) extends EmptySystem {
+) extends System {
 
   override def shouldRun: Boolean = playState.gameState == State.AddBalls
 

@@ -13,7 +13,7 @@ class BallCreationSystem(
     private val playState: PlayState,
     private val mouseState: MouseState,
     private val startingState: StartingState,
-) extends EmptySystem
+) extends System
     with ECScalaDSL {
 
   override def shouldRun: Boolean = mouseState.clicked && playState.gameState == State.AddBalls

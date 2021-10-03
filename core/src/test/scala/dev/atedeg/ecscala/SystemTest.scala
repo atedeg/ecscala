@@ -8,7 +8,28 @@ import org.scalatest.wordspec.AnyWordSpec
 class SystemTest extends AnyWordSpec with Matchers {
   def beAbleTo = afterWord("be able to")
 
-  "A System" when {
+  "A System" should {
+    "with a false precondition" should {
+      "not execute" in new ViewFixture {
+        var success = true
+        world.addSystem(new System {
+          override def shouldRun: Boolean = false
+
+          override def update(deltaTime: DeltaTime, world: World): Unit = success = false
+        })
+        world.update(10)
+        success shouldBe true
+      }
+    }
+    "execute when updating" in new ViewFixture {
+      var success = false
+      world.addSystem(System((_, _) => success = true))
+      world.update(10)
+      success shouldBe true
+    }
+  }
+
+  "An IteratingSystem" when {
     "with a false precondition" should {
       "not execute" in new ViewFixture {
         var success = true
@@ -28,7 +49,7 @@ class SystemTest extends AnyWordSpec with Matchers {
     }
     "executing its update" should beAbleTo {
       "update components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil](System((_, comps, _) => {
+        world.addSystem(IteratingSystem[Position &: Velocity &: CNil]((_, comps, _) => {
           val Position(x, y) &: Velocity(vx, vy) &: CNil = comps
           Position(x + 1, y + 1) &: Velocity(vx + 1, vy + 1) &: CNil
         }))
@@ -41,12 +62,12 @@ class SystemTest extends AnyWordSpec with Matchers {
         )
       }
       "remove components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil](System((_, _, _) => Deleted &: Deleted &: CNil))
+        world.addSystem(IteratingSystem[Position &: Velocity &: CNil]((_, _, _) => Deleted &: Deleted &: CNil))
         world.update(10)
         world.getView[Position &: Velocity &: CNil] shouldBe empty
       }
       "add components" in new ViewFixture {
-        world.addSystem[Position &: Velocity &: CNil](System((entity, comps, _) => {
+        world.addSystem(IteratingSystem[Position &: Velocity &: CNil]((entity, comps, _) => {
           entity setComponent Mass(10)
           comps
         }))
@@ -61,7 +82,7 @@ class SystemTest extends AnyWordSpec with Matchers {
         )
       }
       "add entities to its world" in new ViewFixture {
-        world.addSystem[Position &: CNil](System((_, comps, _, w, _) => {
+        world.addSystem(IteratingSystem[Position &: CNil]((_, comps, _, w, _) => {
           w.createEntity()
           comps
         }))
@@ -69,7 +90,7 @@ class SystemTest extends AnyWordSpec with Matchers {
         world.entitiesCount shouldBe 9
       }
       "remove entities from its world" in new ViewFixture {
-        world.addSystem[Position &: CNil](System((entity, comps, _, w, _) => {
+        world.addSystem(IteratingSystem[Position &: CNil]((entity, comps, _, w, _) => {
           w.removeEntity(entity)
           comps
         }))
@@ -79,7 +100,7 @@ class SystemTest extends AnyWordSpec with Matchers {
     }
     "executing its update" should {
       "have the correct delta time" in new ViewFixture {
-        world.addSystem[Position &: CNil](System((_, comps, dt) => {
+        world.addSystem(IteratingSystem[Position &: CNil]((_, comps, dt) => {
           dt shouldBe 10
           comps
         }))
@@ -135,21 +156,6 @@ class SystemTest extends AnyWordSpec with Matchers {
           },
         )
         updateExecuted shouldBe false
-      }
-    }
-  }
-
-  "An EmptySystem" should {
-    "execute when updating" in new ViewFixture {
-      var success = false
-      world.addSystem(System.empty((_, _) => success = true))
-      world.update(10)
-      success shouldBe true
-    }
-    "throw an exception" when {
-      "calling the wrong update" in new ViewFixture {
-        an[IllegalStateException] should be thrownBy
-          EmptySystem((_, _) => ()).update(entity1, CNil)(10, world, world.getView[CNil])
       }
     }
   }

@@ -3,10 +3,10 @@ package dev.atedeg.ecscalademo.systems
 import scala.language.implicitConversions
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.{ DeltaTime, EmptySystem, World }
+import dev.atedeg.ecscala.{ DeltaTime, System, World }
 import dev.atedeg.ecscalademo.{ clamped, MouseState, PlayState, Position, State, Vector, Velocity }
 
-class VelocityEditingSystem(private val playState: PlayState, private val mouseState: MouseState) extends EmptySystem {
+class VelocityEditingSystem(private val playState: PlayState, private val mouseState: MouseState) extends System {
   val minVelocityIntensity = 0
   val maxVelocityIntensity = 1000
   val intensityMultiplier = 2

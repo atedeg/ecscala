@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
 import scala.language.implicitConversions
-import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, System, View, World }
+import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, IteratingSystem, View, World }
 import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{
@@ -29,7 +29,7 @@ class WallCollisionSystem(
     private val playState: PlayState,
     private val environmentState: EnvironmentState,
     private val canvas: ECSCanvas,
-) extends System[Position &: Velocity &: Circle &: CNil] {
+) extends IteratingSystem[Position &: Velocity &: Circle &: CNil] {
 
   override def shouldRun: Boolean = playState.gameState == State.Play
 

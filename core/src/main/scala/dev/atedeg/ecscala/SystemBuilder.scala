@@ -6,7 +6,7 @@ import dev.atedeg.ecscala.util.types.CListTag
 /**
  * The generic operations that a SystemBuilder provides.
  * @tparam L
- *   the type of the [[CList]] used by the built [[System]].
+ *   the type of the [[CList]] used by the built [[IteratingSystem]].
  */
 trait SystemBuilderOps[L <: CList: CListTag] {
 
@@ -16,9 +16,9 @@ trait SystemBuilderOps[L <: CList: CListTag] {
   type BuilderType <: SystemBuilderOps[L]
 
   /**
-   * The type of the [[System]] produced when closing the builder.
+   * The type of the [[IteratingSystem]] produced when closing the builder.
    */
-  type SystemType <: System[L]
+  type SystemType <: IteratingSystem[L]
 
   /**
    * @param before
@@ -62,13 +62,13 @@ trait SystemBuilderOps[L <: CList: CListTag] {
 }
 
 /**
- * A builder used to create [[System]].
+ * A builder used to create [[IteratingSystem]].
  * @tparam L
- *   the type of the [[CList]] used by the built [[System]].
+ *   the type of the [[CList]] used by the built [[IteratingSystem]].
  */
 trait SystemBuilder[L <: CList: CListTag] extends SystemBuilderOps[L] {
   override type BuilderType = SystemBuilder[L]
-  override type SystemType = System[L]
+  override type SystemType = IteratingSystem[L]
 
   /**
    * Converts this builder to an [[ExcludingSystemBuilder]]
@@ -84,7 +84,7 @@ object SystemBuilder {
 
   /**
    * @tparam L
-   *   the type of the [[CList]] used by the built [[System]].
+   *   the type of the [[CList]] used by the built [[IteratingSystem]].
    * @return
    *   a new [[SystemBuilder]]
    */
@@ -94,7 +94,7 @@ object SystemBuilder {
 /**
  * A builder used to create [[ExcludingSystem]].
  * @tparam L
- *   the type of the [[CList]] used by the built [[System]].
+ *   the type of the [[CList]] used by the built [[IteratingSystem]].
  * @tparam E
  *   the type of the [[CList]] of components to be excluded.
  */
@@ -107,7 +107,7 @@ object ExcludingSystemBuilder {
 
   /**
    * @tparam L
-   *   the type of the [[CList]] used by the built [[System]].
+   *   the type of the [[CList]] used by the built [[IteratingSystem]].
    * @tparam E
    *   the type of the [[CList]] of components to be excluded.
    * @return
@@ -150,14 +150,14 @@ private object BuilderUtils {
   ) extends BaseSystemBuilder[L](beforeHandler, afterHandler, precondition)
       with SystemBuilder[L] {
 
-    override def systemConstructor(f: (Entity, L, DeltaTime) => Deletable[L]) = new System[L] {
+    override def systemConstructor(f: (Entity, L, DeltaTime) => Deletable[L]) = new IteratingSystem[L] {
       override def update(e: Entity, c: L)(dt: DeltaTime, w: World, v: View[L]) = f(e, c, dt)
       override def before(dt: DeltaTime, w: World, v: View[L]): Unit = beforeHandler(dt, w, v)
       override def after(dt: DeltaTime, w: World, v: View[L]): Unit = afterHandler(dt, w, v)
       override def shouldRun = precondition
     }
 
-    override def systemConstructor(f: (Entity, L, DeltaTime, World, View[L]) => Deletable[L]) = new System[L] {
+    override def systemConstructor(f: (Entity, L, DeltaTime, World, View[L]) => Deletable[L]) = new IteratingSystem[L] {
       override def update(e: Entity, c: L)(dt: DeltaTime, w: World, v: View[L]) = f(e, c, dt, w, v)
       override def before(dt: DeltaTime, w: World, v: View[L]): Unit = beforeHandler(dt, w, v)
       override def after(dt: DeltaTime, w: World, v: View[L]): Unit = afterHandler(dt, w, v)

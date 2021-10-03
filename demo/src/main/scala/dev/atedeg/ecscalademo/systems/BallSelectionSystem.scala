@@ -8,7 +8,7 @@ import dev.atedeg.ecscalademo.*
  * This [[System]] is used to identify the selected ball. If a ball were selected, the [[PlayState.selectedBall]]
  * contains the [[Entity]] associated to the selected ball.
  */
-class BallSelectionSystem(private val playState: PlayState, private val mouseState: MouseState) extends EmptySystem {
+class BallSelectionSystem(private val playState: PlayState, private val mouseState: MouseState) extends System {
 
   override def shouldRun: Boolean =
     (playState.gameState == State.Pause || playState.gameState == State.SelectBall) && mouseState.down

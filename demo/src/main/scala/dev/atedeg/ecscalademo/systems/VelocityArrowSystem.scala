@@ -2,7 +2,7 @@ package dev.atedeg.ecscalademo.systems
 
 import scala.language.implicitConversions
 
-import dev.atedeg.ecscala.{ DeltaTime, EmptySystem, World }
+import dev.atedeg.ecscala.{ DeltaTime, System, World }
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Color, ECSCanvas, MouseState, PlayState, Position, State }
@@ -11,7 +11,7 @@ class VelocityArrowSystem(
     private val playState: PlayState,
     private val mouseState: MouseState,
     private val canvas: ECSCanvas,
-) extends EmptySystem {
+) extends System {
   private val arrowColor = Color(255, 0, 0)
   private val arrowWidth = 2
 

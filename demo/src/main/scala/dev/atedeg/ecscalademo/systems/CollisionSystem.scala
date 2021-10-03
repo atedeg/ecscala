@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
 import scala.language.implicitConversions
-import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, EmptySystem, Entity, View, World }
+import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, System, Entity, View, World }
 import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
@@ -9,7 +9,7 @@ import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Point, Position, State, Vector, Velocity }
 
 class CollisionSystem(private val playState: PlayState, private val regions: WritableSpacePartitionContainer)
-    extends EmptySystem {
+    extends System {
   override def shouldRun: Boolean = playState.gameState == State.Play
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {

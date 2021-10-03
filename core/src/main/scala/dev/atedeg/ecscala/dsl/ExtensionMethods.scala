@@ -68,7 +68,7 @@ trait ExtensionMethods {
      * world += mySystem
      * }}}
      */
-    def +=[L <: CList: CListTag](system: System[L]) = world.addSystem(system)
+    def +=(system: System) = world.addSystem(system)
 
     /**
      * This method enables the following syntax:
@@ -77,7 +77,7 @@ trait ExtensionMethods {
      * world -= mySystem
      * }}}
      */
-    def -=[L <: CList: CListTag](system: System[L]) = world.removeSystem(system)
+    def -=(system: System) = world.removeSystem(system)
 
     /**
      * This method enables the following syntax:
