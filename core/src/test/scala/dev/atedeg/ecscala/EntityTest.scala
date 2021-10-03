@@ -18,8 +18,8 @@ class EntityTest extends AnyWordSpec with Matchers {
       val component = Position(0, 0)
       val entity1 = world.createEntity()
       val entity2 = world.createEntity()
-      entity1.setComponent(component)
-      an[IllegalArgumentException] shouldBe thrownBy(entity2.setComponent(component))
+      entity1 setComponent component
+      an[IllegalArgumentException] shouldBe thrownBy(entity2 setComponent component)
     }
     "get its components correctly" in new WorldFixture {
       val entity1 = world.createEntity()

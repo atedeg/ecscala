@@ -90,12 +90,12 @@ class SystemTest extends AnyWordSpec with Matchers {
         val testSystem = System[Comps].withBefore { (deltaTime, world, view) =>
           view foreach (entityComponentsPair => {
             val (entity, Position(px, py) &: _) = entityComponentsPair
-            entity.setComponent(Position(px * 2, py * 2))
+            entity setComponent Position(px * 2, py * 2)
           })
         }.withAfter { (deltaTime, world, view) =>
           view foreach (entityComponentsPair => {
             val (entity, Position(px, py) &: _) = entityComponentsPair
-            entity.setComponent(Position(px + 1, py + 1))
+            entity setComponent Position(px + 1, py + 1)
           })
         }.withUpdate { (_, components, _) => components }
 

@@ -22,7 +22,7 @@ class DragBallSystem(private val playState: PlayState, private val mouseState: M
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
     playState.selectedBall match {
-      case Some(entity) => entity.setComponent(Position(mouseState.coordinates))
+      case Some(entity) => entity setComponent Position(mouseState.coordinates)
       case _ => ()
     }
   }
