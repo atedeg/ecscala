@@ -12,7 +12,7 @@ import dev.atedeg.ecscalademo.*
  * The [[System]] that applies the friction to the balls that have a Velocity.
  */
 class FrictionSystem(private val playState: PlayState, private val environmentState: EnvironmentState)
-    extends System[Velocity &: CNil] {
+    extends IteratingSystem[Velocity &: CNil] {
 
   override def shouldRun: Boolean = playState.gameState == State.Play
 

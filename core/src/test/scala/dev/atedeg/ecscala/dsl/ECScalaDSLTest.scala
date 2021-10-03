@@ -1,30 +1,8 @@
 package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala
-import dev.atedeg.ecscala.{
-  &:,
-  fixtures,
-  CNil,
-  Component,
-  Deletable,
-  DeltaTime,
-  Entity,
-  System,
-  SystemBuilder,
-  View,
-  World,
-}
-import dev.atedeg.ecscala.fixtures.{
-  ComponentsFixture,
-  Gravity,
-  Mass,
-  Position,
-  SystemBuilderFixture,
-  SystemFixture,
-  Velocity,
-  ViewFixture,
-  WorldFixture,
-}
+import dev.atedeg.ecscala.{&:, CNil, Component, Deletable, DeltaTime, Entity, IteratingSystem, System, SystemBuilder, View, World, fixtures}
+import dev.atedeg.ecscala.fixtures.{ComponentsFixture, Gravity, Mass, Position, SystemBuilderFixture, SystemFixture, Velocity, ViewFixture, WorldFixture}
 import dev.atedeg.ecscala.util.types.ComponentTag
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -142,12 +120,12 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "world hasA system[Component &: CNil] { () => {} }" should {
     "work the same way as the world.addSystem() method" in new ViewFixture {
-      world hasA system[Position &: CNil](System((_, comps, _) => {
+      world hasA system[Position &: CNil](IteratingSystem((_, comps, _) => {
         val Position(px, py) &: CNil = comps
         Position(px * 2, py * 2) &: CNil
       }))
 
-      world hasA system[Position &: CNil](System((_, comps, _) => {
+      world hasA system[Position &: CNil](IteratingSystem((_, comps, _) => {
         val Position(x, y) &: CNil = comps
         Position(x + 1, y + 1) &: CNil
       }))

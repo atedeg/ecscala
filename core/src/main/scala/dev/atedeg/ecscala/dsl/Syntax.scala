@@ -31,7 +31,7 @@ trait Syntax {
    *   remove (mySystem) from world
    * }}}
    */
-  case class SystemFromWorld[L <: CList: CListTag](system: System[L]) extends From[World, Unit] {
+  case class SystemFromWorld(system: System) extends From[World, Unit] {
     override def from(world: World): Unit = world.removeSystem(system)
   }
 

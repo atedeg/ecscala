@@ -1,6 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, System, View, World }
+import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, IteratingSystem, View, World }
+import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Position, State, Velocity }
@@ -12,7 +13,7 @@ import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Position, State, Veloci
  *   the [[WritableSpacePartitionContainer]] that will be populated.
  */
 class RegionAssignmentSystem(private val playState: PlayState, val regions: WritableSpacePartitionContainer)
-    extends System[Position &: Velocity &: Circle &: Mass &: CNil] {
+    extends IteratingSystem[Position &: Velocity &: Circle &: Mass &: CNil] {
 
   override def shouldRun = playState.gameState == State.Play
 

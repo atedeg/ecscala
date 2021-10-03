@@ -9,7 +9,7 @@ import dev.atedeg.ecscalademo.*
 /**
  * The [[System]] that updates the balls Positions given the updated Velocities
  */
-class MovementSystem(private val playState: PlayState) extends System[Position &: Velocity &: CNil] {
+class MovementSystem(private val playState: PlayState) extends IteratingSystem[Position &: Velocity &: CNil] {
   override def shouldRun: Boolean = playState.gameState == State.Play
 
   override def update(entity: Entity, components: Position &: Velocity &: CNil)(

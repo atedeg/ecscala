@@ -10,7 +10,7 @@ import dev.atedeg.ecscalademo.Vector
  * @param ecsCanvas
  */
 class RenderSystem(private val playState: PlayState, private val ecsCanvas: ECSCanvas)
-    extends System[Circle &: Position &: CNil] {
+    extends IteratingSystem[Circle &: Position &: CNil] {
   private val selectedBallLineWidth = 3
   private val regularBallLineWidth = 1
 
