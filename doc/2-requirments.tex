@@ -54,15 +54,24 @@ I requisiti funzionali, ricavati da quelli utente, sono:
         \item \label{itm:ff3} Aggiungere \textit{componenti} alle \textit{entità}
         \item \label{itm:ff4} Rimuovere \textit{componenti} dalle \textit{entità}
     \end{enumerate}
-    \item \label{itm:f6} Creare \textit{sistemi} per manipolare i \textit{componenti} delle \textit{entità}
-    \item \label{itm:f7} Registrare \textit{sistemi} nel \textit{mondo}
-    \item \label{itm:f8} Fornire un DSL
-    \begin{enumerate}[label=\textbf{\ref{itm:f8}.\arabic*}]
-        \item \label{itm:ff5} Definire \textit{sistemi}
-        \item \label{itm:ff6} Manipolare \textit{entità}
-        \item \label{itm:ff7} Manipolare lo stato del \textit{mondo}
+    \item \label{itm:f6} Creare diverse tipologie di \textit{view}
+    \begin{enumerate}[label=\textbf{\ref{itm:f6}.\arabic*}]
+        \item \label{itm:ff5} \textit{view} per ottenere tutte le \textit{entity} del \textit{world} che possiedono i \textit{components} specificati
+        \item \label{itm:ff6} \textit{view} per ottenere tutte le \textit{entity} del \textit{world} che non possiedono nessuno dei \textit{components} specificati
     \end{enumerate}
-    \item TODO: demo %TODO: demo progetto
+    \item \label{itm:f7} Creare diverse tipologie di \textit{system} %per manipolare i \textit{componenti} delle \textit{entità}
+    \begin{enumerate}[label=\textbf{\ref{itm:f7}.\arabic*}]
+        \item \label{itm:ff7} \textit{system} per manipolare gli specifici \textit{components} delle \textit{entity}
+        \item \label{itm:ff10} \textit{system} che non operano sui \textit{component} delle \textit{entity} ma permettono di eseguire operazioni a ogni aggiornamento dello stato del \textit{world}
+        \item \label{itm:ff11} \textit{system} che consentono di escludere alcune \textit{entity} sulla base dei \textit{components} specificati
+    \end{enumerate}
+    \item \label{itm:f8} Registrare \textit{sistemi} nel \textit{mondo}
+    \item \label{itm:f9} Fornire un DSL
+    \begin{enumerate}[label=\textbf{\ref{itm:f9}.\arabic*}]
+        \item \label{itm:ff12} Definire \textit{sistemi}
+        \item \label{itm:ff13} Manipolare \textit{entità}
+        \item \label{itm:ff14} Manipolare lo stato del \textit{mondo}
+    \end{enumerate}
 \end{enumerate}
 
 
@@ -78,5 +87,4 @@ Considerando gli scenari d'uso elencati al punto~\ref{itm:b2}, il sistema deve r
     \item \label{itm:i1} Scala 3
     \item \label{itm:i2} Scalatest
     \item \label{itm:i3} JaCoCo per code coverage
-    \item TODO %TODO citare eventuali librerie esterne
 \end{enumerate}
