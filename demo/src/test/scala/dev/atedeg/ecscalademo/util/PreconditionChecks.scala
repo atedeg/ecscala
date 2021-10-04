@@ -25,7 +25,7 @@ extension [T](state: TestState[T]) {
   }
 }
 
-def checkAllStates(systemBuilder: (PlayState, MouseState) => System[?])(enabled: StateDescription*): Unit = {
+def checkAllStates(systemBuilder: (PlayState, MouseState) => System)(enabled: StateDescription*): Unit = {
   import StateUtils.*
   val enabledStates = expandStates(enabled*)
   val disabledStates = allStates -- enabledStates
@@ -36,7 +36,7 @@ def checkAllStates(systemBuilder: (PlayState, MouseState) => System[?])(enabled:
 private object StateUtils {
 
   def checkStates(
-      systemBuilder: (PlayState, MouseState) => System[?],
+      systemBuilder: (PlayState, MouseState) => System,
   )(states: Set[(PlayState, MouseState)])(shouldRun: Boolean) = {
     val table = Table(("playState", "mouseState"), states.toSeq*)
     forAll(table) { (playState, mouseState) =>

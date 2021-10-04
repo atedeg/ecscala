@@ -16,7 +16,7 @@ import dev.atedeg.ecscala.util.types.given
 /**
  * This [[System]] is used to update the selected ball's [[Position]] according to the mouse pointer.
  */
-class DragBallSystem(private val playState: PlayState, private val mouseState: MouseState) extends EmptySystem {
+class DragBallSystem(private val playState: PlayState, private val mouseState: MouseState) extends System {
 
   override def shouldRun: Boolean = playState.gameState == State.Dragging
 

@@ -3,7 +3,7 @@ package dev.atedeg.ecscala.dsl
 import dev.atedeg.ecscala.dsl.Words.EntityWord
 import dev.atedeg.ecscala.dsl.Syntax
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
-import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity, System, View, World }
+import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity, IteratingSystem, System, View, World }
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the ECScala framework operations using an
@@ -86,8 +86,13 @@ trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax {
   /**
    * Keyword that enables the use of the word "system".
    */
-  def system[L <: CList](system: System[L])(using clt: CListTag[L])(using world: World): Unit =
-    world.addSystem(system)(using clt)
+  def system(system: System)(using world: World): Unit = world.addSystem(system)
+
+  /**
+   * Keyword that enables the use of the word "system".
+   */
+  def system[L <: CList](system: IteratingSystem[L])(using clt: CListTag[L])(using world: World): Unit =
+    world.addSystem(system)
 
   /**
    * Keyword that enables the use of the word "getView".
@@ -120,7 +125,7 @@ trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax {
   /**
    * Keyword that enables the use of the word "remove" for the removal of a [[System]] from a [[World]].
    */
-  def remove[L <: CList: CListTag](system: System[L]): From[World, Unit] = SystemFromWorld(system)
+  def remove(system: System): From[World, Unit] = SystemFromWorld(system)
 
   /**
    * Keyword that enables the use of the word "clearAllEntities" in the dsl.

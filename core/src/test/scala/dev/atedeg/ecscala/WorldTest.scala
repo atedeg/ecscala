@@ -82,12 +82,12 @@ class WorldTest extends AnyWordSpec with Matchers {
     }
     "update is called" should {
       "execute all systems in the same order as they were added" in new ViewFixture {
-        world.addSystem[Position &: CNil](System((_, comps, _, _, _) => {
+        world.addSystem(IteratingSystem[Position &: CNil]((_, comps, _) => {
           val Position(px, py) &: CNil = comps
           Position(px * 2, py * 2) &: CNil
         }))
 
-        world.addSystem[Position &: CNil](System((_, comps, _, _, _) => {
+        world.addSystem(IteratingSystem[Position &: CNil]((_, comps, _) => {
           val Position(x, y) &: CNil = comps
           Position(x + 1, y + 1) &: CNil
         }))

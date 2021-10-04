@@ -60,19 +60,15 @@ sealed trait World {
    * Add a [[System]] to the [[World]].
    * @param system
    *   the system to add.
-   * @tparam L
-   *   the [[CList]] of system components.
    */
-  def addSystem[L <: CList: CListTag](system: System[L]): Unit
+  def addSystem(system: System): Unit
 
   /**
    * Remove a [[System]] from the [[World]].
    * @param system
    *   the system to remove.
-   * @tparam L
-   *   the [[CList]] of system components.
    */
-  def removeSystem[L <: CList: CListTag](system: System[L]): Unit
+  def removeSystem(system: System): Unit
 
   /**
    * Update the world.
@@ -97,7 +93,7 @@ object World {
   private class WorldImpl() extends World {
     private var entities: Set[Entity] = Set()
     private var componentsContainer = ComponentsContainer()
-    private var systems: List[(CListTag[?], System[? <: CList])] = List()
+    private var systems: List[System] = List()
 
     override def entitiesCount: Int = entities.size
 
@@ -124,16 +120,13 @@ object World {
         cltExcl: CListTag[LExcluded],
     ): ExcludingView[LIncluded, LExcluded] = View(this)(using cltIncl, cltExcl)
 
-    override def addSystem[L <: CList](system: System[L])(using clt: CListTag[L]): Unit =
-      systems = systems :+ (clt -> system)
+    override def addSystem(system: System): Unit =
+      systems = systems :+ system
 
-    override def removeSystem[L <: CList](system: System[L])(using clt: CListTag[L]): Unit =
-      systems = systems filter (_ != (clt, system))
+    override def removeSystem(system: System): Unit =
+      systems = systems filter (_ != system)
 
-    override def update(deltaTime: DeltaTime): Unit = systems foreach (taggedSystem => {
-      val (ct, system) = taggedSystem
-      system(this, deltaTime)
-    })
+    override def update(deltaTime: DeltaTime): Unit = systems foreach (_(deltaTime, this))
 
     override def toString: String = componentsContainer.toString
 

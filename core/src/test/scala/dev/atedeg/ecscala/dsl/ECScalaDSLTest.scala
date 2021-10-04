@@ -9,6 +9,7 @@ import dev.atedeg.ecscala.{
   Deletable,
   DeltaTime,
   Entity,
+  IteratingSystem,
   System,
   SystemBuilder,
   View,
@@ -142,12 +143,12 @@ class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "world hasA system[Component &: CNil] { () => {} }" should {
     "work the same way as the world.addSystem() method" in new ViewFixture {
-      world hasA system[Position &: CNil](System((_, comps, _) => {
+      world hasA system[Position &: CNil](IteratingSystem((_, comps, _) => {
         val Position(px, py) &: CNil = comps
         Position(px * 2, py * 2) &: CNil
       }))
 
-      world hasA system[Position &: CNil](System((_, comps, _) => {
+      world hasA system[Position &: CNil](IteratingSystem((_, comps, _) => {
         val Position(x, y) &: CNil = comps
         Position(x + 1, y + 1) &: CNil
       }))
