@@ -7,62 +7,14 @@ enum State {
   case Pause, Play, AddBalls, SelectBall, ChangeVelocity, Dragging
 }
 
-trait MouseState {
-  var coordinates = Point(0, 0)
-  var clicked = false
-  var down = false
-  var up = false
+case class MouseState(
+    var coordinates: Point = Point(0, 0),
+    var clicked: Boolean = false,
+    var down: Boolean = false,
+    var up: Boolean = false,
+)
 
-  override def toString: String = s"MouseState(clicked: $clicked, down: $down, up: $up, coordinates: $coordinates)"
-  override def hashCode = (coordinates, clicked, down, up).hashCode
-
-  override def equals(obj: Any) = obj match {
-    case that: MouseState =>
-      this.coordinates == that.coordinates &&
-        this.clicked == that.clicked &&
-        this.down == that.down &&
-        this.up == that.up
-    case _ => false
-  }
-}
-
-object MouseState {
-
-  def apply(
-      coordinates: Point = Point(0, 0),
-      clicked: Boolean = false,
-      down: Boolean = false,
-      up: Boolean = false,
-  ): MouseState = {
-    val mouseState = new MouseState {}
-    mouseState.clicked = clicked
-    mouseState.down = down
-    mouseState.up = up
-    mouseState
-  }
-}
-
-trait PlayState {
-  var gameState: State = State.Pause
-  var selectedBall: Option[Entity] = Option.empty
-
-  override def toString: String = s"PlayState(gameState: $gameState)"
-  override def hashCode = (gameState, selectedBall).hashCode
-
-  override def equals(obj: Any) = obj match {
-    case that: PlayState => this.gameState == that.gameState && this.selectedBall == that.selectedBall
-    case _ => false
-  }
-}
-
-object PlayState {
-
-  def apply(gameState: State = State.Pause): PlayState = {
-    val playState = new PlayState {}
-    playState.gameState = gameState
-    playState
-  }
-}
+case class PlayState(var gameState: State = State.Pause, var selectedBall: Option[Entity] = None)
 
 trait StartingState {
   val startingRadius: Double = 20.0
