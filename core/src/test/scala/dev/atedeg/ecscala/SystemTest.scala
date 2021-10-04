@@ -8,7 +8,7 @@ import org.scalatest.wordspec.AnyWordSpec
 class SystemTest extends AnyWordSpec with Matchers {
   def beAbleTo = afterWord("be able to")
 
-  "A System" should {
+  "A System" when {
     "with a false precondition" should {
       "not execute" in new ViewFixture {
         var success = true
