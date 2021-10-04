@@ -11,7 +11,7 @@ I principali componenti individuati sono:
     \item \texttt{ExcludingView}: rappresenta una specializzazione di una \texttt{View} che permette di specificare un ulteriore filtro andando ad indicare i \texttt{Component} che una \texttt{Entity} non deve avere per essere parte della \texttt{View}
     \item \texttt{IteratingSystem}: è un wrapper di una \texttt{View} che, indicando una specifica logica di aggiornamento, si occupa di iterare tutte le \texttt{Entity} selezionate aggiornandone i componenti
     \item \texttt{System}: descrive un'operazione che viene eseguita ogni volta che viene effettuata l'\texttt{update} del \texttt{World} in cui è registrato
-    \item \item \texttt{ExcludingSystem}: in maniera analoga a \texttt{IteratingSystem}, è un wrapper di una \texttt{ExcludingView}
+    \item \texttt{ExcludingSystem}: in maniera analoga a \texttt{IteratingSystem}, è un wrapper di una \texttt{ExcludingView}
     \item \texttt{Entity}: permette l'aggiunta e rimozione di \texttt{Component} e il loro aggiornamento.
     Non può trovarsi in più \texttt{World} contemporaneamente;
     mantiene un riferimento al \texttt{World} di appartenenza
@@ -35,16 +35,13 @@ verificano quando viene effettuato l'\texttt{update} di un~\texttt{World}.
     \caption{Diagramma di sequenza dell'aggiornamento dei componenti nel world.}\label{fig:sequence}
 \end{figure}
 
-Una volta aggiunti i \texttt{System} al~\textit{World}, mediante la chiamata al metodo \texttt{update}, è possibile
-eseguire i sistemi modificando i componenti su cui essi devono operare.
+Una volta aggiunti i \texttt{System} al~\texttt{World}, mediante la chiamata al metodo~\texttt{update}, è possibile
+eseguirli affinché modifichino i componenti su cui devono operare.
 Per ogni sistema del world, si verifica in prima istanza che possa essere eseguito andando a verificare il metodo
 \texttt{shouldRun} e in caso affermativo il sistema viene eseguito.
-L'esecuzione del sistema consiste nell'eseguire il metodo~\texttt{update}, il quale ritornerà una versione aggiornata
-dei componenti.
+L'esecuzione di un sistema consiste nel chiamare il metodo~\texttt{update}, il quale ritornerà una versione aggiornata
+dei componenti secondo la logica del sistema.
 
 L'esecuzione di ogni sistema è atomica e sequenziale, ciò significa che l'ordine con cui vengono inseriti nel
 \texttt{World} è significativa ai fini della computazione degli stessi e non vi sono race condition durante la loro
 esecuzione.
-
-%TODO: descrivere diagramma di sequenza
-
