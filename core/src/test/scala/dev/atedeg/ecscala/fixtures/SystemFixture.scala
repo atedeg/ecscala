@@ -6,7 +6,7 @@ import dev.atedeg.ecscala.util.types.given
 
 trait SystemFixture extends ECScalaDSL {
 
-  val mySystem1 = IteratingSystem[Position &: CNil]{ (_, comps, _) =>
+  val mySystem1 = IteratingSystem[Position &: CNil] { (_, comps, _) =>
     val Position(x, y) &: CNil = comps
     Position(x + 3, y + 3) &: CNil
   }
