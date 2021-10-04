@@ -23,8 +23,8 @@ che un unpacking che contiene più elementi di quelli contenuti nella \texttt{CL
 a tal proposito si è definito il seguente test:
 \lstinputlisting[label={lst:lstinputlisting22}, caption=Test per la verifica dell'unpacking delle CList.]
 {./code/scalatest-bug.scala}
-Nella prima asserzione si verifica l'unpacking con meno elementi di quelli nella \texttt{CList};
-nella seconda si testa lo scenario opposto, quindi l'unpacking con più elementi di quelli presenti nella \texttt{CList}.
+Nella prima asserzione si verifica l'unpacking con meno elementi di quelli nella~\texttt{CList};
+nella seconda si testa lo scenario opposto, quindi l'unpacking con più elementi di quelli presenti nella~\texttt{CList}.
 Per entrambi i due scenari appena descritti, la compilazione deve fallire a causa di un mismatch di tipi.
 Tuttavia questo non accade poiché in entrambi i casi le espressioni vengono valutate erroneamente come valide.
 Il bug è stato segnalato agli sviluppatori della libreria mediante una issue~\cite{scalatest-bug}.
@@ -36,6 +36,8 @@ a livello di linguaggio;
 tanto è vero che se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun
 tipo di errore.
 A tal proposito è stata aperta una issue~\cite{intellij-issue} sul bug tracker di Jetbrains.
+Per una maggiore agilità nella scrittura del codice si è quindi scelto di rimuovere la \textit{cross-building} dal
+progetto.
 
 Si segnala che, essendo il rilascio di Scala 3 relativamente recente, non è stato possibile utilizzare
 le seguenti librerie per problemi di compatibilità:
