@@ -37,9 +37,9 @@ trait System {
 object System {
 
   /**
-   * Create a [[System]] from a lambda that specifies its behaviuor.
+   * Create a [[System]] from a lambda that specifies its behaviour.
    * @param f
-   *   the behaviuor of the [[System]] that takes [[DeltaTime]] and the [[World]] and returns Unit.
+   *   the behaviour of the [[System]] that takes [[DeltaTime]] and the [[World]] and returns Unit.
    * @return
    *   the created [[System]].
    */
