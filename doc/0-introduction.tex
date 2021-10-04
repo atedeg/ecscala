@@ -1,5 +1,32 @@
 \chapter*{Introduzione}
 \addcontentsline{toc}{chapter}{Introduzione}
-Il progetto ha come obiettivo la realizzazione di un framework che consenta d'implementare il pattern architetturale
-\textit{ECS} (Entity Component System)
-% TODO: descrivere stato dell'arte e applicazioni di ECS
+Il progetto ha come obiettivo la realizzazione di un framework che consenta l'implementazione del pattern
+architetturale \ECS (Entity Component System).
+Questo è un pattern tipicamente usato nel settore videoludico, che favorisce i principi di
+\textit{composition over inheritance} e \textit{data-oriented design}.
+Due esempi significativi di uso del pattern ECS sono i videogiochi \textit{Overwatch} (2016) e \textit{Minecraft}
+(2011).
+% TODO: Riguardare talk GDC ed espandere un po' sui vantaggi
+
+I tre concetti chiave di ECS sono:
+\begin{itemize}
+    \item \Entity: un oggetto distinto che esiste nella simulazione, che non ha dati né comportamenti,
+    \eg una palla da biliardo, un nemico di un videogioco, un proiettile, eccetera.
+    \item \Component: un elemento che descrive una particolare caratteristica di una \Entity senza descriverne
+    l'effettivo comportamento, \eg posizione, velocità, salute, informazioni per il rendering, eccetera.
+    \item \System: una funzione che viene eseguita su ogni \Entity che possiede tutti i \Component richiesti e ne
+    legge o modifica i loro valori;
+    tramite questa si dà l'effettivo comportamento alle \Entity.
+    Alcuni esempi di \System possono essere un sistema di rendering che richiede i componenti posizione e immagine,
+    un sistema di calcolo dei danni che richiede il componente salute, eccetera.
+\end{itemize}
+
+Esistono diverse librerie open source che permettono l'implementazione del pattern \ECS; fra le più importanti risulta
+EnTT, libreria scritta in \CC\ usata dal videogioco \textit{Minecraft}.
+Nell'ambiente JVM troviamo invece \textit{Artemis} e \textit{Ashley}, entrambe scritte in Java, che però non possono
+vantare un uso in applicazioni di rilievo.
+
+Il nostro obiettivo è quindi quello di creare una libreria che faccia della type safety il suo maggior punto di forza,
+alla quale si aggiunge un comodo DSL per scrivere codice idiomatico e compatto.
+Sebbene le prestazioni siano normalmente d'importanza spesso critica, abbiamo deciso di non realizzare tutte le
+ottimizzazioni implementate dalle altre liberie, in quanto esulano dall'obiettivo del corso.
