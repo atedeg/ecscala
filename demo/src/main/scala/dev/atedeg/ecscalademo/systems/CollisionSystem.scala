@@ -4,11 +4,11 @@ import scala.language.implicitConversions
 import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, System, View, World }
 import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
+import dev.atedeg.ecscalademo.util.SpacePartitionContainer
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Point, Position, State, Vector, Velocity }
 
-class CollisionSystem(private val playState: PlayState, private val regions: WritableSpacePartitionContainer)
+class CollisionSystem(private val playState: PlayState, private val regions: SpacePartitionContainer)
     extends System {
   override def shouldRun: Boolean = playState.gameState == State.Play
 
