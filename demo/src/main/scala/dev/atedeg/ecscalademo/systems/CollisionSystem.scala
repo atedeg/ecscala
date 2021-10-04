@@ -8,8 +8,7 @@ import dev.atedeg.ecscalademo.util.SpacePartitionContainer
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Point, Position, State, Vector, Velocity }
 
-class CollisionSystem(private val playState: PlayState, private val regions: SpacePartitionContainer)
-    extends System {
+class CollisionSystem(private val playState: PlayState, private val regions: SpacePartitionContainer) extends System {
   override def shouldRun: Boolean = playState.gameState == State.Play
 
   override def update(deltaTime: DeltaTime, world: World): Unit = {
