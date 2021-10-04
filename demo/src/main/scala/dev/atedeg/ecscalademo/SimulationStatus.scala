@@ -7,25 +7,14 @@ enum State {
   case Pause, Play, AddBalls, SelectBall, ChangeVelocity, Dragging
 }
 
-trait MouseState {
-  var coordinates = Point(0, 0)
-  var clicked = false
-  var down = false
-  var up = false
-}
+case class MouseState(
+    var coordinates: Point = Point(0, 0),
+    var clicked: Boolean = false,
+    var down: Boolean = false,
+    var up: Boolean = false,
+)
 
-object MouseState {
-  def apply(): MouseState = new MouseState {}
-}
-
-trait PlayState {
-  var gameState: State = State.Pause
-  var selectedBall: Option[Entity] = Option.empty
-}
-
-object PlayState {
-  def apply(): PlayState = new PlayState {}
-}
+case class PlayState(var gameState: State = State.Pause, var selectedBall: Option[Entity] = None)
 
 trait StartingState {
   val startingRadius: Double = 20.0

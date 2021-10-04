@@ -2,18 +2,28 @@ package dev.atedeg.ecscalademo.systems
 
 import dev.atedeg.ecscala.{ &:, CNil, View }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo
-import dev.atedeg.ecscalademo.{ PlayState, Point, Position, State, Vector, Velocity }
+import dev.atedeg.ecscalademo.given
+import dev.atedeg.ecscalademo.{ EnvironmentState, PlayState, Point, Position, State, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.{ FrictionSystemFixture, WorldFixture }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 
 import scala.language.implicitConversions
 
 class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with MockitoSugar {
+
+  "A FrictionSystem" should {
+    "run" when {
+      "in an enabled state" in
+        checkAllStates((playState, _) => FrictionSystem(playState, mock[EnvironmentState]))(
+          (State.Play, AnyValue, AnyValue, AnyValue),
+        )
+    }
+  }
 
   "A FrictionSystem" when {
     "the simulation is playing" should {
@@ -24,7 +34,7 @@ class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with 
         val Velocity(vector) &: CNil = view.head._2
         vector.x should be < initialVelocity.velocity.x
       }
-      "don't update the component's Velocity if its initial Velocity is 0" in new FrictionSystemFixture {
+      "not update the component's Velocity if its initial Velocity is 0" in new FrictionSystemFixture {
         ball setComponent Velocity(0, 0)
         playState.gameState = State.Play
         world.update(10)

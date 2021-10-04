@@ -219,7 +219,9 @@ class MainViewController extends Initializable with ECScalaDSL {
 
   def onDragDetectedHandler(event: MouseEvent): Unit = {
     mouseState.coordinates = Point(event.getX, event.getY)
-    playState.gameState = if playState.gameState == State.AddBalls then playState.gameState else State.Dragging
+    playState.gameState =
+      if (playState.gameState == State.AddBalls || playState.gameState == State.Play) then playState.gameState
+      else State.Dragging
   }
 
   def onPlayPauseClickHandler(): Unit = {
@@ -266,7 +268,7 @@ class MainViewController extends Initializable with ECScalaDSL {
     world hasA system(DragBallSystem(playState, mouseState))
     world hasA system(FrictionSystem(playState, environmentState))
     world hasA system(MovementSystem(playState))
-    world hasA system(RegionAssignmentSystem(container))
+    world hasA system(RegionAssignmentSystem(playState, container))
     world hasA system(CollisionSystem(playState, container))
     world hasA system(WallCollisionSystem(playState, environmentState, ecsCanvas))
     world hasA system(RenderSystem(playState, ecsCanvas))

@@ -36,7 +36,7 @@ import scala.language.implicitConversions
 class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "world hasAn entity withComponents { Component1 &: Component2 }" should {
-    "work the same way as the world.createEntity() &: entity.addComponent() methods" in new WorldFixture
+    "work the same way as the world.createEntity() &: entity.setComponent() methods" in new WorldFixture
       with ComponentsFixture {
       val entity1 = world hasAn entity withComponents { Position(1, 2) &: Velocity(3, 4) &: Gravity(9) }
       val entity2 = world hasAn entity withComponent Gravity(24)

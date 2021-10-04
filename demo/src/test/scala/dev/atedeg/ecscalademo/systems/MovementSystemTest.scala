@@ -7,26 +7,29 @@ import dev.atedeg.ecscalademo.fixtures.{ MovementSystemFixture, WorldFixture }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 import org.mockito.Mockito.when
 
 class MovementSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "A MovementSystem" should {
-    "not run when the game isn't playing" in new MovementSystemFixture {
-      playState.gameState = State.Pause
-      world.update(10)
-      movementSystem.shouldRun shouldBe false
-      getView[Position &: Velocity &: CNil] from world should contain theSameElementsAs List(
-        (ball, Position(0, 0) &: Velocity(300, 0) &: CNil),
-      )
+    "run" when {
+      "in an enabled state" in
+        checkAllStates((playState, _) => MovementSystem(playState))(
+          (State.Play, AnyValue, AnyValue, AnyValue),
+        )
     }
-    "update an entity Position when the game is playing" in new MovementSystemFixture {
-      playState.gameState = State.Play
-      world.update(10)
-      movementSystem.shouldRun shouldBe true
-      getView[Position &: Velocity &: CNil] from world should contain theSameElementsAs List(
-        (ball, Position(3000, 0) &: Velocity(300, 0) &: CNil),
-      )
+  }
+
+  "A MovementSystem" should {
+    "update an entity Position" when {
+      "the game is playing" in new MovementSystemFixture {
+        playState.gameState = State.Play
+        world.update(10)
+        getView[Position &: Velocity &: CNil] from world should contain theSameElementsAs List(
+          (ball, Position(3000, 0) &: Velocity(300, 0) &: CNil),
+        )
+      }
     }
   }
 }

@@ -8,6 +8,6 @@ import dev.atedeg.ecscalademo.systems.BallCreationRenderingSystem
 import org.scalatestplus.mockito.MockitoSugar.mock
 
 trait BallCreationRenderingSystemFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {
-  val ballCreationRenderingSystem = new BallCreationRenderingSystem(playState, mouseState, startingState, canvas)
+  val ballCreationRenderingSystem = BallCreationRenderingSystem(playState, mouseState, startingState, canvas)
   world hasA system(ballCreationRenderingSystem)
 }
