@@ -159,6 +159,7 @@ class MainViewController extends Initializable with ECScalaDSL {
       }
       case State.AddBalls => {
         addBallBtn.text = stopAddingButtonLabel
+        playState.selectedBall = None
         setButtonState(
           isPlayPauseDisable = false,
           isAddBallDiasable = false,
@@ -239,6 +240,7 @@ class MainViewController extends Initializable with ECScalaDSL {
       case State.Play | State.Dragging => ()
       case _ => {
         playState.selectedBall = None
+        playState.gameState = State.Pause
         clearAllEntities from world
         createEntitiesWithComponents()
       }
