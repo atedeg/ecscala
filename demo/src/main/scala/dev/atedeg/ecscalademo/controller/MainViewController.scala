@@ -253,7 +253,7 @@ class MainViewController extends Initializable with ECScalaDSL {
       ((position, color), velocity) <-
         startingState.startingPosition zip startingState.startingColors zip startingState.startingVelocities
     } world hasAn entity withComponents {
-      Circle(startingState.startingRadius, color) &: position &: velocity &: Mass(startingState.startingMass)
+      Circle(startingState.startingRadius, color) &: Position(position) &: Velocity(velocity) &: Mass(startingState.startingMass)
     }
   }
 

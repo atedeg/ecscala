@@ -21,16 +21,16 @@ trait StartingState {
   val startingColor: Color = Color(255, 255, 0)
   val startingMass: Double = 1
   val startingVelocity: Vector = Vector(0.0, 0.0)
-  val startingPosition: Seq[Position]
+  val startingPosition: Seq[Point]
 
   val startingVelocities = List(
-    Velocity(1000, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
-    Velocity(0, 0),
+    Vector(1000, 0),
+    Vector(0, 0),
+    Vector(0, 0),
+    Vector(0, 0),
+    Vector(0, 0),
+    Vector(0, 0),
+    Vector(0, 0),
   )
 
   val startingColors = List(
@@ -49,13 +49,13 @@ object StartingState {
   def apply(canvas: ECSCanvas): StartingState = new StartingState {
 
     override val startingPosition = Seq(
-      Position(canvas.width / 3, canvas.height / 2),
-      Position(0.66 * canvas.width, canvas.height / 2),
-      Position(0.66 * canvas.width, canvas.height / 2 - (2 * startingRadius + 4)),
-      Position(0.66 * canvas.width, canvas.height / 2 + (2 * startingRadius + 4)),
-      Position(0.66 * canvas.width - 2 * startingRadius, canvas.height / 2 - (startingRadius + 2)),
-      Position(0.66 * canvas.width - 2 * startingRadius, canvas.height / 2 + (startingRadius + 2)),
-      Position(0.66 * canvas.width - 4 * startingRadius, canvas.height / 2),
+      Point(canvas.width / 3, canvas.height / 2),
+      Point(0.66 * canvas.width, canvas.height / 2),
+      Point(0.66 * canvas.width, canvas.height / 2 - (2 * startingRadius + 4)),
+      Point(0.66 * canvas.width, canvas.height / 2 + (2 * startingRadius + 4)),
+      Point(0.66 * canvas.width - 2 * startingRadius, canvas.height / 2 - (startingRadius + 2)),
+      Point(0.66 * canvas.width - 2 * startingRadius, canvas.height / 2 + (startingRadius + 2)),
+      Point(0.66 * canvas.width - 4 * startingRadius, canvas.height / 2),
     )
   }
 }
