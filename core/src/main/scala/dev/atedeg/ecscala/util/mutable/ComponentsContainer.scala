@@ -90,11 +90,11 @@ private[ecscala] object ComponentsContainer {
     }
 
     override def removeComponent[C <: Component](entityComponentPair: (Entity, C))(using ct: ComponentTag[C]) = {
-      getContainer[C] foreach { map =>
-        val (e, c) = entityComponentPair
-        val containsPair = (map get e filter (_ eq c)).isDefined
-        if (containsPair) {
-          map -= e
+      getContainer[C] foreach { componentMap =>
+        val (entity, component) = entityComponentPair
+        val actualComponent = componentMap get entity filter (_ eq component)
+        actualComponent foreach { c =>
+          componentMap -= entity
           c.entity = None
         }
       }
