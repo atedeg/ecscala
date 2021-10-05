@@ -2,6 +2,7 @@ package dev.atedeg.ecscala.util.mutable
 
 import scala.collection.Map
 import scala.collection.mutable.AnyRefMap
+import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscala.util.types.ComponentTag
 import dev.atedeg.ecscala.{ Component, Entity }
 
@@ -76,54 +77,34 @@ private[ecscala] object ComponentsContainer {
     override def apply[C <: Component](using ct: ComponentTag[C]): Option[Map[Entity, C]] = getContainer[C](using ct)
 
     override def addComponent[C <: Component](entityComponentPair: (Entity, C))(using ct: ComponentTag[C]) = {
-      val componentMap: AnyRefMap[Entity, C] =
-        getContainer[C] map (_ += entityComponentPair) getOrElse (AnyRefMap(entityComponentPair))
-      componentsMap += ct -> componentMap
+      val (entity, component) = entityComponentPair
+      getContainer[C] match {
+        case None => componentsMap += ct -> AnyRefMap(entityComponentPair)
+        case Some(componentMap) => {
+          val oldComponent = componentMap get entity
+          oldComponent map (_.entity = None)
+          componentMap += entityComponentPair
+        }
+      }
       this
     }
 
-    extension [C <: Component](map: AnyRefMap[Entity, C]) {
-
-      /**
-       * @param entityComponentPair
-       *   the pair to remove.
-       * @return
-       *   an [[Option]] with the map with the removed pair if the map still has some elements; if the removed element
-       *   was the last one and the map would be empty it returns a None.
-       */
-      def -?=(entityComponentPair: (Entity, C)): Option[Map[Entity, C]] = {
-        val (e, c) = entityComponentPair
-        val containsPair = (map get e filter (_ eq c)).isDefined
-        if (containsPair) {
-          map -= e
-        }
-        if map.size > 0 then Some(map) else None
-      }
-
-      /**
-       * @param entity
-       *   the [[Entity]] to remove.
-       * @return
-       *   an [[Option]] with the map with the removed [[Entity]] if the map still has some elements; if the removed
-       *   element was the last one and the map would be empty it returns a None.
-       */
-      def -?=(entity: Entity): Option[Map[Entity, C]] = {
-        map -= entity
-        if map.size > 0 then Some(map) else None
-      }
-    }
-
     override def removeComponent[C <: Component](entityComponentPair: (Entity, C))(using ct: ComponentTag[C]) = {
-      getContainer[C] flatMap (_ -?= entityComponentPair) match {
-        case Some(componentMap) => ()
-        case None => componentsMap -= ct
+      getContainer[C] foreach { componentMap =>
+        val (entity, component) = entityComponentPair
+        val actualComponent = componentMap get entity filter (_ eq component)
+        actualComponent map { c =>
+          componentMap -= entity
+          c.entity = None
+        }
       }
       this
     }
 
     override def removeEntity(entity: Entity) = {
-      componentsMap foreachKey { ct =>
-        val componentMap = componentsMap(ct)
+      componentsMap foreach { (ct, componentMap) =>
+        val foundComponent = componentMap get entity
+        foundComponent foreach { _.entity = None }
         componentMap -= entity
       }
       this
