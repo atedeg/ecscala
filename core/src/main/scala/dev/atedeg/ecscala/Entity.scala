@@ -70,20 +70,13 @@ object Entity {
 
     override def removeComponent[C <: Component](using ct: ComponentTag[C]): Entity = {
       val componentToRemove = world.getComponents(using ct) flatMap (_.get(this))
-      componentToRemove match {
-        case Some(component) =>
-          component.entity = None
-          world removeComponent (this -> component)
-        case None => ()
-      }
+      componentToRemove.foreach(removeComponent(_))
       this
     }
 
     override def removeComponent[C <: Component](component: C)(using ct: ComponentTag[C]): Entity = {
       component.entity match {
-        case Some(entity) if entity == this =>
-          component.entity = None
-          world removeComponent (this -> component)
+        case Some(entity) if entity == this => world removeComponent (this -> component)
         case _ => ()
       }
       this

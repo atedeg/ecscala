@@ -89,7 +89,7 @@ class MainViewController extends Initializable with ECScalaDSL {
   private val world: World = World()
   private var loop: GameLoop = _
   private val mouseState: MouseState = MouseState()
-  private val playState: PlayState = PlayState()
+  val playState: PlayState = PlayState()
   private var environmentState: EnvironmentState = _
   private var startingState: StartingState = _
 
@@ -137,6 +137,7 @@ class MainViewController extends Initializable with ECScalaDSL {
         addBallBtn.text = addBallButtonLabel
         frictionCoefficientSlider.disable = true
         wallRestitutionSlider.disable = true
+        playState.selectedBall = None
         setButtonState(
           isPlayPauseDisable = false,
           isAddBallDiasable = true,

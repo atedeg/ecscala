@@ -21,6 +21,16 @@ class WorldTest extends AnyWordSpec with Matchers {
       }
     }
     "has 1 entity" should {
+      "remove all its components" when {
+        "it is cleared" in new WorldFixture {
+          val entity = world.createEntity()
+          val position = Position(1, 1)
+          entity.setComponent(position)
+          world.clearEntities()
+          position.entity shouldBe empty
+          entity.getComponent[Position] shouldBe empty
+        }
+      }
       "have size 0" when {
         "an entity is removed" in new WorldFixture {
           val entity = world.createEntity()
