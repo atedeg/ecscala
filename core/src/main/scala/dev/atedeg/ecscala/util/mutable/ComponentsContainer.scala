@@ -82,7 +82,7 @@ private[ecscala] object ComponentsContainer {
         case None => componentsMap += ct -> AnyRefMap(entityComponentPair)
         case Some(componentMap) => {
           val oldComponent = componentMap get entity
-          oldComponent foreach (_.entity = None)
+          oldComponent map (_.entity = None)
           componentMap += entityComponentPair
         }
       }
@@ -93,7 +93,7 @@ private[ecscala] object ComponentsContainer {
       getContainer[C] foreach { componentMap =>
         val (entity, component) = entityComponentPair
         val actualComponent = componentMap get entity filter (_ eq component)
-        actualComponent foreach { c =>
+        actualComponent map { c =>
           componentMap -= entity
           c.entity = None
         }
