@@ -66,8 +66,18 @@ A tal proposito sono state frequenti sessioni di lavoro in \textit{pair programm
 velocemente difficoltà nell'implementazione del codice, oltre a intercettare fin da subito potenziali bug.
 
 \subsubsection{Component list}
-Mi sono occupato di progettare e implementare le~\textit{CList}, garantendo aspetti di \textit{type safety} affinché
+Mi sono occupato di progettare e implementare le~\texttt{CList}, garantendo aspetti di \textit{type safety} affinché
 eventuali errori nell'utilizzo di tali liste venissero intercettati a compile-time.
+L'ulteriore sfida che ha posto l'implementazione di queste liste è che gli elementi in essa contenuti, quando acceduti,
+devono essere i tipi effettivi e non essere inferiti come tipo generico~\texttt{Component}; questo ha
+Oltre all'implementazione, mi sono occupato anche dello sviluppo dei test delle~\texttt{CList}: un testing approfondito
+si è reputato fondamentale in quanto questo costrutto rappresenta un elemento chiave nell'intero framework oltre a
+garantire type safety, requisito fondante del nostro progetto.
+Data la rilevante importanza del testing per questo costrutto, una parte dei test sono stati condotti assieme agli altri
+membri del gruppo affinché si potessero identificare tutti i possibili casi di fallimento da intercettare a livello di
+testing.
+Durante lo sviluppo dei test sopracitati, si è rilevato un bug nella suite~\texttt{scalatest}, si veda la
+sezione~\ref{subsec:problemi-riscontrati} per una trattazione dettagliata del problema.
 
 \subsection{Di Domenico}\label{subsec:nicolò-di-domenico}
 
