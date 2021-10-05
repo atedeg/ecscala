@@ -35,13 +35,12 @@ verificano quando viene effettuato l'\texttt{update} di un~\texttt{World}.
     \caption{Diagramma di sequenza dell'aggiornamento dei componenti nel world.}\label{fig:sequence}
 \end{figure}
 
-Una volta aggiunti i \texttt{System} al~\texttt{World}, mediante la chiamata al metodo~\texttt{update}, è possibile
-eseguirli affinché modifichino i componenti su cui devono operare.
-Per ogni sistema del world, si verifica in prima istanza che possa essere eseguito andando a verificare il metodo
-\texttt{shouldRun} e in caso affermativo il sistema viene eseguito.
+Una volta aggiunti i \texttt{System} al~\texttt{World}, è possibile eseguirli affinché modifichino i componenti su cui
+devono operare mediante la chiamata al metodo~\texttt{update}.
+Per ogni sistema del world, si verifica in prima istanza che questo possa essere eseguito andando a verificare il metodo
+\texttt{shouldRun} e, in caso affermativo, il sistema viene eseguito.
 L'esecuzione di un sistema consiste nel chiamare il metodo~\texttt{update}, il quale ritornerà una versione aggiornata
 dei componenti secondo la logica del sistema.
 
-L'esecuzione di ogni sistema è atomica e sequenziale, ciò significa che l'ordine con cui vengono inseriti nel
-\texttt{World} è significativa ai fini della computazione degli stessi e non vi sono race condition durante la loro
-esecuzione.
+L'esecuzione di ogni sistema è atomica e sequenziale: ciò significa che l'ordine con cui vengono inseriti nel
+\texttt{World} è significativo ai fini della computazione degli stessi e non vi sono race condition.
