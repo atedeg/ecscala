@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala.fixtures
 
-import dev.atedeg.ecscala.fixtures.{ Position, Velocity, Mass }
+import dev.atedeg.ecscala.fixtures.{ Mass, Position, Velocity }
 import dev.atedeg.ecscala.util.types.given
 
 trait ViewFixture extends ComponentsFixture with WorldFixture {

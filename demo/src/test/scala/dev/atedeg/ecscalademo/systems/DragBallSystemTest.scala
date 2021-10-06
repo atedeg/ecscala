@@ -9,7 +9,6 @@ import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position, State }
 import dev.atedeg.ecscalademo.fixtures.DragBallSystemFixture
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
 
-
 class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 
   "A DragBallSystem" should {

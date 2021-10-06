@@ -13,7 +13,6 @@ import dev.atedeg.ecscalademo.{ EnvironmentState, PlayState, Point, Position, St
 import dev.atedeg.ecscalademo.fixtures.{ FrictionSystemFixture, WorldFixture }
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 
-
 class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with MockitoSugar {
 
   "A FrictionSystem" should {
