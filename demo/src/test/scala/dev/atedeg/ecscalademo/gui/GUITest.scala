@@ -22,12 +22,30 @@ import scalafx.Includes.*
 import javafx.application.Platform
 import scalafx.scene.Scene
 
+import scala.jdk.javaapi.StreamConverters
+
 object TestData {
   val playPauseButtonId = "#playPauseBtnDelegate"
   val addBallButtonId = "#addBallBtnDelegate"
   val changeVelocityButtonId = "#changeVelBtnDelegate"
   val resetButtonId = "#resetBtnDelegate"
   val canvasId = "#canvasDelegate"
+
+  type ButtonName = String
+  type Disabled = Boolean
+  type ButtonState = (ButtonName, Disabled)
+
+  private def buttonsState(
+      playPause: Boolean,
+      addBall: Boolean,
+      changeVelocity: Boolean,
+      reset: Boolean,
+  ): Seq[ButtonState] = Seq(
+    (playPauseButtonId, playPause),
+    (addBallButtonId, addBall),
+    (changeVelocityButtonId, changeVelocity),
+    (resetButtonId, reset),
+  )
 
   type EnabledTransitions = Seq[(State, FxRobot => Unit)]
 
@@ -41,14 +59,12 @@ object TestData {
   private val playEnabledTransitions: EnabledTransitions = Seq(
     State.Pause -> (_.clickOn(playPauseButtonId)),
   )
-  private def reachPlayState(fxRobot: FxRobot) = fxRobot.clickOn(playPauseButtonId)
 
   private val addBallsEnabledTransitions: EnabledTransitions = Seq(
     State.Pause -> (_.clickOn(addBallButtonId)),
     State.AddBalls -> (_.clickOn(canvasId)),
     State.Pause -> (_.clickOn(resetButtonId)),
   )
-  private def reachAddBallState(fxRobot: FxRobot) = fxRobot.clickOn(addBallButtonId)
 
   private val selectBallEnabledTransitions: EnabledTransitions = Seq(
     State.Play -> (_.clickOn(playPauseButtonId)),
@@ -59,17 +75,21 @@ object TestData {
     State.Pause -> (_.clickOn(resetButtonId)),
   )
 
-  private def reachSelectBallState(fxRobot: FxRobot) = {
-    fxRobot.moveTo(mainScene.lookup(canvasId).get)
-    fxRobot.moveBy(50, 0)
-    fxRobot.clickOn()
-  }
-
   private val changeVelocityEnabledTransitions: EnabledTransitions = Seq(
     State.Play -> (_.clickOn(playPauseButtonId)),
     State.Pause -> (_.clickOn(resetButtonId)),
     State.Pause -> (_.clickOn(changeVelocityButtonId)),
   )
+
+  private def reachPlayState(fxRobot: FxRobot) = fxRobot.clickOn(playPauseButtonId)
+
+  private def reachAddBallState(fxRobot: FxRobot) = fxRobot.clickOn(addBallButtonId)
+
+  private def reachSelectBallState(fxRobot: FxRobot) = {
+    fxRobot.moveTo(mainScene.lookup(canvasId).get)
+    fxRobot.moveBy(50, 0)
+    fxRobot.clickOn()
+  }
 
   private def reachChangeVelocityState(fxRobot: FxRobot) = {
     reachSelectBallState(fxRobot)
@@ -78,57 +98,27 @@ object TestData {
 
   type StateDescription = (FxRobot => Unit, EnabledTransitions, Seq[ButtonState])
 
-  val stateDescriptions: Map[State, StateDescription] = Map(
+  private val stateDescriptions: Map[State, StateDescription] = Map(
     State.Pause -> (_ => (), pauseEnabledTransitions, buttonsState(false, false, true, false)),
     State.Play -> (reachPlayState, playEnabledTransitions, buttonsState(false, true, true, true)),
     State.AddBalls -> (reachAddBallState, addBallsEnabledTransitions, buttonsState(false, false, true, false)),
     State.SelectBall -> (reachSelectBallState, selectBallEnabledTransitions, buttonsState(false, false, false, false)),
-    State.ChangeVelocity -> (reachChangeVelocityState, changeVelocityEnabledTransitions, buttonsState(
-      false,
-      true,
-      false,
-      false,
-    )),
+    State.ChangeVelocity ->
+      (reachChangeVelocityState, changeVelocityEnabledTransitions, buttonsState(false, true, false, false)),
   )
 
-  type ButtonName = String
-  type Disabled = Boolean
-  type ButtonState = (ButtonName, Disabled)
-
-  private def buttonsState(
-      playPause: Boolean,
-      addBall: Boolean,
-      changeVelocity: Boolean,
-      reset: Boolean,
-  ): Seq[ButtonState] = Seq(
-    ("#playPauseBtnDelegate", playPause),
-    ("#addBallBtnDelegate", addBall),
-    ("#changeVelBtnDelegate", changeVelocity),
-    ("#resetBtnDelegate", reset),
+  def buttonsTestArguments = StreamConverters.asJavaSeqStream(
+    for {
+      (state, (reachState, _, expectedButtonsConfiguration)) <- stateDescriptions
+    } yield Arguments.of(state, reachState, expectedButtonsConfiguration),
   )
-}
 
-class ButtonsTestArgumentProvider extends ArgumentsProvider {
-  import scala.jdk.javaapi.StreamConverters;
-
-  override def provideArguments(context: ExtensionContext) =
-    StreamConverters.asJavaSeqStream(
-      for {
-        (state, (reachState, _, expectedButtonsConfiguration)) <- stateDescriptions
-      } yield Arguments.of(state, reachState, expectedButtonsConfiguration),
-    )
-}
-
-class TransitionsTestArgumentProvider extends ArgumentsProvider {
-  import scala.jdk.javaapi.StreamConverters;
-
-  override def provideArguments(context: ExtensionContext) =
-    StreamConverters.asJavaSeqStream(
-      for {
-        (state, (reachState, transitions, _)) <- stateDescriptions
-        (expectedState, transition) <- transitions
-      } yield Arguments.of(state, reachState, transition, expectedState),
-    )
+  def transitionsTestArguments = StreamConverters.asJavaSeqStream(
+    for {
+      (state, (reachState, transitions, _)) <- stateDescriptions
+      (expectedState, transition) <- transitions
+    } yield Arguments.of(state, reachState, transition, expectedState),
+  )
 }
 
 private var mainScene: Scene = _
@@ -161,7 +151,7 @@ class GUITest {
   }
 
   @ParameterizedTest(name = "The {0} state should respects its button configuration")
-  @ArgumentsSource(classOf[ButtonsTestArgumentProvider])
+  @MethodSource(Array("dev.atedeg.ecscalademo.gui.TestData#buttonsTestArguments"))
   def checkStatesButtons(
       testedState: State,
       reachState: FxRobot => Unit,
@@ -173,7 +163,7 @@ class GUITest {
   }
 
   @ParameterizedTest(name = "It should be possible to go from the {0} state to the {3} state")
-  @ArgumentsSource(classOf[TransitionsTestArgumentProvider])
+  @MethodSource(Array("dev.atedeg.ecscalademo.gui.TestData#transitionsTestArguments"))
   def checkStateTransitions(
       testedState: State,
       reachState: FxRobot => Unit,
