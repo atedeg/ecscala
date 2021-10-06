@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.{ &:, CList, CNil, Component, Entity, CListTag, ComponentTag }
+import dev.atedeg.ecscala.{ &:, CList, CListTag, CNil, Component, ComponentTag, Entity }
 
 trait Conversions {
 

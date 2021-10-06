@@ -5,7 +5,8 @@ import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
-import dev.atedeg.ecscala.{ &:, CNil, View, given }
+import dev.atedeg.ecscala.given
+import dev.atedeg.ecscala.{ &:, CNil, View }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ EnvironmentState, PlayState, Point, Position, State, Vector, Velocity }

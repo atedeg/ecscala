@@ -1,7 +1,8 @@
 package dev.atedeg.ecscalademo.systems
 
 import scala.language.implicitConversions
-import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, IteratingSystem, View, World, given }
+import dev.atedeg.ecscala.given
+import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, IteratingSystem, View, World }
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{
   clamped,

@@ -1,6 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, IteratingSystem, View, World, given }
+import dev.atedeg.ecscala.given
+import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, IteratingSystem, View, World }
 import dev.atedeg.ecscalademo.{ EnvironmentState, PlayState, State, Velocity }
 
 /**

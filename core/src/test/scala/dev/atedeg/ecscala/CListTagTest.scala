@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.fixtures.{ComponentsFixture, Position, Velocity}
-import dev.atedeg.ecscala.{&:, CList, CNil}
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, Velocity }
+import dev.atedeg.ecscala.{ &:, CList, CNil }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

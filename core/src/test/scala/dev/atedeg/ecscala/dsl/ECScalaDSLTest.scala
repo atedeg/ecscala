@@ -3,11 +3,13 @@ package dev.atedeg.ecscala.dsl
 import scala.language.implicitConversions
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{
   &:,
   fixtures,
   CNil,
   Component,
+  ComponentTag,
   Deletable,
   DeltaTime,
   Entity,
@@ -16,8 +18,6 @@ import dev.atedeg.ecscala.{
   SystemBuilder,
   View,
   World,
-  ComponentTag,
-  given,
 }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.fixtures.{

@@ -1,6 +1,6 @@
 package dev.atedeg.ecscalademo.fixtures
 
-import dev.atedeg.ecscala.{ World, given }
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{ MouseState, PlayState, Position }
 import dev.atedeg.ecscalademo.systems.DragBallSystem
