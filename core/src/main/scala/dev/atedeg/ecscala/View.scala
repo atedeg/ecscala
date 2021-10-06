@@ -69,7 +69,7 @@ private[ecscala] object View {
     private val excludingMaps = taggedExcludingMaps map (_._2)
 
     override protected def isValid(entity: Entity): Boolean =
-      otherMaps.forall(_ contains entity) && !excludingMaps.exists(_ contains entity)
+      super.isValid(entity) && !excludingMaps.exists(_ contains entity)
   }
 
   private def getEntityComponents[L <: CList](
