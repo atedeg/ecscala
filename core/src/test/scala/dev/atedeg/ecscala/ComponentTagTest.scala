@@ -1,8 +1,8 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, Velocity }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, Velocity }
 
 class ComponentTagTest extends AnyWordSpec with Matchers {
 
