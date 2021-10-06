@@ -4,12 +4,12 @@ Il progetto ha come obiettivo la realizzazione di un framework che consenta l'im
 architetturale \ECS (Entity Component System).
 Questo è un pattern tipicamente usato nel settore videoludico, che favorisce i principi di
 \textit{composition over inheritance} e \textit{data-oriented design}.
-Due esempi significativi di uso del pattern ECS sono i videogiochi \textit{Overwatch} (2016) e \textit{Minecraft}
-(2011).
+Due esempi significativi di uso del pattern ECS sono i videogiochi \textit{Overwatch} (2016)~\cite{gdc:overwatch}
+e \textit{Minecraft} (2011)~\cite{minecraft}.
 
 I tre concetti chiave di ECS sono:
 \begin{itemize}
-    \item \Entity: un oggetto distinto che esiste nella simulazione, che non ha dati né comportamenti,
+    \item \Entity: un oggetto distinto che esiste nella simulazione, che non ha dati né comportamento,
     \eg una palla da biliardo, un nemico di un videogioco, un proiettile, eccetera.
     \item \Component: un elemento che descrive una particolare caratteristica di una \Entity senza descriverne
     l'effettivo comportamento, \eg posizione, velocità, salute, informazioni per il rendering, eccetera.
@@ -22,10 +22,10 @@ I tre concetti chiave di ECS sono:
 
 Esistono diverse librerie open source che permettono l'implementazione del pattern \ECS; fra le più importanti risulta
 EnTT \cite{entt}, libreria scritta in \CC\ usata dal videogioco \textit{Minecraft}.
-Nell'ambiente JVM troviamo invece \textit{Artemis} \cite{artemis} e \textit{Ashley} \cite{ashley}, entrambe scritte in
+Nell'ambiente JVM troviamo invece \textit{Artemis}~\cite{artemis} e \textit{Ashley}~\cite{ashley}, entrambe scritte in
 Java, che però non possono vantare un uso in applicazioni di rilievo.
 
-Il nostro obiettivo è quindi quello di creare una libreria che faccia della type safety il suo maggior punto di forza,
+Il nostro obiettivo è quello di creare una libreria che faccia della type safety il suo maggior punto di forza,
 alla quale si aggiunge un comodo DSL per scrivere codice idiomatico e compatto.
 Sebbene le prestazioni siano normalmente d'importanza spesso critica, abbiamo deciso di non realizzare tutte le
-ottimizzazioni implementate dalle altre liberie, in quanto esulano dall'obiettivo del corso.
+ottimizzazioni implementate dalle altre liberie~\cite{entt:optimizations}, in quanto esulano dall'obiettivo del corso.
