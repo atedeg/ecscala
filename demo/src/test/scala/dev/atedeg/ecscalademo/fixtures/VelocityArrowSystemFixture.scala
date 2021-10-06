@@ -1,9 +1,8 @@
 package dev.atedeg.ecscalademo.fixtures
 
-import org.scalatestplus.mockito.MockitoSugar.mock
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, Position, Velocity }
+import dev.atedeg.ecscalademo.{ Position, Velocity }
 import dev.atedeg.ecscalademo.systems.VelocityArrowSystem
 
 trait VelocityArrowSystemFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {

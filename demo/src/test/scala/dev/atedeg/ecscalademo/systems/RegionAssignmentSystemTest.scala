@@ -4,7 +4,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 import dev.atedeg.ecscala.given
-import dev.atedeg.ecscalademo.{ EnvironmentState, State }
+import dev.atedeg.ecscalademo.State
 import dev.atedeg.ecscalademo.fixtures.RegionAssignmentFixture
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
 

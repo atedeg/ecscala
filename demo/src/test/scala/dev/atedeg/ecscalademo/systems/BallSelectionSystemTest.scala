@@ -3,7 +3,6 @@ package dev.atedeg.ecscalademo.systems
 import scala.language.implicitConversions
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.mockito.MockitoSugar.mock
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{ Circle, MouseState, PlayState, Point, Position, State }

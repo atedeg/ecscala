@@ -1,10 +1,9 @@
 package dev.atedeg.ecscalademo.fixtures
 
 import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar.mock
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{ EnvironmentState, PlayState, Velocity }
+import dev.atedeg.ecscalademo.Velocity
 import dev.atedeg.ecscalademo.systems.FrictionSystem
 
 trait FrictionSystemFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {

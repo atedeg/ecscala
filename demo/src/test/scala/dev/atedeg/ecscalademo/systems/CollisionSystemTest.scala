@@ -7,7 +7,7 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.given
-import dev.atedeg.ecscalademo.{ Circle, Color, Mass, PlayState, Position, State, Vector, Velocity }
+import dev.atedeg.ecscalademo.{ Circle, Color, Mass, Position, State, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.CollisionsFixture
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
 

@@ -5,9 +5,9 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position, State }
+import dev.atedeg.ecscalademo.{ Point, Position, State }
 import dev.atedeg.ecscalademo.fixtures.DragBallSystemFixture
-import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 
 class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 

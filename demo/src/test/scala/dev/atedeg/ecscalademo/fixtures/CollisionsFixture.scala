@@ -3,7 +3,6 @@ package dev.atedeg.ecscalademo.fixtures
 import scala.language.implicitConversions
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{ Circle, Color, Mass, PlayState, Position, Velocity }
 import dev.atedeg.ecscalademo.systems.{ CollisionSystem, RegionAssignmentSystem }
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 

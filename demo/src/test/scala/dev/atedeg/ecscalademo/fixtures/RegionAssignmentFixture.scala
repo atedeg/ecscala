@@ -4,7 +4,7 @@ import scala.language.implicitConversions
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{ &:, CNil, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscalademo.{ Circle, Color, Mass, Position, State, Velocity }
+import dev.atedeg.ecscalademo.{ Circle, Color, Mass, Position, Velocity }
 import dev.atedeg.ecscalademo.systems.RegionAssignmentSystem
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 

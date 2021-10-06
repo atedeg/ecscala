@@ -4,7 +4,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 import dev.atedeg.ecscala.given
-import dev.atedeg.ecscala.{ CNil, Entity, World }
+import dev.atedeg.ecscala.{ Entity, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{ Circle, MouseState, PlayState, Point, Position, StartingState, State }
 import dev.atedeg.ecscalademo.fixtures.BallCreationSystemFixture
