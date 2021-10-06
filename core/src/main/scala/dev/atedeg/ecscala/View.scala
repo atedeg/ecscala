@@ -3,7 +3,6 @@ package dev.atedeg.ecscala
 import scala.annotation.targetName
 import scala.collection.Map
 import dev.atedeg.ecscala.given
-import dev.atedeg.ecscala.{ CListTag, ComponentTag }
 
 /**
  * A [[View]] on a [[World]] that allows to iterate over its entities with components of the type specified in L.

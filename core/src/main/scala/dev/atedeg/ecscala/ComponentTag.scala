@@ -1,7 +1,6 @@
 package dev.atedeg.ecscala
 
 import scala.quoted.{ Expr, Quotes, Type }
-import dev.atedeg.ecscala.{ CList, Component }
 
 /**
  * A ComponentTag is a trait used to describe types keeping information about the type that would otherwise be erased at

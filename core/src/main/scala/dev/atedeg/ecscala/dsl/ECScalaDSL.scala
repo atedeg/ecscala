@@ -1,19 +1,6 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.{
-  CList,
-  CListTag,
-  CNil,
-  Component,
-  ComponentTag,
-  Deletable,
-  DeltaTime,
-  Entity,
-  IteratingSystem,
-  System,
-  View,
-  World,
-}
+import dev.atedeg.ecscala.{ CList, CListTag, CNil, Component, ComponentTag, Entity, IteratingSystem, System, View, World }
 import dev.atedeg.ecscala.dsl.Syntax
 import dev.atedeg.ecscala.dsl.Words.EntityWord
 

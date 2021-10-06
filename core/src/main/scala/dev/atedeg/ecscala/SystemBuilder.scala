@@ -1,7 +1,6 @@
 package dev.atedeg.ecscala
 
 import dev.atedeg.ecscala.given
-import dev.atedeg.ecscala.CListTag
 
 /**
  * The generic operations that a SystemBuilder provides.
