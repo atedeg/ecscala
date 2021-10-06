@@ -62,38 +62,44 @@ e della qualità del codice.
 \subsubsection{Sviluppo collaborativo}
 Spesso mi sono trovato a lavorare assieme ad altri membri del gruppo per risolvere problematiche o fornire spunti per
 un migliore sviluppo del codice.
-A tal proposito sono state frequenti sessioni di lavoro in \textit{pair programming} che ci hanno consentito di superare
+A tal proposito sono state frequenti le sessioni di lavoro in \textit{pair programming} che ci hanno consentito di superare
 velocemente difficoltà nell'implementazione del codice, oltre a intercettare fin da subito potenziali bug.
 
 \subsubsection{Component list}
-Mi sono occupato della realizzazione delle~\texttt{CList}, garantendo aspetti di \textit{type safety}
-affinché eventuali errori nel loro utilizzo vengano intercettati a compile-time.
-La peculiarità di questa lista è che gli elementi in essa contenuti possono essere di tipi differenti: questa
+Mi sono occupato della realizzazione delle~\texttt{CList} per rendere i~\System \textit{type-safe} intercettando tutti
+gli errori dell'utente a compile-time.
+La peculiarità di questa lista è data dal fatto che gli elementi in essa contenuti possono essere di tipi differenti: questa
 costruzione prende il nome di~\textit{heterogeneous list}.
-La costruzione delle \texttt{CList} è ispirata alla libreria shapeless~\cite{shapeless}.
+La costruzione delle \texttt{CList} è ispirata alla libreria \texttt{shapeless}~\cite{shapeless}.
 
-Nel listato~\ref{lst:lstinputlisting} viene riportata una versione semplificata d'implementazione delle \texttt{CList}
+Nel Listato~\ref{lst:lstinputlisting} viene riportata una versione semplificata d'implementazione delle \texttt{CList}.
 \lstinputlisting[label={lst:lstinputlisting}, caption=Esempio di codice per implementare CList.]{code/clist.scala}
 
 Nel contesto del framework si vuole aggiungere il vincolo tale per cui gli elementi presenti nelle \texttt{CList} siano
-sotto tipo di~\Component, al tal proposito si è specificato l'\textit{upper-type bound} per rispettare questo vincolo.
+sottotipo di~\Component.
 
 Oltre all'implementazione, mi sono occupato anche dello sviluppo dei test delle~\texttt{CList}: un testing approfondito
-si è reputato fondamentale poiché questo costrutto rappresenta un elemento chiave nell'intero framework oltre a
-garantire type safety, requisito fondante del nostro progetto.
+si è reputato fondamentale poiché questo costrutto rappresenta un elemento chiave dell'intero framework.
 Data la rilevante importanza del testing per questo costrutto, una parte dei test sono stati condotti assieme agli altri
-membri del gruppo affinché si potessero identificare tutti i possibili casi di fallimento da intercettare a livello di
-testing.
-Durante lo sviluppo dei test sopracitati, si è rilevato un bug nella suite~\texttt{scalatest}, si veda la
-sezione~\ref{subsec:problemi-riscontrati} per una trattazione dettagliata del problema.
+membri del gruppo affinché si potessero identificare tutti i possibili casi di fallimento da intercettare.
+Durante lo sviluppo dei test sopracitati, si è rilevato un bug nella suite~\texttt{scalatest}; si veda la
+Sezione~\ref{subsec:problemi-riscontrati} per una trattazione dettagliata del problema.
 
 Il vantaggio offerto dalle \texttt{CList} è dato dal fatto che si può definire una lista di tipi e quindi utilizzarla
 come tipo nelle funzioni che accettano un generico;
 a tal proposito è stato possibile implementare \System e \texttt{View} affinché accettino una \texttt{CList} nel generico
 e quindi effettuino le operazioni solo sui tipi definiti nella lista.
 
-In figura~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
+In Figura~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
 \lstinputlisting[label={lst:lstinputlisting2}, caption=Esempio di utilizzo delle CList.]{code/clist-usage.scala}
+
+L'ordine dei tipi che definiscono una \texttt{CList} è fondamentale ai fini della computazione dei \System e delle
+\texttt{View} dal momento che è anche il tipo di ritorno.
+Quindi se nelle implementazioni dei \System o delle \texttt{View} viene ritornato una \texttt{CList} i cui tipi non sono
+nell'ordine in cui sono stati dichiarati in fase di costruzione, il compilatore segnalerà un errore d'incompatibilità
+tra tipi.
+In questo modo garantiamo che un errato utilizzo delle \texttt{CList} venga intercettato a compile time, oltre a
+preservare la semantica di utilizzo.
 
 L'aspetto di type-safety che garantiscono le \texttt{CList} è dato dal fatto che tutti i suoi componenti siano sotto tipo
 di~\Component, quindi se viene costruita una~\texttt{CList} che comprenda un tipo che non è sotto tipo di~\Component,
