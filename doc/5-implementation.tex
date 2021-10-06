@@ -66,18 +66,38 @@ A tal proposito sono state frequenti sessioni di lavoro in \textit{pair programm
 velocemente difficoltà nell'implementazione del codice, oltre a intercettare fin da subito potenziali bug.
 
 \subsubsection{Component list}
-Mi sono occupato di progettare e implementare le~\texttt{CList}, garantendo aspetti di \textit{type safety} affinché
-eventuali errori nell'utilizzo di tali liste venissero intercettati a compile-time.
-L'ulteriore sfida che ha posto l'implementazione di queste liste è che gli elementi in essa contenuti, quando acceduti,
-devono essere i tipi effettivi e non essere inferiti come tipo generico~\texttt{Component}; questo ha
+Mi sono occupato della realizzazione delle~\texttt{CList}, garantendo aspetti di \textit{type safety}
+affinché eventuali errori nel loro utilizzo vengano intercettati a compile-time.
+La peculiarità di questa lista è che gli elementi in essa contenuti possono essere di tipi differenti: questa
+costruzione prende il nome di~\textit{heterogeneous list}.
+La costruzione delle \texttt{CList} è ispirata alla libreria shapeless~\cite{shapeless}.
+
+Nel listato~\ref{lst:lstinputlisting} viene riportata una versione semplificata d'implementazione delle \texttt{CList}
+\lstinputlisting[label={lst:lstinputlisting}, caption=Esempio di codice per implementare CList.]{code/clist.scala}
+
+Nel contesto del framework si vuole aggiungere il vincolo tale per cui gli elementi presenti nelle \texttt{CList} siano
+sotto tipo di~\Component, al tal proposito si è specificato l'\textit{upper-type bound} per rispettare questo vincolo.
+
 Oltre all'implementazione, mi sono occupato anche dello sviluppo dei test delle~\texttt{CList}: un testing approfondito
-si è reputato fondamentale in quanto questo costrutto rappresenta un elemento chiave nell'intero framework oltre a
+si è reputato fondamentale poiché questo costrutto rappresenta un elemento chiave nell'intero framework oltre a
 garantire type safety, requisito fondante del nostro progetto.
 Data la rilevante importanza del testing per questo costrutto, una parte dei test sono stati condotti assieme agli altri
 membri del gruppo affinché si potessero identificare tutti i possibili casi di fallimento da intercettare a livello di
 testing.
 Durante lo sviluppo dei test sopracitati, si è rilevato un bug nella suite~\texttt{scalatest}, si veda la
 sezione~\ref{subsec:problemi-riscontrati} per una trattazione dettagliata del problema.
+
+Il vantaggio offerto dalle \texttt{CList} è dato dal fatto che si può definire una lista di tipi e quindi utilizzarla
+come tipo nelle funzioni che accettano un generico;
+a tal proposito è stato possibile implementare \System e \texttt{View} affinché accettino una \texttt{CList} nel generico
+e quindi effettuino le operazioni solo sui tipi definiti nella lista.
+
+In figura~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
+\lstinputlisting[label={lst:lstinputlisting2}, caption=Esempio di utilizzo delle CList.]{code/clist-usage.scala}
+
+L'aspetto di type-safety che garantiscono le \texttt{CList} è dato dal fatto che tutti i suoi componenti siano sotto tipo
+di~\Component, quindi se viene costruita una~\texttt{CList} che comprenda un tipo che non è sotto tipo di~\Component,
+allora l'errore viene intercettato a compile-time.
 
 \subsection{Di Domenico}\label{subsec:nicolò-di-domenico}
 
