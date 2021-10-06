@@ -41,3 +41,41 @@ meno entità;
 una volta trovata si iterano tutte le entità contenute al suo interno e per ognuna si controlla che sia presente in
 tutte le altre mappe.
 Se così non fosse, si procede all'estrazione di tutti i componenti richiesti.
+
+\subsubsection{System}
+
+Un \texttt{System} è un blocco di codice che può essere aggiunto al \texttt{World} e chiamato a ogni aggiornamento di
+stato della simulazione.
+Ogni \texttt{System} ha due metodi:
+\begin{itemize}
+    \item \texttt{shouldRun}: metodo booleano che indica se il \texttt{System} dev'essere eseguito
+    \item \texttt{update}: metodo che contiene il codice arbitrario da eseguire
+\end{itemize}
+
+Su di esso sono stati costruiti \texttt{IteratingSystem} ed \texttt{ExcludingSystem}, due wrapper type-safe
+rispettivamente per \texttt{View} ed \texttt{ExcludingView}, progettati come indicato in Figura~.
+Questi due sistemi hanno i seguenti metodi:
+\begin{itemize}
+    \item \texttt{shouldRun}: metodo booleano che indica se l'\texttt{IteratingSystem} dev'essere eseguito
+    \item \texttt{before}: metodo eseguito prima di iterare su tutte le entità con i componenti richiesti
+    \item \texttt{update}: metodo eseguito per ciascuna entità contenente le operazioni da effettuare sui suoi
+    componenti richiesti
+    \item \texttt{after}: metodo eseguito dopo aver iterato su tutte le entità con i componenti richiesti
+\end{itemize}
+
+Affinché l'\texttt{IteratingSystem} rimanga il più type-safe possibile, il metodo \texttt{update} deve ritornare una
+\texttt{CList} contenente il nuovo stato di tutti i componenti.
+Per permettere la cancellazione di alcuni dei componenti, è stato implementato un \textit{match type} chiamato
+\texttt{Deletable[L~<:~CList]}, come mostrato nel Listato~\ref{lst:deletable};
+il suo scopo è quello di permettere l'inserimento in ogni posizione della \texttt{CList} un componente speciale chiamato
+\texttt{Deleted}: in tal caso il componente in quella posizione sarà cancellato.
+
+\begin{lstlisting}[language=Scala,label={lst:deletable},caption=Implementazione del tipo \texttt{Deletable[L~<:~CList]}]
+type Deletable[L <: CList] <: CList = L match {
+  case h &: t => (h | Deleted) &: Deletable[t]
+  case CNil => CNil
+}
+\end{lstlisting}
+
+L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
+usata per ottenere su quali entità iterare.
