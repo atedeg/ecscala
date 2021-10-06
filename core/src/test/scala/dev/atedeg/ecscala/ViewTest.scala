@@ -1,9 +1,9 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Mass, Position, Velocity, ViewFixture, WorldFixture }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Mass, Position, Velocity, ViewFixture, WorldFixture }
+import dev.atedeg.ecscala.util.types.given
 
 class ViewTest extends AnyWordSpec with Matchers {
 
