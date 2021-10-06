@@ -2,7 +2,7 @@ package dev.atedeg.ecscalademo.systems
 
 import scala.language.implicitConversions
 import dev.atedeg.ecscala.given
-import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, System, View, World }
+import dev.atedeg.ecscala.{ DeltaTime, Entity, System, World }
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Circle, Mass, PlayState, Point, Position, State, Vector, Velocity }
 import dev.atedeg.ecscalademo.util.SpacePartitionContainer

@@ -4,7 +4,7 @@ import scala.language.implicitConversions
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{ DeltaTime, System, World }
 import dev.atedeg.ecscalademo.given
-import dev.atedeg.ecscalademo.{ clamped, MouseState, PlayState, Position, State, Vector, Velocity }
+import dev.atedeg.ecscalademo.{ clamped, MouseState, PlayState, Position, State, Velocity }
 
 class VelocityEditingSystem(private val playState: PlayState, private val mouseState: MouseState) extends System {
   val minVelocityIntensity = 0

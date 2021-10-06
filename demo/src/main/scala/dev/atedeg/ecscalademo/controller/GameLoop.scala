@@ -1,7 +1,6 @@
 package dev.atedeg.ecscalademo.controller
 
 import javafx.animation.AnimationTimer as JfxAnimationTimer
-import scalafx.animation.AnimationTimer
 import scalafx.beans.property.IntegerProperty
 
 trait GameLoop {

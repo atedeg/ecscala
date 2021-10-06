@@ -8,16 +8,12 @@ import javafx.fxml.{ FXML, Initializable }
 import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.control.{ Button as JfxButton, Label as JfxLabel, Slider as JfxSlider }
 import javafx.scene.input.MouseEvent
-import javafx.scene.layout as jfx
-import javafx.scene.layout.Pane as JfxPane
-import scalafx.animation.AnimationTimer
 import scalafx.beans.property.DoubleProperty
-import scalafx.scene.canvas.{ Canvas, GraphicsContext }
+import scalafx.scene.canvas.{ Canvas }
 import scalafx.scene.control.{ Button, Label, Slider }
-import scalafx.scene.layout.Pane
 import scalafx.util.converter.NumberStringConverter
 import dev.atedeg.ecscala.given
-import dev.atedeg.ecscala.{ &:, CNil, World }
+import dev.atedeg.ecscala.{ &:, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{
   Circle,
@@ -32,7 +28,6 @@ import dev.atedeg.ecscalademo.{
   ScalaFXCanvas,
   StartingState,
   State,
-  Vector,
   Velocity,
 }
 import dev.atedeg.ecscalademo.systems.*
