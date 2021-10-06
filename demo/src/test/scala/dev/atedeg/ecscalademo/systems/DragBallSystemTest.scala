@@ -1,16 +1,14 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.Deleted.entity
-import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.{ Entity, World }
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.fixtures.DragBallSystemFixture
-import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
-import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position, State }
+import scala.language.implicitConversions
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscala.dsl.ECScalaDSL
+import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, Position, State }
+import dev.atedeg.ecscalademo.fixtures.DragBallSystemFixture
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
 
-import scala.language.implicitConversions
 
 class DragBallSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 

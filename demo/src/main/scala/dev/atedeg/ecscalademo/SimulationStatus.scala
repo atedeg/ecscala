@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo
 
-import dev.atedeg.ecscala.Entity
 import scalafx.beans.property.DoubleProperty
+import dev.atedeg.ecscala.Entity
 
 enum State {
   case Pause, Play, AddBalls, SelectBall, ChangeVelocity, Dragging

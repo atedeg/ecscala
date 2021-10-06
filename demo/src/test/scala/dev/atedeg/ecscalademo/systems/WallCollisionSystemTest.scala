@@ -1,28 +1,25 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.dsl.ECScalaDSL
-
 import scala.language.implicitConversions
+import scalafx.scene.paint.Color
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.Inspectors.forAll
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.Inspectors.forAll
 import org.scalatestplus.mockito.MockitoSugar.mock
-import org.mockito.Mockito.when
-import dev.atedeg.ecscala.{ &:, CNil, World }
+import dev.atedeg.ecscala.{ &:, CNil }
+import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ ECSCanvas, EnvironmentState, PlayState, Point, Position, State, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.WallCollisionsFixture
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
-import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar
-import scalafx.scene.paint.Color
 
 class WallCollisionSystemTest
     extends AnyWordSpec
     with BeforeAndAfterEach
     with Matchers
     with ECScalaDSL
-    with MockitoSugar
     with WallCollisionsFixture {
 
   override protected def beforeEach(): Unit = {

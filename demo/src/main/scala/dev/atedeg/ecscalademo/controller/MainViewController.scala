@@ -1,5 +1,24 @@
 package dev.atedeg.ecscalademo.controller
 
+import java.net.URL
+import java.text.DecimalFormat
+import java.util.ResourceBundle
+import scala.language.postfixOps
+import javafx.fxml.{ FXML, Initializable }
+import javafx.scene.canvas.Canvas as JfxCanvas
+import javafx.scene.control.{ Button as JfxButton, Label as JfxLabel, Slider as JfxSlider }
+import javafx.scene.input.MouseEvent
+import javafx.scene.layout as jfx
+import javafx.scene.layout.Pane as JfxPane
+import scalafx.animation.AnimationTimer
+import scalafx.beans.property.DoubleProperty
+import scalafx.scene.canvas.{ Canvas, GraphicsContext }
+import scalafx.scene.control.{ Button, Label, Slider }
+import scalafx.scene.layout.Pane
+import scalafx.util.converter.NumberStringConverter
+import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.{ &:, CNil, World }
+import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{
   Circle,
   Color,
@@ -16,32 +35,8 @@ import dev.atedeg.ecscalademo.{
   Vector,
   Velocity,
 }
-import dev.atedeg.ecscala.{ &:, CNil, World }
-import dev.atedeg.ecscala.dsl.ECScalaDSL
-import javafx.fxml.{ FXML, Initializable }
-import javafx.scene.control.Label as JfxLabel
-import javafx.scene.control.Button as JfxButton
-import javafx.scene.control.Slider as JfxSlider
-import javafx.scene.layout as jfx
-import javafx.scene.canvas.Canvas as JfxCanvas
-import javafx.scene.layout.Pane as JfxPane
-import scalafx.scene.control.{ Button, Label, Slider }
-import scalafx.scene.canvas.{ Canvas, GraphicsContext }
-import scalafx.scene.canvas.{ Canvas, GraphicsContext }
-import scalafx.scene.layout.Pane
-import javafx.scene.input.MouseEvent
-import scalafx.animation.AnimationTimer
-import scalafx.util.converter.NumberStringConverter
 import dev.atedeg.ecscalademo.systems.*
-
-import java.net.URL
-import java.util.ResourceBundle
-import scala.language.postfixOps
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
-import scalafx.beans.property.DoubleProperty
-
-import java.text.DecimalFormat
 
 class MainViewController extends Initializable with ECScalaDSL {
 

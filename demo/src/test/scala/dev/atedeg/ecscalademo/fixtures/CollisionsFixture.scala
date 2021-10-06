@@ -5,7 +5,6 @@ import dev.atedeg.ecscala.World
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ Circle, Color, Mass, PlayState, Position, Velocity }
-import dev.atedeg.ecscalademo
 import dev.atedeg.ecscalademo.systems.{ CollisionSystem, RegionAssignmentSystem }
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 

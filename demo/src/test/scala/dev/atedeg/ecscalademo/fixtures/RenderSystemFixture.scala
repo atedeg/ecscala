@@ -1,10 +1,10 @@
 package dev.atedeg.ecscalademo.fixtures
 
-import dev.atedeg.ecscala.util.types.given
+import org.scalatestplus.mockito.MockitoSugar.mock
 import dev.atedeg.ecscala.dsl.ECScalaDSL
+import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ Circle, Color, ECSCanvas, Position }
 import dev.atedeg.ecscalademo.systems.RenderSystem
-import org.scalatestplus.mockito.MockitoSugar.mock
 
 trait RenderSystemFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {
   val position = Position(0, 0)

@@ -1,18 +1,18 @@
 package dev.atedeg.ecscalademo.systems
 
+import scala.language.implicitConversions
+import org.mockito.Mockito.when
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar
 import dev.atedeg.ecscala.{ &:, CNil, View }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
+import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ EnvironmentState, PlayState, Point, Position, State, Vector, Velocity }
 import dev.atedeg.ecscalademo.fixtures.{ FrictionSystemFixture, WorldFixture }
-import org.scalatest.matchers.should.Matchers
-import org.scalatest.wordspec.AnyWordSpec
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
 
-import scala.language.implicitConversions
 
 class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with MockitoSugar {
 

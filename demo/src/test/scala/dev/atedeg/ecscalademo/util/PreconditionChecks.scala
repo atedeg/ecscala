@@ -1,10 +1,10 @@
 package dev.atedeg.ecscalademo.util
 
-import dev.atedeg.ecscala.System
-import dev.atedeg.ecscalademo.{ MouseState, PlayState, State }
 import org.scalatest.Assertions.withClue
 import org.scalatest.matchers.should.Matchers.shouldBe
 import org.scalatest.prop.TableDrivenPropertyChecks.*
+import dev.atedeg.ecscala.System
+import dev.atedeg.ecscalademo.{ MouseState, PlayState, State }
 
 sealed trait AnyValue
 case object AnyValue extends AnyValue
