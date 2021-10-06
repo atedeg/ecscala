@@ -2,9 +2,8 @@ package dev.atedeg.ecscala
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscala.fixtures.{ Position, SystemBuilderFixture, Velocity }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.fixtures.SystemBuilderFixture
-import dev.atedeg.ecscala.fixtures.{ Position, Velocity }
 
 class SystemBuilderTest extends AnyWordSpec with Matchers {
   def using = afterWord("using")

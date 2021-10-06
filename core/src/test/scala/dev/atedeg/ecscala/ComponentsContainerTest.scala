@@ -4,8 +4,8 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, Velocity, WorldFixture }
 import dev.atedeg.ecscala.util.mutable.ComponentsContainer
-import dev.atedeg.ecscala.util.types.ComponentTag
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.util.types.ComponentTag
 
 class ComponentsContainerTest extends AnyWordSpec with Matchers {
 
