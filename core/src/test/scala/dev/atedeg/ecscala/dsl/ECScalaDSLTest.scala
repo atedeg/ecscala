@@ -16,6 +16,8 @@ import dev.atedeg.ecscala.{
   SystemBuilder,
   View,
   World,
+  ComponentTag,
+  given,
 }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.fixtures.{
@@ -29,8 +31,6 @@ import dev.atedeg.ecscala.fixtures.{
   ViewFixture,
   WorldFixture,
 }
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.util.types.ComponentTag
 
 class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 

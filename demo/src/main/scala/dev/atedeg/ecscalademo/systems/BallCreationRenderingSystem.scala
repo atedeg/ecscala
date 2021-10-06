@@ -1,7 +1,6 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.{ DeltaTime, System, World }
-import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.{ DeltaTime, System, World, given }
 import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, StartingState, State }
 
 /**

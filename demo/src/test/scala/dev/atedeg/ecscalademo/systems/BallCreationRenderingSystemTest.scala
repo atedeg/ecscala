@@ -7,7 +7,7 @@ import org.mockito.Mockito.verify
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
-import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, ScalaFXCanvas, StartingState, State }
 import dev.atedeg.ecscalademo.fixtures.BallCreationRenderingSystemFixture
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }

@@ -1,8 +1,8 @@
 package dev.atedeg.ecscalademo.fixtures
 
 import org.mockito.Mockito.when
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ Position, Velocity }
 import dev.atedeg.ecscalademo.systems.MovementSystem
 

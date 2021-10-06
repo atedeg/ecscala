@@ -1,9 +1,7 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.{ CList, Component, Entity, System, View, World }
+import dev.atedeg.ecscala.{ CList, Component, Entity, System, View, World, taggedWith, CListTag, ComponentTag, given }
 import dev.atedeg.ecscala.dsl.Words.*
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.util.types.{ taggedWith, CListTag, ComponentTag }
 
 trait Syntax {
 

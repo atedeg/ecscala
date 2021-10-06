@@ -1,7 +1,6 @@
 package ecscala.utils
 
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.{ &:, CNil, System, World }
+import dev.atedeg.ecscala.{ &:, CNil, System, World, given }
 import org.openjdk.jmh.annotations.{
   Benchmark,
   BenchmarkMode,

@@ -4,8 +4,8 @@ import scala.language.implicitConversions
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ Circle, MouseState, PlayState, Point, Position, State }
 import dev.atedeg.ecscalademo.fixtures.BallSelectionSystemFixture
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }

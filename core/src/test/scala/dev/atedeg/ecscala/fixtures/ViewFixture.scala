@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.fixtures
 
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.fixtures.{ Mass, Position, Velocity }
-import dev.atedeg.ecscala.util.types.given
 
 trait ViewFixture extends ComponentsFixture with WorldFixture {
   val entity1 = world.createEntity()

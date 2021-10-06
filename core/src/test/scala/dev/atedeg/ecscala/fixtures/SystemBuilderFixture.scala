@@ -1,7 +1,6 @@
 package dev.atedeg.ecscala.fixtures
 
-import dev.atedeg.ecscala.World
-import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.{ World, given }
 
 trait SystemBuilderFixture {
   val world = World()

@@ -1,9 +1,8 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity, IteratingSystem, System, View, World }
+import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity, IteratingSystem, System, View, World, CListTag, ComponentTag }
 import dev.atedeg.ecscala.dsl.Syntax
 import dev.atedeg.ecscala.dsl.Words.EntityWord
-import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the ECScala framework operations using an

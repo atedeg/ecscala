@@ -2,8 +2,8 @@ package dev.atedeg.ecscala
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Mass, Position, Velocity }
-import dev.atedeg.ecscala.util.types.given
 
 class CListTest extends AnyWordSpec with Matchers {
 

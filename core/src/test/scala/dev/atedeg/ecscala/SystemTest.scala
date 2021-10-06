@@ -2,8 +2,8 @@ package dev.atedeg.ecscala
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.fixtures.{ Mass, Position, Velocity, ViewFixture }
-import dev.atedeg.ecscala.util.types.given
 
 class SystemTest extends AnyWordSpec with Matchers {
   def beAbleTo = afterWord("be able to")

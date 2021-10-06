@@ -1,8 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.{ &:, CNil, DeltaTime, System, World }
+import dev.atedeg.ecscala.{ &:, CNil, DeltaTime, System, World, given }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{
   isOverlappedWith,
   Circle,

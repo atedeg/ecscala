@@ -16,8 +16,7 @@ import scalafx.scene.canvas.{ Canvas, GraphicsContext }
 import scalafx.scene.control.{ Button, Label, Slider }
 import scalafx.scene.layout.Pane
 import scalafx.util.converter.NumberStringConverter
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.{ &:, CNil, World }
+import dev.atedeg.ecscala.{ &:, CNil, World, given }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.{
   Circle,
