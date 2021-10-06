@@ -18,3 +18,26 @@
 \section{Benchmarks}\label{sec:benchmarks}
 
 \section{Suddivisione del lavoro}\label{sec:suddivisione-del-lavoro}
+
+\subsection{Nicolò Di Domenico}\label{subsec:nicolò-di-domenico}
+
+Il mio ruolo nel progetto è stato principalmente quello d'implementare le \texttt{View} e i \texttt{System}, nonché
+applicare ove necessario eventuali ottimizzazioni per rientrare nel requisito non funzionale \ref{itm:nf1}.
+
+\subsubsection{View}
+
+Essendo le \texttt{View} ed \texttt{ExcludingView} progettate come indicato in Figura~, si è rivelato utile costruire un
+iteratore astratto che permettesse di fattorizzare tutto il codice comune.
+In particolare si noti come la \texttt{ExcludingView} itera su un sottoinsieme delle entità ritornare dalla stessa
+\texttt{View} senza vincoli di esclusione di componenti.
+Per questo motivo è stato creato il \texttt{BaseViewIterator}, che si occupa di recuperare dal
+\texttt{ComponentsContainer} tutte le mappe che associano ciascuna entità all'istanza (se presente) del componente di
+ciascun tipo.
+Inoltre, si occupa anche di testare l'appartenenza alla view di ciascuna entità e, in caso affermativo, estrarne tutti i
+componenti richiesti.
+
+Affinché la \texttt{View} sia il più veloce possibile, si trova fra le mappe dei tipi di componenti richiesti quella con
+meno entità;
+una volta trovata si iterano tutte le entità contenute al suo interno e per ognuna si controlla che sia presente in
+tutte le altre mappe.
+Se così non fosse, si procede all'estrazione di tutti i componenti richiesti.
