@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo.fixtures
 
-import dev.atedeg.ecscalademo.{ ECSCanvas, EnvironmentState, MouseState, PlayState, StartingState }
 import org.scalatestplus.mockito.MockitoSugar.mock
+import dev.atedeg.ecscalademo.{ ECSCanvas, EnvironmentState, MouseState, PlayState, StartingState }
 
 trait WorldStateFixture {
   val playState = PlayState()

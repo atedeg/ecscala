@@ -1,12 +1,12 @@
 package dev.atedeg.ecscalademo
 
-import dev.atedeg.ecscala.World
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
-import scalafx.Includes.*
 import scalafx.application.JFXApp3
 import scalafx.application.JFXApp3.PrimaryStage
+import scalafx.Includes.*
 import scalafx.scene.Scene
+import dev.atedeg.ecscala.World
 
 object ECScalaDemo extends JFXApp3 {
 

@@ -1,9 +1,8 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.*
+import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, IteratingSystem, View, World }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ Circle, Color, ECSCanvas, PlayState, Point, Position, State }
-import dev.atedeg.ecscalademo.Vector
+import dev.atedeg.ecscalademo.{ Circle, Color, ECSCanvas, PlayState, Point, Position, State, Vector }
 
 /**
  * The [[System]] that renders the balls on their updated Positions.

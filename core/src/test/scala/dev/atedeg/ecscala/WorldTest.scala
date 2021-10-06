@@ -1,10 +1,10 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, ViewFixture, WorldFixture }
-import dev.atedeg.ecscala.util.types.ComponentTag
-import dev.atedeg.ecscala.util.types.given
-import org.scalatest.matchers.should.*
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Position, ViewFixture, WorldFixture }
+import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.util.types.ComponentTag
 
 class WorldTest extends AnyWordSpec with Matchers {
 

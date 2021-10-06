@@ -1,9 +1,9 @@
 package dev.atedeg.ecscala
 
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Mass, Position, WorldFixture }
 import dev.atedeg.ecscala.util.types.given
-import org.scalatest.matchers.should.*
-import org.scalatest.wordspec.AnyWordSpec
 
 class EntityTest extends AnyWordSpec with Matchers {
 

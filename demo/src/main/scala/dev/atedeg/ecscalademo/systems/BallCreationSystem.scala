@@ -1,9 +1,19 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.*
+import dev.atedeg.ecscala.{ &:, CNil, DeltaTime, System, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.*
+import dev.atedeg.ecscalademo.{
+  isOverlappedWith,
+  Circle,
+  Mass,
+  MouseState,
+  PlayState,
+  Position,
+  StartingState,
+  State,
+  Velocity,
+}
 
 /**
  * This [[System]] is used to add a new ball into the [[World]]. If the mouse pointer is in the area of another ball, no

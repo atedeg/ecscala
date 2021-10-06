@@ -1,9 +1,9 @@
 package dev.atedeg.ecscalademo.util
 
-import dev.atedeg.ecscalademo.fixtures.RegionAssignmentFixture
-import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscalademo.fixtures.RegionAssignmentFixture
+import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
 
 class SpacePartitionContainerTest extends AnyWordSpec with Matchers {
 

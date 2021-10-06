@@ -1,16 +1,15 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.dsl.ECScalaDSL
-
 import scala.language.implicitConversions
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.mockito.MockitoSugar.mock
+import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.fixtures.CollisionsFixture
-import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Circle, Color, Mass, PlayState, Position, State, Vector, Velocity }
-import org.scalatestplus.mockito.MockitoSugar.mock
+import dev.atedeg.ecscalademo.fixtures.CollisionsFixture
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue, WritableSpacePartitionContainer }
 
 class CollisionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
   private val black = Color(0, 0, 0)

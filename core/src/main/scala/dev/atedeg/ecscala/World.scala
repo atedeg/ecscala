@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala
 
-import scala.collection.Map
 import scala.annotation.targetName
+import scala.collection.Map
 import dev.atedeg.ecscala.util.mutable.ComponentsContainer
 import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
 
