@@ -1,8 +1,8 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.{ System, DeltaTime, World, Entity, &:, CNil }
+import dev.atedeg.ecscala.{ &:, CNil, DeltaTime, Entity, System, World }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ PlayState, MouseState, State, Position, Circle, isOverlappedWith }
+import dev.atedeg.ecscalademo.{ isOverlappedWith, Circle, MouseState, PlayState, Position, State }
 
 /**
  * This [[System]] is used to identify the selected ball. If a ball were selected, the [[PlayState.selectedBall]]

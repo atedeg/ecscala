@@ -1,8 +1,8 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.{ System, DeltaTime, World }
+import dev.atedeg.ecscala.{ DeltaTime, System, World }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ PlayState, MouseState, StartingState, ECSCanvas, State }
+import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, StartingState, State }
 
 /**
  * This [[System]] is used to render the ball that is about to be added to the [[World]].

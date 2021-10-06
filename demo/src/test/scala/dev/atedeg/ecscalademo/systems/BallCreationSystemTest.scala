@@ -6,7 +6,7 @@ import org.scalatestplus.mockito.MockitoSugar.mock
 import dev.atedeg.ecscala.{ CNil, Entity, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ StartingState, State, Point, PlayState, MouseState, Circle, Position }
+import dev.atedeg.ecscalademo.{ Circle, MouseState, PlayState, Point, Position, StartingState, State }
 import dev.atedeg.ecscalademo.fixtures.BallCreationSystemFixture
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 
