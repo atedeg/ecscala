@@ -174,6 +174,16 @@ class GUITest {
     reachExpectedState(robot)
     assertEquals(expectedState, controller.playState.gameState)
   }
+
+  @Test
+  def twoResetsInARowShouldNotThrowAnException(fxRobot: FxRobot): Unit = {
+    (1 to 2) foreach { _ =>
+      fxRobot.clickOn(playPauseButtonId)
+      fxRobot.sleep(100)
+      fxRobot.clickOn(playPauseButtonId)
+      fxRobot.clickOn(resetButtonId)
+    }
+  }
 }
 
 extension (fxRobot: FxRobot) {
