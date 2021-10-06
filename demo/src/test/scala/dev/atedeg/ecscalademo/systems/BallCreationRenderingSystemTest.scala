@@ -1,17 +1,16 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.World
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, ScalaFXCanvas, StartingState, State }
-import dev.atedeg.ecscalademo.fixtures.BallCreationRenderingSystemFixture
-import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 import javafx.scene.canvas.Canvas as JfxCanvas
+import scalafx.scene.canvas.Canvas
 import org.mockito.ArgumentMatchers.{ any, anyDouble }
 import org.mockito.Mockito.verify
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar
-import scalafx.scene.canvas.Canvas
+import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.{ ECSCanvas, MouseState, PlayState, ScalaFXCanvas, StartingState, State }
+import dev.atedeg.ecscalademo.fixtures.BallCreationRenderingSystemFixture
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 
 class BallCreationRenderingSystemTest extends AnyWordSpec with Matchers with MockitoSugar {
 

@@ -1,14 +1,14 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.{ CNil, Entity, World }
-import dev.atedeg.ecscalademo.*
-import dev.atedeg.ecscalademo.fixtures.BallCreationSystemFixture
-import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
+import dev.atedeg.ecscala.{ CNil, Entity, World }
+import dev.atedeg.ecscala.dsl.ECScalaDSL
+import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.{ StartingState, State, Point, PlayState, MouseState, Circle, Position }
+import dev.atedeg.ecscalademo.fixtures.BallCreationSystemFixture
+import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 
 class BallCreationSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
 

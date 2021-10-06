@@ -1,17 +1,9 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.*
-import dev.atedeg.ecscalademo.{
-  given_Conversion_Position_Point,
-  isOverlappedWith,
-  Circle,
-  MouseState,
-  PlayState,
-  Position,
-  StartingState,
-  State,
-}
+import dev.atedeg.ecscala.{ System, DeltaTime, World }
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.given
+import dev.atedeg.ecscalademo.{ isOverlappedWith, Circle, MouseState, PlayState, Position, StartingState, State }
 
 /**
  * This [[System]] is used to update the selected ball's [[Position]] according to the mouse pointer.

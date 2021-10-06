@@ -2,8 +2,8 @@ package dev.atedeg.ecscalademo.systems
 
 import scala.language.implicitConversions
 import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, IteratingSystem, View, World }
-import dev.atedeg.ecscala
 import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{
   clamped,
   Circle,
@@ -17,8 +17,6 @@ import dev.atedeg.ecscalademo.{
   Velocity,
 }
 import dev.atedeg.ecscalademo.util.WritableSpacePartitionContainer
-import dev.atedeg.ecscalademo
-import dev.atedeg.ecscalademo.given
 
 /**
  * This system handles the collisions of balls on the walls. It should be run after the [[RegionAssignmentSystem]].

@@ -1,10 +1,8 @@
 package dev.atedeg.ecscalademo.systems
 
-import dev.atedeg.ecscala.*
+import dev.atedeg.ecscala.{ IteratingSystem, Entity, &:, DeltaTime, World, View, Deletable, CNil }
 import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.CNil
-import dev.atedeg.ecscalademo.{ PlayState, Position, Velocity }
-import dev.atedeg.ecscalademo.*
+import dev.atedeg.ecscalademo.{ PlayState, Position, Velocity, State }
 
 /**
  * The [[System]] that updates the balls Positions given the updated Velocities
@@ -18,7 +16,7 @@ class MovementSystem(private val playState: PlayState) extends IteratingSystem[P
       view: View[Position &: Velocity &: CNil],
   ): Deletable[Position &: Velocity &: CNil] = {
     val Position(position) &: Velocity(velocity) &: CNil = components
-    val newPosition = position + (deltaTime * velocity)
+    val newPosition = position + (velocity * deltaTime)
     Position(newPosition) &: Velocity(velocity) &: CNil
   }
 }
