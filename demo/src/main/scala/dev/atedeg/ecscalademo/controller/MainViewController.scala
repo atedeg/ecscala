@@ -159,6 +159,7 @@ class MainViewController extends Initializable with ECScalaDSL {
       }
       case State.AddBalls => {
         addBallBtn.text = stopAddingButtonLabel
+        playState.selectedBall = None
         setButtonState(
           isPlayPauseDisable = false,
           isAddBallDiasable = false,
@@ -220,9 +221,7 @@ class MainViewController extends Initializable with ECScalaDSL {
 
   def onDragDetectedHandler(event: MouseEvent): Unit = {
     mouseState.coordinates = Point(event.getX, event.getY)
-    playState.gameState =
-      if (playState.gameState == State.AddBalls || playState.gameState == State.Play) then playState.gameState
-      else State.Dragging
+    playState.gameState = if playState.gameState == State.SelectBall then State.Dragging else playState.gameState
   }
 
   def onPlayPauseClickHandler(): Unit = {
@@ -241,6 +240,7 @@ class MainViewController extends Initializable with ECScalaDSL {
       case State.Play | State.Dragging => ()
       case _ => {
         playState.selectedBall = None
+        playState.gameState = State.Pause
         clearAllEntities from world
         createEntitiesWithComponents()
       }

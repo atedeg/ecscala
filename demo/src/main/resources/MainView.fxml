@@ -5,10 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.atedeg.ecscalademo.controller.MainViewController">
+<HBox minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.atedeg.ecscalademo.controller.MainViewController">
    <VBox HBox.hgrow="ALWAYS">
       <VBox spacing="10.0">
-         <Label text="Label" />
          <HBox spacing="10.0">
             <Button fx:id="playPauseBtnDelegate" mnemonicParsing="false" onAction="#onPlayPauseClickHandler" text="Play" />
             <Button fx:id="addBallBtnDelegate" mnemonicParsing="false" onAction="#onAddBallButtonHandler" text="Add Ball" />
