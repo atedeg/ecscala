@@ -10,7 +10,7 @@ import dev.atedeg.ecscala.{ &:, CNil, View }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ EnvironmentState, State, Velocity }
-import dev.atedeg.ecscalademo.fixtures.{ FrictionSystemFixture }
+import dev.atedeg.ecscalademo.fixtures.FrictionSystemFixture
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 
 class FrictionSystemTest extends AnyWordSpec with Matchers with ECScalaDSL with MockitoSugar {

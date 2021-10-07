@@ -9,7 +9,7 @@ import javafx.scene.canvas.Canvas as JfxCanvas
 import javafx.scene.control.{ Button as JfxButton, Label as JfxLabel, Slider as JfxSlider }
 import javafx.scene.input.MouseEvent
 import scalafx.beans.property.DoubleProperty
-import scalafx.scene.canvas.{ Canvas }
+import scalafx.scene.canvas.Canvas
 import scalafx.scene.control.{ Button, Label, Slider }
 import scalafx.util.converter.NumberStringConverter
 import dev.atedeg.ecscala.given

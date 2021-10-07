@@ -1,6 +1,6 @@
 package dev.atedeg.ecscala
 
-import scala.annotation.{ showAsInfix }
+import scala.annotation.showAsInfix
 
 /**
  * Represents a CList whose elements can either be a standard [[Component]] or a special [[Deleted]] component,
