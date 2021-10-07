@@ -22,30 +22,30 @@
 \subsection{Di Domenico}\label{subsec:nicolò-di-domenico}
 
 Il mio ruolo nel progetto è stato principalmente quello d'implementare le \texttt{View} e i \texttt{System}, nonché
-applicare ove necessario eventuali ottimizzazioni per rientrare nel requisito non funzionale \ref{itm:nf1}.
+applicare ove necessario eventuali ottimizzazioni per rispettare il requisito non funzionale \ref{itm:nf1}.
 
 \subsubsection{View}
 
-Essendo le \texttt{View} ed \texttt{ExcludingView} progettate come indicato in Figura~, si è rivelato utile costruire un
+Essendo le \texttt{View} ed \texttt{ExcludingView} progettate come indicato in Figura~TODO, si è rivelato utile costruire un
 iteratore astratto che permettesse di fattorizzare tutto il codice comune.
 In particolare si noti come la \texttt{ExcludingView} itera su un sottoinsieme delle entità ritornare dalla stessa
-\texttt{View} senza vincoli di esclusione di componenti.
+\texttt{View}, che invece non esprime vincoli di esclusione di componenti.
 Per questo motivo è stato creato il \texttt{BaseViewIterator}, che si occupa di recuperare dal
 \texttt{ComponentsContainer} tutte le mappe che associano ciascuna entità all'istanza (se presente) del componente di
 ciascun tipo.
-Inoltre, si occupa anche di testare l'appartenenza alla view di ciascuna entità e, in caso affermativo, estrarne tutti i
-componenti richiesti.
+Infine, partendo da tali mappe, si occupa di testare l'appartenenza alla view di ciascuna entità e, in caso affermativo,
+estrarne tutti i componenti richiesti.
 
-Affinché la \texttt{View} sia il più veloce possibile, si cerca fra le mappe dei tipi di componenti richiesti quella con
-meno entità;
-una volta trovata si iterano tutte le entità contenute al suo interno e per ognuna si controlla che sia presente in
-tutte le altre mappe.
-Se così non fosse, si procede all'estrazione di tutti i componenti richiesti.
+Una semplice ottimizzazione utilizzata per rendere più veloce l'iterazione di una \texttt{View} consiste nell'individuare
+la mappa di componenti con meno elementi;
+una volta trovata, si iterano tutte le entità contenute al suo interno e per ognuna si controlla che si presente in tutte
+le altre mappe.
+In caso lo sia, si procede all'estrazione di tutti i suoi componenti richiesti.
 
 \subsubsection{System}
 
-Un \texttt{System} è un blocco di codice che può essere aggiunto al \texttt{World} e chiamato a ogni aggiornamento di
-stato della simulazione.
+Un \texttt{System} è un blocco di codice che può essere aggiunto al \texttt{World} e viene chiamato a ogni aggiornamento
+di stato della simulazione.
 Ogni \texttt{System} ha due metodi:
 \begin{itemize}
     \item \texttt{shouldRun}: metodo booleano che indica se il \texttt{System} dev'essere eseguito
@@ -63,19 +63,15 @@ Questi due sistemi definiscono i seguenti metodi:
     \item \texttt{after}: metodo eseguito dopo aver iterato su tutte le entità con i componenti richiesti
 \end{itemize}
 
-Affinché l'\texttt{IteratingSystem} rimanga il più type-safe possibile, il metodo \texttt{update} deve ritornare una
-\texttt{CList} contenente il nuovo stato di tutti i componenti.
+Il metodo \texttt{update} deve ritornare una \texttt{CList} dei nuovi componenti;
+grazie all'utilizzo delle \texttt{CList} (descritte in dettaglio in TODO) verrà verificato a tempo di compilazione che i
+nuovi componenti abbiano lo stesso tipo di quelli su cui opera il sistema.
 Per permettere la cancellazione di alcuni dei componenti, è stato implementato un \textit{match type} chiamato
 \texttt{Deletable[L~<:~CList]}, come mostrato nel Listato~\ref{lst:deletable};
 il suo scopo è quello di permettere l'inserimento in ogni posizione della \texttt{CList} un componente speciale chiamato
 \texttt{Deleted}: in tal caso il componente in quella posizione sarà cancellato.
 
-\begin{lstlisting}[language=Scala,label={lst:deletable},caption=Implementazione del tipo \texttt{Deletable[L~<:~CList]}]
-type Deletable[L <: CList] <: CList = L match {
-  case h &: t => (h | Deleted) &: Deletable[t]
-  case CNil => CNil
-}
-\end{lstlisting}
+\lstinputlisting[label={lst:deletable}, caption=Implementazione del tipo \texttt{Deletable[L~<:~CList]}]{./code/deletable.scala}
 
 L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
 usata per ottenere le entità sulle quali iterare.
