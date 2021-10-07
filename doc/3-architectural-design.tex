@@ -9,8 +9,8 @@ I principali componenti individuati sono:
     Inoltre, è possibile ottenere dal \texttt{World} delle \texttt{View} sulle \texttt{Entity} registrate
     \item \texttt{View}: permette di selezionare le \texttt{Entity} di un \texttt{World} che abbiano tutti i \texttt{Component} specificati
     \item \texttt{ExcludingView}: rappresenta una specializzazione di una \texttt{View} che permette di specificare un ulteriore filtro andando ad indicare i \texttt{Component} che una \texttt{Entity} non deve avere per essere parte della \texttt{View}
-    \item \texttt{IteratingSystem}: è un wrapper di una \texttt{View} che, indicando una specifica logica di aggiornamento, si occupa di iterare tutte le \texttt{Entity} selezionate aggiornandone i componenti
     \item \texttt{System}: descrive un'operazione che viene eseguita ogni volta che viene effettuata l'\texttt{update} del \texttt{World} in cui è registrato
+    \item \texttt{IteratingSystem}: è un wrapper di una \texttt{View} che, indicando una specifica logica di aggiornamento, si occupa di iterare tutte le \texttt{Entity} selezionate aggiornandone i componenti
     \item \texttt{ExcludingSystem}: in maniera analoga a \texttt{IteratingSystem}, è un wrapper di una \texttt{ExcludingView}
     \item \texttt{Entity}: permette l'aggiunta e rimozione di \texttt{Component} e il loro aggiornamento.
     Non può trovarsi in più \texttt{World} contemporaneamente;

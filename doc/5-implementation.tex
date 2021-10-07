@@ -15,24 +15,24 @@ In questa sezione vengono esaminati in che modo e dove sono stati utilizzati i n
 \subsection{Extension method}\label{subsec:extension-method}
 
 \subsection{Problemi riscontrati}\label{subsec:problemi-riscontrati}
-Nella libreria \texttt{scalatest} è stato riscontrato un bug nel costrutto~\texttt{shouldNot typeCheck}.
-Questo costrutto consente di verificare che una espressione, definita come stringa, non passi il controllo del type
-checker e di conseguenza il codice in esame non compili.
-Questo controllo risulta utile nel verificare il corretto "unpacking" delle~\texttt{CList}, nello specifico si è testato
+Nella libreria \texttt{scalatest} è stato riscontrato un bug nel costrutto \texttt{shouldNot typeCheck}.
+Questo consente di verificare che un'espressione, definita come stringa, non passi il controllo del type
+checker e di conseguenza non compili.
+Questo controllo risulta utile nel verificare il corretto "unpacking" delle \texttt{CList}: nello specifico si è testato
 che un unpacking che contiene più elementi di quelli contenuti nella \texttt{CList} non compili;
-a tal proposito si è definito il seguente test:
+a tal proposito si è definito il test indicato nel Listato~\ref{lst:lstinputlisting22}:
 \lstinputlisting[label={lst:lstinputlisting22}, caption=Test per la verifica dell'unpacking delle CList.]
 {./code/scalatest-bug.scala}
-Nella prima asserzione si verifica l'unpacking con meno elementi di quelli nella~\texttt{CList};
-nella seconda si testa lo scenario opposto, quindi l'unpacking con più elementi di quelli presenti nella~\texttt{CList}.
+Nella prima asserzione si verifica l'unpacking con meno elementi di quelli nella \texttt{CList};
+nella seconda si testa lo scenario opposto, quindi l'unpacking con più elementi di quelli presenti nella \texttt{CList}.
 Per entrambi i due scenari appena descritti, la compilazione deve fallire a causa di un mismatch di tipi.
 Tuttavia questo non accade poiché in entrambi i casi le espressioni vengono valutate erroneamente come valide.
 Il bug è stato segnalato agli sviluppatori della libreria mediante una issue~\cite{scalatest-bug}.
 
 Sin dalle prime fasi di sviluppo si è supportata la \textit{cross-building}~\cite{cross-building} affinché il
 framework venisse compilato anche per Scala.js~\cite{scalajs}.
-Questo ha generato una serie di errori all'interno dell'IDE (IntelliJ) che però non corrispondevano a errori effettivi
-a livello di linguaggio;
+Questo ha generato una serie di falsi errori all'interno dell'IDE (IntelliJ);
+infatti se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun errore.
 tanto è vero che se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun
 tipo di errore.
 A tal proposito è stata aperta una issue~\cite{intellij-issue} sul bug tracker di Jetbrains.
@@ -125,7 +125,7 @@ gruppo.
 
 \subsection{Farabegoli}\label{subsec:farabegoli}
 Il contributo apportato al progetto ha toccato buona parte del core del framework e della demo.
-Mi sono infine occupato della gestione del repository, della~\textit{Continuous Integration}, dei rilasci del framework
+Mi sono infine occupato della gestione del repository, della \textit{Continuous Integration}, dei rilasci del framework
 e della qualità del codice.
 
 \subsubsection{Sviluppo collaborativo}
@@ -136,13 +136,13 @@ superare velocemente difficoltà nell'implementazione del codice, oltre a interc
 
 \subsubsection{Component list}
 La necessità di creare una tipologia di liste che contenesse al suo interno elementi di tipi diversi è nata dal fatto
-che si vuole sfruttare il generico per specificare su quali~\Component devono operare i~\System (e le \View).
+che si vuole sfruttare il generico per specificare su quali~\Component devono operare i \System (e le \View).
 L'utlizzo delle liste convenzionali non è sufficiente in quanto essendo covarianti, quando si accede a un elemento della
-lista, questo viene ritornato con il sopra-tipo comune della lista e non con il tipo effettivo inserito.
+lista, questo viene ritornato con il sopratipo comune della lista e non con il tipo effettivo inserito.
 Si vuole quindi creare un costrutto che garantisca un livello maggiore di astrazione, mantenendo tutti gli aspetti
 di type-safety noti delle liste, e che consenta anche di memorizzare elementi con tipi differenti nella stessa
 collezione.
-A tal proposito mi sono occupato della realizzazione delle~\texttt{CList} per rendere i~\System \textit{type-safe}
+A tal proposito mi sono occupato della realizzazione delle \texttt{CList} per rendere i \System \textit{type-safe}
 intercettando tutti gli errori dell'utente a compile-time.
 La peculiarità di questa lista è data dal fatto che gli elementi in essa contenuti possono essere di tipi differenti:
 questa costruzione prende il nome di~\textit{heterogeneous list}.
@@ -152,13 +152,13 @@ Nel Listato~\ref{lst:lstinputlisting} viene riportata una versione semplificata 
 \lstinputlisting[label={lst:lstinputlisting}, caption=Esempio di codice per implementare CList.]{code/clist.scala}
 
 Nel contesto del framework si vuole aggiungere il vincolo tale per cui gli elementi presenti nelle \texttt{CList} siano
-sottotipo di~\Component.
+sottotipo di \Component.
 
-Oltre all'implementazione, mi sono occupato anche dello sviluppo dei test delle~\texttt{CList}: un testing approfondito
+Oltre all'implementazione, mi sono occupato anche dello sviluppo dei test delle \texttt{CList}: un testing approfondito
 si è reputato fondamentale poiché questo costrutto rappresenta un elemento chiave dell'intero framework.
 Vista la rilevante importanza del testing per questo costrutto, una parte dei test sono stati condotti assieme agli
 altri membri del gruppo affinché si potessero identificare tutti i possibili casi di fallimento da intercettare.
-Durante lo sviluppo dei test sopracitati si è rilevato un bug nella suite~\texttt{scalatest}; si veda la
+Durante lo sviluppo dei test sopracitati si è rilevato un bug nella suite \texttt{scalatest}; si veda la
 Sezione~\ref{subsec:problemi-riscontrati} per una trattazione dettagliata del problema.
 
 Il vantaggio offerto dalle \texttt{CList} è dato dal fatto che si può definire una lista di tipi e quindi utilizzarla
@@ -178,18 +178,18 @@ In questo modo garantiamo che un errato utilizzo delle \texttt{CList} venga inte
 preservare la semantica di utilizzo.
 
 \subsubsection{World ed Entity}
-Una delle parti che ho seguito nelle prime fasi di sviluppo è stata l'implementazione del \World e delle~\Entity.
+Una delle parti che ho seguito nelle prime fasi di sviluppo è stata l'implementazione del \World e delle \Entity.
 In particolare mi sono occupato di definire l'interfaccia di entrambe le classi e di fornire una prima implementazione
 di base.
 Ho quindi implementato la logica delle \Entity affinché, in fase di generazione, avessero tutte un identificativo
-univoco nel~\World.
+univoco nel \World.
 Mi sono quindi occupato dello sviluppo dei test per la verifica delle classi oggetto d'implementazione.
 
 \subsubsection{View}
 Mi sono occupato di definire e implementare parzialmente la classe~\View.
 Nello specifico mi sono occupato di definire l'interfaccia e fornire una prima implementazione della stessa.
 Infine ho definito i test case necessari ai fini del testing della classe.
-Sempre nell'ambito dello sviluppo delle~\View, Cavalieri ha sviluppato una macro per costruire la \View in modo che
+Sempre nell'ambito dello sviluppo delle \View, Cavalieri ha sviluppato una macro per costruire la \View in modo che
 operi sui componenti effettivi passati nel generico;
 in questa fase ho contribuito fornendo consigli e suggerimenti per una migliore implementazione del codice.
 
@@ -197,7 +197,7 @@ in questa fase ho contribuito fornendo consigli e suggerimenti per una migliore 
 Come descritto nel requisito non funzionale~\ref{itm:nf1} si vuole ottenere un certo livello di prestazioni dal
 framework.
 A tal proposito ho definito una serie di benchmark che vanno a quantificare le prestazioni ottenute.
-Nello specifico ho definito due benchmark: uno per le \View e uno per i~\System.
+Nello specifico ho definito due benchmark: uno per le \View e uno per i \System.
 Mediante questi benchmark è stato possibile validare il requisito non funzionale sulla base di dati oggettivi.
 L'aspetto di type-safety che garantiscono le \texttt{CList} è dato dal fatto che tutti i suoi componenti siano sotto tipo
 di~\Component, quindi se viene costruita una~\texttt{CList} che comprenda un tipo che non è sotto tipo di~\Component,
