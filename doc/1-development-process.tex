@@ -1,13 +1,36 @@
 \chapter{Processo di sviluppo}\label{ch:processo-di-sviluppo}
 \section{Metodologia di lavoro}\label{sec:metodologia-di-lavoro}
-- Descrizione di come abbiamo usato scrum
-\subsection{Sprint settimanali}\label{subsec:sprint-settimanali}
-- Descrizione come abbiamo organizzato sprint settimanali
+Il processo di sviluppo adottato dal team si basa sulla versione semplificata di \textit{SCRUM} consigliata dal docente:
+sono presenti le figure di \textit{Product Owner} e di \textit{Domain expert}, vengono svolti sprint a cadenza settimanale e sono stati redatti
+\textit{Product Backlog} e \textit{Sprint Backlog}.
+Inoltre, è stata applicata il più possibile la tecnica di sviluppo Test-driven.
+Il team ha largamento sfruttato la tecnica di \textit{Pair programming} adottando lo sviluppo collaborativo in diverse occasioni che ha permesso di velocizzare
+l'implementazione del codice e il rilevamento di bug.
+
+\subsection{Organizzazione degli Sprint}\label{subsec:organizzazione-sprint}
+Il primo sprint realizzato è quello organizzativo nel quale sono stati identificati gli elementi di base del processo di svilppo, preparata la build del progetto e prodotta la prima versione del \textit{Product backlog}
+secondo i requirement del framework identificati.
+Inoltre, abbiamo definito la definition of done:
+
+
+Per quanto riguarda gli sprint successivi, ad inizio settimana il team si è incontrato per la fase di \textit{Sprint Planning} durante la quale, a partire dagli item del \textit{Product Backlog}, viene prodotto
+lo \textit{Sprint Backlog} e vengono assegnati gli item ai membri.
+Al termine di ogni sprint è stata scritta la retrospettiva per verificare l'attuale stato di avanzamento del progetto ed, eventualmente,
+postporre gli sprint item non conclusi alla settimana seguente.
+Inoltre, ogni membro ha opportunamente aggiornato lo \textit{Sprint Backlog} con l' \textit{effort} rimanente al completamento del proprio item.
+
 \subsection{Definition of done}\label{subsec:definition-of-done}
-- Definition of done
-\subsection{Retrospettive}\label{subsec:retrospettive}
-- Retrospettiva a fine sprint
+Uno sprint item può dirsi concluso e non viene inserito nello sprint successivo se e solo se il codice che ne realizza le funzionalità soddisfa i seguenti punti:
+\begin{itemize}
+    \item i test vengono eseguiti con successo
+    \item è presente la \textit{Scaladoc}
+    \item il codice prodotto viene controllato e approvato dagli altri membri del gruppo
+    \item la coverage viene eventualmente decrementata al più del 5\%
+\end{itemize}
+
 \section{Strumenti utilizzati}\label{sec:strumenti-utilizzati}
+A meno di eventuali bug fixes, ad ogni sprint item corrisponde una \textit{Pull Request}
+
 - Descrizione di come abbiamo utilizzato github issue
 - Utilizzo di file csv per tenere traccia degli sprint backlog item e product backlog
 - Intero processo con PR (CI che passa -> Formattazione, Test e coverage), approvazione da tutti i membri delle PR, pair-programming, test-driven, semantic versioning.
