@@ -72,12 +72,12 @@ modo piuttosto semplice ma altamente configurabile i benchmark.
 Scrivere benchmark che misurano correttamente le prestazioni di solo una piccola parte di software è difficile: ci sono
 diverse ottimizzazioni che la JVM e l'hardware sottostante sono in grado di fare quando il benchmark esegue solo il
 componente, ma tali ottimizzazioni non possono essere effettuate quando il componente è eseguito come parte dell'intera
-applicazione, originando dati flasati.
+applicazione, producendo dati falsati.
 Implementazioni errate di benchmark possono far credere che le prestazioni dei componenti siano migliori di quanto non
 lo siano in realtà.
 
 Scrivere un benchmark corretto tipicamente evita che la JVM e l'hardware sottostante effettuino ottimizzazioni
-durante l'esecuzione del benchmark, ottimizzazioni che potrebbero non essere effettuate a livello complessivo di
+durante l'esecuzione del benchmark, che invece potrebbero non essere effettuate a livello complessivo di
 applicazione.
 Grazie a Jmh tutte queste configurazioni sono fatte in automatico e gestite direttamente dal framework, consentendo di
 concentrarsi solamente su cosa deve essere testato.
