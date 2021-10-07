@@ -29,7 +29,7 @@ Per entrambi i due scenari appena descritti, la compilazione deve fallire a caus
 Tuttavia questo non accade poiché in entrambi i casi le espressioni vengono valutate erroneamente come valide.
 Il bug è stato segnalato agli sviluppatori della libreria mediante una issue~\cite{scalatest-bug}.
 
-Sin dalle prime fasi di sviluppo si è supportata la \textit{cross-building}~\cite{cross-building} affinché il
+Sin dalle prime fasi di sviluppo si è abilitata la modalità di \textit{cross-building}~\cite{cross-building} affinché il
 framework venisse compilato anche per Scala.js~\cite{scalajs}.
 Questo ha generato una serie di falsi errori all'interno dell'IDE (IntelliJ);
 infatti se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun errore.
