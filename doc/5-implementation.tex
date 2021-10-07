@@ -49,6 +49,75 @@ le seguenti librerie per problemi di compatibilità:
 \end{itemize}
 
 \section{Benchmarks}\label{sec:benchmarks}
+Il requisito non funzionale~\ref{itm:nf1} richiede che il framework operi sotto certi requsiti di prestazioni;
+per questo motivo occorre quantificare con dati oggettivi quali siano le effettive prestazioni raggiunte.
+I benchmark sono uno strumento piuttosto efficace e preciso per valutare i tempi di esecuzione (e non solo), fornendo
+una stima accurata delle prestazioni in gioco.
+
+Con il termine benchmark si intende un insieme di test specifici per misurare le prestazioni di un software o computer.
+Al termine dell'esecuzione del benchmark si ottiene un indice indicativo delle prestazioni che il sistema in oggetto ha
+raggiunto.
+I benchmark possono essere raggruppati in due categorie:
+\begin{itemize}
+    \item Sintetici (o microbenckmark): vanno a misurare le prestazioni di alcune parti specifiche di un sistema
+    \item Applicativi: misurano le prestazioni complessive di un sistema, ad esempio di un'applicazione
+\end{itemize}
+
+Dal momento che si vogliono valutare solo le prestazioni di una specifica parte del framework si è deciso di effettuare
+dei microbenchmark.
+
+Per implementare tali benchmark si è fatto uso del framework \texttt{Jmh}~\cite{jmh}, il quale consente di definire in
+modo piuttosto semplice ma altamente configurabile i benchmark.
+
+Scrivere benchmark che misurano correttamente the prestazioni di una piccola parte di software è difficile.
+Ci sono diverse ottimizzazioni che la JVM e l'hardware sottostante sono in grado di fare quando il benchmark esegue il
+componente.
+Tali ottimizzazioni non possono essere effettuate quando il componente è eseguito come parte dell'intera applicazione.
+Implementazioni errate di benchmark possono far credere che le prestazioni dei componenti siano migliori di quanto non
+saranno in realtà.
+
+Scrivere un benchmark corretto tipicamente evita che la JVM e l'hardware sottostante effettuino ottimizzazioni
+durante l'esecuzione del benchmark, ottimizzazioni che potrebbero non essere effettuate a livello complessivo di
+applicazione.
+Grazie a Jmh tutte queste configurazioni sono fatte in automatico e gestite direttamente dal framework, consentendo di
+concentrarsi solamente su cosa deve essere testato.
+
+Mediante l'utilizzo di annotazioni sulle classi e metodi è possibile configurare uno o più benchmark: nel
+Listato~\ref{lst:lstinputlisting4} è possibile osservare un esempio di configurazione di un benchmark.
+
+\lstinputlisting[label={lst:lstinputlisting4}, caption=Codice per eseguire il setup di un benchmark.]
+{code/benchmark.scala}
+
+Come è possibile osservare dal listato, Jmh fornisce molteplici configurazioni che possono essere apportate al
+benchmark.
+Di particolare rilevanza troviamo: \texttt{@Warmup} e \texttt{@Measurement}.
+
+Con la prima si specifica quante iterazioni devono essere eseguite "a vuoto" prima d'iniziare con i test effettivi;
+questa procedura risulta necessaria dal momento che quando si esegue per la prima volta un programma sulla JVM, la cache
+risulta vuota e quindi il caricamento iniziale delle classi risulta più lento.
+Eseguendo più volte la stessa porzione di codice si "stabilizza" la cache, quindi gli accessi successivi saranno più
+veloci e uniformi nei tempi.
+In questo modo si garantisce che le misurazioni successive alla fase di warm up abbiano valori simili senza essere
+influenzate da condizioni esterne.
+
+Con la seconda si specifica quante esecuzioni devono essere effettuate del benchmark.
+Per ogni esecuzione viene annotato il tempo impiegato e al termine dell'esecuzione viene riportato il tempo medio che
+impiega il test.
+
+\subsection{Risultati}\label{subsec:risultati}
+Di seguito sono analizzati i risultati ottenuti dai benchmark delle \View e dei \System.
+In Figura~\ref{fig:system} viene mostrato il grafico riguardante i \System in cui si può osservare che con $10000$
+entità un sistema impiega mediamente cinque millisecondi ad aggiornare le entità, quindi il requisito~\ref{itm:nf1} è
+ampiamente rispettato.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/system-benchmark}
+    \caption{Tempi di esecuzione di un \System}\label{fig:system}
+\end{figure}
+
+A fronte dei risultati ottenuti dai benchmark si può affermare che il framework fornisce buone prestazioni con un numero
+piuttosto elevato di entità.
 
 \section{Suddivisione del lavoro}\label{sec:suddivisione-del-lavoro}
 In questa sezione viene illustrata la suddivisione del lavoro e le parti di progetto realizzate da ciascun membro del
@@ -190,3 +259,4 @@ il suo scopo è quello di permettere l'inserimento in ogni posizione della \text
 
 L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
 usata per ottenere le entità sulle quali iterare.
+Per una maggiore più approfondita sui benchmark si faccia riferimento alla Sezione~\ref{sec:benchmarks}.
