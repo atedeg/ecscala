@@ -87,8 +87,8 @@ sottotipo di~\Component.
 
 Oltre all'implementazione, mi sono occupato anche dello sviluppo dei test delle~\texttt{CList}: un testing approfondito
 si è reputato fondamentale poiché questo costrutto rappresenta un elemento chiave dell'intero framework.
-Vista la rilevante importanza del testing per questo costrutto, una parte dei test sono stati condotti assieme agli altri
-membri del gruppo affinché si potessero identificare tutti i possibili casi di fallimento da intercettare.
+Vista la rilevante importanza del testing per questo costrutto, una parte dei test sono stati condotti assieme agli
+altri membri del gruppo affinché si potessero identificare tutti i possibili casi di fallimento da intercettare.
 Durante lo sviluppo dei test sopracitati si è rilevato un bug nella suite~\texttt{scalatest}; si veda la
 Sezione~\ref{subsec:problemi-riscontrati} per una trattazione dettagliata del problema.
 
@@ -120,11 +120,16 @@ Mi sono quindi occupato dello sviluppo dei test per la verifica delle classi ogg
 Mi sono occupato di definire e implementare parzialmente la classe~\View.
 Nello specifico mi sono occupato di definire l'interfaccia e fornire una prima implementazione della stessa.
 Infine ho definito i test case necessari ai fini del testing della classe.
-Sempre nell'ambito dello sviluppo delle~\View, Cavalieri ha sviluppato una macro per costruire la \View in modo che operi sui
-componenti effettivi passati nel generico;
+Sempre nell'ambito dello sviluppo delle~\View, Cavalieri ha sviluppato una macro per costruire la \View in modo che
+operi sui componenti effettivi passati nel generico;
 in questa fase ho contribuito fornendo consigli e suggerimenti per una migliore implementazione del codice.
 
 \subsubsection{Benchmarks}
+Come descritto nel requisito non funzionale~\ref{itm:nf1} si vuole ottenere un certo livello di prestazioni dal
+framework.
+A tal proposito ho definito una serie di benchmark che vanno a quantificare le prestazioni ottenute.
+Nello specifico ho definito due benchmark: uno per le \View e uno per i~\System.
+Mediante questi benchmark è stato possibile validare il requisito non funzionale sulla base di dati oggettivi.
 L'aspetto di type-safety che garantiscono le \texttt{CList} è dato dal fatto che tutti i suoi componenti siano sotto tipo
 di~\Component, quindi se viene costruita una~\texttt{CList} che comprenda un tipo che non è sotto tipo di~\Component,
 allora l'errore viene intercettato a compile-time.
