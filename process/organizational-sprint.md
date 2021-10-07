@@ -8,6 +8,8 @@
         - Test passano
         - Codice documentato (Scaladoc)
         - Code review
+        - Coverage
+        - Formattazione codice
     - Cadenza dei meeting:
         - Cadenza dei meeting una volta a settimana.
 - Preparazione della build
