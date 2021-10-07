@@ -69,12 +69,12 @@ dei microbenchmark.
 Per implementare tali benchmark si è fatto uso del framework \texttt{Jmh}~\cite{jmh}, il quale consente di definire in
 modo piuttosto semplice ma altamente configurabile i benchmark.
 
-Scrivere benchmark che misurano correttamente le prestazioni di una piccola parte di software è difficile.
-Ci sono diverse ottimizzazioni che la JVM e l'hardware sottostante sono in grado di fare quando il benchmark esegue il
-componente.
-Tali ottimizzazioni non possono essere effettuate quando il componente è eseguito come parte dell'intera applicazione.
+Scrivere benchmark che misurano correttamente le prestazioni di solo una piccola parte di software è difficile: ci sono
+diverse ottimizzazioni che la JVM e l'hardware sottostante sono in grado di fare quando il benchmark esegue solo il
+componente, ma tali ottimizzazioni non possono essere effettuate quando il componente è eseguito come parte dell'intera
+applicazione, originando dati flasati.
 Implementazioni errate di benchmark possono far credere che le prestazioni dei componenti siano migliori di quanto non
-saranno in realtà.
+lo siano in realtà.
 
 Scrivere un benchmark corretto tipicamente evita che la JVM e l'hardware sottostante effettuino ottimizzazioni
 durante l'esecuzione del benchmark, ottimizzazioni che potrebbero non essere effettuate a livello complessivo di
@@ -82,8 +82,8 @@ applicazione.
 Grazie a Jmh tutte queste configurazioni sono fatte in automatico e gestite direttamente dal framework, consentendo di
 concentrarsi solamente su cosa deve essere testato.
 
-Mediante l'utilizzo di annotazioni sulle classi e metodi è possibile configurare uno o più benchmark: nel
-Listato~\ref{lst:lstinputlisting4} è possibile osservare un esempio di configurazione di un benchmark.
+Mediante annotazioni su classi e metodi, è possibile configurare uno o più benchmark: nel
+Listato~\ref{lst:lstinputlisting4} è possibile osservare un esempio di configurazione.
 
 \lstinputlisting[label={lst:lstinputlisting4}, caption=Codice per eseguire il setup di un benchmark.]
 {code/benchmark.scala}
