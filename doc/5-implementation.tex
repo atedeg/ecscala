@@ -55,21 +55,28 @@ In questa sezione viene illustrata la suddivisione del lavoro e le parti di prog
 gruppo.
 
 \subsection{Farabegoli}\label{subsec:farabegoli}
-Il contributo apportato al progetto ha toccato buona parte del core del framework e gran parte della demo.
+Il contributo apportato al progetto ha toccato buona parte del core del framework e della demo.
 Mi sono infine occupato della gestione del repository, della~\textit{Continuous Integration}, dei rilasci del framework
 e della qualità del codice.
 
 \subsubsection{Sviluppo collaborativo}
 Spesso mi sono trovato a lavorare assieme ad altri membri del gruppo per risolvere problematiche o fornire spunti per
 un migliore sviluppo del codice.
-A tal proposito sono state frequenti le sessioni di lavoro in \textit{pair programming} che ci hanno consentito di superare
-velocemente difficoltà nell'implementazione del codice, oltre a intercettare fin da subito potenziali bug.
+A tal proposito sono state frequenti le sessioni di lavoro in \textit{pair programming} che ci hanno consentito di
+superare velocemente difficoltà nell'implementazione del codice, oltre a intercettare fin da subito potenziali bug.
 
 \subsubsection{Component list}
-Mi sono occupato della realizzazione delle~\texttt{CList} per rendere i~\System \textit{type-safe} intercettando tutti
-gli errori dell'utente a compile-time.
-La peculiarità di questa lista è data dal fatto che gli elementi in essa contenuti possono essere di tipi differenti: questa
-costruzione prende il nome di~\textit{heterogeneous list}.
+La necessità di creare una tipologia di liste che contenesse al suo interno elementi di tipi diversi è nata dal fatto
+che si vuole sfruttare il generico per specificare su quali~\Component devono operare i~\System (e le \View).
+L'utlizzo delle liste convenzionali non è sufficiente in quanto essendo covarianti, quando si accede a un elemento della
+lista, questo viene ritornato con il sopra-tipo comune della lista e non con il tipo effettivo inserito.
+Si vuole quindi creare un costrutto che garantisca un livello maggiore di astrazione, mantenendo tutti gli aspetti
+di type-safety noti delle liste, e che consenta anche di memorizzare elementi con tipi differenti nella stessa
+collezione.
+A tal proposito mi sono occupato della realizzazione delle~\texttt{CList} per rendere i~\System \textit{type-safe}
+intercettando tutti gli errori dell'utente a compile-time.
+La peculiarità di questa lista è data dal fatto che gli elementi in essa contenuti possono essere di tipi differenti:
+questa costruzione prende il nome di~\textit{heterogeneous list}.
 La costruzione delle \texttt{CList} è ispirata alla libreria \texttt{shapeless}~\cite{shapeless}.
 
 Nel Listato~\ref{lst:lstinputlisting} viene riportata una versione semplificata d'implementazione delle \texttt{CList}.
@@ -80,27 +87,44 @@ sottotipo di~\Component.
 
 Oltre all'implementazione, mi sono occupato anche dello sviluppo dei test delle~\texttt{CList}: un testing approfondito
 si è reputato fondamentale poiché questo costrutto rappresenta un elemento chiave dell'intero framework.
-Data la rilevante importanza del testing per questo costrutto, una parte dei test sono stati condotti assieme agli altri
+Vista la rilevante importanza del testing per questo costrutto, una parte dei test sono stati condotti assieme agli altri
 membri del gruppo affinché si potessero identificare tutti i possibili casi di fallimento da intercettare.
-Durante lo sviluppo dei test sopracitati, si è rilevato un bug nella suite~\texttt{scalatest}; si veda la
+Durante lo sviluppo dei test sopracitati si è rilevato un bug nella suite~\texttt{scalatest}; si veda la
 Sezione~\ref{subsec:problemi-riscontrati} per una trattazione dettagliata del problema.
 
 Il vantaggio offerto dalle \texttt{CList} è dato dal fatto che si può definire una lista di tipi e quindi utilizzarla
 come tipo nelle funzioni che accettano un generico;
-a tal proposito è stato possibile implementare \System e \texttt{View} affinché accettino una \texttt{CList} nel generico
-e quindi effettuino le operazioni solo sui tipi definiti nella lista.
+a tal proposito è stato possibile implementare \System e \View affinché accettino una \texttt{CList} nel
+generico e quindi effettuino le operazioni solo sui tipi in essa definiti.
 
 In Figura~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
 \lstinputlisting[label={lst:lstinputlisting2}, caption=Esempio di utilizzo delle CList.]{code/clist-usage.scala}
 
-L'ordine dei tipi che definiscono una \texttt{CList} è fondamentale ai fini della computazione dei \System e delle
-\texttt{View} dal momento che è anche il tipo di ritorno.
-Quindi se nelle implementazioni dei \System o delle \texttt{View} viene ritornato una \texttt{CList} i cui tipi non sono
-nell'ordine in cui sono stati dichiarati in fase di costruzione, il compilatore segnalerà un errore d'incompatibilità
-tra tipi.
+L'ordine dei tipi che definiscono una \texttt{CList} è fondamentale ai fini della computazione dei \System poiché se non
+venisse rispettato si avrebbero inconsistenze di tipi che porterebbero a una condizione di errore che si vuole evitare.
+Ciò consente nelle implementazioni dei \System o delle \View d'identificare a tempo di compilazione se la
+\texttt{CList} che viene ritornata ha lo stesso tipo di quella dichiarata nel sistema;
+se ciò non accadesse, il compilatore segnala un errore d'inconsistenza di tipi.
 In questo modo garantiamo che un errato utilizzo delle \texttt{CList} venga intercettato a compile time, oltre a
 preservare la semantica di utilizzo.
 
+\subsubsection{World ed Entity}
+Una delle parti che ho seguito nelle prime fasi di sviluppo è stata l'implementazione del \World e delle~\Entity.
+In particolare mi sono occupato di definire l'interfaccia di entrambe le classi e di fornire una prima implementazione
+di base.
+Ho quindi implementato la logica delle \Entity affinché, in fase di generazione, avessero tutte un identificativo
+univoco nel~\World.
+Mi sono quindi occupato dello sviluppo dei test per la verifica delle classi oggetto d'implementazione.
+
+\subsubsection{View}
+Mi sono occupato di definire e implementare parzialmente la classe~\View.
+Nello specifico mi sono occupato di definire l'interfaccia e fornire una prima implementazione della stessa.
+Infine ho definito i test case necessari ai fini del testing della classe.
+Sempre nell'ambito dello sviluppo delle~\View, Cavalieri ha sviluppato una macro per costruire la \View in modo che operi sui
+componenti effettivi passati nel generico;
+in questa fase ho contribuito fornendo consigli e suggerimenti per una migliore implementazione del codice.
+
+\subsubsection{Benchmarks}
 L'aspetto di type-safety che garantiscono le \texttt{CList} è dato dal fatto che tutti i suoi componenti siano sotto tipo
 di~\Component, quindi se viene costruita una~\texttt{CList} che comprenda un tipo che non è sotto tipo di~\Component,
 allora l'errore viene intercettato a compile-time.
