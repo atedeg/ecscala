@@ -3,11 +3,11 @@ package dev.atedeg.ecscalademo.systems
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.mockito.Mockito.when
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{ &:, CNil }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ PlayState, Point, Position, State, Vector, Velocity }
-import dev.atedeg.ecscalademo.fixtures.{ MovementSystemFixture, WorldFixture }
+import dev.atedeg.ecscalademo.{ Position, State, Velocity }
+import dev.atedeg.ecscalademo.fixtures.MovementSystemFixture
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 
 class MovementSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {

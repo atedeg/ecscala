@@ -1,9 +1,7 @@
-package dev.atedeg.ecscala.util.types
+package dev.atedeg.ecscala
 
 import scala.annotation.targetName
 import scala.quoted.{ Expr, Quotes, Type }
-import dev.atedeg.ecscala.{ &:, CList, CNil, Component, Deletable }
-import dev.atedeg.ecscala.util.types
 
 sealed trait CListTag[L <: CList] {
   def tags: Seq[ComponentTag[Component]]

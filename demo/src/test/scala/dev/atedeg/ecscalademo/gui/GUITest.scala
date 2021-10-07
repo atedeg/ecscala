@@ -3,12 +3,10 @@ package dev.atedeg.ecscalademo.gui
 import dev.atedeg.ecscalademo.State
 import dev.atedeg.ecscalademo.controller.MainViewController
 import dev.atedeg.ecscalademo.gui.TestData.*
-import javafx.application.Platform
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.control.Button
 import javafx.stage.Stage
-import org.junit.After
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.Test

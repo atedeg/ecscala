@@ -3,34 +3,19 @@ package dev.atedeg.ecscala.dsl
 import scala.language.implicitConversions
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import dev.atedeg.ecscala.{
-  &:,
-  fixtures,
-  CNil,
-  Component,
-  Deletable,
-  DeltaTime,
-  Entity,
-  IteratingSystem,
-  System,
-  SystemBuilder,
-  View,
-  World,
-}
+import dev.atedeg.ecscala.given
+import dev.atedeg.ecscala.{ &:, fixtures, CNil, Component, Entity, IteratingSystem, System, View, World }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
 import dev.atedeg.ecscala.fixtures.{
   ComponentsFixture,
   Gravity,
   Mass,
   Position,
-  SystemBuilderFixture,
   SystemFixture,
   Velocity,
   ViewFixture,
   WorldFixture,
 }
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.util.types.ComponentTag
 
 class ECScalaDSLTest extends AnyWordSpec with Matchers with ECScalaDSL {
 

@@ -1,7 +1,5 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.util.types.ComponentTag
-
 /**
  * This trait represents an [[Entity]] 's feature.
  */

@@ -1,8 +1,8 @@
 package dev.atedeg.ecscala.fixtures
 
-import dev.atedeg.ecscala.{ &:, CNil, IteratingSystem, World }
+import dev.atedeg.ecscala.given
+import dev.atedeg.ecscala.{ &:, CNil, IteratingSystem }
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
 
 trait SystemFixture extends ECScalaDSL {
 

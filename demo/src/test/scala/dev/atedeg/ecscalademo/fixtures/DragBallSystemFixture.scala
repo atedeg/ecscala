@@ -1,9 +1,8 @@
 package dev.atedeg.ecscalademo.fixtures
 
-import dev.atedeg.ecscala.World
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ MouseState, PlayState, Position }
+import dev.atedeg.ecscalademo.Position
 import dev.atedeg.ecscalademo.systems.DragBallSystem
 
 trait DragBallSystemFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {

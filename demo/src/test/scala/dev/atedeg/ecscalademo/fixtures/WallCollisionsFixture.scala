@@ -1,13 +1,10 @@
 package dev.atedeg.ecscalademo.fixtures
 
 import scala.language.implicitConversions
-import scalafx.beans.property.DoubleProperty
 import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar.mock
-import dev.atedeg.ecscala.World
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ Circle, Color, EnvironmentState, Mass, PlayState, Position, Velocity }
+import dev.atedeg.ecscalademo.{ Circle, Color, Mass, Position, Velocity }
 import dev.atedeg.ecscalademo.systems.WallCollisionSystem
 
 trait WallCollisionsFixture extends ECScalaDSL with WorldFixture with WorldStateFixture {

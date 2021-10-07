@@ -2,7 +2,6 @@ package dev.atedeg.ecscalademo
 
 import scalafx.scene.canvas.{ Canvas, GraphicsContext }
 import scalafx.scene.paint.Color as ColorFx
-import scalafx.scene.shape.ArcType
 import dev.atedeg.ecscalademo.Color
 
 /**

@@ -2,9 +2,8 @@ package dev.atedeg.ecscala.util.mutable
 
 import scala.collection.Map
 import scala.collection.mutable.AnyRefMap
-import dev.atedeg.ecscala.{ Component, Entity }
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.util.types.ComponentTag
+import dev.atedeg.ecscala.given
+import dev.atedeg.ecscala.{ Component, ComponentTag, Entity }
 
 /**
  * This trait represents a container of multiple [[scala.collection.immutable.Map]] [Entity, T], with T subtype of

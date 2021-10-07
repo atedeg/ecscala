@@ -3,9 +3,8 @@ package dev.atedeg.ecscalademo.systems
 import scala.language.implicitConversions
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscalademo.{ MouseState, PlayState, Point, State, Velocity }
+import dev.atedeg.ecscala.given
+import dev.atedeg.ecscalademo.{ Point, State, Velocity }
 import dev.atedeg.ecscalademo.util.{ checkAllStates, AnyValue }
 import dev.atedeg.ecscalademo.fixtures.VelocityFixture
 

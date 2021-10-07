@@ -2,8 +2,8 @@ package dev.atedeg.ecscalademo.systems
 
 import scala.language.implicitConversions
 
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{ DeltaTime, System, World }
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ Color, ECSCanvas, MouseState, PlayState, Position, State }
 

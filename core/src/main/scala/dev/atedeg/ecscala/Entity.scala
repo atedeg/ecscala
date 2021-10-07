@@ -1,7 +1,6 @@
 package dev.atedeg.ecscala
 
 import dev.atedeg.ecscala.util.mutable.ComponentsContainer
-import dev.atedeg.ecscala.util.types.ComponentTag
 
 /**
  * This trait represents an entity of ECS whose state is defined by its components.

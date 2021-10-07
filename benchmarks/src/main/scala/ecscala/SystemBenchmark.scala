@@ -1,6 +1,6 @@
 package ecscala
 
-import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{ &:, CNil, IteratingSystem, World }
 import ecscala.utils.{ JmhSettings, Position, Velocity }
 import org.openjdk.jmh.annotations.{ Benchmark, Setup }

@@ -1,4 +1,4 @@
-package dev.atedeg.ecscala.util.types
+package dev.atedeg.ecscala
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec

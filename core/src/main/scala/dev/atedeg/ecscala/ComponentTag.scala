@@ -1,6 +1,4 @@
-package dev.atedeg.ecscala.util.types
-
-import dev.atedeg.ecscala.{ CList, Component }
+package dev.atedeg.ecscala
 
 import scala.quoted.{ Expr, Quotes, Type }
 

@@ -1,9 +1,7 @@
 package dev.atedeg.ecscala
 
 import scala.annotation.tailrec
-import dev.atedeg.ecscala.{ CList, Entity, View }
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.util.types.{ taggedWith, CListTag, ComponentTag }
+import dev.atedeg.ecscala.given
 
 type DeltaTime = Double
 

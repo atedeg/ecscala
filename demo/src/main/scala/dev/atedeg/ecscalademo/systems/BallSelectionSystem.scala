@@ -1,7 +1,7 @@
 package dev.atedeg.ecscalademo.systems
 
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{ &:, CNil, DeltaTime, Entity, System, World }
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ isOverlappedWith, Circle, MouseState, PlayState, Position, State }
 
 /**

@@ -1,8 +1,8 @@
 package dev.atedeg.ecscalademo.util
 
-import scala.collection.{ immutable, mutable }
+import scala.collection.mutable
+import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{ &:, CNil, Entity }
-import dev.atedeg.ecscala.util.types.given
 import dev.atedeg.ecscalademo.{ Circle, Mass, Position, Velocity }
 
 /**
