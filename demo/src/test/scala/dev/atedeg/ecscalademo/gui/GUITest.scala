@@ -9,6 +9,7 @@ import javafx.scene.control.Button
 import javafx.stage.Stage
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.{ Arguments, MethodSource }
 import org.junit.platform.runner.JUnitPlatform
