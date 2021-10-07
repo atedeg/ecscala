@@ -36,7 +36,7 @@ ciascun tipo.
 Inoltre, si occupa anche di testare l'appartenenza alla view di ciascuna entità e, in caso affermativo, estrarne tutti i
 componenti richiesti.
 
-Affinché la \texttt{View} sia il più veloce possibile, si trova fra le mappe dei tipi di componenti richiesti quella con
+Affinché la \texttt{View} sia il più veloce possibile, si cerca fra le mappe dei tipi di componenti richiesti quella con
 meno entità;
 una volta trovata si iterano tutte le entità contenute al suo interno e per ognuna si controlla che sia presente in
 tutte le altre mappe.
@@ -53,8 +53,8 @@ Ogni \texttt{System} ha due metodi:
 \end{itemize}
 
 Su di esso sono stati costruiti \texttt{IteratingSystem} ed \texttt{ExcludingSystem}, due wrapper type-safe
-rispettivamente per \texttt{View} ed \texttt{ExcludingView}, progettati come indicato in Figura~.
-Questi due sistemi hanno i seguenti metodi:
+rispettivamente per \texttt{View} ed \texttt{ExcludingView}.
+Questi due sistemi definiscono i seguenti metodi:
 \begin{itemize}
     \item \texttt{shouldRun}: metodo booleano che indica se l'\texttt{IteratingSystem} dev'essere eseguito
     \item \texttt{before}: metodo eseguito prima di iterare su tutte le entità con i componenti richiesti
@@ -78,4 +78,4 @@ type Deletable[L <: CList] <: CList = L match {
 \end{lstlisting}
 
 L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
-usata per ottenere su quali entità iterare.
+usata per ottenere le entità sulle quali iterare.
