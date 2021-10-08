@@ -9,8 +9,8 @@ permesso di ottimizzare e rendere più veloce l'implementazione del codice, nonc
 \subsection{Organizzazione degli Sprint}\label{subsec:organizzazione-sprint}
 Il primo sprint è stato organizzativo: sono stati identificati gli elementi di base del processo di svilppo, è stata preparata la build del progetto ed è stata prodotta la prima versione del \textit{Product backlog}
 secondo i requisiti identificati per il progetto.
-É stata inoltre concordata la definizione di ``done", ovvero che uno sprint item può considerarsi concluso e non viene inserito
-nello sprint successivo se e solo se il codice che ne realizza le funzionalità soddisfa i seguenti punti:
+È stato inoltre necessario concordare il significato di ``done" per capire quando uno sprint item potesse considerarsi concluso;
+ne è emerso che ciò avviene se e solo se il codice che ne realizza le funzionalità soddisfa i seguenti punti:
 \begin{itemize}
     \item i test vengono eseguiti con successo
     \item il codice è ben formattato
@@ -28,9 +28,8 @@ Inoltre, ogni membro ha opportunamente aggiornato lo \textit{Sprint Backlog} con
 A supporto del processo sopra descritto, il team ha principalmente adottato gli strumenti messi a disposizione da \textit{GitHub}: sono state utilizzate le \textit{Issue} per
 tenere traccia degli item degli \textit{Sprint Backlog} e assegnarli ai singoli membri;
 inoltre, si è ricorso a \textit{Pull Request} da feature branch per permettere la \textit{code review}.
+Per avere una visione globale e chiara dell'andamento dello sviluppo, sono stati tracciati e tenuti in versione nel repository del progetto - su file .csv - tutti gli \textit{Sprint Backlog} e il \textit{Product Backlog}.
 
-Inoltre, per avere una visione globale e chiara dell'andamento dello sviluppo, sono stati tracciati e tenuti in versione nel repository del progetto - su file .csv - tutti gli \textit{Sprint Backlog} e il \textit{Product Backlog}.
+È stato verificato in modo automatico che il codice prodotto rispettasse i requisiti prestabiliti nella \textit{definition of done} tramite le \textit{GitHub Actions} configuarate opportunamente.
 
-Per verificare in modo automatico che il codice prodotto rispettasse i requisiti prestabiliti nella \textit{definition of done}, sono state utilizzate le \textit{GitHub Actions} configuarate opportunamente.
-
-In ultimo, è stato utilizzato il \textit{Semantic Versioning}  per le release.
+In ultimo, si è utilizzato il \textit{Semantic Versioning} per le release.
