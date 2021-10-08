@@ -114,18 +114,26 @@ impiega il test.
 
 \subsection{Risultati}\label{subsec:risultati}
 Di seguito sono analizzati i risultati ottenuti dai benchmark delle \View e dei \System.
-In Figura~\ref{fig:system} viene mostrato il grafico riguardante i \System in cui si può osservare che con $10000$
+In Tabella~\ref{tab:benchmark} riportati i risultati riguardanti i \System in cui si può osservare che con $10000$
 entità un sistema impiega mediamente cinque millisecondi ad aggiornare le entità, quindi il requisito~\ref{itm:nf1} è
 ampiamente rispettato.
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
-    \includegraphics[width=\textwidth]{./img/system-benchmark}
-    \caption{Tempi di esecuzione di un \System}\label{fig:system}
-\end{figure}
+    \begin{tabular}{c c}
+        \toprule
+        Numero entità & Tempo (ms) \\ \midrule
+        1024  & $0.502 \pm 0.007$ \\
+        2048  & $1.013 \pm 0.018$ \\
+        4096  & $2.258 \pm 0.054$ \\
+        10000 & $5.413 \pm 0.074$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{\label{tab:benchmark}Risultati benchmark.}
+\end{table}
 
 A fronte dei risultati ottenuti dai benchmark si può affermare che il framework fornisce buone prestazioni con un numero
-piuttosto elevato di entità.
+discreto numero di entità.
 
 \section{Suddivisione del lavoro}\label{sec:suddivisione-del-lavoro}
 In questa sezione viene illustrata la suddivisione del lavoro e le parti di progetto realizzate da ciascun membro del
