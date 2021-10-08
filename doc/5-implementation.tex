@@ -92,11 +92,15 @@ Come è possibile osservare dal listato, Jmh fornisce molteplici configurazioni 
 benchmark.
 Di particolare rilevanza troviamo: \texttt{@Warmup} e \texttt{@Measurement}.
 
-Con la prima si specifica quante iterazioni devono essere eseguite "a vuoto" prima d'iniziare con i test effettivi;
+Con la prima si specifica quante iterazioni devono essere eseguite ``a vuoto'' prima d'iniziare con i test effettivi;
 questa procedura risulta necessaria dal momento che quando si esegue per la prima volta un programma sulla JVM, la cache
-risulta vuota e quindi il caricamento iniziale delle classi risulta più lento.
-Eseguendo più volte la stessa porzione di codice si "stabilizza" la cache, quindi gli accessi successivi saranno più
-veloci e uniformi nei tempi.
+risulta vuota e quindi il caricamento iniziale delle classi è più lento.
+Eseguendo più volte la stessa porzione di codice si ``stabilizza'' la cache, quindi gli accessi successivi saranno più
+veloci e uniformi.
+Inoltre, nelle JVM HotSpot, l'interprete tiene traccia del numero di volte che un metodo viene eseguito: se tale
+numero supera una certa soglia allora viene identificato come \texttt{hot method} (metodo che tipicamente ha dei
+loop) e quindi \textit{JIT compiled}.
+Chiamate successive all'ottimizzazione risulteranno quindi più veloci ed efficienti.
 In questo modo si garantisce che le misurazioni successive alla fase di warm up abbiano valori simili senza essere
 influenzate da condizioni esterne.
 
