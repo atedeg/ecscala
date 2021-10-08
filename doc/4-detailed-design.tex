@@ -7,11 +7,13 @@ tipi dei componenti trattati.
 Così facendo si elimina la necessità di specificare a tempo di esecuzione il tipo di componenti richiesto (come per
 esempio è necessario fare nella libreria Ashely~\cite{ashley} che ricorre al passaggio di oggetti \texttt{Class<?>})
 permettendo di intercettare diversi errori a tempo di compilazione.
+
 Realizzare tale funzionalità a livello di compilazione si è rivelato essere una sfida che ha richiesto l’implementazione
 delle CList, nonché l’utilizzo di macro per modificare il comportamento del compilatore introducendo controlli
 personalizzati (descritti in~\ref{subsec:macro}).
+
 Una CList (abbreviazione di Components List) è essenzialmente una lista di elementi eterogenei che preserva informazioni
-sul tipo di ciascun elemento in maniera simile ad una tuple.
+sul tipo di ciascun elemento in maniera simile a una tupla.
 Per esempio si osservi il Listato~\ref{lst:lstinputlisting2}: la lista che contiene
 i componenti Position e Velocity avrà come tipo~\texttt{Position~\&:~Velocity~\&:~CNil}, permettendo di conoscere il
 tipo e la posizione dei suoi elementi.

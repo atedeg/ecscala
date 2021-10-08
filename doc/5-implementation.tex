@@ -29,51 +29,43 @@ I benchmark possono essere raggruppati in due categorie:
     \item Applicativi: misurano le prestazioni complessive di un sistema, ad esempio di un'applicazione
 \end{itemize}
 
-Per implementare i microbenchmark necessari alla verifica del requisito non funzionale~\ref{itm:nf1} si è fatto uso del
-framework \texttt{Jmh}~\cite{jmh}.
-Tale framework consente di definire in modo piuttosto semplice ma altamente configurabile i benchmark.
-
 Scrivere benchmark che misurano correttamente le prestazioni di solo una piccola parte di software è difficile: ci sono
-diverse ottimizzazioni che la JVM e l'hardware sottostante sono in grado di fare quando il benchmark esegue solo il
-componente, ma tali ottimizzazioni non possono essere effettuate quando il componente è eseguito come parte dell'intera
-applicazione, producendo dati falsati.
+diverse ottimizzazioni che la JVM e l'hardware~\cite{jmh:details} sottostante sono in grado di fare quando il benchmark
+esegue solo il componente, ma tali ottimizzazioni non possono essere effettuate quando il componente è eseguito come
+parte dell'intera applicazione, producendo dati falsati.
 Implementazioni errate di benchmark possono far credere che le prestazioni dei componenti siano migliori di quanto non
 siano in realtà.
 
-Scrivere un benchmark corretto tipicamente evita che la JVM e l'hardware sottostante effettuino ottimizzazioni
-durante l'esecuzione del benchmark, che invece potrebbero non essere effettuate a livello complessivo di
-applicazione~\cite{jmh:details}.
-Grazie a Jmh tutte queste configurazioni sono fatte in automatico e gestite direttamente dal framework, consentendo di
-concentrarsi solamente su cosa deve essere testato.
+È quindi necessario ricorrere a un framework di benchmarking apposito per ottenere misurazioni affidabili.
+Si è scelto di utilizzare \texttt{Jmh}~\cite{jmh} Per implementare i microbenchmark necessari alla verifica del
+requisito non funzionale~\ref{itm:nf1}.
 
-Mediante annotazioni su classi e metodi, è possibile configurare uno o più benchmark: nel
-Listato~\ref{lst:lstinputlisting4} è possibile osservare un esempio di configurazione.
+Il framework consente di definire in modo piuttosto semplice ma altamente configurabile i benchmark, come mostrato nel
+Listato~\ref{lst:lstinputlisting4}.
 
 \lstinputlisting[label={lst:lstinputlisting4}, caption=Codice per eseguire il setup di un benchmark.]
 {code/benchmark.scala}
 
-Come è possibile osservare dal listato, Jmh fornisce molteplici configurazioni che possono essere apportate al
-benchmark.
-Di particolare rilevanza troviamo: \texttt{@Warmup} e \texttt{@Measurement}.
-
-Con la prima si specifica quante iterazioni devono essere eseguite ``a vuoto'' prima d'iniziare con i test effettivi;
-questa procedura risulta necessaria dal momento che quando si esegue per la prima volta un programma sulla JVM, la cache
-risulta vuota e quindi il caricamento iniziale delle classi è più lento.
-Eseguendo più volte la stessa porzione di codice si ``stabilizza'' la cache, quindi gli accessi successivi saranno più
-veloci e uniformi.
-Inoltre, nelle JVM HotSpot, l'interprete tiene traccia del numero di volte che un metodo viene eseguito: se tale
-numero supera una certa soglia allora viene identificato come \texttt{hot method} (metodo che tipicamente ha dei
-loop) e quindi \textit{JIT compiled}.
-Chiamate successive all'ottimizzazione risulteranno quindi più veloci ed efficienti.
-In questo modo si garantisce che le misurazioni successive alla fase di warm up abbiano valori simili senza essere
-influenzate da condizioni esterne.
-
-Con la seconda si specifica quante volte il benchmark debba essere ripetuto.
-Per ogni esecuzione viene annotato il tempo impiegato e al termine dell'esecuzione viene riportato il tempo medio che
-impiega il test.
+Alcuni parametri rilevanti nella configurazione dei benchmark sono:
+\begin{itemize}
+    \item \texttt{@Warmup}: si specifica quante iterazioni devono essere eseguite ``a vuoto'' prima di effettuare gli effettivi test;
+    questa procedura risulta necessaria dal momento che, quando si esegue per la prima volta un programma sulla JVM, la cache
+    risulta vuota e quindi il caricamento iniziale delle classi è più lento.
+    Eseguendo più volte la stessa porzione di codice si ``stabilizza'' la cache, quindi gli accessi successivi saranno più
+    veloci e uniformi.
+    Inoltre, nelle JVM HotSpot, l'interprete tiene traccia del numero di volte che un metodo viene eseguito: se tale
+    numero supera una certa soglia allora viene identificato come \texttt{hot method} (metodo che tipicamente ha dei
+    loop) e quindi \textit{JIT compiled}~\cite{jmh:details}.
+    Chiamate successive all'ottimizzazione risulteranno quindi più veloci ed efficienti.
+    In questo modo si garantisce che le misurazioni successive alla fase di warm up abbiano valori simili senza essere
+    influenzate da condizioni esterne.
+    \item \texttt{@Measurement}: si specifica quante volte il benchmark debba essere ripetuto.
+    Per ogni esecuzione viene annotato il tempo impiegato e al termine dell'esecuzione viene riportato il tempo medio che
+    impiega il test.
+\end{itemize}
 
 \subsection{Risultati}\label{subsec:risultati}
-Di seguito sono analizzati i risultati ottenuti dai benchmark delle \View e dei \System.
+Di seguito sono analizzati i risultati ottenuti dai benchmark dei \System.
 In Tabella~\ref{tab:benchmark} riportati i risultati riguardanti i \System in cui si può osservare che con $10000$
 entità un sistema impiega mediamente cinque millisecondi ad aggiornare le entità, quindi il requisito~\ref{itm:nf1} è
 ampiamente rispettato.
