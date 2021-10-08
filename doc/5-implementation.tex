@@ -35,10 +35,8 @@ Il bug è stato segnalato agli sviluppatori della libreria mediante una issue~\c
 
 Sin dalle prime fasi di sviluppo si è abilitata la modalità di \textit{cross-building}~\cite{cross-building} affinché il
 framework venisse compilato anche per Scala.js~\cite{scalajs}.
-Questo ha generato una serie di falsi errori all'interno dell'IDE (IntelliJ);
-infatti se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun errore.
-tanto è vero che se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun
-tipo di errore.
+Questo ha generato una serie di falsi errori all'interno dell'IDE (IntelliJ).
+Infatti se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun errore.
 A tal proposito è stata aperta una issue~\cite{intellij-issue} sul bug tracker di Jetbrains.
 Per una maggiore agilità nella scrittura del codice si è quindi scelto di rimuovere la \textit{cross-building} dal
 progetto.
@@ -67,22 +65,20 @@ I benchmark possono essere raggruppati in due categorie:
     \item Applicativi: misurano le prestazioni complessive di un sistema, ad esempio di un'applicazione
 \end{itemize}
 
-Dal momento che si vogliono valutare solo le prestazioni di una specifica parte del framework si è deciso di effettuare
-dei microbenchmark.
-
-Per implementare tali benchmark si è fatto uso del framework \texttt{Jmh}~\cite{jmh}, il quale consente di definire in
-modo piuttosto semplice ma altamente configurabile i benchmark.
+Per implementare i microbenchmark necessari alla verifica del requisito non funzionale~\ref{itm:nf1} si è fatto uso del
+framework \texttt{Jmh}~\cite{jmh}.
+Tale framework consente di definire in modo piuttosto semplice ma altamente configurabile i benchmark.
 
 Scrivere benchmark che misurano correttamente le prestazioni di solo una piccola parte di software è difficile: ci sono
 diverse ottimizzazioni che la JVM e l'hardware sottostante sono in grado di fare quando il benchmark esegue solo il
 componente, ma tali ottimizzazioni non possono essere effettuate quando il componente è eseguito come parte dell'intera
 applicazione, producendo dati falsati.
 Implementazioni errate di benchmark possono far credere che le prestazioni dei componenti siano migliori di quanto non
-lo siano in realtà.
+siano in realtà.
 
 Scrivere un benchmark corretto tipicamente evita che la JVM e l'hardware sottostante effettuino ottimizzazioni
 durante l'esecuzione del benchmark, che invece potrebbero non essere effettuate a livello complessivo di
-applicazione.
+applicazione~\cite{jmh:details}.
 Grazie a Jmh tutte queste configurazioni sono fatte in automatico e gestite direttamente dal framework, consentendo di
 concentrarsi solamente su cosa deve essere testato.
 
@@ -144,14 +140,8 @@ Il contributo apportato al progetto ha toccato buona parte del core del framewor
 Mi sono infine occupato della gestione del repository, della \textit{Continuous Integration}, dei rilasci del framework
 e della qualità del codice.
 
-\subsubsection{Sviluppo collaborativo}
-Spesso mi sono trovato a lavorare assieme ad altri membri del gruppo per risolvere problematiche o fornire spunti per
-un migliore sviluppo del codice.
-A tal proposito sono state frequenti le sessioni di lavoro in \textit{pair programming} che ci hanno consentito di
-superare velocemente difficoltà nell'implementazione del codice, oltre a intercettare fin da subito potenziali bug.
-
 \subsubsection{Component list}
-Una caratteristica importante della libreria è quello di permettere di specificare nel tipo di un sistema (o una view)
+Una caratteristica importante della libreria è permettere di specificare nel tipo di un sistema (o una view)
 su quali componenti questi operano, così che le stesse firme dei metodi possano guidare il programmatore indicando i
 tipi dei componenti trattati.
 Così facendo si elimina la necessità di specificare a tempo di esecuzione il tipo di componenti richiesto (come per
@@ -166,32 +156,21 @@ Per esempio si osservi il Listato~\ref{lst:lstinputlisting2}: la lista che conti
 i componenti Position e Velocity avrà come tipo~\texttt{Position~\&:~Velocity~\&:~CNil}, permettendo di conoscere il
 tipo e la posizione dei suoi elementi.
 
-In Figura~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
+Nel Listato~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
 \lstinputlisting[label={lst:lstinputlisting2}, caption=Esempio di utilizzo delle CList.]{code/clist-usage.scala}
 
 L’idea alla base di questa soluzione è ispirata dalle Heterogeneous List della libreria
 Shapeless\cite{shapeless}; una differenza significativa sta nel fatto che la definizione di una CList impone un
 limite ulteriore sul tipo dei suoi elementi: devono tutti essere sottotipi di Component, parte dell’implementazione è
-riportata al listato~\ref{lst:lstinputlisting}.
+riportata al Listato~\ref{lst:lstinputlisting}.
 
 \lstinputlisting[label={lst:lstinputlisting}, caption=Esempio di codice per implementare CList.]{code/clist.scala}
-
-Nel contesto del framework si vuole aggiungere il vincolo tale per cui gli elementi presenti nelle \texttt{CList} siano
-sottotipo di \Component.
 
 Le \texttt{CList} rappresentano una parte fondamentale del framework realizzato, quindi è stato importante realizzare
 diversi test (anche in collaborazione con i miei colleghi) per cercare d'individuare possibili errori.
 Un esempio significato riguarda i test effettuati sulla corretta destrutturazione di una CList: in questo ambito si è
 rilevato un bug nella suite scalatest;
 per una trattazione dettagliata del problema si veda la Sezione~\ref{subsec:problemi-riscontrati}.
-
-L'ordine dei tipi che definiscono una \texttt{CList} è fondamentale ai fini della computazione dei \System poiché se non
-venisse rispettato si avrebbero inconsistenze di tipi che porterebbero a una condizione di errore che si vuole evitare.
-Ciò consente nelle implementazioni dei \System o delle \View d'identificare a tempo di compilazione se la
-\texttt{CList} che viene ritornata ha lo stesso tipo di quella dichiarata nel sistema;
-se ciò non accadesse, il compilatore segnala un errore d'inconsistenza di tipi.
-In questo modo garantiamo che un errato utilizzo delle \texttt{CList} venga intercettato a compile time, oltre a
-preservare la semantica di utilizzo.
 
 \subsubsection{World ed Entity}
 Una delle parti che ho seguito nelle prime fasi di sviluppo è stata l'implementazione del \World e delle \Entity.
@@ -223,7 +202,7 @@ allora l'errore viene intercettato a compile-time.
 \subsection{Di Domenico}\label{subsec:nicolò-di-domenico}
 
 Il mio ruolo nel progetto è stato principalmente quello d'implementare le \texttt{View} e i \texttt{System}, nonché
-applicare ove necessario eventuali ottimizzazioni per rispettare il requisito non funzionale \ref{itm:nf1}.
+applicare ove necessario eventuali ottimizzazioni per rispettare il requisito non funzionale~\ref{itm:nf1}.
 
 \subsubsection{View}
 
