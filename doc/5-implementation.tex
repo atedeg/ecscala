@@ -147,7 +147,7 @@ Una caratteristica importante della libreria è quello di permettere di specific
 su quali componenti questi operano, così che le stesse firme dei metodi possano guidare il programmatore indicando i
 tipi dei componenti trattati.
 Così facendo si elimina la necessità di specificare a tempo di esecuzione il tipo di componenti richiesto (come per
-esempio è necessario fare nella libreria Ashely \cit{<CITAZIONE ASHLEY>} che ricorre al passaggio di oggetti Class<?>)
+esempio è necessario fare nella libreria Ashely~\cite{ashley} che ricorre al passaggio di oggetti Class<?>)
 permettendo di intercettare diversi errori a tempo di compilazione.
 Realizzare tale funzionalità a livello di compilazione si è rivelato essere una sfida che ha richiesto l’implementazione
 delle CList, nonché l’utilizzo di macro per modificare il comportamento del compilatore introducendo controlli
@@ -155,7 +155,7 @@ personalizzati (descritti in~\ref{subsec:macro}).
 Una CList (abbreviazione di Components List) è essenzialmente una lista di elementi eterogenei che preserva informazioni
 sul tipo di ciascun elemento in maniera simile ad una tuple.
 Per esempio si osservi il Listato~\ref{lst:lstinputlisting2}: la lista che contiene
-i componenti Position e Velocity avrà come tipo \texttt{Position \&: Velocity \&: CNil}, permettendo di conoscere il
+i componenti Position e Velocity avrà come tipo~\texttt{Position~\&:~Velocity~\&:~CNil}, permettendo di conoscere il
 tipo e la posizione dei suoi elementi.
 
 In Figura~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
