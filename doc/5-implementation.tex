@@ -14,42 +14,6 @@ In questa sezione viene esaminato in che modo e dove sono stati utilizzati i nuo
 
 \subsection{Extension method}\label{subsec:extension-method}
 
-\subsection{Problemi riscontrati}\label{subsec:problemi-riscontrati}
-Nella libreria \texttt{scalatest} è stato riscontrato un bug nella sintassi \texttt{shouldNot typeCheck}.
-Tramite questa espressione, dovrebbe essere possibile verificare che una porzione di codice, specificata come stringa,
-non compili a causa di un errore nel processo di type checking.
-Questo controllo risulta utile nel verificare la corretta destrutturazione delle~\texttt{CList} tramite pattern
-matching.
-In particolare si è verificato, tramite il codice riportato nel Listato~\ref{lst:lstinputlisting22}, che la
-destrutturazione di una \texttt{CList} di dimensione diversa da quanto atteso porti ad un errore di compilazione.
-a tal proposito si è definito il test indicato nel Listato~\ref{lst:lstinputlisting22}:
-\lstinputlisting[label={lst:lstinputlisting22}, caption=Test per la verifica dell'unpacking delle CList.]
-{./code/scalatest-bug.scala}
-La prima asserzione verifica che la destrutturazione fallisca se si specificano meno elementi di quanti siano
-effettivamente presenti nella lista;
-nella seconda si testa lo scenario opposto, ovvero che la destrutturazione fallisca se la lista contiene meno elementi
-di quanti ne sono stati specificati nel pattern matching.
-Sebbene in entrambi i casi ci si aspetta che le espressioni non compilino a causa di errori nella fase di type checking,
-questo non accade e le espressioni vengono erroneamente valutate come valide.
-Il bug è stato segnalato agli sviluppatori della libreria mediante una issue~\cite{scalatest-bug}.
-
-Sin dalle prime fasi di sviluppo si è abilitata la modalità di \textit{cross-building}~\cite{cross-building} affinché il
-framework venisse compilato anche per Scala.js~\cite{scalajs}.
-Questo ha generato una serie di falsi errori all'interno dell'IDE (IntelliJ).
-Infatti se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun errore.
-A tal proposito è stata aperta una issue~\cite{intellij-issue} sul bug tracker di Jetbrains.
-Per una maggiore agilità nella scrittura del codice si è quindi scelto di rimuovere la \textit{cross-building} dal
-progetto.
-
-Si segnala che, essendo il rilascio di Scala 3 relativamente recente, non è stato possibile utilizzare
-le seguenti librerie per problemi di compatibilità:
-\begin{itemize}
-    \item Scalafix
-    \item Scoverage
-    \item ScalaFXML
-    \item ScalaMock
-\end{itemize}
-
 \section{Benchmarks}\label{sec:benchmarks}
 Il requisito non funzionale~\ref{itm:nf1} richiede che il framework operi sotto certi requsiti di prestazioni;
 per questo motivo è stato necessario quantificare oggettivamente quali fossero le effettive prestazioni raggiunte.
@@ -209,7 +173,7 @@ Questi due sistemi definiscono i seguenti metodi:
 \end{itemize}
 
 Il metodo \texttt{update} deve ritornare una \texttt{CList} dei nuovi componenti;
-grazie all'utilizzo delle \texttt{CList} (descritte in dettaglio in TODO) verrà verificato a tempo di compilazione che i
+grazie all'utilizzo delle \texttt{CList} (descritte in dettaglio in~\ref{sec:lista-di-componenti}) verrà verificato a tempo di compilazione che i
 nuovi componenti abbiano lo stesso tipo di quelli su cui opera il sistema.
 Per permettere la cancellazione di alcuni dei componenti, è stato implementato un \textit{match type} chiamato
 \texttt{Deletable[L~<:~CList]}, come mostrato nel Listato~\ref{lst:deletable};
@@ -220,4 +184,39 @@ il suo scopo è quello di permettere l'inserimento in ogni posizione della \text
 
 L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
 usata per ottenere le entità sulle quali iterare.
-Per una maggiore più approfondita sui benchmark si faccia riferimento alla Sezione~\ref{sec:benchmarks}.
+
+\subsection{Problemi riscontrati}\label{subsec:problemi-riscontrati}
+Nella libreria \texttt{scalatest} è stato riscontrato un bug nella sintassi \texttt{shouldNot typeCheck}.
+Tramite questa espressione, dovrebbe essere possibile verificare che una porzione di codice, specificata come stringa,
+non compili a causa di un errore nel processo di type checking.
+Questo controllo risulta utile nel verificare la corretta destrutturazione delle~\texttt{CList} tramite pattern
+matching.
+In particolare si è verificato, tramite il codice riportato nel Listato~\ref{lst:lstinputlisting22}, che la
+destrutturazione di una \texttt{CList} di dimensione diversa da quanto atteso porti ad un errore di compilazione.
+a tal proposito si è definito il test indicato nel Listato~\ref{lst:lstinputlisting22}:
+\lstinputlisting[label={lst:lstinputlisting22}, caption=Test per la verifica dell'unpacking delle CList.]
+{./code/scalatest-bug.scala}
+La prima asserzione verifica che la destrutturazione fallisca se si specificano meno elementi di quanti siano
+effettivamente presenti nella lista;
+nella seconda si testa lo scenario opposto, ovvero che la destrutturazione fallisca se la lista contiene meno elementi
+di quanti ne sono stati specificati nel pattern matching.
+Sebbene in entrambi i casi ci si aspetta che le espressioni non compilino a causa di errori nella fase di type checking,
+questo non accade e le espressioni vengono erroneamente valutate come valide.
+Il bug è stato segnalato agli sviluppatori della libreria mediante una issue~\cite{scalatest-bug}.
+
+Sin dalle prime fasi di sviluppo si è abilitata la modalità di \textit{cross-building}~\cite{cross-building} affinché il
+framework venisse compilato anche per Scala.js~\cite{scalajs}.
+Questo ha generato una serie di falsi errori all'interno dell'IDE (IntelliJ).
+Infatti se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun errore.
+A tal proposito è stata aperta una issue~\cite{intellij-issue} sul bug tracker di Jetbrains.
+Per una maggiore agilità nella scrittura del codice si è quindi scelto di rimuovere la \textit{cross-building} dal
+progetto.
+
+Si segnala che, essendo il rilascio di Scala 3 relativamente recente, non è stato possibile utilizzare
+le seguenti librerie per problemi di compatibilità:
+\begin{itemize}
+    \item Scalafix
+    \item Scoverage
+    \item ScalaFXML
+    \item ScalaMock
+\end{itemize}
