@@ -6,6 +6,7 @@ import ecscala.utils.{ JmhSettings, Position, Velocity }
 import org.openjdk.jmh.annotations.Benchmark
 
 class ComponentsContainerBenchmark extends JmhSettings {
+
   @Benchmark
   def componentsContainerBenchmark: Unit = {
     val view = world.getView[Position &: Velocity &: CNil]
