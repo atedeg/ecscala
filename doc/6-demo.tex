@@ -89,6 +89,49 @@ la correttezza della FSM. Per una trattazione approfondita sui test della GUI si
 Sezione~\ref{TODO}.
 
 \section{Implementazione}\label{sec:demo-implementazione}
+\subsection{Macchina a stati finiti}\label{subsec:macchina-a-stati-finiti}
+Le macchine a stati finiti (FSM) consentono di descrivere formalmente il comportamento di un sistema.
+Si è quindi scelto tale formalismo per descrivere il funzionamento della simulazione.
+
+Sono stati identificati sei stati: \textit{Pause}, \textit{Play}, \textit{Add Balls}, \textit{Select Ball},
+\textit{Change Velocity} e \textit{Dragging}.
+A seguito della definizione degli stati del sistema, sono stati definiti gli eventi di transizione tra stati.
+Di seguito viene riportata la descrizione di tali eventi:
+\begin{itemize}
+    \item \textit{PlayPauseBtn.clicked}: rappresenta la pressione del pulsante per eseguire o mettere in pausa la
+    simulazione
+    \item \textit{AddBallBtn.clicked}: rappresenta la pressione del pulsante per l'aggiunta di palle alla simulazione
+    \item \textit{ChangeVelBtn.clicked}: rappresenta la pressione del pulsante per cambiare la velocità ad una palla
+    \item \textit{Ball.selected}: rappresenta l'evento di selezione di una palla
+    \item \textit{Mouse.clicked}: rappresenta il singolo click del mouse
+    \item \textit{Mouse.dragging}: rappresenta l'evento di trascinamento del mouse
+    \item \textit{Mouse.released}: rappresenta l'evento di rilascio del tasto del mouse
+\end{itemize}
+
+In Figura~\ref{fig:fsm-demo} viene riportata la macchina a stati finiti utilizzata per descrivere il comportamento
+della simulazione.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/fsm-demo}
+    \caption{Macchina a stati finiti che modella il flusso di esecuzione della demo.}\label{fig:fsm-demo}
+\end{figure}
+
+In una prima implementazione della demo si erano definiti oggetti globali che mantenessero lo stato della simulazione.
+Ben presto ci si è resi conto della difficoltà nel gestire tutte le combinazioni dei campi dell'oggetto, oltre
+ai vari bug che si verificavano durante l'implementazione della demo.
+L'introduzione della macchina a stati ha portato diversi vantaggi: si è semplificata la gestione dello
+stato di simulazione, le precondizioni di esecuzione dei sistemi fanno riferimento allo stato della FSM e non più alla
+combinazione di più variabili booleane e la logica di aggiornamento dei componenti della GUI si è semplificata
+notevolemtne.
+Grazie alla FMS è stato implementato un testing esaustivo delle precondizioni dei sistemi, esaminando tutte
+le possibili configurazioni della FSM in unione agli eventi del mouse.
+Grazie a questo è stato possibile individuare piccoli bug nella logica dei \System e inconsistenze nell'interfaccia
+grafica.
+
+Infine, grazie al contributo di Cavalieri, sono stati predispositi dei test per l'interfaccia grafica volti a verificare
+la correttezza della FSM. Per una trattazione approfondita sui test della GUI si faccia riferimento alla
+Sezione~\ref{TODO}.
 
 Di seguito si riportano gli aspetti implementativi che meritano una trattazione più approfondita.
 
