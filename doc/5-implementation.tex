@@ -44,6 +44,84 @@ del World.
 Mediante questi benchmark è stato possibile validare il requisito non funzionale sulla base di dati oggettivi.
 Per una descrizione più approfondita dei benchmark si faccia riferimento alla Sezione~\ref{sec:benchmarks}.
 
+\subsection{Cavalieri}\label{subsec:giacomo-cavalieri}
+Il mio compito principale è stato quello di realizzare i \texttt{ComponentTag}, \texttt{CListTag},
+e il \texttt{ComponentsContainer} descritto precedentemente al Paragrafo~\ref{sec:container-di-componenti}.
+Inoltre ho collaborato con i miei colleghi alla realizzazione delle \texttt{CList}.
+
+\subsubsection{CList}
+Nelle prime fasi di sviluppo ho cercato di risolvere il problema del garantire la type-safety dei \System.
+Mi sono inizialmente documentato su possibili meccanismi forniti dal linguaggio individuando nell'utilizzo delle
+tuple una possibile soluzione.
+Infatti, in Scala 3 le tuple possono fungere da meccanismo per ottenere liste eterogenee di elementi
+preservando informazioni sul loro tipo\cite{tuples}.
+Tuttavia, questo ha comportato ad alcuni problemi come l'impossibilità di garantire a tempo di compilazione che le tuple
+fossero composte di soli elementi sottotipi di \texttt{Component}
+(\textit{i.e.} data la tupla $(T_1,\dots,T_n)$ garantire che $T_i <: \text{Component } \forall i=1,\dots,n$).
+Per questo, prendendo ispirazione dall'approccio utilizzato nella libreria Shapeless~\ref{TODO}, ho individuato
+una possibile soluzione nell'adozione delle \texttt{CList}, realizzate in seguito da Nicolas con il mio aiuto.
+
+\subsubsection{ComponentTag}
+Il framework realizzato utilizza in maniera pervasiva informazioni sui tipi dei componenti necessarie
+per la loro memorizzazione e manipolazione.
+Per questo è stato realizzato il \texttt{ComponentTag}: un oggetto che mantiene informazioni riguardo
+al tipo a tempo di compilazione di un componente;
+in questo modo è stato possibile raggruppare componenti con lo stesso tipo inferito all'interno del
+\texttt{ComponentsContainer}.
+
+Un altro aspetto fondamentale tenuto in considerazione è stato quello di garantire una certa semplicità di
+utilizzo della libreria.
+Infatti, sarebbe stato inaccettabile per un utente dover specificare manualmente i \texttt{ComponentTag}
+come argomenti dei metodi che ne necessitano la conoscenza.
+Per ovviare a tale problema si sono sfruttati alcuni meccanismi avanzati offerti da Scala 3:
+in particolare l'uso di macro, inlining e i nuovi impliciti.
+
+Tramite un semplice import (\texttt{usign dev.atedeg.ecscala.given}) l'utente non deve preoccuparsi
+della presenza dei \texttt{ComponentTag} che saranno generati automaticamente dal compilatore tramite
+un'apposita macro riportata nel Listato~\ref{TODO}.
+
+\subsubsection{CListTag}
+In maniera analoga a quanto discusso per i \texttt{ComponentTag} è stato definito un tag generato dal
+compilatore tramite macro per le \texttt{CList}.
+Infatti, è risultato fondamentale sfruttare la metaprogrammazione per effettuare controlli aggiuntivi
+a livello di compilazione sulla correttezza delle \texttt{CList}.
+Per esempio, come viene mostrato nel Listato~\ref{TODO}, non è possibile specificare una lista di
+componenti con tipi ripetuti nella definizione di un sistema in quanto questo non avrebbe
+senso dato che un'entità può avere al più un componente per tipo.
+
+L'implementazione di tali controlli è riportata al Listato~\ref{TODO}.
+Si può osservare come venga sfruttato
+
+\subsubsection{Container di Componenti}
+
+\subsubsection{Deletable CLists}
+Un \System definito per alcuni tipi di componenti $T_{C1},\dots,T_{Cn}$ deve ritornare nel proprio metodo
+\texttt{update} una \texttt{CList} di componenti dello stesso tipo che verranno usati per aggiornare lo stato
+delle entità su cui il sistema può essere applicato.
+Durante l'implementazione si è però posto il problema di poter specificare di rimuovere un particolare componente
+dall'entità: per esempio, il sistema di un videogioco che opera su entità che hanno un componente \texttt{LifePoints}
+potrebbe voler rimuovere tale componente una volta che questo scende a 0.
+
+Utilizzare dei valori opzionali per indicare la rimozione o meno di un componente
+(\eg \texttt{Some(<updated-component>) \&: None \&: CNil}) avrebbe comportato una riscrittura delle \texttt{CList}
+in modo tale da poter accettare valori opzionali.
+
+Una soluzione, a mio avviso più elegante, ha sfruttato due nuovi meccanismi introdotti in Scala 3:
+i \textit{match types}\cite{TODO} e gli \textit{union types}\cite{TODO}.
+Come mostrato nel Listato~\ref{TODO} una versione ''deletable'' di una \texttt{CList}
+\texttt{T1 \&: ... \&: TN \&: CNil} non è altro che la lista stessa dove ogni elemento viene sostituito da
+uno union type \texttt{(T1 | Deleted)}.
+Dato che il tipo \texttt{T} è sottotipo di \texttt{T | Other} una \texttt{CList} sarà sottotipo della sua
+equivalente versione \texttt{Deletable}.
+Così facendo l'utente può continuare a specificare una lista di componenti come valore di ritorno del metodo
+\texttt{update} dei sistemi; una sostanziale differenza sta nel fatto che, al posto di un qualunque componente
+potrà specificare lo speciale componente \texttt{Deleted} ad indicare che il componente in tale posizione è
+stato cancellato (\eg \texttt{C1 \&: Deleted \&: CNil} indica che il secondo componente deve essere eliminato
+durante l'aggiornamento di stato dell'entità).
+
+\subsubsection{System Builder}
+
+
 \subsection{Di Domenico}\label{subsec:nicolò-di-domenico}
 
 Il mio ruolo nel progetto è stato principalmente quello d'implementare le \texttt{View} e i \texttt{System}, nonché
