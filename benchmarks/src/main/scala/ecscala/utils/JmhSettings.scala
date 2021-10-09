@@ -22,15 +22,15 @@ import org.openjdk.jmh.annotations.{
 import java.util.concurrent.TimeUnit
 
 @State(Scope.Thread)
-@BenchmarkMode(Array(Mode.AverageTime))
+@BenchmarkMode(Array(Mode.All))
 @Threads(1)
 @Fork(1)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 10, timeUnit = TimeUnit.SECONDS)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Warmup(iterations = 50, time = 100, timeUnit = TimeUnit.MILLISECONDS)
+@Measurement(iterations = 100, time = 100, timeUnit = TimeUnit.MILLISECONDS)
 class JmhSettings {
 
-  @Param(Array("1024", "2048", "4096"))
+  @Param(Array("1024", "2048", "4096", "10000"))
   var nEntities: Int = _
   val world: World = World()
 

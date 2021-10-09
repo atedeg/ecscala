@@ -1,5 +1,6 @@
 \chapter{Implementazione}\label{ch:implementazione}
 \section{Scala 3}\label{sec:scala-3}
+In questa sezione viene esaminato in che modo e dove sono stati utilizzati i nuovi costrutti di Scala 3 nel progetto.
 
 \subsection{Impliciti}\label{subsec:impliciti}
 
@@ -13,29 +14,131 @@
 
 \subsection{Extension method}\label{subsec:extension-method}
 
-\subsection{Problemi riscontrati}\label{subsec:problemi-riscontrati}
-Si segnala che, essendo il rilascio di Scala 3 relativamente recente, non è stato possibile utilizzare
-le seguenti librerie per problemi di compatibilità:
+\section{Benchmarks}\label{sec:benchmarks}
+Il requisito non funzionale~\ref{itm:nf1} richiede che il framework soddisfi un certo livello di prestazioni;
+per questo motivo è stato necessario quantificare oggettivamente quali fossero le effettive prestazioni raggiunte.
+I benchmark sono uno strumento piuttosto efficace per valutare i tempi di esecuzione (e non solo), fornendo
+una stima delle prestazioni in gioco.
+
+Con il termine benchmark si intende un insieme di test specifici per misurare le prestazioni di un software o computer.
+Al termine dell'esecuzione del benchmark si ottiene un indice indicativo delle prestazioni che il sistema in oggetto ha
+raggiunto.
+I benchmark possono essere raggruppati in due categorie:
 \begin{itemize}
-    \item Scalafix
-    \item Scoverage
-    \item ScalaFXML
-    \item ScalaMock
+    \item Sintetici (o microbenckmark): vanno a misurare le prestazioni di alcune parti specifiche di un sistema
+    \item Applicativi: misurano le prestazioni complessive di un sistema, ad esempio di un'applicazione
 \end{itemize}
 
-\section{Benchmarks}\label{sec:benchmarks}
+Scrivere benchmark che misurano correttamente le prestazioni di solo una piccola parte di software è difficile: ci sono
+diverse ottimizzazioni che la JVM e l'hardware sottostante sono in grado di fare quando il benchmark
+esegue solo il componente~\cite{jmh:details}, ma tali ottimizzazioni non possono essere effettuate quando il componente
+è eseguito come parte dell'intera applicazione, producendo dati falsati.
+Implementazioni errate di benchmark possono far credere che le prestazioni dei componenti siano migliori di quanto non
+siano in realtà.
+
+È quindi necessario ricorrere a un framework di benchmarking apposito per ottenere misurazioni affidabili.
+Si è scelto di utilizzare \texttt{Jmh}~\cite{jmh} per implementare i microbenchmark necessari alla verifica del
+requisito non funzionale~\ref{itm:nf1}.
+
+Il framework consente di definire in modo piuttosto semplice ma altamente configurabile i benchmark, come mostrato nel
+Listato~\ref{lst:lstinputlisting4}.
+
+\lstinputlisting[label={lst:lstinputlisting4}, caption=Codice per eseguire il setup di un benchmark.]
+{code/benchmark.scala}
+
+Alcuni parametri rilevanti nella configurazione dei benchmark sono:
+\begin{itemize}
+    \item \texttt{@Warmup}: si specifica quante iterazioni devono essere eseguite ``a vuoto'' prima di effettuare i
+    test effettivi;
+    questa procedura risulta necessaria dal momento che, quando si esegue per la prima volta un programma sulla JVM, la
+    cache risulta vuota e quindi il caricamento iniziale delle classi è più lento.
+    Eseguendo più volte la stessa porzione di codice si ``stabilizza'' la cache, quindi gli accessi successivi saranno
+    più veloci e uniformi.
+    Inoltre, nelle JVM HotSpot, l'interprete tiene traccia del numero di volte che un metodo viene eseguito: se tale
+    numero supera una certa soglia allora viene identificato come \texttt{hot method} (metodo che tipicamente ha dei
+    loop) e quindi è \textit{JIT compiled}~\cite{jmh:details}.
+    Chiamate successive all'ottimizzazione risulteranno quindi più veloci ed efficienti.
+    In questo modo si garantisce che le misurazioni successive alla fase di warm up abbiano valori simili senza essere
+    influenzate da condizioni esterne.
+    \item \texttt{@Measurement}: si specifica quante volte il benchmark debba essere ripetuto.
+    Per ogni esecuzione viene annotato il tempo impiegato e al termine dell'esecuzione viene riportato il tempo medio
+    che impiega il test.
+\end{itemize}
+
+\subsection{Risultati}\label{subsec:risultati}
+Di seguito sono riportati i risultati ottenuti dai benchmark dei \System.
+In Tabella~\ref{tab:benchmark} riportati i risultati riguardanti i \System in cui si può osservare che con $10000$
+entità un sistema impiega mediamente cinque millisecondi ad aggiornare le entità, quindi il requisito~\ref{itm:nf1} è
+ampiamente rispettato.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c c}
+        \toprule
+        Numero entità & Tempo (ms) \\ \midrule
+        1024 & $0.502 \pm 0.007$ \\
+        2048 & $1.013 \pm 0.018$ \\
+        4096 & $2.258 \pm 0.054$ \\
+        10000 & $5.413 \pm 0.074$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{\label{tab:benchmark}Risultati benchmark sui \System.}
+\end{table}
+
+A fronte dei risultati ottenuti dai benchmark si può affermare che il framework fornisce buone prestazioni con un numero
+discreto numero di entità.
 
 \section{Suddivisione del lavoro}\label{sec:suddivisione-del-lavoro}
+In questa sezione viene illustrata la suddivisione del lavoro e le parti di progetto realizzate da ciascun membro del
+gruppo.
+
+\subsection{Farabegoli}\label{subsec:farabegoli}
+Il contributo apportato al progetto ha toccato buona parte del core del framework e della demo, nonché lo sviluppo
+dei benchmark.
+Mi sono infine occupato della gestione del repository, della \textit{Continuous Integration}, dei rilasci del framework
+e della qualità del codice.
+
+\subsubsection{Liste di componenti}
+La parte che mi ha conivolto in prima persona è stata la realizzazione delle \texttt{CList}.
+Le \texttt{CList} rappresentano una parte fondamentale del framework realizzato, quindi è stato importante realizzare
+diversi test per cercare d'individuare possibili errori.
+Un esempio significativo riguarda i test effettuati sulla corretta destrutturazione di una \texttt{CList}: in questo
+ambito si è rilevato un bug nella suite scalatest;
+per una trattazione dettagliata del problema si veda la Sezione~\ref{subsec:problemi-riscontrati}.
+
+\subsubsection{World ed Entity}
+Una delle parti che ho seguito nelle prime fasi di sviluppo è stata l'implementazione del \World e delle \Entity.
+In particolare mi sono occupato di definire l'interfaccia di entrambe le classi e di fornire una prima implementazione
+di base.
+Ho quindi implementato il codice necessario affinché ogni \Entity avesse un identificativo univoco nel \World.
+Infine, mi sono occupato dello sviluppo dei test per la verifica delle classi oggetto d'implementazione.
+
+\subsubsection{View}
+Ho definito e implementato parzialmente la classe~\View: in particolare, ne ho realizzato l'interfaccia e fornito una
+prima implementazione.
+Sempre seguendo un approccio TDD, ho realizzato anche i test necessari alla verifica del corretto funzionamento delle
+classi sopra descritte.
+Nell'ambito dello sviluppo delle \View, Cavalieri e Di Domenico hanno sviluppato una macro per costruire la
+\View in modo che operi sui componenti effettivi passati nel generico;
+in questa fase ho contribuito fornendo consigli e suggerimenti per una migliore implementazione del codice.
+
+\subsubsection{Benchmarks}
+Come descritto nel requisito non funzionale~\ref{itm:nf1} indica una linea di base delle prestazioni che il framework
+deve rispettare;
+A tal proposito ho definito una serie di benchmark per misurare le prestazioni di \View, \System e dell'aggiornamento
+del World.
+Mediante questi benchmark è stato possibile validare il requisito non funzionale sulla base di dati oggettivi.
+Per una descrizione più approfondita dei benchmark si faccia riferimento alla Sezione~\ref{sec:benchmarks}.
 
 \subsection{Di Domenico}\label{subsec:nicolò-di-domenico}
 
 Il mio ruolo nel progetto è stato principalmente quello d'implementare le \texttt{View} e i \texttt{System}, nonché
-applicare ove necessario eventuali ottimizzazioni per rispettare il requisito non funzionale \ref{itm:nf1}.
+applicare ove necessario eventuali ottimizzazioni per rispettare il requisito non funzionale~\ref{itm:nf1}.
 
 \subsubsection{View}
 
-Essendo le \texttt{View} ed \texttt{ExcludingView} progettate come indicato in Figura~TODO, si è rivelato utile costruire un
-iteratore astratto che permettesse di fattorizzare tutto il codice comune.
+Essendo le \texttt{View} ed \texttt{ExcludingView} progettate come indicato in Figura~TODO, si è rivelato utile
+costruire un iteratore astratto che permettesse di fattorizzare tutto il codice comune.
 In particolare si noti come la \texttt{ExcludingView} itera su un sottoinsieme delle entità ritornare dalla stessa
 \texttt{View}, che invece non esprime vincoli di esclusione di componenti.
 Per questo motivo è stato creato il \texttt{BaseViewIterator}, che si occupa di recuperare dal
@@ -44,10 +147,10 @@ ciascun tipo.
 Infine, partendo da tali mappe, si occupa di testare l'appartenenza alla view di ciascuna entità e, in caso affermativo,
 estrarne tutti i componenti richiesti.
 
-Una semplice ottimizzazione utilizzata per rendere più veloce l'iterazione di una \texttt{View} consiste nell'individuare
-la mappa di componenti con meno elementi;
-una volta trovata, si iterano tutte le entità contenute al suo interno e per ognuna si controlla che sia presente in tutte
-le altre mappe.
+Una semplice ottimizzazione utilizzata per rendere più veloce l'iterazione di una \texttt{View} consiste
+nell'individuare la mappa di componenti con meno elementi;
+una volta trovata, si iterano tutte le entità contenute al suo interno e per ognuna si controlla che sia presente in
+tutte le altre mappe.
 In caso affermativo, si procede all'estrazione di tutti i suoi componenti richiesti.
 
 \subsubsection{System}
@@ -72,14 +175,51 @@ Questi due sistemi definiscono i seguenti metodi:
 \end{itemize}
 
 Il metodo \texttt{update} deve ritornare una \texttt{CList} dei nuovi componenti;
-grazie all'utilizzo delle \texttt{CList} (descritte in dettaglio in TODO) verrà verificato a tempo di compilazione che i
-nuovi componenti abbiano lo stesso tipo di quelli su cui opera il sistema.
+grazie all'utilizzo delle \texttt{CList} (descritte in dettaglio in~\ref{sec:lista-di-componenti}) verrà verificato a
+tempo di compilazione che i nuovi componenti abbiano lo stesso tipo di quelli su cui opera il sistema.
 Per permettere la cancellazione di alcuni dei componenti, è stato implementato un \textit{match type} chiamato
 \texttt{Deletable[L~<:~CList]}, come mostrato nel Listato~\ref{lst:deletable};
 il suo scopo è quello di permettere l'inserimento in ogni posizione della \texttt{CList} un componente speciale chiamato
 \texttt{Deleted}: in tal caso il componente in quella posizione sarà cancellato.
 
-\lstinputlisting[label={lst:deletable}, caption=Implementazione del tipo \texttt{Deletable[L~<:~CList]}]{./code/deletable.scala}
+\lstinputlisting[label={lst:deletable}, caption=Implementazione del tipo \texttt{Deletable[L~<:~CList]}]
+{./code/deletable.scala}
 
 L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
 usata per ottenere le entità sulle quali iterare.
+
+\subsection{Problemi riscontrati}\label{subsec:problemi-riscontrati}
+Nella libreria \texttt{scalatest} è stato riscontrato un bug nella sintassi \texttt{shouldNot typeCheck}.
+Tramite questa espressione, dovrebbe essere possibile verificare che una porzione di codice, specificata come stringa,
+non compili a causa di un errore nel processo di type checking.
+Questo controllo risulta utile nel verificare la corretta destrutturazione delle~\texttt{CList} tramite pattern
+matching.
+In particolare si è verificato, tramite il codice riportato nel Listato~\ref{lst:lstinputlisting22}, che la
+destrutturazione di una \texttt{CList} di dimensione diversa da quanto atteso porti ad un errore di compilazione.
+a tal proposito si è definito il test indicato nel Listato~\ref{lst:lstinputlisting22}:
+\lstinputlisting[label={lst:lstinputlisting22}, caption=Test per la verifica dell'unpacking delle CList.]
+{./code/scalatest-bug.scala}
+La prima asserzione verifica che la destrutturazione fallisca se si specificano meno elementi di quanti siano
+effettivamente presenti nella lista;
+nella seconda si testa lo scenario opposto, ovvero che la destrutturazione fallisca se la lista contiene meno elementi
+di quanti ne sono stati specificati nel pattern matching.
+Sebbene in entrambi i casi ci si aspetta che le espressioni non compilino a causa di errori nella fase di type checking,
+questo non accade e le espressioni vengono erroneamente valutate come valide.
+Il bug è stato segnalato agli sviluppatori della libreria mediante una issue~\cite{scalatest-bug}.
+
+Sin dalle prime fasi di sviluppo si è abilitata la modalità di \textit{cross-building}~\cite{cross-building} affinché il
+framework venisse compilato anche per Scala.js~\cite{scalajs}.
+Questo ha generato una serie di falsi errori all'interno dell'IDE (IntelliJ).
+Infatti se si eseguivano i comandi di Sbt per la compilazione del progetto, quest'ultimo non sollevava alcun errore.
+A tal proposito è stata aperta una issue~\cite{intellij-issue} sul bug tracker di Jetbrains.
+Per una maggiore agilità nella scrittura del codice si è quindi scelto di rimuovere la \textit{cross-building} dal
+progetto.
+
+Si segnala che, essendo il rilascio di Scala 3 relativamente recente, non è stato possibile utilizzare
+le seguenti librerie per problemi di compatibilità:
+\begin{itemize}
+    \item Scalafix
+    \item Scoverage
+    \item ScalaFXML
+    \item ScalaMock
+\end{itemize}
