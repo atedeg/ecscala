@@ -58,8 +58,9 @@ preservando informazioni sul loro tipo\cite{tuples}.
 Tuttavia, questo ha comportato ad alcuni problemi come l'impossibilità di garantire a tempo di compilazione che le tuple
 fossero composte di soli elementi sottotipi di \texttt{Component}
 (\textit{i.e.} data la tupla $(T_1,\dots,T_n)$ garantire che $T_i <: \text{Component } \forall i=1,\dots,n$).
-Per questo, prendendo ispirazione dall'approccio utilizzato nella libreria Shapeless~\ref{TODO}, ho individuato
-una possibile soluzione nell'adozione delle \texttt{CList}, realizzate in seguito da Nicolas con il mio aiuto.
+Per questo, prendendo ispirazione dall'approccio utilizzato nella libreria Shapeless\cite{shapeless},
+ho individuato una possibile soluzione nell'adozione delle \texttt{CList}, realizzate in seguito
+da Nicolas con il mio aiuto.
 
 \subsubsection{ComponentTag}
 Il framework realizzato utilizza in maniera pervasiva informazioni sui tipi dei componenti necessarie
@@ -107,15 +108,16 @@ Utilizzare dei valori opzionali per indicare la rimozione o meno di un component
 in modo tale da poter accettare valori opzionali.
 
 Una soluzione, a mio avviso più elegante, ha sfruttato due nuovi meccanismi introdotti in Scala 3:
-i \textit{match types}\cite{TODO} e gli \textit{union types}\cite{TODO}.
+i \textit{match types}\cite{match-types} e gli \textit{union types}\cite{union-types}.
 Come mostrato nel Listato~\ref{TODO} una versione ''deletable'' di una \texttt{CList}
 \texttt{T1 \&: ... \&: TN \&: CNil} non è altro che la lista stessa dove ogni elemento viene sostituito da
 uno union type \texttt{(T1 | Deleted)}.
 Dato che il tipo \texttt{T} è sottotipo di \texttt{T | Other} una \texttt{CList} sarà sottotipo della sua
 equivalente versione \texttt{Deletable}.
 Così facendo l'utente può continuare a specificare una lista di componenti come valore di ritorno del metodo
-\texttt{update} dei sistemi; una sostanziale differenza sta nel fatto che, al posto di un qualunque componente
-potrà specificare lo speciale componente \texttt{Deleted} ad indicare che il componente in tale posizione è
+\texttt{update} dei sistemi;
+una sostanziale differenza sta nel fatto che, al posto di un qualunque componente potrà specificare
+lo speciale componente \texttt{Deleted} ad indicare che il componente in tale posizione è
 stato cancellato (\eg \texttt{C1 \&: Deleted \&: CNil} indica che il secondo componente deve essere eliminato
 durante l'aggiornamento di stato dell'entità).
 
