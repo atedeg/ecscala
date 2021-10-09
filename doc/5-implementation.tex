@@ -102,7 +102,7 @@ il suo scopo è quello di permettere l'inserimento in ogni posizione della \text
 L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
 usata per ottenere le entità sulle quali iterare.
 
-\section{Benchmarks}\label{sec:benchmarks}
+\section{Benchmark}\label{sec:benchmarks}
 Il requisito non funzionale~\ref{itm:nf1} richiede che il framework soddisfi un certo livello di prestazioni;
 per questo motivo è stato necessario quantificare oggettivamente quali fossero le effettive prestazioni raggiunte.
 I benchmark sono uno strumento piuttosto efficace per valutare i tempi di esecuzione (e non solo), fornendo
@@ -154,12 +154,13 @@ Alcuni parametri rilevanti nella configurazione dei benchmark sono:
 \end{itemize}
 
 \subsection{Risultati}\label{subsec:risultati}
-Di seguito sono riportati i risultati ottenuti dai benchmark dei \System.
-In Tabella~\ref{tab:benchmark} riportati i risultati riguardanti i \System in cui si può osservare che con $10000$
-entità un sistema impiega mediamente cinque millisecondi ad aggiornare le entità, quindi il requisito~\ref{itm:nf1} è
-ampiamente rispettato.
+In Tabella~\ref{tab:system-benchmark} sono riportati i risultati riguardanti i \System, in cui si può osservare che con
+$10000$ entità un sistema impiega mediamente cinque millisecondi ad aggiornare le entità, quindi il requisito~\ref{itm:nf1}
+è ampiamente rispettato.
+In Tabella~\ref{tab:componentscontainer-benchmark} sono riportati invece i risultati riguardanti il
+\texttt{ComponentsContainer}, in entrambe le implementazioni immutabile e mutabile.
 
-\begin{table}[H]
+\begin{table}[htp]
     \centering
     \begin{tabular}{c c}
         \toprule
@@ -170,7 +171,21 @@ ampiamente rispettato.
         10000 & $5.413 \pm 0.074$ \\
         \bottomrule
     \end{tabular}
-    \caption{\label{tab:benchmark}Risultati benchmark sui \System.}
+    \caption{Risultati benchmark sui \System.}\label{tab:system-benchmark}
+\end{table}
+
+\begin{table}[htp]
+    \centering
+    \begin{tabular}{c c c c}
+        \toprule
+        Numero entità & Tempo (ms) (imm.) & Tempo (ms) (mut.) & Speedup \\ \midrule
+        1024 & $0.771 \pm 0.003$ & $0.498 \pm 0.002$ & $1.548 \pm 0.012$ \\
+        2048 & $1.603 \pm 0.007$ & $0.969 \pm 0.004$ & $1.654 \pm 0.014$ \\
+        4096 & $3.341 \pm 0.015$ & $2.224 \pm 0.014$ & $1.502 \pm 0.016$ \\
+        10000 & $8.216 \pm 0.047$ & $5.416 \pm 0.034$ & $1.517 \pm 0.018$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Risultati benchmark sul \texttt{ComponentsContainer}}\label{tab:componentscontainer-benchmark}
 \end{table}
 
 A fronte dei risultati ottenuti dai benchmark si può affermare che il framework fornisce buone prestazioni con un numero

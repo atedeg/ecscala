@@ -22,7 +22,7 @@ import org.openjdk.jmh.annotations.{
 import java.util.concurrent.TimeUnit
 
 @State(Scope.Thread)
-@BenchmarkMode(Array(Mode.All))
+@BenchmarkMode(Array(Mode.SampleTime))
 @Threads(1)
 @Fork(1)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)

@@ -160,7 +160,7 @@ lazy val benchmarks = project
   .enablePlugins(JmhPlugin)
   .settings(
     publish / skip := true,
-    Test / skip := true,
+    test / skip := true,
     githubWorkflowArtifactUpload := false,
   )
 
