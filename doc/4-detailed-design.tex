@@ -6,11 +6,11 @@ su quali componenti questi operano, così che le stesse firme dei metodi possano
 tipi dei componenti trattati.
 Così facendo si elimina la necessità di specificare a tempo di esecuzione il tipo di componenti richiesto (come per
 esempio è necessario fare nella libreria Ashely~\cite{ashley} che ricorre al passaggio di oggetti \texttt{Class<?>})
-permettendo di intercettare diversi errori a tempo di compilazione.
+permettendo d'intercettare diversi errori a tempo di compilazione.
 
 Realizzare tale funzionalità a livello di compilazione si è rivelato essere una sfida che ha richiesto l’implementazione
 delle \texttt{CList}, nonché l’utilizzo di macro per modificare il comportamento del compilatore introducendo controlli
-personalizzati (descritti in~\ref{subsec:macro}).
+personalizzati.
 
 Una \texttt{CList} (abbreviazione di Components List) è essenzialmente una lista di elementi eterogenei che preserva
 informazioni sul tipo di ciascun elemento in maniera simile a una tupla.
