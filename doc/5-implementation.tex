@@ -98,9 +98,7 @@ L'implementazione di tali controlli è riportata al Listato~\ref{lst:clist-tag}.
 \lstinputlisting[label={lst:clist-tag}, caption=Macro e controlli per la generazione di un \texttt{CListTag}.]
 {code/clist-tag.sc}
 
-\subsubsection{Container di Componenti}
-
-\subsubsection{Deletable CLists}
+\subsubsection{Deletable CLists}\label{sub:deletable}
 Un \System definito per alcuni tipi di componenti $T_{C1},\dots,T_{Cn}$ deve ritornare nel proprio metodo
 \texttt{update} una \texttt{CList} di componenti dello stesso tipo che verranno usati per aggiornare lo stato
 delle entità su cui il sistema può essere applicato.
@@ -122,13 +120,13 @@ equivalente versione \texttt{Deletable}.
 
 Così facendo l'utente può continuare a specificare una lista di componenti come valore di ritorno del metodo
 \texttt{update} dei sistemi;
-una sostanziale differenza sta nel fatto che, al posto di un qualunque componente potrà specificare
+una sostanziale differenza sta nel fatto che, al posto di un qualunque componente, potrà specificare
 il componente speciale \texttt{Deleted} ad indicare che il componente in tale posizione è
 stato cancellato (\eg \texttt{C1~\&:~Deleted~\&:~CNil} indica che il secondo componente deve essere eliminato
 durante l'aggiornamento di stato dell'entità).
 
-\subsubsection{System Builder}
-
+\lstinputlisting[label={lst:deletable}, caption=Implementazione del tipo \texttt{Deletable[L~<:~CList]}]
+{./code/deletable.scala}
 
 \subsection{Di Domenico}\label{subsec:nicolò-di-domenico}
 
@@ -178,12 +176,7 @@ Il metodo \texttt{update} deve ritornare una \texttt{CList} dei nuovi componenti
 grazie all'utilizzo delle \texttt{CList} (descritte in dettaglio in~\ref{sec:lista-di-componenti}) verrà verificato a
 tempo di compilazione che i nuovi componenti abbiano lo stesso tipo di quelli su cui opera il sistema.
 Per permettere la cancellazione di alcuni dei componenti, è stato implementato un \textit{match type} chiamato
-\texttt{Deletable[L~<:~CList]}, come mostrato nel Listato~\ref{lst:deletable};
-il suo scopo è quello di permettere l'inserimento in ogni posizione della \texttt{CList} un componente speciale chiamato
-\texttt{Deleted}: in tal caso il componente in quella posizione sarà cancellato.
-
-\lstinputlisting[label={lst:deletable}, caption=Implementazione del tipo \texttt{Deletable[L~<:~CList]}]
-{./code/deletable.scala}
+\texttt{Deletable[L~<:~CList]}; una descrizione più dettagliata a riguardo è riportata alla Sezione~\ref{sub:deletable}.
 
 L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
 usata per ottenere le entità sulle quali iterare.
