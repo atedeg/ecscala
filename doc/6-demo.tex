@@ -124,7 +124,7 @@ L'introduzione della macchina a stati ha portato diversi vantaggi: si è semplif
 stato di simulazione, le precondizioni di esecuzione dei sistemi fanno riferimento allo stato della FSM e non più alla
 combinazione di più variabili booleane e la logica di aggiornamento dei componenti della GUI si è semplificata
 notevolmente.
-Grazie alla FMS è stato implementato un testing esaustivo delle precondizioni dei sistemi, esaminando tutte
+Grazie alla FSM è stato implementato un testing esaustivo delle precondizioni dei sistemi, esaminando tutte
 le possibili configurazioni della FSM in unione agli eventi del mouse.
 Grazie a questo è stato possibile individuare piccoli bug nella logica dei \System e inconsistenze nell'interfaccia
 grafica.
@@ -135,25 +135,25 @@ Sezione~\ref{TODO}.
 
 \section{Implementazione}\label{sec:demo-implementazione}
 
-\subsection{Farabegoli}\label{subsec:farabegoli2}
+\subsection{Farabegoli}\label{subsec:demo-farabegoli}
 \subsubsection{Game loop}
 Mi sono occupato della realizzazione del \textit{game loop} facendo uso della classe \texttt{AnimationTimer} già
-presente in \texttt{scalafx}.
+presente in \texttt{ScalaFX}.
 Tale classe consente di eseguire del codice implementandolo nel metodo \texttt{handle()}.
 Questo metodo viene chiamato a ogni frame: un frame è renderizzato ogni $\approx16.6$ millisecondi per garantire 60 FPS
-(Frame Per Seconds).
+(Frames Per Second).
 Il limite di 60 FPS è automaticamente garantito dalla classe, quindi non è necessario implementare una logica di
-limitazione degli FPS\@; nel caso in cui si verifichi overrun, sarà compito della classe regolare di conseguenza gli
-FPS\@.
+limitazione degli FPS\@; nel caso in cui si verifichi overrun (situazione dove la computazione impiega più tempo di
+quesllo disponibile per il frame corrente), sarà compito della classe regolare di conseguenza gli FPS\@.
 
 La suddetta classe è stata concepita per essere utilizzata in un contesto OOP, per questa ragione è una classe astratta
 che forza l'implementazione del metodo \texttt{handle()}.
 Ho quindi deciso di trasformare la classe affinché avesse un comportamento più funzionale.
-È stato quindi creato un wrapper attorno alla classe per consentire di specificare l'handler del metodo direttamente
+È stato creato un wrapper attorno alla classe per consentire di specificare l'handler del metodo direttamente
 dal costruttore della classe mediante passaggio di funzione.
 
 Nel Listato~\ref{lst:lstinputlisting3} è illustrato come è stato effettuato il wrapping della classe
-\texttt{AnimationTimer}.
+\texttt{AnimationTimer}; per semplicità è stata omessa la parte di calcolo degli FPS\@.
 
 \lstinputlisting[label={lst:lstinputlisting3}, caption=Esempio d'implementazione del game loop mediante la classe
 \texttt{AnimationTimer}]{code/game-loop.scala}
@@ -161,7 +161,6 @@ Nel Listato~\ref{lst:lstinputlisting3} è illustrato come è stato effettuato il
 Con l'\texttt{apply()} è possibile specificare, mediante una lambda, il codice che deve essere eseguito a ogni
 frame.
 Con i metodi \texttt{start} e \texttt{stop} è possibile rispettivamente eseguire il game loop e fermarlo.
-Nel listato appena mostrato per semplicità è stata omessa la parte di calcolo degli FPS\@.
 
 \subsubsection{FSM}
 Mi sono occupato di realizzare la macchina a stati per gestire la logica del simulatore.
@@ -169,7 +168,7 @@ Per una trattazione dettagliata fare riferimento alla Sezione~\ref{subsec:macchi
 
 \subsubsection{Interfaccia utente}
 Mi sono occupato della realizzazione del'interfaccia grafica del simulatore;
-a tal proposito si è fatto uso della libreria \texttt{scalafx}~\cite{scalafx}, la quale offre un DSL per la creazione
+a tal proposito si è fatto uso della libreria \texttt{ScalaFX}~\cite{scalafx}, la quale offre un DSL per la creazione
 d'interfaccie grafiche.
 
 L'interfaccia si compone di una singola finestra che mostra una serie di bottoni per far interagire l'utente con la
