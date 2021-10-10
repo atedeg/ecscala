@@ -2,7 +2,7 @@ package dev.atedeg.ecscala.dsl
 
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{ taggedWith, CList, CListTag, Component, ComponentTag, Entity, System, World }
-import dev.atedeg.ecscala.dsl.Words.EntityWord
+import dev.atedeg.ecscala.dsl.EntityWord
 
 trait ExtensionMethods {
 
@@ -45,7 +45,7 @@ trait ExtensionMethods {
      * entity -= Component()
      * }}}
      */
-    def -=[C <: Component: ComponentTag](component: C): Entity = entity.removeComponent(component)
+    def -=[C <: Component: ComponentTag](component: C): Entity = entity removeComponent component
   }
 
   extension (world: World) {
@@ -57,7 +57,7 @@ trait ExtensionMethods {
      * world -= myEntity
      * }}}
      */
-    def -=(entity: Entity) = world.removeEntity(entity)
+    def -=(entity: Entity) = world removeEntity entity
 
     /**
      * This method enables the following syntax:
@@ -66,7 +66,7 @@ trait ExtensionMethods {
      * world += mySystem
      * }}}
      */
-    def +=(system: System) = world.addSystem(system)
+    def +=(system: System) = world addSystem system
 
     /**
      * This method enables the following syntax:
@@ -75,7 +75,7 @@ trait ExtensionMethods {
      * world -= mySystem
      * }}}
      */
-    def -=(system: System) = world.removeSystem(system)
+    def -=(system: System) = world removeSystem system
 
     /**
      * This method enables the following syntax:
@@ -85,7 +85,7 @@ trait ExtensionMethods {
      * }}}
      */
     def hasAn(entityWord: EntityWord): Entity = world.createEntity()
-
+    
     /**
      * This method enables the following syntax:
      *
