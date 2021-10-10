@@ -6,7 +6,7 @@ import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ PlayState, State, Vector, Velocity }
 
 /**
- * Pause the simulation when the system's energy is zero (all the ball has velocity = 0).
+ * Pause the simulation when the system's energy is zero (all the balls have velocity = 0).
  */
 class AutoPauseSystem(private val playState: PlayState) extends IteratingSystem[Velocity &: CNil] {
 
