@@ -18,8 +18,8 @@ class AutoPauseSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
         )
       }
     }
-    "Pause the game" when {
-      "the enery of the system is 0" in new AutoPauseSystemFixture {
+    "pause the game" when {
+      "the energy of the system is 0" in new AutoPauseSystemFixture {
         playState.gameState = State.Play
         world hasAn entity withComponent Velocity(0.0, 0.0)
         world hasAn entity withComponent Velocity(0.0, 0.0)
@@ -28,7 +28,7 @@ class AutoPauseSystemTest extends AnyWordSpec with Matchers with ECScalaDSL {
       }
     }
     "do nothing" when {
-      "the enery of the system is not 0" in new AutoPauseSystemFixture {
+      "the energy of the system is not 0" in new AutoPauseSystemFixture {
         playState.gameState = State.Play
         world hasAn entity withComponent Velocity(10.0, 10.0)
         world hasAn entity withComponent Velocity(0.0, 0.0)
