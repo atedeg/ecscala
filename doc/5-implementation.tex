@@ -256,6 +256,8 @@ A fronte dei risultati ottenuti dai benchmark si può affermare che il framework
 discreto numero di entità.
 
 \section{Problemi riscontrati}\label{sec:problemi-riscontrati}
+
+\subsection{Scalatest}
 Nella libreria \texttt{scalatest} è stato riscontrato un bug nella sintassi \texttt{shouldNot typeCheck}.
 Tramite questa espressione, dovrebbe essere possibile verificare che una porzione di codice, specificata come stringa,
 non compili a causa di un errore nel processo di type checking.
@@ -274,6 +276,7 @@ Sebbene in entrambi i casi ci si aspetta che le espressioni non compilino a caus
 questo non accade e le espressioni vengono erroneamente valutate come valide.
 Il bug è stato segnalato agli sviluppatori della libreria mediante una issue~\cite{scalatest-bug}.
 
+\subsection{Cross building per Scala.js}
 Sin dalle prime fasi di sviluppo si è abilitata la modalità di \textit{cross-building}~\cite{cross-building} affinché il
 framework venisse compilato anche per Scala.js~\cite{scalajs}.
 Questo ha generato una serie di falsi errori all'interno dell'IDE (IntelliJ).
@@ -282,6 +285,33 @@ A tal proposito è stata aperta una issue~\cite{intellij-issue} sul bug tracker 
 Per una maggiore agilità nella scrittura del codice si è quindi scelto di rimuovere la \textit{cross-building} dal
 progetto.
 
+\subsection{System Builder}
+La funzione di \texttt{update} di un \System specifica diversi parametri (il \World in cui il sistema è eseguito,
+la \View contenente tutte le entità, i componenti dell'entità che sta venendo modificata, eccetera); tuttavia, può
+spesso l'implementazione del metodo \texttt{update} necessiterà di solo alcuni dei parametri elencati.
+Per questo motivo, inizialmente si è cercato di realizzare un \texttt{Builder} che permettesse di costruire
+dinamicamente la firma della funzione richiesta per costruire il sistema, permettendo una sintassi simile a quella
+riportata al Listato~\ref{lst:builder-syntax}.
+
+\lstinputlisting[label={lst:builder-syntax}, caption=Sintassi del Builder per la creazione di sistemi.]
+{./code/builder-syntax.sc}
+
+Questo ha portato ad individuare un problema nel compilatore Dotty che ha impedito di portare a compimento un simile
+builder.
+Infatti, a causa del problema, sarebbe stato necessario indicare un'annotazione di tipo nei parametri della
+funzione la cui firma è stata costruita dinamicamente (un esempio è riportato al Listato~\ref{lst:builder-syntax-bug});
+questo avrebbe comportato la scrittura di codice particolarmente verboso in contrasto con l'intento originale che aveva
+portato ad ideare tale builder.
+
+Il bug problema\cite{dotty-bug} è stato segnalato nelle issue del repository GitHub del compilatore Dotty
+ed è stato recentemente risolto.
+
+\lstinputlisting[label={lst:builder-syntax-bug},
+    caption=Sintassi effettiva del Builder, si notino le annotazioni di tipo superflue ma necessarie per la compilazione del codice.]
+{./code/builder-syntax-bug.sc}
+
+
+\subsection{Problemi di compatibilità}
 Si segnala che, essendo il rilascio di Scala 3 relativamente recente, non è stato possibile utilizzare
 le seguenti librerie per problemi di compatibilità:
 \begin{itemize}
