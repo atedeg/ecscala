@@ -101,7 +101,7 @@ Di seguito viene riportata la descrizione di tali eventi:
     \item \textit{PlayPauseBtn.clicked}: rappresenta la pressione del pulsante per eseguire o mettere in pausa la
     simulazione
     \item \textit{AddBallBtn.clicked}: rappresenta la pressione del pulsante per l'aggiunta di palle alla simulazione
-    \item \textit{ChangeVelBtn.clicked}: rappresenta la pressione del pulsante per cambiare la velocità ad una palla
+    \item \textit{ChangeVelBtn.clicked}: rappresenta la pressione del pulsante per cambiare la velocità a una palla
     \item \textit{Ball.selected}: rappresenta l'evento di selezione di una palla
     \item \textit{Mouse.clicked}: rappresenta il singolo click del mouse
     \item \textit{Mouse.dragging}: rappresenta l'evento di trascinamento del mouse
@@ -123,15 +123,61 @@ ai vari bug che si verificavano durante l'implementazione della demo.
 L'introduzione della macchina a stati ha portato diversi vantaggi: si è semplificata la gestione dello
 stato di simulazione, le precondizioni di esecuzione dei sistemi fanno riferimento allo stato della FSM e non più alla
 combinazione di più variabili booleane e la logica di aggiornamento dei componenti della GUI si è semplificata
-notevolemtne.
+notevolmente.
 Grazie alla FMS è stato implementato un testing esaustivo delle precondizioni dei sistemi, esaminando tutte
 le possibili configurazioni della FSM in unione agli eventi del mouse.
 Grazie a questo è stato possibile individuare piccoli bug nella logica dei \System e inconsistenze nell'interfaccia
 grafica.
 
-Infine, grazie al contributo di Cavalieri, sono stati predispositi dei test per l'interfaccia grafica volti a verificare
+Infine, grazie al contributo di Cavalieri, sono stati predisposti dei test per l'interfaccia grafica volti a verificare
 la correttezza della FSM. Per una trattazione approfondita sui test della GUI si faccia riferimento alla
 Sezione~\ref{TODO}.
+
+\section{Implementazione}\label{sec:demo-implementazione}
+
+\subsection{Farabegoli}\label{subsec:farabegoli2}
+\subsubsection{Game loop}
+Mi sono occupato della realizzazione del \textit{game loop} facendo uso della classe \texttt{AnimationTimer} già
+presente in \texttt{scalafx}.
+Tale classe consente di eseguire del codice implementandolo nel metodo \texttt{handle()}.
+Questo metodo viene chiamato a ogni frame: un frame è renderizzato ogni $\approx16.6$ millisecondi per garantire 60 FPS
+(Frame Per Seconds).
+Il limite di 60 FPS è automaticamente garantito dalla classe, quindi non è necessario implementare una logica di
+limitazione degli FPS\@; nel caso in cui si verifichi overrun, sarà compito della classe regolare di conseguenza gli
+FPS\@.
+
+La suddetta classe è stata concepita per essere utilizzata in un contesto OOP, per questa ragione è una classe astratta
+che forza l'implementazione del metodo \texttt{handle()}.
+Ho quindi deciso di trasformare la classe affinché avesse un comportamento più funzionale.
+È stato quindi creato un wrapper attorno alla classe per consentire di specificare l'handler del metodo direttamente
+dal costruttore della classe mediante passaggio di funzione.
+
+Nel Listato~\ref{lst:lstinputlisting3} è illustrato come è stato effettuato il wrapping della classe
+\texttt{AnimationTimer}.
+
+\lstinputlisting[label={lst:lstinputlisting3}, caption=Esempio d'implementazione del game loop mediante la classe
+\texttt{AnimationTimer}]{code/game-loop.sc}
+
+Con l'\texttt{apply()} è possibile specificare, mediante una lambda, il codice che deve essere eseguito a ogni
+frame.
+Con i metodi \texttt{start} e \texttt{stop} è possibile rispettivamente eseguire il game loop e fermarlo.
+Nel listato appena mostrato per semplicità è stata omessa la parte di calcolo degli FPS\@.
+
+
+\subsubsection{FSM}
+Mi sono occupato di realizzare la macchina a stati per gestire la logica del simulatore.
+Per una trattazione dettagliata fare riferimento alla Sezione~\ref{subsec:macchina-a-stati-finiti}
+
+\subsubsection{Interfaccia utente}
+Mi sono occupato della realizzazione del'interfaccia grafica del simulatore;
+a tal proposito si è fatto uso della libreria \texttt{scalafx}~\cite{scalafx}, la quale offre un DSL per la creazione
+d'interfaccie grafiche.
+
+L'interfaccia si compone di una singola finestra che mostra una serie di bottoni per far interagire l'utente con la
+simulazione, oltre a un pannello composto da due slider che consentono di configurare parametri di simulazione.
+Al centro della finestra è presente un canvas che renderizza gli oggetti della simulazione.
+L'interfaccia utente è stata sviluppata nell'ottica KISS in quanto si vuole fornire la massima semplicità d'uso
+all'utente.
 
 Di seguito si riportano gli aspetti implementativi che meritano una trattazione più approfondita.
 
