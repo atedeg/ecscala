@@ -2,9 +2,83 @@
 
 \section{Requisiti}\label{sec:demo-requisiti}
 
+\subsection{Business}\label{subsec:demo-business}
+L'obiettivo della demo è quello di permettere all'utente di avere una dimostrazione di applicazione del framework ECScala.
+Per farlo, si deve realizzare la simulazione del moto di palle da biliardo su un tavolo da gioco per la quale è
+stato individuato il seguente requisito di business:
+\begin{itemize}
+    \item Deve essere messa a disposizione un'interfaccia grafica che mostri e permetta di interagire con la simulazione.
+\end{itemize}
+
+\subsection{Utente}\label{subsec:demo-utente}
+I requisiti utente sono di seguito riportati sotto forma di User Stories, secondo lo schema
+“As a [persona], I [want to], [so that].”.
+\begin{table}[H]
+    \begin{tabular}{p{0.18\linewidth}p{0.76\linewidth}}
+        \toprule
+        \textbf{User-story 1} &                                                                                      \\
+        \textbf{Who}          & Come utilizzatore della demo                                                         \\
+        \textbf{What}         & Vorrei avviare facilmente la simulazione senza dover inserire parametri              \\
+        \textbf{Why}          & Per osservare senza dover effettuare modifiche, il movimento delle palle da biliardo \\
+        \bottomrule
+    \end{tabular}\label{tab:user-story-1}
+\end{table}
+\begin{table}[H]
+    \begin{tabular}{p{0.18\linewidth}p{0.76\linewidth}}
+        \toprule
+        \textbf{User-story 2} &                                                                               \\
+        \textbf{Who}          & Come utilizzatore della demo                                                  \\
+        \textbf{What}         & Vorrei poter aggiungere più palle da biliardo sul tavolo                      \\
+        \textbf{Why}          & Per verificare che si comportino come mi aspetto e i frame rimangano costanti \\
+        \bottomrule
+    \end{tabular}\label{tab:user-story-2}
+\end{table}
+\begin{table}[H]
+    \begin{tabular}{p{0.18\linewidth}p{0.76\linewidth}}
+        \toprule
+        \textbf{User-story 3} &                                                           \\
+        \textbf{Who}          & Come utilizzatore della demo                              \\
+        \textbf{What}         & Vorrei poter cambiare la velocità delle palle da biliardo \\
+        \textbf{Why}          & Per cambiarne la direzione e far ripartire quelle ferme   \\
+        \bottomrule
+    \end{tabular}\label{tab:user-story-3}
+\end{table}
+\begin{table}[H]
+    \begin{tabular}{p{0.18\linewidth}p{0.76\linewidth}}
+        \toprule
+        \textbf{User-story 4} &                                                                   \\
+        \textbf{Who}          & Come utilizzatore della demo                                      \\
+        \textbf{What}         & Vorrei poter modificare i coefficienti di frizione e restituzione \\
+        \textbf{Why}          & Per osservare come cambia il movimento delle palle da biliardo    \\
+        \bottomrule
+    \end{tabular}\label{tab:user-story-4}
+\end{table}
+\begin{table}[H]
+    \begin{tabular}{p{0.18\linewidth}p{0.76\linewidth}}
+        \toprule
+        \textbf{User-story 5} &                              \\
+        \textbf{Who}          & Come utilizzatore della demo \\
+        \textbf{What}         & Vorrei un tasto reset        \\
+        \textbf{Why}          & Per riavviare la simulazione \\
+        \bottomrule
+    \end{tabular}\label{tab:user-story-5}
+\end{table}
+
+\subsection{Funzionali}\label{subsec:demo-funzionali}
+Di seguito si elencano i requisiti funzionali individuati per il funzionamento della demo.
+\begin{enumerate}
+    \item Gestire le collisioni tra palle e contro i bordi dell'interfaccia grafica
+    \item Tenere conto della frizione nel calcolo della velocità
+    \item Renderizzare le palle da biliardo iniziali
+    \item Renderizzare l'indicatore di cambio velocità
+    \item Renderizzare l'aggiunta di palle
+    \item Gestire il drag and drop e la selezione
+\end{enumerate}
+
+
 \section{Design architetturale}\label{sec:demo-design-architetturale}
 A seguito dell'analisi dei requisiti definiti nella sezione precedente, si è realizzato il design architetturale di
-massima riportato in Figura~TODO.
+massima riportato in Figura~TODO\@.
 
 Il pattern architetturale scelto è \ECS, poiché si presta bene a questo genere di applicazioni.
 
