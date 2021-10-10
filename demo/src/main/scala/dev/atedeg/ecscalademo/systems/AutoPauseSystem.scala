@@ -5,6 +5,9 @@ import dev.atedeg.ecscala.{ &:, CNil, Deletable, DeltaTime, Entity, IteratingSys
 import dev.atedeg.ecscalademo.given
 import dev.atedeg.ecscalademo.{ PlayState, State, Vector, Velocity }
 
+/**
+ * Pause the simulation when the system's energy is zero (all the ball has velocity = 0).
+ */
 class AutoPauseSystem(private val playState: PlayState) extends IteratingSystem[Velocity &: CNil] {
 
   override def shouldRun: Boolean = playState.gameState == State.Play
