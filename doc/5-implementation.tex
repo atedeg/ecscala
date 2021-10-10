@@ -303,11 +303,14 @@ funzione la cui firma è stata costruita dinamicamente (un esempio è riportato 
 questo avrebbe comportato la scrittura di codice particolarmente verboso in contrasto con l'intento originale che aveva
 portato ad ideare tale builder.
 
-Il bug problema\cite{dotty-bug} è stato segnalato nelle issue del repository GitHub del compilatore Dotty
+Il bug\cite{dotty-bug} è stato segnalato nelle issue del repository GitHub del compilatore Dotty
 ed è stato recentemente risolto.
 
-\lstinputlisting[label={lst:builder-syntax-bug},
-    caption=Sintassi effettiva del Builder, si notino le annotazioni di tipo superflue ma necessarie per la compilazione del codice.]
+\lstinputlisting[
+    label={lst:builder-syntax-bug},
+    caption=Sintassi effettiva del Builder,
+    si notino le annotazioni di tipo superflue ma necessarie per la compilazione del codice.
+]
 {./code/builder-syntax-bug.sc}
 
 
