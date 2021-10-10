@@ -63,6 +63,11 @@ Di seguito viene riportata la descrizione di tali eventi:
     \item \textit{Mouse.released}: rappresenta l'evento di rilascio del tasto del mouse
 \end{itemize}
 
+\section{Tecnologie utilizzate}\label{sec:tecnologie-utilizzate-demo}
+Anche per l'implementazione la demo ci sono stati problemi di incompatibilità con Scala 3:
+in particolare è stata usata la libreria Mockito invece di ScalaMock e non abbiamo potuto utilizzare ScalaFXML\@.
+Per la realizzazione dell'interfaccia grafica è stata utilizzata la libreria ScalaFX\@.
+
 In Figura~\ref{fig:fsm-demo} viene riportata la macchina a stati finiti utilizzata per descrivere il comportamento
 della simulazione.
 
@@ -175,6 +180,7 @@ L'interfaccia si compone di una singola finestra che mostra una serie di bottoni
 simulazione, oltre a un pannello composto da due slider che consentono di configurare parametri di simulazione.
 Al centro della finestra è presente un canvas che renderizza gli oggetti della simulazione.
 L'interfaccia utente è stata sviluppata affinché risulti intuitiva e fornisca la massima semplicità d'uso all'utente.
+Di seguito si riportano gli aspetti implementativi che meritano una trattazione più approfondita.
 
 \subsection{Di Domenico}\label{subsec:demo-di-domenico}
 

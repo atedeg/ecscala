@@ -85,7 +85,7 @@ trait ExtensionMethods {
      * }}}
      */
     def hasAn(entityWord: EntityWord): Entity = world.createEntity()
-    
+
     /**
      * This method enables the following syntax:
      *
