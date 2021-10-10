@@ -123,6 +123,7 @@ class MainViewController extends Initializable with ECScalaDSL {
   private def refreshUiElements(): Unit = {
     playState.gameState match {
       case State.Play => {
+        isRunning = true
         playPauseBtn.text = "Pause"
         addBallBtn.text = addBallButtonLabel
         frictionCoefficientSlider.disable = true
@@ -136,6 +137,7 @@ class MainViewController extends Initializable with ECScalaDSL {
         )
       }
       case State.Pause => {
+        isRunning = false
         playPauseBtn.text = "Play"
         addBallBtn.text = addBallButtonLabel
         frictionCoefficientSlider.disable = false
@@ -263,5 +265,6 @@ class MainViewController extends Initializable with ECScalaDSL {
     world hasA system(CollisionSystem(playState, container))
     world hasA system(WallCollisionSystem(playState, environmentState, ecsCanvas))
     world hasA system(RenderSystem(playState, ecsCanvas))
+    world hasA system(AutoPauseSystem(playState))
   }
 }
