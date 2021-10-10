@@ -6,16 +6,20 @@
 A seguito dell'analisi dei requisiti definiti nella sezione precedente, si è realizzato il design architetturale di
 massima riportato in Figura~TODO.
 
-Il pattern architetturale scelto è \ECS, dato che si presta bene a questo genere di applicazioni.
+Il pattern architetturale scelto è \ECS, poiché si presta bene a questo genere di applicazioni.
+
+\section{Design di dettaglio}\label{sec:demo-design-di-dettaglio}
+
 Per non legarsi a una specifica libreria grafica, si è deciso d'introdurre il \textit{façade} \texttt{ECSCanvas}
 che espone dei metodi di alto livello per disegnare le primitive richieste (in particolare, cerchio e linea) e ottenere
 le dimensioni dell'area di disegno.
 
-\section{Design di dettaglio}\label{sec:demo-design-di-dettaglio}
-
 Si elencano di seguito i sistemi individuati ai fini della realizzazione della demo:
 \begin{itemize}
+    \item \textbf{RegionAssignmentSystem}: popola lo \texttt{SpacePartitionContainer} affinché possa essere usato dal
+    \textbf{CollisionSystem} (si veda Sottosezione~\ref{subsec:demo-di-domenico} per maggiori dettagli)
     \item \textbf{CollisionSystem}: calcola le nuove velocità di eventuali entità che collidono fra loro
+    \item \textbf{WallCollisionSystem}: calcola le nuove velocità delle entità che collidono con i bordi della simulazione
 \end{itemize}
 
 \section{Implementazione}\label{sec:demo-implementazione}
@@ -37,9 +41,11 @@ Sarebbe necessario controllare tutte le possibili coppie di corpi, ma questo pre
 La soluzione a entrambi questi problemi è stata quella di applicare la tecnica di ottimizzazione detta
 \textit{space partitioning}: si divide lo spazio (il piano in questo caso, essendo una simulazione 2D) in regioni disgiunte
 affinché ogni entità appartenga a una e una sola di esse.
-Per fare ciò è stato creato il concetto di \texttt{SpacePartitionContainer}, che prende in ingresso un'entità con
-tutti i componenti richiesti e la salva in una mappa che associa ogni regione (identificata da una coppia di numeri interi)
-alla lista di entità che ne fanno parte.
+
+\subsubsection{SpacePartitionContainer}
+Per ottimizzare i test di collisione è stato creato lo \texttt{SpacePartitionContainer}, che prende in ingresso
+un'entità con tutti i componenti richiesti e la salva in una mappa che associa ogni regione (identificata da una coppia
+di numeri interi) alla lista di entità che ne fanno parte.
 Inoltre, lo \texttt{SpacePartitionContainer} dispone di un metodo per ottenere tutte le entità facente parte di una regione
 specificata, e uno per iterare su tutte le regioni non vuote.
 
