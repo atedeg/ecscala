@@ -181,7 +181,72 @@ Per permettere la cancellazione di alcuni dei componenti, è stato implementato 
 L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
 usata per ottenere le entità sulle quali iterare.
 
-\section{Benchmark}\label{sec:benchmarks}
+\subsection{Vitali}\label{subsec:linda-vitali}
+All'interno del team, oltre a quello di sviluppatrice, ho svolto anche il ruolo di \textit{Product Owner}.
+Mi sono dunque occupata di redigere \textit{Product Backlog} e \textit{Sprint Backlog} al termine dei meeting, riportando quanto accordato
+insieme agli altri membri e di supervisionare l'organizzazione del processo di sviluppo.
+Per quanto riguarda la parte di sviluppo del codice, mi sono occupata di una prima implementazione della classe \texttt{Component},
+del \texttt{ComponentsContainer} in collaborazione con Cavalieri e dell' \texttt{ECScalaDSL}.
+
+\subsubsection{Component}\label{subsubsec:component-desc}
+\texttt{Component} è il trait che un utilizzatore del framework deve estendere per implementare le caratteristiche delle
+proprie \texttt{Entity}.
+Contiene il riferimento alla \texttt{Entity} a cui è stato aggiunto e un \textit{extension method} per permettere la conversione
+in \texttt{CList}.
+
+\subsubsection{ComponentsContainer}\label{subsubsec:components-container}
+Il \texttt{ComponentsContainer} descritto nella sezione~TODO fornisce metodi per:
+\begin{itemize}
+    \item Aggiungere \texttt{Component} ad una \texttt{Entity}
+    \item Rimuovere \texttt{Component} da una \texttt{Entity}
+    \item Rimuovere \texttt{Entity}
+    \item Ottenere tutte le \texttt{Entity} ed i rispettivi \texttt{Component}
+\end{itemize}
+Sebbene inizialmente fosse stata utlizzata una HashMap come struttura dati di appoggio, si è in seguito optato
+per una \texttt{AnyRefMap}, la quale, come descritto nella documentazione ufficiale~\cite{anyRefMap}, è "significativamente più veloce di una HashMap".
+Questo ha aiutato nel rispettare il requisito non funzionale~\ref{itm:nf1}.
+
+\subsubsection{ECScalaDSL}\label{subsubsec:dsl-impl}
+La realizzazione del DSL si è basata sulla necessità di rendere l'utilizzo del framework il più intuitivo possibile,
+permettendo di implementare le funzionalità di base del framework in un linguaggio che appaia simile alla lingua inglese, come mostrato nel
+Listato~\ref{lst:dsl-withComp} e nel Listato~\ref{lst:dsl-view}.
+L'ispirazione è data dal DSL \texttt{Matchers}~\cite{matchers} di ScalaTest.
+
+Per utilizzare la sintassi specifica e le parole chiave del DSL, l'utente deve estendere il trait \texttt{ECScalaDSL} oltre ad importare
+le conversioni implicite \texttt{import scala.language.implicitConversions} e i given del framework \texttt{import dev.atedeg.ecscala.given}.
+
+\lstinputlisting[label={lst:dsl-withComp}, caption=Esempio scritto con \texttt{ECScalaDSL} di creazione di un \texttt{World} che contiene una \texttt{Entity} con i rispettivi \texttt{Component}.]
+{code/dsl-withComp.scala}
+
+\lstinputlisting[label={lst:dsl-view}, caption=Esempio scritto con \texttt{ECScalaDSL} di come ottenere una \texttt{View} dal \texttt{World} con uno specifico \texttt{Component} escludendone un altro.]
+{code/dsl-view.scala}
+
+Le funzionalità del DSL sono state implementate facendo largo uso dei metodi come operatori infissi in modo tale
+da rendere il codice simile ad una frase.
+Inoltre, sono stati utilizzati i seguenti meccanismi di Scala 3:
+\begin{itemize}
+    \item \textbf{Extension methods:} utilizzato per abilititare sulla classe \texttt{Entity} i metodi \texttt{withComponents}
+    e sulla classe \texttt{World} i metodi \texttt{hasAn} e \texttt{hasA}.
+    Inoltre, è stato applicato il pattern Pimp My Library per il metodo \texttt{withComponent} di \texttt{Entity} e per abilitare metodi di aggiunta e rimozione con operatori
+    ad entrambe le classi sopracitate.
+    \item \textbf{Context functions:} la funzionalità si è rivelata particolarmente utile per il metodo \texttt{hasA}, usato per aggiungere
+    un \texttt{System} al \texttt{World}.
+    Come si vede nel Listato~\ref{lst:dsl-ctxf}, il metodo prende in ingresso una \textit{Context function} che va da \texttt{World} a \texttt{Unit}.
+    Il questo modo il \texttt{World} viene passato implicitamente alla funzione che lo utilizza permettendo l'aggiunta del \texttt{System}.
+    \item \textbf{Implicit conversions:} sono state implementate due conversioni implicite \texttt{componentToClist[C <: Component: ComponentTag]: Conversion[C, C &: CNil]}
+    e \texttt{Conversion[Entity, Seq[Entity]]} per evitare overloading di metodi.
+\end{itemize}
+
+\lstinputlisting[label={lst:dsl-ctxf}, caption=Esempio di utilizzo di una \textit{Context function} nel metodo \texttt{hasA}.]
+{code/dsl-ctxf.scala}
+
+Si è utilizzata una \textit{Type Class} \texttt{From} per realizzare la parte di sintassi che permette di effettuare arbitrarie operazioni su \texttt{World} e \texttt{Entity}
+con il metodo \texttt{from} (parola chiave del DSL).
+Come si vede nel diagramma in Figura~TODO il trait permette di specificare il tipo al quale si applica il metodo \texttt{from} e il suo tipo di ritorno.
+In questo modo, si può implementare la classe specifica per abilitare la sintassi necessaria.
+
+
+\section{Benchmarks}\label{sec:benchmarks}
 Il requisito non funzionale~\ref{itm:nf1} richiede che il framework soddisfi un certo livello di prestazioni;
 per questo motivo è stato necessario quantificare oggettivamente quali fossero le effettive prestazioni raggiunte.
 I benchmark sono uno strumento piuttosto efficace per valutare i tempi di esecuzione (e non solo), fornendo

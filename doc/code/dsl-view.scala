@@ -1,0 +1,1 @@
+val view = getView[Position &: CNil].excluding[Velocity &: CNil] from world
