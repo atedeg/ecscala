@@ -2,10 +2,10 @@
 
 \section{Tecnologie utilizzate}\label{sec:tecnologie-utilizzate}
 Per la realizzazione della demo non sono state utilizzate librerie esterne se non ScalaTest e
-Scalafmt - opportunamente configurato - per la formattazione del codice.
-Si segnala inoltre che, a causa dell'incompatibilità con Scala 3, abbiamo utilizzato la libreria JaCoCo invece di
+Scalafmt\cite{scalafmt} - opportunamente configurato - per la formattazione del codice.
+Si segnala inoltre che, a causa dell'incompatibilità con Scala 3,  è stata utilizzata la libreria JaCoCo\cite{jacoco} invece di
 Scoverage.
-Infine, non abbiamo potuto utilizzare Scalafix per la quale non abbiamo trovato alternative.
+Infine, non avendo individuato alcuna alternativa, non è stato possibile utilizzare Scalafix.
 
 \section{Suddivisione del lavoro}\label{sec:suddivisione-del-lavoro}
 In questa sezione viene illustrata la suddivisione del lavoro e le parti di progetto realizzate da ciascun membro del
@@ -188,10 +188,10 @@ usata per ottenere le entità sulle quali iterare.
 
 \subsection{Vitali}\label{subsec:linda-vitali}
 All'interno del team, oltre a quello di sviluppatrice, ho svolto anche il ruolo di \textit{Product Owner}.
-Mi sono dunque occupata di redigere \textit{Product Backlog} e \textit{Sprint Backlog} al termine dei meeting, riportando quanto accordato
-insieme agli altri membri e di supervisionare l'organizzazione del processo di sviluppo.
+Dunque, mi sono occupata di supervisionare l'organizzazione del processo di sviluppo e di redigere \textit{Product Backlog}
+e \textit{Sprint Backlog} al termine dei meeting, riportando quanto accordato insieme agli altri membri.
 Per quanto riguarda la parte di sviluppo del codice, mi sono occupata di una prima implementazione della classe \texttt{Component},
-del \texttt{ComponentsContainer} in collaborazione con Cavalieri e dell' \texttt{ECScalaDSL}.
+del \texttt{ComponentsContainer} in collaborazione con Cavalieri e dell'\texttt{ECScalaDSL}.
 
 \subsubsection{Component}\label{subsubsec:component-desc}
 \texttt{Component} è il trait che un utilizzatore del framework deve estendere per implementare le caratteristiche delle
@@ -200,24 +200,24 @@ Contiene il riferimento alla \texttt{Entity} a cui è stato aggiunto e un \texti
 in \texttt{CList}.
 
 \subsubsection{ComponentsContainer}\label{subsubsec:components-container}
-Il \texttt{ComponentsContainer} descritto nella sezione~TODO fornisce metodi per:
+Il \texttt{ComponentsContainer} descritto nella Sezione~TODO fornisce metodi per:
 \begin{itemize}
     \item Aggiungere \texttt{Component} ad una \texttt{Entity}
     \item Rimuovere \texttt{Component} da una \texttt{Entity}
     \item Rimuovere \texttt{Entity}
     \item Ottenere tutte le \texttt{Entity} ed i rispettivi \texttt{Component}
 \end{itemize}
-Sebbene inizialmente fosse stata utlizzata una HashMap come struttura dati di appoggio, si è in seguito optato
-per una \texttt{AnyRefMap}, la quale, come descritto nella documentazione ufficiale~\cite{anyRefMap}, è "significativamente più veloce di una HashMap".
+Sebbene inizialmente fosse stata utilizzata una HashMap come struttura dati, si è in seguito optato
+per una \texttt{AnyRefMap}, la quale, come descritto nella documentazione ufficiale~\cite{anyRefMap}, è ``significativamente più veloce di una HashMap''.
 Questo ha aiutato nel rispettare il requisito non funzionale~\ref{itm:nf1}.
 
 \subsubsection{ECScalaDSL}\label{subsubsec:dsl-impl}
 La realizzazione del DSL si è basata sulla necessità di rendere l'utilizzo del framework il più intuitivo possibile,
 permettendo di implementare le funzionalità di base del framework in un linguaggio che appaia simile alla lingua inglese, come mostrato nel
 Listato~\ref{lst:dsl-withComp} e nel Listato~\ref{lst:dsl-view}.
-L'ispirazione è data dal DSL \texttt{Matchers}~\cite{matchers} di ScalaTest.
+Per farlo, ci si è ispirati al DSL \texttt{Matchers}~\cite{matchers} di ScalaTest.
 
-Per utilizzare la sintassi specifica e le parole chiave del DSL, l'utente deve estendere il trait \texttt{ECScalaDSL} oltre ad importare
+Per utilizzare la sintassi specifica e le parole chiave del DSL, l'utente deve estendere il trait \texttt{ECScalaDSL} oltre a importare
 le conversioni implicite \texttt{import scala.language.implicitConversions} e i given del framework \texttt{import dev.atedeg.ecscala.given}.
 
 \lstinputlisting[label={lst:dsl-withComp}, caption=Esempio scritto con \texttt{ECScalaDSL} di creazione di un \texttt{World} che contiene una \texttt{Entity} con i rispettivi \texttt{Component}.]
@@ -227,19 +227,19 @@ le conversioni implicite \texttt{import scala.language.implicitConversions} e i 
 {code/dsl-view.scala}
 
 Le funzionalità del DSL sono state implementate facendo largo uso dei metodi come operatori infissi in modo tale
-da rendere il codice simile ad una frase.
+da rendere il codice simile a una frase.
 Inoltre, sono stati utilizzati i seguenti meccanismi di Scala 3:
 \begin{itemize}
-    \item \textbf{Extension methods:} utilizzato per abilititare sulla classe \texttt{Entity} i metodi \texttt{withComponents}
+    \item \textbf{Extension methods:} utilizzato per abilitare sulla classe \texttt{Entity} i metodi \texttt{withComponents}
     e sulla classe \texttt{World} i metodi \texttt{hasAn} e \texttt{hasA}.
-    Inoltre, è stato applicato il pattern Pimp My Library per il metodo \texttt{withComponent} di \texttt{Entity} e per abilitare metodi di aggiunta e rimozione con operatori
+    Inoltre, è stato applicato il pattern \textit{Pimp My Library} per il metodo \texttt{withComponent} di \texttt{Entity} e per abilitare metodi di aggiunta e rimozione con operatori
     ad entrambe le classi sopracitate.
-    \item \textbf{Context functions:} la funzionalità si è rivelata particolarmente utile per il metodo \texttt{hasA}, usato per aggiungere
+    \item \textbf{Context functions\cite{contextfunctions}:} la funzionalità si è rivelata particolarmente utile per il metodo \texttt{hasA}, usato per aggiungere
     un \texttt{System} al \texttt{World}.
-    Come si vede nel Listato~\ref{lst:dsl-ctxf}, il metodo prende in ingresso una \textit{Context function} che va da \texttt{World} a \texttt{Unit}.
+    Come si può notare nel Listato~\ref{lst:dsl-ctxf}, il metodo prende in ingresso una \textit{Context function} che va da \texttt{World} a \texttt{Unit}.
     Il questo modo il \texttt{World} viene passato implicitamente alla funzione che lo utilizza permettendo l'aggiunta del \texttt{System}.
-    \item \textbf{Implicit conversions:} sono state implementate due conversioni implicite \texttt{componentToClist[C <: Component: ComponentTag]: Conversion[C, C &: CNil]}
-    e \texttt{Conversion[Entity, Seq[Entity]]} per evitare overloading di metodi.
+    \item \textbf{Implicit conversions:} sono state implementate due conversioni implicite \texttt{componentToClist[C~<:~Component:~ComponentTag]:~Conversion[C,~C~\&:~CNil]}
+    e \texttt{Conversion[Entity,~Seq[Entity]]} per evitare overloading di metodi.
 \end{itemize}
 
 \lstinputlisting[label={lst:dsl-ctxf}, caption=Esempio di utilizzo di una \textit{Context function} nel metodo \texttt{hasA}.]
