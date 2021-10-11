@@ -12,8 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.{ Arguments, MethodSource }
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
 import org.testfx.api.FxRobot
 import org.testfx.assertions.api.Assertions.assertThat
 import org.testfx.framework.junit5.{ ApplicationExtension, Start }
@@ -121,7 +119,6 @@ object TestData {
 private var mainScene: Scene = _
 private var controller: MainViewController = _
 
-@RunWith(classOf[JUnitPlatform])
 @ExtendWith(Array(classOf[ApplicationExtension]))
 class GUITest {
 
