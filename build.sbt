@@ -1,10 +1,8 @@
-import sbtghactions.GenerativePlugin.autoImport.WorkflowStep
-import sbtghactions.UseRef
-import xerial.sbt.Sonatype.autoImport.sonatypeRepository
-
 val scala3Version = "3.0.1"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
+
+ThisBuild / resolvers += Resolver.jcenterRepo
 
 ThisBuild / homepage := Some(url("https://github.com/nicolasfara/ecscala"))
 ThisBuild / organization := "dev.atedeg"
@@ -188,19 +186,16 @@ lazy val demo = project
   .dependsOn(core)
   .settings(
     publish / skip := true,
+    Test / fork := true,
     assembly / assemblyJarName := "ECScalaDemo.jar",
     githubWorkflowArtifactUpload := false,
     libraryDependencies ++= scalaTest,
     libraryDependencies += "org.scalatestplus" %% "mockito-3-12" % "3.2.10.0" % "test",
     libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
-    libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "11" classifier osName),
+    libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName),
     libraryDependencies += "org.testfx" % "testfx-core" % "4.0.16-alpha" % "test",
     libraryDependencies += "org.testfx" % "testfx-junit5" % "4.0.16-alpha" % "test",
-    libraryDependencies += "org.testfx" % "openjfx-monocle" % "jdk-11+26" % "test",
-    libraryDependencies += "org.junit.jupiter" % "junit-jupiter-api" % "5.8.1" % "test",
-    libraryDependencies += "org.junit.jupiter" % "junit-jupiter-params" % "5.8.1" % "test",
-    libraryDependencies += "org.junit.platform" % "junit-platform-runner" % "1.8.1" % "test",
-    libraryDependencies += "org.junit.jupiter" % "junit-jupiter-engine" % "5.8.1" % "test",
-    libraryDependencies += "org.junit.vintage" % "junit-vintage-engine" % "5.8.1" % "test",
-    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
+    libraryDependencies += "org.testfx" % "openjfx-monocle" % "jdk-12.0.1+2" % "test",
+    libraryDependencies += "org.junit.jupiter" % "junit-jupiter" % "5.8.1" % "test",
+    libraryDependencies += "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % "test",
   )
