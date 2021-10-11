@@ -8,19 +8,85 @@ massima riportato in Figura~TODO.
 
 Il pattern architetturale scelto è \ECS, poiché si presta bene a questo genere di applicazioni.
 
-\section{Design di dettaglio}\label{sec:demo-design-di-dettaglio}
-
 Per non legarsi a una specifica libreria grafica, si è deciso d'introdurre il \textit{façade} \texttt{ECSCanvas}
 che espone dei metodi di alto livello per disegnare le primitive richieste (in particolare, cerchio e linea) e ottenere
 le dimensioni dell'area di disegno.
 
+\section{Design di dettaglio}\label{sec:demo-design-di-dettaglio}
+Per ridurre la complessità nell'implementazione dei sistemi si è deciso di demandare la gestione della posizione delle
+palle nello spazio bidimensionale allo \texttt{SpacePartitionContainer}.
+Come mostrato in Figura~\ref{todo} sono state realizzate due interfaccie che separano le operazioni di modifica da
+quelle di lettura dello stato;
+in questo modo si può garantire che solo i sistemi che hanno bisogno di aggiungere elementi al container possano farlo.
+Una trattazione più approfondita della logica di funzionamento del container si trova alla Sezione~\ref{todo}.
+
 Si elencano di seguito i sistemi individuati ai fini della realizzazione della demo:
 \begin{itemize}
-    \item \textbf{RegionAssignmentSystem}: popola lo \texttt{SpacePartitionContainer} affinché possa essere usato dal
-    \textbf{CollisionSystem} (si veda Sottosezione~\ref{subsec:demo-di-domenico} per maggiori dettagli)
+    \item \textbf{AutoPauseSystem}: mette in automatico il gioco in pausa quando nessuna palla è più in movimento
+    \item \textbf{BallCreationRenderingSystem}: si occupa di renderizzare la fase di creazione di una nuova palla
+    \item \textbf{BallCreationSystem}: aggiunge una nuova palla al \World
+    \item \textbf{BallSelectionSystem}: seleziona una palla quando viene cliccata
+    \item \textbf{ClearCanvasSystem}: pulisce il canvas a ogni frame
     \item \textbf{CollisionSystem}: calcola le nuove velocità di eventuali entità che collidono fra loro
-    \item \textbf{WallCollisionSystem}: calcola le nuove velocità delle entità che collidono con i bordi della simulazione
+    \item \textbf{FrictionSystem}: calcola le nuove velocità considerando il coefficente di frizione
+    \item \textbf{MovementSystem}: calcola le nuove posizioni delle palle
+    \item \textbf{RegionAssignmentSystem}: assegna le palle a specifiche regioni del canvas
+    \item \textbf{RenderSystem}: effettua il rendering delle palle
+    \item \textbf{VelocityArrowSystem}: disegna il vettore della velocità quando si modifica la velocità a una palla
+    \item \textbf{VelocityEditingSystem}: assegna il nuovo valore di velocità a una palla
+    \item \textbf{WallCollisionSystem}: gestisce le collisioni delle palle con i muri
 \end{itemize}
+
+Per ridurre la complessità nell'implementazione dei sistemi si è deciso di demandare la gestione della posizione delle
+palle nello spazio bidimensionale allo \texttt{SpacePartitionContainer}.
+Come mostrato in Figura~\ref{todo} sono state realizzate due interfaccie che separano le operazioni di modifica da
+quelle di lettura dello stato;
+in questo modo si può garantire che solo i sistemi che hanno bisogno di aggiungere elementi al container possano farlo.
+Una trattazione più approfondita della logica di funzionamento del container si trova alla Sezione~\ref{subsec:container}.
+
+\subsection{Macchina a stati finiti}\label{subsec:macchina-a-stati-finiti}
+Le macchine a stati finiti (FSM) consentono di descrivere formalmente il comportamento di un sistema.
+Si è quindi scelto tale formalismo per descrivere il funzionamento della simulazione.
+
+Sono stati identificati sei stati: \textit{Pause}, \textit{Play}, \textit{Add Balls}, \textit{Select Ball},
+\textit{Change Velocity} e \textit{Dragging}.
+A seguito della definizione degli stati del sistema, sono stati definiti gli eventi di transizione tra stati.
+Di seguito viene riportata la descrizione di tali eventi:
+\begin{itemize}
+    \item \textit{PlayPauseBtn.clicked}: rappresenta la pressione del pulsante per eseguire o mettere in pausa la
+    simulazione
+    \item \textit{AddBallBtn.clicked}: rappresenta la pressione del pulsante per l'aggiunta di palle alla simulazione
+    \item \textit{ChangeVelBtn.clicked}: rappresenta la pressione del pulsante per cambiare la velocità a una palla
+    \item \textit{Ball.selected}: rappresenta l'evento di selezione di una palla
+    \item \textit{Mouse.clicked}: rappresenta il singolo click del mouse
+    \item \textit{Mouse.dragging}: rappresenta l'evento di trascinamento del mouse
+    \item \textit{Mouse.released}: rappresenta l'evento di rilascio del tasto del mouse
+\end{itemize}
+
+In Figura~\ref{fig:fsm-demo} viene riportata la macchina a stati finiti utilizzata per descrivere il comportamento
+della simulazione.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/fsm-demo}
+    \caption{Macchina a stati finiti che modella il flusso di esecuzione della demo.}\label{fig:fsm-demo}
+\end{figure}
+
+In una prima implementazione della demo si erano definiti oggetti globali che mantenessero lo stato della simulazione.
+Ben presto ci si è resi conto della difficoltà nel gestire tutte le combinazioni dei campi dell'oggetto, oltre
+ai vari bug che si verificavano durante l'implementazione della demo.
+L'introduzione della macchina a stati ha portato diversi vantaggi: si è semplificata la gestione dello
+stato di simulazione, le precondizioni di esecuzione dei sistemi fanno riferimento allo stato della FSM e non più alla
+combinazione di più variabili booleane e la logica di aggiornamento dei componenti della GUI si è semplificata
+notevolmente.
+Grazie alla FMS è stato implementato un testing esaustivo delle precondizioni dei sistemi, esaminando tutte
+le possibili configurazioni della FSM in unione agli eventi del mouse.
+Grazie a questo è stato possibile individuare piccoli bug nella logica dei \System e inconsistenze nell'interfaccia
+grafica.
+
+Infine, grazie al contributo di Cavalieri, sono stati predisposti dei test per l'interfaccia grafica volti a verificare
+la correttezza della FSM. Per una trattazione approfondita sui test della GUI si faccia riferimento alla
+Sezione~\ref{TODO}.
 
 \section{Implementazione}\label{sec:demo-implementazione}
 
@@ -28,7 +94,7 @@ Di seguito si riportano gli aspetti implementativi che meritano una trattazione 
 
 \subsection{Di Domenico}\label{subsec:demo-di-domenico}
 
-\subsubsection{Collision System}
+\subsubsection{Collision System}\label{subsec:container}
 Il sistema principale che gestisce la simulazione è il \texttt{CollisionSystem}: questo implementa i calcoli necessari
 per testare se c'è una collisione fra due corpi e, in caso affermativo, calcolarne le nuove velocità.
 
@@ -64,9 +130,9 @@ considera solo una metà dell'intorno, mentre l'altra verrà coperta nelle succe
         \draw[thick,->] (0, 7.5) -- (7.5, 7.5) node[above=2mm] {x};
         \draw[thick,->] (0, 7.5) -- (0, 0) node[left=2mm] {y};
         \foreach \x [count=\i from 0] in {0, 1.5, 3, 4.5, 6}
-            \draw (0.75+\x, 7.6) -- (0.75+\x, 7.4) node[above=2mm]{$\i$};
+        \draw (0.75+\x, 7.6) -- (0.75+\x, 7.4) node[above=2mm]{$\i$};
         \foreach \y [count=\i from 0] in {0, 1.5, 3, 4.5, 6}
-            \draw (-0.1, 6.75-\y) -- (0.1, 6.75-\y) node[left=2mm]{$\i$};
+        \draw (-0.1, 6.75-\y) -- (0.1, 6.75-\y) node[left=2mm]{$\i$};
         \draw (3.75, 4.2) circle (0.75cm);
         \filldraw[black] (3.75, 4.2) circle (2pt) node[anchor=west]{$C_1$};
         \draw (2.55, 5.1) circle (0.75cm);
