@@ -8,10 +8,6 @@ massima riportato in Figura~TODO.
 
 Il pattern architetturale scelto è \ECS, poiché si presta bene a questo genere di applicazioni.
 
-Per non legarsi a una specifica libreria grafica, si è deciso d'introdurre il \textit{façade} \texttt{ECSCanvas}
-che espone dei metodi di alto livello per disegnare le primitive richieste (in particolare, cerchio e linea) e ottenere
-le dimensioni dell'area di disegno.
-
 \section{Design di dettaglio}\label{sec:demo-design-di-dettaglio}
 Per ridurre la complessità nell'implementazione dei sistemi si è deciso di demandare la gestione della posizione delle
 palle nello spazio bidimensionale allo \texttt{SpacePartitionContainer}.
@@ -63,12 +59,6 @@ Di seguito viene riportata la descrizione di tali eventi:
     \item \textit{Mouse.released}: rappresenta l'evento di rilascio del tasto del mouse
 \end{itemize}
 
-\section{Tecnologie utilizzate}\label{sec:tecnologie-utilizzate-demo}
-Anche per l'implementazione della demo ci sono stati problemi di incompatibilità con Scala 3:
-in particolare è stata usata la libreria Mockito\cite{mockito} invece di ScalaMock e non è stato possibile utilizzare ScalaFXML
-che avrebbe fornito una sintassi idiomatica per usare JavaFX da Scala\@.
-Per la realizzazione dell'interfaccia grafica è stata utilizzata la libreria ScalaFX\@.
-
 In Figura~\ref{fig:fsm-demo} viene riportata la macchina a stati finiti utilizzata per descrivere il comportamento
 della simulazione.
 
@@ -95,51 +85,13 @@ la correttezza della FSM. Per una trattazione approfondita sui test della GUI si
 Sezione~\ref{TODO}.
 
 \section{Implementazione}\label{sec:demo-implementazione}
-\subsection{Macchina a stati finiti}\label{subsec:macchina-a-stati-finiti}
-Le macchine a stati finiti (FSM) consentono di descrivere formalmente il comportamento di un sistema.
-Si è quindi scelto tale formalismo per descrivere il funzionamento della simulazione.
+Di seguito si riportano gli aspetti implementativi che meritano una trattazione più approfondita.
 
-Sono stati identificati sei stati: \textit{Pause}, \textit{Play}, \textit{Add Balls}, \textit{Select Ball},
-\textit{Change Velocity} e \textit{Dragging}.
-A seguito della definizione degli stati del sistema, sono stati definiti gli eventi di transizione tra stati.
-Di seguito viene riportata la descrizione di tali eventi:
-\begin{itemize}
-    \item \textit{PlayPauseBtn.clicked}: rappresenta la pressione del pulsante per eseguire o mettere in pausa la
-    simulazione
-    \item \textit{AddBallBtn.clicked}: rappresenta la pressione del pulsante per l'aggiunta di palle alla simulazione
-    \item \textit{ChangeVelBtn.clicked}: rappresenta la pressione del pulsante per cambiare la velocità a una palla
-    \item \textit{Ball.selected}: rappresenta l'evento di selezione di una palla
-    \item \textit{Mouse.clicked}: rappresenta il singolo click del mouse
-    \item \textit{Mouse.dragging}: rappresenta l'evento di trascinamento del mouse
-    \item \textit{Mouse.released}: rappresenta l'evento di rilascio del tasto del mouse
-\end{itemize}
-
-In Figura~\ref{fig:fsm-demo} viene riportata la macchina a stati finiti utilizzata per descrivere il comportamento
-della simulazione.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{img/fsm-demo}
-    \caption{Macchina a stati finiti che modella il flusso di esecuzione della demo.}\label{fig:fsm-demo}
-\end{figure}
-
-In una prima implementazione della demo si erano definiti oggetti globali che mantenessero lo stato della simulazione.
-Ben presto ci si è resi conto della difficoltà nel gestire tutte le combinazioni dei campi dell'oggetto, oltre
-ai vari bug che si verificavano durante l'implementazione della demo.
-L'introduzione della macchina a stati ha portato diversi vantaggi: si è semplificata la gestione dello
-stato di simulazione, le precondizioni di esecuzione dei sistemi fanno riferimento allo stato della FSM e non più alla
-combinazione di più variabili booleane e la logica di aggiornamento dei componenti della GUI si è semplificata
-notevolmente.
-Grazie alla FSM è stato implementato un testing esaustivo delle precondizioni dei sistemi, esaminando tutte
-le possibili configurazioni della FSM in unione agli eventi del mouse.
-Grazie a questo è stato possibile individuare piccoli bug nella logica dei \System e inconsistenze nell'interfaccia
-grafica.
-
-Infine, grazie al contributo di Cavalieri, sono stati predisposti dei test per l'interfaccia grafica volti a verificare
-la correttezza della FSM. Per una trattazione approfondita sui test della GUI si faccia riferimento alla
-Sezione~\ref{TODO}.
-
-\section{Implementazione}\label{sec:demo-implementazione}
+\section{Tecnologie utilizzate}\label{sec:demo-tecnologie-utilizzate}
+Anche per l'implementazione della demo ci sono stati problemi di incompatibilità con Scala 3:
+in particolare è stata usata la libreria Mockito\cite{mockito} invece di ScalaMock e non è stato possibile utilizzare ScalaFXML
+che avrebbe fornito una sintassi idiomatica per usare JavaFX da Scala\@.
+Per la realizzazione dell'interfaccia grafica è stata utilizzata la libreria ScalaFX\cite{scalafx}\@.
 
 \subsection{Farabegoli}\label{subsec:demo-farabegoli}
 \subsubsection{Game loop}
@@ -181,7 +133,6 @@ L'interfaccia si compone di una singola finestra che mostra una serie di bottoni
 simulazione, oltre a un pannello composto da due slider che consentono di configurare parametri di simulazione.
 Al centro della finestra è presente un canvas che renderizza gli oggetti della simulazione.
 L'interfaccia utente è stata sviluppata affinché risulti intuitiva e fornisca la massima semplicità d'uso all'utente.
-Di seguito si riportano gli aspetti implementativi che meritano una trattazione più approfondita.
 
 \subsection{Di Domenico}\label{subsec:demo-di-domenico}
 
