@@ -67,7 +67,7 @@ Di seguito viene riportata la descrizione di tali eventi:
 Anche per l'implementazione della demo ci sono stati problemi di incompatibilità con Scala 3:
 in particolare è stata usata la libreria Mockito\cite{mockito} invece di ScalaMock e non è stato possibile utilizzare ScalaFXML
 che avrebbe fornito una sintassi idiomatica per usare JavaFX da Scala\@.
-Per la realizzazione dell'interfaccia grafica è stata utilizzata la libreria ScalaFX\cite{scalafx}\@.
+Per la realizzazione dell'interfaccia grafica è stata utilizzata la libreria ScalaFX\@.
 
 In Figura~\ref{fig:fsm-demo} viene riportata la macchina a stati finiti utilizzata per descrivere il comportamento
 della simulazione.
@@ -212,7 +212,7 @@ mostrato in Figura~\ref{fig:space-partition}.
 Per non processare due volte le coppie di entità, si costruiscono tutte le possibili combinazioni di lunghezza 2 e si
 considera solo una metà dell'intorno, mentre l'altra verrà coperta nelle successive iterazioni delle regioni non vuote.
 
-\begin{figure}[htp]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \fill[red!15!white] (1.5, 6) rectangle (4.5, 3);
@@ -238,3 +238,17 @@ considera solo una metà dell'intorno, mentre l'altra verrà coperta nelle succe
     si testerà quindi la collisione fra $C_1$ e $C_2$ e fra $C_1$ e $C_3$, mentre $C_4$ non viene preso in considerazione.}
     \label{fig:space-partition}
 \end{figure}
+
+\subsection{Vitali}\label{subsec:demo-vitali}
+Nella parte di demo, oltre a \texttt{MovementSystem}, \texttt{FrictionSystem} e \texttt{RenderSystem},
+mi sono occupata di una prima implementazione del \texttt{SimulationStatus}, che in seguito è stato adattato da Farabegoli
+alla FSM sopradescritta.
+Inoltre, per consentire il riuso del codice e non legarsi ad una specifica libreria grafica, ho
+implementato il trait \texttt{ECSCanvas}, che fornisce metodi per effettuare operazioni di:
+\begin{itemize}
+    \item Disegno di un cerchio e una linea
+    \item Ottenimento delle dimensioni dell'area di disegno
+    \item Ripristino dell'area di disegno
+\end{itemize}
+Per il caso in esame, essendo stata scelta la libreria ScalaFX, ho realizzato anche la classe concreta \texttt{ScalaFXCanvas} che
+estende il trait.
