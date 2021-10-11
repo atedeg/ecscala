@@ -1,4 +1,6 @@
 \chapter{Design di dettaglio}\label{ch:design-di-dettaglio}
+In seguito alla realizzazione del design architetturale di massima sono state prese
+alcune scelte rilevanti relativamente alla progettazione di alcune parti del sistema.
 
 \section{Lista di componenti}\label{sec:lista-di-componenti}
 Una caratteristica importante della libreria è permettere di specificare nel tipo di un sistema (o una view)
@@ -28,12 +30,30 @@ riportata al Listato~\ref{lst:lstinputlisting}.
 
 \lstinputlisting[label={lst:lstinputlisting}, caption=Esempio di codice per implementare CList.]{code/clist.scala}
 
-\section{Container dei componenti}\label{sec:container-dei-componenti}
-\section{Builder dei sistemi}\label{sec:builder-dei-sistemi}
-\section{DSL}\label{sec:dsl}
+\section{Container di componenti}\label{sec:container-di-componenti}
+Come è possibile osservare in Figura~\ref{fig:world-detail}, dal design di dettaglio emerge come
+non siano le \Entity stesse a possedere i \Component che vengono loro assegnati.
+Infatti, la gestione dei componenti è demandata ad un \texttt{ComponentsContainer}; questo permette
+di aggiungere o rimuovere coppie entità-componente oppure di ottenere tutte le entità con uno specifico tipo
+di componente.
+In questo modo è possibile introdurre in maniera semplice ottimizzazioni nella gestione dei
+componenti per rendere la loro iterazione (fondamentale per i \System) quanto più veloce possibile.
 
+Grazie a questa scelta è stato piuttosto semplice modificare l'implementazione del
+\texttt{ComponentsContainer} per attuare ottimizzazioni (descritte nel paragrafo~TODO)
+necessarie a rispettare il requisito non funzionale~\ref{itm:nf1}.
 \begin{figure}
     \includegraphics{./img/WorldDetail}
-    \caption{Design di dettaglio}
-    \label{fig:figure2}
+    \caption{Design di dettaglio di World e Entities}
+    \label{fig:world-detail}
 \end{figure}
+
+\section{Builder dei sistemi}\label{sec:builder-dei-sistemi}
+Si è scelto di realizzare il pattern \texttt{Builder} per permettere una creazione di \System
+quanto più semplice possibile.
+Come mostrato nel diagramma riportato in Figura~TODO il \texttt{SystemBuilder} dispone di diversi metodi per
+specificare l'implementazione di alcuni dei metodi del sistema che verrà costruito.
+Per completare la costruzione tramite il \texttt{Builder} e ottenere il nuovo sistema bisogna specificare
+(tramite il metodo \texttt{withUpdate}) l'implementazione del suo metodo \texttt{update}.
+
+\section{DSL}\label{sec:dsl}

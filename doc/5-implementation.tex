@@ -44,6 +44,90 @@ del World.
 Mediante questi benchmark è stato possibile validare il requisito non funzionale sulla base di dati oggettivi.
 Per una descrizione più approfondita dei benchmark si faccia riferimento alla Sezione~\ref{sec:benchmarks}.
 
+\subsection{Cavalieri}\label{subsec:giacomo-cavalieri}
+Il mio compito principale è stato quello di realizzare i \texttt{ComponentTag}, \texttt{CListTag},
+e il \texttt{ComponentsContainer} descritto precedentemente alla Sezione~\ref{sec:container-di-componenti}.
+Inoltre ho collaborato con i miei colleghi alla realizzazione delle \texttt{CList}.
+
+\subsubsection{CList}
+Nelle prime fasi di sviluppo ho cercato di risolvere il problema del garantire la type-safety dei \System.
+Mi sono inizialmente documentato su possibili meccanismi forniti dal linguaggio individuando nell'utilizzo delle
+tuple una possibile soluzione.
+Infatti, in Scala 3 le tuple possono fungere da meccanismo per ottenere liste eterogenee di elementi
+preservando informazioni sul loro tipo\cite{tuples}.
+Tuttavia, questo ha comportato alcuni problemi come l'impossibilità di garantire a tempo di compilazione che le tuple
+fossero composte di soli elementi sottotipi di \texttt{Component}
+(\textit{i.e.} data la tupla $(T_1,\dots,T_n)$ garantire che $T_i <: \text{Component } \forall i=1,\dots,n$).
+Per questo, prendendo ispirazione dall'approccio utilizzato nella libreria Shapeless\cite{shapeless},
+ho individuato una possibile soluzione nell'adozione delle \texttt{CList}, realizzate in seguito
+da Farabegoli con il mio aiuto.
+
+\subsubsection{ComponentTag}
+Il framework realizzato utilizza in maniera pervasiva informazioni sui tipi dei componenti necessarie
+per la loro memorizzazione e manipolazione.
+Per questo è stato realizzato il \texttt{ComponentTag}: un oggetto che mantiene informazioni riguardo
+al tipo a tempo di compilazione di un componente;
+in questo modo è stato possibile raggruppare componenti con lo stesso tipo inferito all'interno del
+\texttt{ComponentsContainer}.
+
+Un altro aspetto fondamentale tenuto in considerazione è stato quello di garantire una certa semplicità di
+utilizzo della libreria.
+Infatti, sarebbe stato poco pratico per un utente dover specificare manualmente i \texttt{ComponentTag}
+come argomenti dei metodi che ne necessitano la conoscenza.
+Per ovviare a tale problema si sono sfruttati alcuni meccanismi avanzati offerti da Scala 3:
+in particolare l'uso di macro, inlining e i nuovi impliciti.
+
+Tramite un semplice import (\texttt{import dev.atedeg.ecscala.given}) l'utente non deve preoccuparsi
+della presenza dei \texttt{ComponentTag} che saranno generati automaticamente dal compilatore tramite
+un'apposita macro riportata nel Listato~\ref{lst:component-tag}.
+
+\lstinputlisting[label={lst:component-tag}, caption=Macro per la generazione di un \texttt{ComponentTag}.]
+{code/component-tag.sc}
+
+\subsubsection{CListTag}
+In maniera analoga a quanto discusso per i \texttt{ComponentTag} è stato definito un tag generato dal
+compilatore tramite macro per le \texttt{CList}.
+Infatti, è risultato fondamentale sfruttare la metaprogrammazione per effettuare controlli aggiuntivi
+a livello di compilazione sulla correttezza delle \texttt{CList}.
+Per esempio, non dev'essere possibile specificare una lista di
+componenti con tipi ripetuti nella definizione di un sistema; ciò non avrebbe
+senso dato che un'entità può avere al più un componente per tipo e si vuole impedire tale situazione
+al momento della compilazione.
+
+L'implementazione di tali controlli è riportata al Listato~\ref{lst:clist-tag}.
+\lstinputlisting[label={lst:clist-tag}, caption=Macro e controlli per la generazione di un \texttt{CListTag}.]
+{code/clist-tag.sc}
+
+\subsubsection{Deletable CLists}\label{sub:deletable}
+Un \System definito per alcuni tipi di componenti $T_{C1},\dots,T_{Cn}$ deve ritornare nel proprio metodo
+\texttt{update} una \texttt{CList} di componenti dello stesso tipo che verranno usati per aggiornare lo stato
+delle entità su cui il sistema può essere applicato.
+Durante il processo di sviluppo è sorta la necessità di poter indicare la rimozione di un particolare componente
+dall'entità: per esempio, il sistema di un videogioco che opera su entità dotate del componente \texttt{LifePoints}
+potrebbe voler rimuovere tale componente una volta che questo scende a 0.
+
+Utilizzare dei valori opzionali per indicare la rimozione o meno di un componente
+(\eg \texttt{Some(???)~\&:~None~\&:~CNil}) avrebbe comportato una
+riscrittura delle \texttt{CList} in modo tale da poter accettare valori opzionali.
+
+Una soluzione, a mio avviso più elegante, ha sfruttato due nuovi meccanismi introdotti in Scala 3:
+i \textit{match types}\cite{match-types} e gli \textit{union types}\cite{union-types}.
+Come mostrato nel Listato~\ref{lst:deletable} una versione ``deletable'' di una \texttt{CList}
+\texttt{T1~\&:~...~\&:~TN~\&:~CNil} non è altro
+che la lista stessa dove ogni elemento \texttt{Ti} viene sostituito da uno union type \texttt{(Ti | Deleted)}.
+Dato che un tipo \texttt{T} è sottotipo di \texttt{T | Other} una \texttt{CList} sarà sottotipo della sua
+equivalente versione \texttt{Deletable}.
+
+Così facendo l'utente può continuare a specificare una lista di componenti come valore di ritorno del metodo
+\texttt{update} dei sistemi;
+una sostanziale differenza sta nel fatto che, al posto di un qualunque componente, potrà specificare
+il componente speciale \texttt{Deleted} ad indicare che il componente in tale posizione è
+stato cancellato (\eg \texttt{C1~\&:~Deleted~\&:~CNil} indica che il secondo componente deve essere eliminato
+durante l'aggiornamento di stato dell'entità).
+
+\lstinputlisting[label={lst:deletable}, caption=Implementazione del tipo \texttt{Deletable[L~<:~CList]}]
+{./code/deletable.scala}
+
 \subsection{Di Domenico}\label{subsec:nicolò-di-domenico}
 
 Il mio ruolo nel progetto è stato principalmente quello d'implementare le \texttt{View} e i \texttt{System}, nonché
@@ -92,12 +176,7 @@ Il metodo \texttt{update} deve ritornare una \texttt{CList} dei nuovi componenti
 grazie all'utilizzo delle \texttt{CList} (descritte in dettaglio in~\ref{sec:lista-di-componenti}) verrà verificato a
 tempo di compilazione che i nuovi componenti abbiano lo stesso tipo di quelli su cui opera il sistema.
 Per permettere la cancellazione di alcuni dei componenti, è stato implementato un \textit{match type} chiamato
-\texttt{Deletable[L~<:~CList]}, come mostrato nel Listato~\ref{lst:deletable};
-il suo scopo è quello di permettere l'inserimento in ogni posizione della \texttt{CList} un componente speciale chiamato
-\texttt{Deleted}: in tal caso il componente in quella posizione sarà cancellato.
-
-\lstinputlisting[label={lst:deletable}, caption=Implementazione del tipo \texttt{Deletable[L~<:~CList]}]
-{./code/deletable.scala}
+\texttt{Deletable[L~<:~CList]}; una descrizione più dettagliata a riguardo è riportata alla Sezione~\ref{sub:deletable}.
 
 L'\texttt{ExcludingSystem} è completamente analogo all'\texttt{IteratingSystem}, in quanto cambia solo la \texttt{View}
 usata per ottenere le entità sulle quali iterare.
@@ -192,6 +271,8 @@ A fronte dei risultati ottenuti dai benchmark si può affermare che il framework
 discreto numero di entità.
 
 \section{Problemi riscontrati}\label{sec:problemi-riscontrati}
+
+\subsection{Scalatest}
 Nella libreria \texttt{scalatest} è stato riscontrato un bug nella sintassi \texttt{shouldNot typeCheck}.
 Tramite questa espressione, dovrebbe essere possibile verificare che una porzione di codice, specificata come stringa,
 non compili a causa di un errore nel processo di type checking.
@@ -210,6 +291,7 @@ Sebbene in entrambi i casi ci si aspetta che le espressioni non compilino a caus
 questo non accade e le espressioni vengono erroneamente valutate come valide.
 Il bug è stato segnalato agli sviluppatori della libreria mediante una issue~\cite{scalatest-bug}.
 
+\subsection{Cross building per Scala.js}
 Sin dalle prime fasi di sviluppo si è abilitata la modalità di \textit{cross-building}~\cite{cross-building} affinché il
 framework venisse compilato anche per Scala.js~\cite{scalajs}.
 Questo ha generato una serie di falsi errori all'interno dell'IDE (IntelliJ).
@@ -218,6 +300,36 @@ A tal proposito è stata aperta una issue~\cite{intellij-issue} sul bug tracker 
 Per una maggiore agilità nella scrittura del codice si è quindi scelto di rimuovere la \textit{cross-building} dal
 progetto.
 
+\subsection{System Builder}
+La funzione di \texttt{update} di un \System specifica diversi parametri (il \World in cui il sistema è eseguito,
+la \View contenente tutte le entità, i componenti dell'entità che sta venendo modificata, eccetera); tuttavia, può
+spesso l'implementazione del metodo \texttt{update} necessiterà di solo alcuni dei parametri elencati.
+Per questo motivo, inizialmente si è cercato di realizzare un \texttt{Builder} che permettesse di costruire
+dinamicamente la firma della funzione richiesta per costruire il sistema, permettendo una sintassi simile a quella
+riportata al Listato~\ref{lst:builder-syntax}.
+
+\lstinputlisting[label={lst:builder-syntax}, caption=Sintassi del Builder per la creazione di sistemi.]
+{./code/builder-syntax.sc}
+
+Questo ha portato ad individuare un problema nel compilatore Dotty che ha impedito di portare a compimento un simile
+builder.
+Infatti, a causa del problema, sarebbe stato necessario indicare un'annotazione di tipo nei parametri della
+funzione la cui firma è stata costruita dinamicamente (un esempio è riportato al Listato~\ref{lst:builder-syntax-bug});
+questo avrebbe comportato la scrittura di codice particolarmente verboso in contrasto con l'intento originale che aveva
+portato ad ideare tale builder.
+
+Il bug\cite{dotty-bug} è stato segnalato nelle issue del repository GitHub del compilatore Dotty
+ed è stato recentemente risolto.
+
+\lstinputlisting[
+    label={lst:builder-syntax-bug},
+    caption={Sintassi effettiva del Builder,
+    si notino le annotazioni di tipo superflue ma necessarie per la compilazione del codice.}
+]
+{./code/builder-syntax-bug.sc}
+
+
+\subsection{Problemi di compatibilità}
 Si segnala che, essendo il rilascio di Scala 3 relativamente recente, non è stato possibile utilizzare
 le seguenti librerie per problemi di compatibilità:
 \begin{itemize}
