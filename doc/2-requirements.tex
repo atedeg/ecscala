@@ -4,12 +4,12 @@ In Tabella~\ref{tab:glossario} è riportato un gloassario con i principali conce
 \begin{table}[H]
     \begin{tabular}{p{0.17\linewidth}p{0.76\linewidth}}
         \toprule
-        \textbf{World}     & Contiene più \textit{entity} e i rispettivi \textit{component}.
-        Permette la registrazione di più \textit{system} che utilizza per aggiornare lo stato dei \textit{component} \\
-        \textbf{View}      & Rappresenta il sottoinsieme delle \textit{entity} di un \textit{world} con i soli \textit{component} specificati \\
-        \textbf{Entity}    & Contiene più \textit{entity} e i rispettivi \textit{component}                                                                                                           \\
-        \textbf{Component} & Rappresenta una particolare caratteristica da modellare per una \textit{entity}                                                                                              \\
-        \textbf{System}    & Aggiorna lo stato dei \textit{component} di tutte le \textit{entity} di una determinata \textit{view} secondo una logica definita dall'utilizzatore                          \\
+        \textbf{World}     & Contiene più \Entity e i rispettivi \Component.
+        Permette la registrazione di più \System che utilizza per aggiornare lo stato dei \Component \\
+        \textbf{View}      & Rappresenta il sottoinsieme delle \Entity di un \World con i soli \Component specificati \\
+        \textbf{Entity}    & Contiene più \Entity e i rispettivi \Component                                                                                                          \\
+        \textbf{Component} & Rappresenta una particolare caratteristica da modellare per una \Entity                                                                                             \\
+        \textbf{System}    & Aggiorna lo stato dei \Component di tutte le \Entity di una determinata \View secondo una logica definita dall'utilizzatore                          \\
         \bottomrule
     \end{tabular}\caption{\label{tab:glossario}Glossario dei termini del dominio.}
 \end{table}
@@ -30,10 +30,10 @@ I requisiti di business individuati sono:
 I requisiti utente sono sviluppati considerando il punto di vista dello sviluppatore che dovrà utilizzare il framework.
 In particolare:
 \begin{enumerate}[label=\textbf{\ref{sec:utente}.\arabic*}]
-    \item \label{itm:u1} Deve essere possibile creare l'universo che contiene tutte le \textit{entità}
-    \item \label{itm:u2} Deve essere possibile creare e rimuovere \textit{componenti}
-    \item \label{itm:u3} Deve essere possibile creare e rimuovere \textit{entità}
-    \item \label{itm:u4} Deve essere possibile creare \textit{sistemi}
+    \item \label{itm:u1} Deve essere possibile creare l'universo che contiene tutte le \Entity
+    \item \label{itm:u2} Deve essere possibile creare e rimuovere \Component
+    \item \label{itm:u3} Deve essere possibile creare e rimuovere \Entity
+    \item \label{itm:u4} Deve essere possibile creare \System
     \item \label{itm:u5} Deve essere possibile utilizzare un DSL per effettuare le operazioni sopra elencate
     \item \label{itm:u6} Per l'utente è importante avere un esempio di utilizzo del framework
 \end{enumerate}
@@ -41,44 +41,44 @@ In particolare:
 \section{Funzionali}\label{sec:funzionali}
 I requisiti funzionali, ricavati da quelli utente, sono:
 \begin{enumerate}[label=\textbf{\ref{sec:funzionali}.\arabic*}]
-    \item \label{itm:f1} Definire uno o più \textit{world}
+    \item \label{itm:f1} Definire uno o più \World
     \begin{enumerate}[label=\textbf{\ref{itm:f1}.\arabic*}]
-        \item \label{itm:ff1} Definire delle \textit{viste} che selezionino alcune \textit{entità} del \textit{mondo}
-        \item \label{itm:ff2} Far avanzare lo stato del \textit{mondo}, comportando l'aggiornamento delle sue \textit{entità}
+        \item \label{itm:ff1} Definire delle \View che selezionino alcune \Entity del \World
+        \item \label{itm:ff2} Far avanzare lo stato del \World, comportando l'aggiornamento delle sue \Entity
     \end{enumerate}
-    \item \label{itm:f2} Definire \textit{componenti}
-    \item \label{itm:f3} Creare \textit{entità} all'interno di un \textit{mondo}
-    \item \label{itm:f4} Rimuovere \textit{entità} dal \textit{mondo} in cui si trovano
-    \item \label{itm:f5} Manipolare lo stato delle \textit{entità}
+    \item \label{itm:f2} Definire \Component
+    \item \label{itm:f3} Creare \Entity all'interno di un \World
+    \item \label{itm:f4} Rimuovere \Entity dal \World in cui si trovano
+    \item \label{itm:f5} Manipolare lo stato delle \Entity
     \begin{enumerate}[label=\textbf{\ref{itm:f5}.\arabic*}]
-        \item \label{itm:ff3} Aggiungere \textit{componenti} alle \textit{entità}
-        \item \label{itm:ff4} Rimuovere \textit{componenti} dalle \textit{entità}
+        \item \label{itm:ff3} Aggiungere \Component alle \Entity
+        \item \label{itm:ff4} Rimuovere \Component dalle \Entity
     \end{enumerate}
-    \item \label{itm:f6} Creare diverse tipologie di \textit{view}
+    \item \label{itm:f6} Creare diverse tipologie di \View
     \begin{enumerate}[label=\textbf{\ref{itm:f6}.\arabic*}]
-        \item \label{itm:ff5} \textit{view} per ottenere tutte le \textit{entity} del \textit{world} che possiedono i \textit{components} specificati
-        \item \label{itm:ff6} \textit{view} per ottenere tutte le \textit{entity} del \textit{world} che non possiedono nessuno dei \textit{components} specificati
+        \item \label{itm:ff5} \View per ottenere tutte le \Entity del \World che possiedono i \Component specificati
+        \item \label{itm:ff6} \View per ottenere tutte le \Entity del \World che non possiedono nessuno dei \Component specificati
     \end{enumerate}
-    \item \label{itm:f7} Creare diverse tipologie di \textit{system} %per manipolare i \textit{componenti} delle \textit{entità}
+    \item \label{itm:f7} Creare diverse tipologie di \System
     \begin{enumerate}[label=\textbf{\ref{itm:f7}.\arabic*}]
-        \item \label{itm:ff7} \textit{system} per manipolare gli specifici \textit{components} delle \textit{entity}
-        \item \label{itm:ff10} \textit{system} che non operano sui \textit{component} delle \textit{entity} ma permettono di eseguire operazioni a ogni aggiornamento dello stato del \textit{world}
-        \item \label{itm:ff11} \textit{system} che consentono di escludere alcune \textit{entity} sulla base dei \textit{components} specificati
+        \item \label{itm:ff7} \System per manipolare gli specifici \Component delle \Entity
+        \item \label{itm:ff10} \System che non operano sui \Component delle \Entity ma permettono di eseguire operazioni a ogni aggiornamento dello stato del \World
+        \item \label{itm:ff11} \System che consentono di escludere alcune \Entity sulla base dei \Component specificati
     \end{enumerate}
-    \item \label{itm:f8} Registrare \textit{sistemi} nel \textit{mondo}
+    \item \label{itm:f8} Registrare \System nel \World
     \item \label{itm:f9} Fornire un DSL
     \begin{enumerate}[label=\textbf{\ref{itm:f9}.\arabic*}]
-        \item \label{itm:ff12} Definire \textit{sistemi}
-        \item \label{itm:ff13} Manipolare \textit{entità}
-        \item \label{itm:ff14} Manipolare lo stato del \textit{mondo}
+        \item \label{itm:ff12} Definire \System
+        \item \label{itm:ff13} Manipolare \Entity
+        \item \label{itm:ff14} Manipolare lo stato del \World
     \end{enumerate}
 \end{enumerate}
 
 
 \section{Non funzionali}\label{sec:non-funzionali}
-Considerando gli scenari d'uso elencati al punto~\ref{itm:b2}, il sistema deve rispettare il seguente requisito:
+Considerando gli scenari d'uso elencati al punto~\ref{itm:b2}, il \System deve rispettare il seguente requisito:
 \begin{enumerate}[label=\textbf{\ref{sec:non-funzionali}.\arabic*}]
-    \item \label{itm:nf1} Aggiornare velocità e posizione di 10'000 \textit{entità} in non più di 10ms
+    \item \label{itm:nf1} Aggiornare velocità e posizione di 10'000 \Entity in non più di 10ms
 \end{enumerate}
 
 
