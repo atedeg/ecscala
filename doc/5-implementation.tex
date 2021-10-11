@@ -196,11 +196,11 @@ del \texttt{ComponentsContainer} in collaborazione con Cavalieri e dell'\texttt{
 \subsubsection{Component}\label{subsubsec:component-desc}
 \texttt{Component} è il trait che un utilizzatore del framework deve estendere per implementare le caratteristiche delle
 proprie \texttt{Entity}.
-Contiene il riferimento alla \texttt{Entity} a cui è stato aggiunto e un \textit{extension method} per permettere la conversione
+Contiene il riferimento alla \texttt{Entity} a cui è stato aggiunto e un \textit{Extension Method}\cite{extensionmethods} per permettere la conversione
 in \texttt{CList}.
 
 \subsubsection{ComponentsContainer}\label{subsubsec:components-container}
-Il \texttt{ComponentsContainer} descritto nella Sezione~TODO fornisce metodi per:
+Il \texttt{ComponentsContainer} descritto nella Sezione~\ref{sec:container-di-componenti} fornisce metodi per:
 \begin{itemize}
     \item Aggiungere \texttt{Component} ad una \texttt{Entity}
     \item Rimuovere \texttt{Component} da una \texttt{Entity}
@@ -208,8 +208,9 @@ Il \texttt{ComponentsContainer} descritto nella Sezione~TODO fornisce metodi per
     \item Ottenere tutte le \texttt{Entity} ed i rispettivi \texttt{Component}
 \end{itemize}
 Sebbene inizialmente fosse stata utilizzata una HashMap come struttura dati, si è in seguito optato
-per una \texttt{AnyRefMap}, la quale, come descritto nella documentazione ufficiale~\cite{anyRefMap}, è ``significativamente più veloce di una HashMap''.
-Questo ha aiutato nel rispettare il requisito non funzionale~\ref{itm:nf1}.
+per una \texttt{AnyRefMap}, la quale, come descritto nella documentazione ufficiale~\cite{anyRefMap},
+è ``significativamente più veloce di una HashMap''. Infatti, come si può osservare in Tabella~\ref{tab:componentscontainer-benchmark},
+ha contribuito nel rispettare il requisito non funzionale~\ref{itm:nf1}.
 
 \subsubsection{ECScalaDSL}\label{subsubsec:dsl-impl}
 La realizzazione del DSL si è basata sulla necessità di rendere l'utilizzo del framework il più intuitivo possibile,
