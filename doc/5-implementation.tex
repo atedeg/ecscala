@@ -219,7 +219,8 @@ Listato~\ref{lst:dsl-withComp} e nel Listato~\ref{lst:dsl-view}.
 Per farlo, ci si è ispirati al DSL \texttt{Matchers}~\cite{matchers} di ScalaTest.
 
 Per utilizzare la sintassi specifica e le parole chiave del DSL, l'utente deve estendere il trait \texttt{ECScalaDSL} oltre a importare
-le conversioni implicite \texttt{import scala.language.implicitConversions} e i given del framework \texttt{import dev.atedeg.ecscala.given}.
+le conversioni implicite \texttt{import scala.language.implicitConversions} e i given del framework\\
+\texttt{import dev.atedeg.ecscala.given}.
 
 \lstinputlisting[label={lst:dsl-withComp}, caption=Esempio scritto con \texttt{ECScalaDSL} di creazione di un \texttt{World} che contiene una \texttt{Entity} con i rispettivi \texttt{Component}.]
 {code/dsl-withComp.scala}
@@ -239,7 +240,8 @@ Inoltre, sono stati utilizzati i seguenti meccanismi di Scala 3:
     un \texttt{System} al \texttt{World}.
     Come si può notare nel Listato~\ref{lst:dsl-ctxf}, il metodo prende in ingresso una \textit{Context function} che va da \texttt{World} a \texttt{Unit}.
     Il questo modo il \texttt{World} viene passato implicitamente alla funzione che lo utilizza permettendo l'aggiunta del \texttt{System}.
-    \item \textbf{Implicit conversions:} sono state implementate due conversioni implicite \texttt{componentToClist[C~<:~Component:~ComponentTag]:~Conversion[C,~C~\&:~CNil]}
+    \item \textbf{Implicit conversions:} sono state implementate due conversioni implicite\\
+    \texttt{componentToClist[C~<:~Component:~ComponentTag]:\\Conversion[C,~C~\&:~CNil]}
     e \texttt{Conversion[Entity,~Seq[Entity]]} per evitare overloading di metodi.
 \end{itemize}
 
