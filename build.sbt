@@ -1,5 +1,3 @@
-import java.io.File
-
 val scala3Version = "3.0.1"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
