@@ -218,8 +218,7 @@ permettendo di implementare le funzionalità di base del framework in un linguag
 Listato~\ref{lst:dsl-withComp} e nel Listato~\ref{lst:dsl-view}.
 Per farlo, ci si è ispirati al DSL \texttt{Matchers}~\cite{matchers} di ScalaTest.
 
-Per utilizzare la sintassi specifica e le parole chiave del DSL, l'utente deve estendere il trait \texttt{ECScalaDSL} oltre a importare
-le conversioni implicite \texttt{import scala.language.implicitConversions} e i given del framework\\
+Per utilizzare la sintassi specifica e le parole chiave del DSL, l'utente deve estendere il trait \texttt{ECScalaDSL}, abilitare le conversioni implicite (tramite \texttt{import scala.language.implicitConversions}) ed importare i given del framework\\
 \texttt{import dev.atedeg.ecscala.given}.
 
 \lstinputlisting[label={lst:dsl-withComp}, caption=Esempio scritto con \texttt{ECScalaDSL} di creazione di un \texttt{World} che contiene una \texttt{Entity} con i rispettivi \texttt{Component}.]
