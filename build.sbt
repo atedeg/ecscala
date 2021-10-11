@@ -200,5 +200,4 @@ lazy val demo = project
     libraryDependencies += "org.testfx" % "openjfx-monocle" % "jdk-12.0.1+2" % "test",
     libraryDependencies += "org.junit.jupiter" % "junit-jupiter" % "5.8.1" % "test",
     libraryDependencies += "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % "test",
-//    assembly / assemblyExcludedJars := (assembly / fullClasspath).value.filter(_.data.getName.startsWith("javafx-")),
   )
