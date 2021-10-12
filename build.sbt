@@ -119,12 +119,12 @@ ThisBuild / githubWorkflowPublish := Seq(
   ),
 )
 
-val scalaTest = Seq(
+lazy val scalaTestLibrary = Seq(
   "org.scalactic" %% "scalactic" % "3.2.9",
   "org.scalatest" %% "scalatest" % "3.2.9" % "test",
 )
 
-lazy val javafx = for {
+lazy val javaFxLibrary = for {
   module <- Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
   os <- Seq("win", "mac", "linux")
 } yield "org.openjfx" % s"javafx-$module" % "16" classifier os
@@ -143,7 +143,7 @@ lazy val core = project
   .in(file("core"))
   .settings(
     name := "ecscala",
-    libraryDependencies := scalaTest,
+    libraryDependencies := scalaTestLibrary,
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",
     ),
@@ -175,9 +175,7 @@ lazy val demo = project
     Test / fork := true,
     assembly / assemblyJarName := "ECScalaDemo.jar",
     githubWorkflowArtifactUpload := false,
-    libraryDependencies ++= scalaTest,
-    libraryDependencies ++= javafx,
-    libraryDependencies ++= Seq(
+    libraryDependencies ++= scalaTestLibrary ++ javaFxLibrary ++ Seq(
       "org.scalatestplus" %% "mockito-3-12" % "3.2.10.0" % "test",
       "org.scalafx" %% "scalafx" % "16.0.0-R24",
       "org.testfx" % "testfx-core" % "4.0.16-alpha" % "test",
