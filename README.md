@@ -1,5 +1,5 @@
 # ECScala
-General-purpose ECS Scala framework  
+An ECS Scala framework  
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub release](https://img.shields.io/github/release/nicolasfara/ecscala.svg)](https://gitHub.com/nicolasfara/ecscala/releases/)
