@@ -119,10 +119,15 @@ ThisBuild / githubWorkflowPublish := Seq(
   ),
 )
 
-val scalaTest = Seq(
+lazy val scalaTestLibrary = Seq(
   "org.scalactic" %% "scalactic" % "3.2.9",
   "org.scalatest" %% "scalatest" % "3.2.9" % "test",
 )
+
+lazy val javaFxLibrary = for {
+  module <- Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
+  os <- Seq("win", "mac", "linux")
+} yield "org.openjfx" % s"javafx-$module" % "16" classifier os
 
 lazy val root = project
   .in(file("."))
@@ -138,7 +143,7 @@ lazy val core = project
   .in(file("core"))
   .settings(
     name := "ecscala",
-    libraryDependencies := scalaTest,
+    libraryDependencies := scalaTestLibrary,
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",
     ),
@@ -162,25 +167,6 @@ lazy val benchmarks = project
     githubWorkflowArtifactUpload := false,
   )
 
-// Determine OS version of JavaFX binaries
-lazy val osName = System.getProperty("os.name") match {
-  case n if n.startsWith("Linux") => "linux"
-  case n if n.startsWith("Mac") => "mac"
-  case n if n.startsWith("Windows") => "win"
-  case _ => throw new Exception("Unknown platform!")
-}
-
-// Add dependency on JavaFX libraries, OS dependent
-lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics", "web", "media", "swing")
-
-ThisBuild / assemblyMergeStrategy := {
-  case PathList("module-info.class") => MergeStrategy.discard
-  case x if x.endsWith("/module-info.class") => MergeStrategy.discard
-  case x =>
-    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
-    oldStrategy(x)
-}
-
 lazy val demo = project
   .in(file("demo"))
   .dependsOn(core)
@@ -189,13 +175,18 @@ lazy val demo = project
     Test / fork := true,
     assembly / assemblyJarName := "ECScalaDemo.jar",
     githubWorkflowArtifactUpload := false,
-    libraryDependencies ++= scalaTest,
-    libraryDependencies += "org.scalatestplus" %% "mockito-3-12" % "3.2.10.0" % "test",
-    libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
-    libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName),
-    libraryDependencies += "org.testfx" % "testfx-core" % "4.0.16-alpha" % "test",
-    libraryDependencies += "org.testfx" % "testfx-junit5" % "4.0.16-alpha" % "test",
-    libraryDependencies += "org.testfx" % "openjfx-monocle" % "jdk-12.0.1+2" % "test",
-    libraryDependencies += "org.junit.jupiter" % "junit-jupiter" % "5.8.1" % "test",
-    libraryDependencies += "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % "test",
+    libraryDependencies ++= scalaTestLibrary ++ javaFxLibrary ++ Seq(
+      "org.scalatestplus" %% "mockito-3-12" % "3.2.10.0" % "test",
+      "org.scalafx" %% "scalafx" % "16.0.0-R24",
+      "org.testfx" % "testfx-core" % "4.0.16-alpha" % "test",
+      "org.testfx" % "testfx-junit5" % "4.0.16-alpha" % "test",
+      "org.testfx" % "openjfx-monocle" % "jdk-12.0.1+2" % "test",
+      "org.junit.jupiter" % "junit-jupiter" % "5.8.1" % "test",
+      "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % "test",
+    ),
   )
+
+ThisBuild / assemblyMergeStrategy := {
+  case PathList("META-INF", _ @_*) => MergeStrategy.discard
+  case _ => MergeStrategy.first
+}
