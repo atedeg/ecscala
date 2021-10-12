@@ -19,7 +19,7 @@ I requisiti utente sono di seguito riportati sotto forma di User Stories, second
         \textbf{User-story 1} &                                                                                      \\
         \textbf{Who}          & Come utilizzatore della demo                                                         \\
         \textbf{What}         & Vorrei avviare facilmente la simulazione senza dover inserire parametri              \\
-        \textbf{Why}          & Per osservare senza dover effettuare modifiche, il movimento delle palle da biliardo \\
+        \textbf{Why}          & Per osservare il movimento delle palle da biliardo \\
         \bottomrule
     \end{tabular}\label{tab:user-story-1}
 \end{table}
@@ -29,7 +29,7 @@ I requisiti utente sono di seguito riportati sotto forma di User Stories, second
         \textbf{User-story 2} &                                                                               \\
         \textbf{Who}          & Come utilizzatore della demo                                                  \\
         \textbf{What}         & Vorrei poter aggiungere più palle da biliardo sul tavolo                      \\
-        \textbf{Why}          & Per verificare che si comportino come mi aspetto e i frame rimangano costanti \\
+        \textbf{Why}          & Per verificare l'interazione con quelle già presenti  \\
         \bottomrule
     \end{tabular}\label{tab:user-story-2}
 \end{table}
@@ -39,7 +39,7 @@ I requisiti utente sono di seguito riportati sotto forma di User Stories, second
         \textbf{User-story 3} &                                                           \\
         \textbf{Who}          & Come utilizzatore della demo                              \\
         \textbf{What}         & Vorrei poter cambiare la velocità delle palle da biliardo \\
-        \textbf{Why}          & Per cambiarne la direzione e far ripartire quelle ferme   \\
+        \textbf{Why}          & Per cambiarne la direzione e far muovere quelle ferme   \\
         \bottomrule
     \end{tabular}\label{tab:user-story-3}
 \end{table}
@@ -88,7 +88,7 @@ palle nello spazio bidimensionale allo \texttt{SpacePartitionContainer}.
 Come mostrato in Figura~\ref{todo} sono state realizzate due interfaccie che separano le operazioni di modifica da
 quelle di lettura dello stato;
 in questo modo si può garantire che solo i sistemi che hanno bisogno di aggiungere elementi al container possano farlo.
-Una trattazione più approfondita della logica di funzionamento del container si trova alla Sezione~\ref{todo}.
+Una trattazione più approfondita della logica di funzionamento del container si trova alla Sezione~\ref{subsec:container}.
 
 Si elencano di seguito i sistemi individuati ai fini della realizzazione della demo:
 \begin{itemize}
@@ -106,13 +106,6 @@ Si elencano di seguito i sistemi individuati ai fini della realizzazione della d
     \item \textbf{VelocityEditingSystem}: assegna il nuovo valore di velocità a una palla
     \item \textbf{WallCollisionSystem}: gestisce le collisioni delle palle con i muri
 \end{itemize}
-
-Per ridurre la complessità nell'implementazione dei sistemi si è deciso di demandare la gestione della posizione delle
-palle nello spazio bidimensionale allo \texttt{SpacePartitionContainer}.
-Come mostrato in Figura~\ref{todo} sono state realizzate due interfaccie che separano le operazioni di modifica da
-quelle di lettura dello stato;
-in questo modo si può garantire che solo i sistemi che hanno bisogno di aggiungere elementi al container possano farlo.
-Una trattazione più approfondita della logica di funzionamento del container si trova alla Sezione~\ref{subsec:container}.
 
 \subsection{Macchina a stati finiti}\label{subsec:macchina-a-stati-finiti}
 Le macchine a stati finiti (FSM) consentono di descrivere formalmente il comportamento di un sistema.
@@ -181,7 +174,7 @@ quello disponibile per il frame corrente), sarà compito della classe regolare d
 La suddetta classe è stata concepita per essere utilizzata in un contesto OOP, per questa ragione è una classe astratta
 che forza l'implementazione del metodo \texttt{handle()}.
 Ho quindi deciso di trasformare la classe affinché avesse un comportamento più funzionale.
-È stato creato un wrapper attorno alla classe per consentire di specificare l'handler del metodo direttamente
+A tal proposito ho creato un wrapper attorno alla classe per consentire di specificare l'handler del metodo direttamente
 dal costruttore della classe mediante passaggio di funzione.
 
 Nel Listato~\ref{lst:lstinputlisting3} è illustrato come è stato effettuato il wrapping della classe
@@ -265,8 +258,8 @@ affinché ogni entità appartenga a una e una sola di esse.
 Per ottimizzare i test di collisione è stato creato lo \texttt{SpacePartitionContainer}, che prende in ingresso
 un'entità con tutti i componenti richiesti e la salva in una mappa che associa ogni regione (identificata da una coppia
 di numeri interi) alla lista di entità che ne fanno parte.
-Inoltre, lo \texttt{SpacePartitionContainer} dispone di un metodo per ottenere tutte le entità facente parte di una regione
-specificata, e uno per iterare su tutte le regioni non vuote.
+Inoltre, lo \texttt{SpacePartitionContainer} dispone di un metodo per ottenere tutte le entità facenti parte di una regione
+specificata e uno per iterare su tutte le regioni non vuote.
 
 A questo punto, il \texttt{CollisionSystem} può diventare molto più efficiente: ora è sufficiente iterare su tutte le regioni
 non vuote e testare le collisioni solo fra entità che fanno parte di un intorno bidimensionale di quelle regioni, come
