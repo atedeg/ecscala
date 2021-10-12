@@ -161,7 +161,7 @@ Sezione~\ref{TODO}.
 \section{Implementazione}\label{sec:demo-implementazione}
 Di seguito si riportano gli aspetti implementativi che meritano una trattazione più approfondita.
 
-\section{Tecnologie utilizzate}\label{sec:demo-tecnologie-utilizzate}
+\subsection{Tecnologie utilizzate}\label{sec:demo-tecnologie-utilizzate}
 Anche per l'implementazione della demo ci sono stati problemi di incompatibilità con Scala 3:
 in particolare è stata usata la libreria Mockito\cite{mockito} invece di ScalaMock e non è stato possibile utilizzare ScalaFXML
 che avrebbe fornito una sintassi idiomatica per usare JavaFX da Scala\@.
@@ -207,6 +207,43 @@ L'interfaccia si compone di una singola finestra che mostra una serie di bottoni
 simulazione, oltre a un pannello composto da due slider che consentono di configurare parametri di simulazione.
 Al centro della finestra è presente un canvas che renderizza gli oggetti della simulazione.
 L'interfaccia utente è stata sviluppata affinché risulti intuitiva e fornisca la massima semplicità d'uso all'utente.
+
+\subsection{Cavalieri}\label{subsec:demo-cavalieri}
+\subsubsection{Test dei sistemi}
+Ogni sistema descritto nella Sezione~\ref{sec:demo-design-di-dettaglio} ha una specifica precondizione d'esecuzione
+che determina, in base allo stato del gioco e allo stato del mouse, se il sistema può essere eseguito.
+Testare tutte le possibili combinazioni di stato del gioco e stato del mouse avrebbe comportato la scrittura di codice
+molto ripetitivo.
+Perciò mi sono occupato di realizzare dei test che verificassero automaticamente che ogni sistema
+fosse abilitato unicamente negli stati indicati e disabilitato in tutti i rimanenti.
+
+La scrittura di un test delle precondizioni si limita quindi a indicare un costruttore del sistema in esame e
+gli stati in cui questo dev'essere abilitato.
+Un esempio di tale codice è riportato al Listato~\ref{lst:demo-prec-test}
+
+\lstinputlisting[label={lst:demo-prec-test},
+    caption=Esempio di test della correttezza delle precondizioni di un sistema]
+{code/demo-precondition-test.scala}
+
+Il metodo \texttt{checkAllStates} utilizza un approccio di \textit{table-driven property testing} per effettuare
+una scansione esaustiva di tutti i possibili stati (generati in maniera compatta grazie alla \textit{for comprehension})
+e verificare che il sistema sia abilitato solo in quelli indicati.
+
+\subsubsection{Test della GUI}
+Un altro apsetto importante è stato verificare che la GUI realizzata rispettasse gli stati e le transizioni indicate
+dalla MSF riportata in Figura~\ref{fig:fsm-demo};
+per testare automaticamente la GUI è stata utilizzata la libreria TestFX\cite{testfx}.
+
+Dato uno stato della FSM vengono specificati alcuni elementi:
+\begin{itemize}
+    \item Le interazioni da svolgere con la GUI per raggiungere tale stato
+    \item Quali bottoni devono essere abilitati o disabilitati nello stato
+    \item Quali stati ulteriori possono essere raggiunti e, per ognuno di questi, quali interazioni
+          devono essere svolte con la GUI per raggiungerlo
+\end{itemize}
+Date queste informazioni, un test risulta essere piuttosto semplice: viene raggiunto lo stato in esame, si verifica che
+i bottoni siano nella configurazione richiesta e si controlla che tutti gli altri stati indicati siano effettivamente
+raggiungibili svolgendo le operazioni indicate.
 
 \subsection{Di Domenico}\label{subsec:demo-di-domenico}
 
