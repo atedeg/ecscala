@@ -10,7 +10,7 @@ An ECS Scala framework
 ## Getting Started
 
 ```scala
-libraryDependencies += "dev.atedeg" %% "ecscala" % "0.1.0"
+libraryDependencies += "dev.atedeg" %% "ecscala" % "0.2.1"
 ```
 
 ## Usage
