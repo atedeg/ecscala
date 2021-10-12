@@ -3,12 +3,15 @@ package dev.atedeg.ecscala.dsl
 import dev.atedeg.ecscala.given
 import dev.atedeg.ecscala.{ taggedWith, CList, CListTag, Component, ComponentTag, Entity, System, View, World }
 
+/**
+ * Trait that enables the syntax of the DSL.
+ */
 trait Syntax {
 
   /**
    * This trait enables the use of the word "from" in the dsl.
    */
-  trait From[A, B] {
+  sealed trait From[A, B] {
     def from(elem: A): B
   }
 
@@ -63,7 +66,6 @@ trait Syntax {
    *   remove[Component] from entity1
    * }}}
    */
-
   class ComponentTypeFromEntity[C <: Component](using ct: ComponentTag[C]) extends From[Entity, Unit] {
     override def from(entity: Entity): Unit = entity.removeComponent(using ct)
   }
@@ -88,10 +90,10 @@ trait Syntax {
    *   * getView[MyComponent1 &: MyComponent2 &: CNil].exluding[MyComponent3 &: CNil] from world
    * }}}
    */
-  class ViewFromWorld[A <: CList](using cltA: CListTag[A]) extends From[World, View[A]] {
-    override def from(world: World): View[A] = world.getView(using cltA)
+  class ViewFromWorld[LA <: CList](using cltA: CListTag[LA]) extends From[World, View[LA]] {
+    override def from(world: World): View[LA] = world.getView(using cltA)
 
-    def excluding[B <: CList](using cltB: CListTag[B]): ExcludingViewFromWorld[A, B] = ExcludingViewFromWorld(using
+    def excluding[LB <: CList](using cltB: CListTag[LB]): ExcludingViewFromWorld[LA, LB] = ExcludingViewFromWorld(using
       cltA,
     )(using cltB)
   }
@@ -103,21 +105,22 @@ trait Syntax {
    *   getView[MyComponent1 &: MyComponent2 &: CNil].exluding[MyComponent3 &: CNil] from world
    * }}}
    */
-  class ExcludingViewFromWorld[A <: CList, B <: CList](using cltA: CListTag[A])(using cltB: CListTag[B])
-      extends From[World, View[A]] {
+  class ExcludingViewFromWorld[LA <: CList, LB <: CList](using cltA: CListTag[LA])(using cltB: CListTag[LB])
+      extends From[World, View[LA]] {
     def from(world: World) = world.getView(using cltA, cltB)
   }
 }
 
-object Words {
+/**
+ * Trait that enables the words of the DSL.
+ */
+trait Words
 
-  /**
-   * This case class enables the following syntax:
-   *
-   * {{{
-   * world hasAn entity
-   * }}}
-   */
-  case class EntityWord()
-
-}
+/**
+ * This case class enables the following syntax:
+ *
+ * {{{
+ * world hasAn entity
+ * }}}
+ */
+case class EntityWord() extends Words

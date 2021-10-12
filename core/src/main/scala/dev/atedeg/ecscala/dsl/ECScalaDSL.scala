@@ -13,7 +13,7 @@ import dev.atedeg.ecscala.{
   World,
 }
 import dev.atedeg.ecscala.dsl.Syntax
-import dev.atedeg.ecscala.dsl.Words.EntityWord
+//import dev.atedeg.ecscala.dsl.Words.EntityWord
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the ECScala framework operations using an
@@ -86,7 +86,7 @@ import dev.atedeg.ecscala.dsl.Words.EntityWord
  *   clearAllEntities from world
  * }}}
  */
-trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax {
+trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax with Words {
 
   /**
    * Keyword that enables the use of the word "entity".
