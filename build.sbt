@@ -119,6 +119,8 @@ ThisBuild / githubWorkflowPublish := Seq(
   ),
 )
 
+addCommandAlias("run", "demo / run")
+
 lazy val scalaTestLibrary = Seq(
   "org.scalactic" %% "scalactic" % "3.2.9",
   "org.scalatest" %% "scalatest" % "3.2.9" % "test",
