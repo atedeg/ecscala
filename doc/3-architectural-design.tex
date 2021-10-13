@@ -2,7 +2,7 @@
 A seguito dell'analisi dei requisiti definiti nel capitolo precedente, si è realizzato il design architetturale
 di massima riportato in Figura~\ref{fig:architecture}.
 
-I principali \texttt{Component} individuati sono:
+I principali componenti individuati sono:
 \begin{itemize}
     \item \texttt{World}: permette la registrazione e rimozione di \texttt{Entity} e \texttt{System}.
     Il metodo \texttt{update} rappresenta la principale modalità di aggiornamento dello stato di un~\texttt{World}:
@@ -14,15 +14,14 @@ I principali \texttt{Component} individuati sono:
     \item \texttt{ExcludingView}: rappresenta una specializzazione di una \texttt{View} che permette di specificare un
     ulteriore filtro andando ad indicare i \texttt{Component} che una \texttt{Entity} non deve avere per essere parte
     della \texttt{View}
-    \item \texttt{System}: descrive un'operazione che viene eseguita ogni volta che viene effettuata l'\texttt{update}
+    \item \texttt{System}: descrive un'operazione che viene eseguita ogni volta che viene effettuato l'\texttt{update}
     del \texttt{World} in cui è registrato
     \item \texttt{IteratingSystem}: è un wrapper di una \texttt{View} che, indicando una specifica logica di
-    aggiornamento, si occupa di iterare tutte le \texttt{Entity} selezionate aggiornandone i \texttt{Component}
+    aggiornamento, si occupa d'iterare tutte le \texttt{Entity} selezionate aggiornandone i \texttt{Component}
     \item \texttt{ExcludingSystem}: in maniera analoga a \texttt{IteratingSystem}, è un wrapper di una
     \texttt{ExcludingView}
     \item \texttt{Entity}: permette l'aggiunta e rimozione di \texttt{Component} e il loro aggiornamento.
-    Non può trovarsi in più \texttt{World} contemporaneamente;
-    mantiene un riferimento al \texttt{World} di appartenenza
+    Non può trovarsi in più \texttt{World} contemporaneamente
     \item \texttt{Component}: descrive una particolare caratteristica di un'\texttt{Entity} alla quale viene aggiunto.
     Non può trovarsi in più di un'\texttt{Entity} contemporaneamente;
     mantiene un riferimento all'\texttt{Entity} di appartenenza
@@ -50,4 +49,4 @@ eseguito.
 In caso affermativo, il sistema viene eseguito chiamandone il metodo \texttt{update}.
 
 L'esecuzione di ogni sistema è atomica e sequenziale: ciò significa che l'ordine con cui vengono inseriti nel
-\texttt{World} è significativo ai fini della computazione degli stessi e non si possono verificare race condition.
+mondo è significativo ai fini della computazione degli stessi e non si possono verificare race condition.

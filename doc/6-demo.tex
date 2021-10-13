@@ -8,13 +8,13 @@ ECScala.
 Per farlo, si deve realizzare la simulazione del moto di palle da biliardo su un tavolo da gioco per la quale è
 stato individuato il seguente requisito di business:
 \begin{enumerate}[label=\textbf{\ref{subsec:demo-business}.\arabic*}]
-    \item \label{itm:db1} Deve essere messa a disposizione un'interfaccia grafica che mostri e permetta di interagire
+    \item \label{itm:db1} Deve essere messa a disposizione un'interfaccia grafica che mostri e permetta d'interagire
     con la simulazione.
 \end{enumerate}
 
 \subsection{Utente}\label{subsec:demo-utente}
 I requisiti utente sono di seguito riportati sotto forma di \textit{user stories}, secondo lo schema
-“As a [persona], I [want to], [so that].”.
+``\textit{As a [persona], I [want to], [so that]}''.
 \begin{table}[H]
     \begin{tabular}{p{0.18\linewidth}p{0.76\linewidth}}
         \toprule
@@ -69,7 +69,8 @@ I requisiti utente sono di seguito riportati sotto forma di \textit{user stories
 \subsection{Funzionali}\label{subsec:demo-funzionali}
 Di seguito si elencano i requisiti funzionali individuati per il funzionamento della demo:
 \begin{enumerate}[label=\textbf{\ref{subsec:demo-funzionali}.\arabic*}]
-    \item \label{itm:df1} Gestire le collisioni tra le palle e i bordi dell'interfaccia grafica oltre che le collisioni tra le stesse.
+    \item \label{itm:df1} Gestire le collisioni tra le palle e i bordi dell'interfaccia grafica oltre che le collisioni
+    tra le stesse.
     \item \label{itm:df2} Tenere conto della frizione nel calcolo della velocità
     \item \label{itm:df3} Renderizzare le palle da biliardo iniziali
     \item \label{itm:df4} Permettere cambio di velocità
@@ -82,30 +83,29 @@ Di seguito si elencano i requisiti funzionali individuati per il funzionamento d
 A seguito dell'analisi dei requisiti definiti nella sezione precedente, si è realizzato il design architetturale di
 massima riportato in Figura~\ref{fig:demo}.
 
-Il pattern architetturale scelto è \ECS, poiché si presta bene a questo genere di applicazioni.
+Il pattern architetturale scelto è ECS, poiché si presta bene a questo genere di applicazioni.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{./img/Demo}
-    \caption{Design architetturale della demo}
+    \caption{Design architetturale della demo.}
     \label{fig:demo}
 \end{figure}
 
 \section{Design di dettaglio}\label{sec:demo-design-di-dettaglio}
 Per ridurre la complessità nell'implementazione dei sistemi si è deciso di demandare la gestione della posizione delle
 palle nello spazio bidimensionale allo \texttt{SpacePartitionContainer}.
-Come mostrato in Figura~\ref{todo} sono state realizzate due interfaccie che separano le operazioni di modifica da
-quelle di lettura dello stato;
+Sono state realizzate due interfaccie che separano le operazioni di modifica da quelle di lettura dello stato;
 in questo modo si può garantire che solo i sistemi che hanno bisogno di aggiungere elementi al container possano
 effettivamente farlo.
 Una trattazione più approfondita della logica di funzionamento del container si trova alla
-Sezione~\ref{subsec:container}.
+Sottosezione~\ref{subsubsec:container}.
 
 Si elencano di seguito i sistemi individuati ai fini della realizzazione della demo:
 \begin{itemize}
     \item \textbf{AutoPauseSystem}: mette in automatico il gioco in pausa quando nessuna palla è più in movimento
     \item \textbf{BallCreationRenderingSystem}: si occupa di renderizzare la fase di creazione di una nuova palla
-    \item \textbf{BallCreationSystem}: aggiunge una nuova palla al \World
+    \item \textbf{BallCreationSystem}: aggiunge una nuova palla al mondo
     \item \textbf{BallSelectionSystem}: seleziona una palla quando viene cliccata
     \item \textbf{ClearCanvasSystem}: pulisce il canvas a ogni frame
     \item \textbf{CollisionSystem}: calcola le nuove velocità di eventuali entità che collidono fra loro
@@ -129,12 +129,12 @@ Di seguito viene riportata la descrizione di tali eventi:
 \begin{itemize}
     \item \textit{PlayPauseBtn.clicked}: rappresenta la pressione del pulsante per eseguire o mettere in pausa la
     simulazione
-    \item \textit{AddBallBtn.clicked}: rappresenta la pressione del pulsante per l'aggiunta di palle alla simulazione
-    \item \textit{ChangeVelBtn.clicked}: rappresenta la pressione del pulsante per cambiare la velocità a una palla
-    \item \textit{Ball.selected}: rappresenta l'evento di selezione di una palla
-    \item \textit{Mouse.clicked}: rappresenta il singolo click del mouse
-    \item \textit{Mouse.dragging}: rappresenta l'evento di trascinamento del mouse
-    \item \textit{Mouse.released}: rappresenta l'evento di rilascio del tasto del mouse
+    \item \texttt{AddBallBtn.clicked}: rappresenta la pressione del pulsante per l'aggiunta di palle alla simulazione
+    \item \texttt{ChangeVelBtn.clicked}: rappresenta la pressione del pulsante per cambiare la velocità a una palla
+    \item \texttt{Ball.selected}: rappresenta l'evento di selezione di una palla
+    \item \texttt{Mouse.clicked}: rappresenta il singolo click del mouse
+    \item \texttt{Mouse.dragging}: rappresenta l'evento di trascinamento del mouse
+    \item \texttt{Mouse.released}: rappresenta l'evento di rilascio del tasto del mouse
 \end{itemize}
 
 In Figura~\ref{fig:fsm-demo} viene riportata la macchina a stati finiti utilizzata per descrivere il comportamento
@@ -153,10 +153,9 @@ L'introduzione della macchina a stati ha portato diversi vantaggi: si è semplif
 stato della simulazione, le precondizioni di esecuzione dei sistemi fanno riferimento allo stato della FSM e non più
 alla combinazione di più variabili booleane e la logica di aggiornamento dei componenti della GUI si è semplificata
 notevolmente.
-Grazie alla FMS è stato implementato un testing esaustivo delle precondizioni dei sistemi, esaminando tutte
+Grazie alla FSM è stato implementato un testing esaustivo delle precondizioni dei sistemi, esaminando tutte
 le possibili configurazioni della FSM in unione agli eventi del mouse.
-Grazie a questo è stato possibile individuare piccoli bug nella logica dei \System e inconsistenze nell'interfaccia
-grafica.
+In questo modo è stato possibile individuare piccoli bug nell'implementazione dei sistemi.
 
 \section{Implementazione}\label{sec:demo-implementazione}
 Di seguito si riportano gli aspetti implementativi che meritano una trattazione più approfondita.
@@ -181,15 +180,14 @@ gli stati in cui questo dev'essere abilitato.
 Un esempio di tale codice è riportato al Listato~\ref{lst:demo-prec-test}
 
 \lstinputlisting[label={lst:demo-prec-test},
-    caption=Esempio di test della correttezza delle precondizioni di un sistema]
+    caption=Esempio di test della correttezza delle precondizioni di un sistema.]
 {code/demo-precondition-test.scala}
 
 Il metodo \texttt{checkAllStates} utilizza un approccio di \textit{table-driven property testing} per effettuare
-una scansione esaustiva di tutti i possibili stati (generati in maniera compatta grazie ad una \textit{for comprehension})
-e verificare che il sistema sia abilitato solo in quelli indicati.
+una scansione esaustiva di tutti i possibili stati e verificare che il sistema sia abilitato solo in quelli indicati.
 
 \subsubsection{Test della GUI}
-Un altro apsetto importante è stato verificare che la GUI realizzata rispettasse gli stati e le transizioni indicate
+Un altro aspetto importante è stato verificare che la GUI realizzata rispettasse gli stati e le transizioni indicate
 dalla FSM riportata in Figura~\ref{fig:fsm-demo};
 per testare automaticamente la GUI è stata utilizzata la libreria TestFX\cite{testfx}.
 
@@ -197,8 +195,8 @@ Dato uno stato della FSM vengono specificati alcuni elementi:
 \begin{itemize}
     \item Le interazioni da svolgere con la GUI per raggiungere tale stato
     \item Quali bottoni devono essere abilitati o disabilitati nello stato
-    \item Quali stati ulteriori possono essere raggiunti e, per ognuno di questi, quali interazioni
-          devono essere svolte con la GUI per raggiungerlo
+    \item Quali stati ulteriori possono essere raggiunti e, per ognuno di questi, quali interazioni devono essere svolte
+    con la GUI per raggiungerlo
 \end{itemize}
 Date queste informazioni, un test risulta essere piuttosto semplice: viene raggiunto lo stato in esame, si verifica che
 i bottoni siano nella configurazione richiesta e si controlla che tutti gli altri stati indicati siano effettivamente
@@ -207,30 +205,28 @@ raggiungibili svolgendo le operazioni indicate.
 \subsection{Farabegoli}\label{subsec:demo-farabegoli}
 \subsubsection{Game loop}
 Mi sono occupato della realizzazione del \textit{game loop} facendo uso della classe \texttt{AnimationTimer} già
-presente in \texttt{ScalaFX}.
-Tale classe consente di eseguire del codice implementandolo nel metodo \texttt{handle()}.
+presente in ScalaFX\@.
+Tale classe consente di eseguire del codice implementandolo nel metodo \texttt{handle}.
 Questo metodo viene chiamato a ogni frame: un frame è renderizzato ogni $\approx16.6$ millisecondi per garantire 60 FPS
 (Frames Per Second).
-Il limite di \textit{60 FPS} è automaticamente garantito dalla classe, quindi non è necessario implementare una logica
-di limitazione degli FPS\@;
-nel caso in cui si verifichi \textit{overrun} (situazione dove la computazione impiega più tempo di quello disponibile
-per il frame corrente), sarà compito della classe regolare di conseguenza gli FPS\@.
+Il limite di 60 FPS è automaticamente garantito dalla classe, quindi non è necessario implementare una logica
+di limitazione degli FPS\@.
 
 La suddetta classe è stata concepita per essere utilizzata in un contesto OOP, per questa ragione è una classe astratta
-che forza l'implementazione del metodo \texttt{handle()}.
+che forza l'implementazione del metodo \texttt{handle}.
 Ho quindi deciso di trasformare la classe affinché avesse un comportamento più funzionale.
-A tal proposito ho creato un wrapper attorno alla classe per consentire di specificare \textit{l'handler} del metodo
-direttamente dal costruttore della classe mediante passaggio di funzione.
+A tal proposito ho creato un wrapper attorno alla classe per consentire di specificare l'handler del metodo direttamente
+dal costruttore della classe mediante passaggio di funzione.
 
 Nel Listato~\ref{lst:lstinputlisting3} è illustrato come è stato effettuato il wrapping della classe
 \texttt{AnimationTimer}; per semplicità è stata omessa la parte di calcolo degli FPS\@.
 
 \lstinputlisting[
     label={lst:lstinputlisting3},
-    caption=Esempio d'implementazione del \textit{game loop} mediante la classe \texttt{AnimationTimer}
+    caption=Esempio d'implementazione del game loop mediante la classe \texttt{AnimationTimer}.
 ]{code/game-loop.scala}
 
-Con l'\texttt{apply()} è possibile specificare, mediante una lambda, il codice che deve essere eseguito a ogni
+Con l'\texttt{apply} è possibile specificare, mediante una lambda, il codice che deve essere eseguito a ogni
 frame.
 Con i metodi \texttt{start} e \texttt{stop} è possibile rispettivamente eseguire il game loop e fermarlo.
 
@@ -240,8 +236,7 @@ Per una trattazione dettagliata fare riferimento alla Sezione~\ref{subsec:macchi
 
 \subsubsection{Interfaccia utente}
 Mi sono occupato della realizzazione del'interfaccia grafica del simulatore;
-a tal proposito si è fatto uso della libreria \texttt{ScalaFX}\cite{scalafx}, la quale offre un DSL per la creazione
-d'interfaccie grafiche.
+a tal proposito si è fatto uso della libreria ScalaFX, la quale offre un DSL per la creazione d'interfaccie grafiche.
 
 L'interfaccia si compone di una singola finestra che mostra una serie di bottoni per far interagire l'utente con la
 simulazione, oltre a un pannello composto da due slider che consentono di configurare parametri di simulazione.
@@ -250,7 +245,7 @@ L'interfaccia utente è stata sviluppata affinché risulti intuitiva e fornisca 
 
 \subsection{Di Domenico}\label{subsec:demo-di-domenico}
 
-\subsubsection{Collision System}\label{subsec:container}
+\subsubsection{Collision System}\label{subsubsec:container}
 Il sistema principale che gestisce la simulazione è il \texttt{CollisionSystem}: questo implementa i calcoli necessari
 per testare se c'è una collisione fra due corpi e, in caso affermativo, calcolarne le nuove velocità.
 
@@ -280,8 +275,9 @@ considera solo una metà dell'intorno, mentre l'altra verrà coperta nelle succe
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
-        \fill[red!15!white] (1.5, 6) rectangle (4.5, 3);
-        \fill[red!15!white] (1.5, 3) rectangle (3, 1.5);
+        \fill[red!15!white] (1.5, 6) rectangle (3, 1.5);
+        \fill[red!15!white] (3, 6) rectangle (4.5, 4.5);
+        \fill[yellow!25!white] (3, 4.5) rectangle (4.5, 3);
         \draw[step=1.5cm,gray,thin] (0, 0) grid (7.5, 7.5);
         \draw[thick,->] (0, 7.5) -- (7.5, 7.5) node[above=2mm] {x};
         \draw[thick,->] (0, 7.5) -- (0, 0) node[left=2mm] {y};
@@ -298,16 +294,18 @@ considera solo una metà dell'intorno, mentre l'altra verrà coperta nelle succe
         \draw (6.5, 6.5) circle (0.75cm);
         \filldraw[black] (6.5, 6.5) circle (2pt) node[anchor=west]{$C_4$};
     \end{tikzpicture}
-    \caption{La regione in esame $(2, 2)$ controllerà solo se c'è collisione fra i cerchi con centro nelle regioni limitrofe (l'area rossa);
+    \caption{La regione in esame $(2, 2)$ controllerà solo se c'è collisione fra i cerchi con centro nelle regioni
+    limitrofe (l'area rossa);
     si considera solo metà intorno per non contare due volte le coppie nelle iterazioni successive;
-    si testerà quindi la collisione fra $C_1$ e $C_2$ e fra $C_1$ e $C_3$, mentre $C_4$ non viene preso in considerazione.}
+    si testerà quindi la collisione fra $C_1$ e $C_2$ e fra $C_1$ e $C_3$, mentre $C_4$ non viene preso in
+    considerazione.}
     \label{fig:space-partition}
 \end{figure}
 
 \subsection{Vitali}\label{subsec:demo-vitali}
 Nella parte di demo, oltre a \texttt{MovementSystem}, \texttt{FrictionSystem} e \texttt{RenderSystem},
-mi sono occupata di una prima implementazione del \texttt{SimulationStatus}, che in seguito è stato adattato da Farabegoli
-alla FSM sopra descritta.
+mi sono occupata di una prima implementazione del \texttt{SimulationStatus}, che in seguito è stato adattato da
+Farabegoli alla FSM sopra descritta.
 Inoltre, per consentire il riuso del codice e non legarsi ad una specifica libreria grafica, ho
 implementato il trait \texttt{ECSCanvas}, che fornisce metodi per:
 \begin{itemize}
@@ -315,5 +313,5 @@ implementato il trait \texttt{ECSCanvas}, che fornisce metodi per:
     \item Ottenere le dimensioni dell'area di disegno
     \item Ripristinare l'area di disegno
 \end{itemize}
-Per il caso in esame, essendo stata scelta la libreria ScalaFX, ho realizzato anche la classe concreta \texttt{ScalaFXCanvas} che
-estende il trait.
+Per il caso in esame, essendo stata scelta la libreria ScalaFX, ho realizzato anche la classe concreta
+\texttt{ScalaFXCanvas} che estende il trait.
