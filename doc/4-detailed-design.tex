@@ -17,8 +17,8 @@ personalizzati.
 Una \texttt{CList} (abbreviazione di Components List) è essenzialmente una lista di elementi eterogenei che preserva
 informazioni sul tipo di ciascun elemento in maniera simile a una tupla.
 Per esempio si osservi il Listato~\ref{lst:lstinputlisting2}: la lista che contiene
-i componenti \texttt{Position} e \texttt{Velocity} avrà come tipo~\texttt{Position~\&:~Velocity~\&:~CNil}, permettendo di conoscere il
-tipo e la posizione dei suoi elementi.
+i componenti \texttt{Position} e \texttt{Velocity} avrà come tipo~\texttt{Position~\&:~Velocity~\&:~CNil}, permettendo di
+conoscere il tipo e la posizione dei suoi elementi.
 
 Nel Listato~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
 \lstinputlisting[label={lst:lstinputlisting2}, caption=Esempio di utilizzo delle CList.]{code/clist-usage.scala}
@@ -42,8 +42,9 @@ componenti per rendere la loro iterazione (fondamentale per i \System) quanto pi
 Grazie a questa scelta è stato piuttosto semplice modificare l'implementazione del
 \texttt{ComponentsContainer} per attuare ottimizzazioni
 necessarie a rispettare il requisito non funzionale~\ref{itm:nf1}.
-\begin{figure}
-    \includegraphics{./img/WorldDetail}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/WorldDetail}
     \caption{Design di dettaglio di World e Entities}
     \label{fig:world-detail}
 \end{figure}
@@ -51,13 +52,14 @@ necessarie a rispettare il requisito non funzionale~\ref{itm:nf1}.
 \section{Builder dei sistemi}\label{sec:builder-dei-sistemi}
 Si è scelto di realizzare il pattern \texttt{Builder} per permettere una creazione di \System
 quanto più semplice possibile.
-Come mostrato nel diagramma riportato in Figura~\ref{fig:system-builder} il \texttt{SystemBuilder} dispone di diversi metodi per
-specificare l'implementazione di alcuni dei metodi del sistema che verrà costruito.
+Come mostrato nel diagramma riportato in Figura~\ref{fig:system-builder} il \texttt{SystemBuilder} dispone di diversi
+metodi per specificare l'implementazione di alcuni dei metodi del sistema che verrà costruito.
 Per completare la costruzione tramite il \texttt{Builder} e ottenere il nuovo sistema bisogna specificare
 (tramite il metodo \texttt{withUpdate}) l'implementazione del suo metodo \texttt{update}.
 
-\begin{figure}
-    \includegraphics{./img/SystemBuilder}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/SystemBuilder}
     \caption{Design di dettaglio di del SystemBuilder}
     \label{fig:system-builder}
 \end{figure}
