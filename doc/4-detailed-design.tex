@@ -40,7 +40,7 @@ In questo modo è possibile introdurre in maniera semplice ottimizzazioni nella 
 componenti per rendere la loro iterazione (fondamentale per i \System) quanto più veloce possibile.
 
 Grazie a questa scelta è stato piuttosto semplice modificare l'implementazione del
-\texttt{ComponentsContainer} per attuare ottimizzazioni (descritte nel paragrafo~TODO)
+\texttt{ComponentsContainer} per attuare ottimizzazioni
 necessarie a rispettare il requisito non funzionale~\ref{itm:nf1}.
 \begin{figure}
     \includegraphics{./img/WorldDetail}
@@ -51,9 +51,15 @@ necessarie a rispettare il requisito non funzionale~\ref{itm:nf1}.
 \section{Builder dei sistemi}\label{sec:builder-dei-sistemi}
 Si è scelto di realizzare il pattern \texttt{Builder} per permettere una creazione di \System
 quanto più semplice possibile.
-Come mostrato nel diagramma riportato in Figura~TODO il \texttt{SystemBuilder} dispone di diversi metodi per
+Come mostrato nel diagramma riportato in Figura~\ref{fig:system-builder} il \texttt{SystemBuilder} dispone di diversi metodi per
 specificare l'implementazione di alcuni dei metodi del sistema che verrà costruito.
 Per completare la costruzione tramite il \texttt{Builder} e ottenere il nuovo sistema bisogna specificare
 (tramite il metodo \texttt{withUpdate}) l'implementazione del suo metodo \texttt{update}.
+
+\begin{figure}
+    \includegraphics{./img/SystemBuilder}
+    \caption{Design di dettaglio di del SystemBuilder}
+    \label{fig:system-builder}
+\end{figure}
 
 \section{DSL}\label{sec:dsl}

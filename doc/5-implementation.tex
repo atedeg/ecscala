@@ -102,8 +102,8 @@ applicare ove necessario eventuali ottimizzazioni per rispettare il requisito no
 
 \subsubsection{View}
 
-Essendo le \texttt{View} ed \texttt{ExcludingView} progettate come indicato in Figura~TODO, si è rivelato utile
-costruire un iteratore astratto che permettesse di fattorizzare tutto il codice comune.
+Essendo le \texttt{View} ed \texttt{ExcludingView} progettate come indicato in Figura~\ref{fig:view}, si è rivelato
+utile costruire un iteratore astratto che permettesse di fattorizzare tutto il codice comune.
 In particolare si noti come la \texttt{ExcludingView} itera su un sottoinsieme delle entità ritornate dalla stessa
 \texttt{View}, che invece non esprime vincoli di esclusione di componenti.
 Per questo motivo è stato creato il \texttt{BaseViewIterator}, che si occupa di recuperare dal
@@ -117,6 +117,12 @@ nell'individuare la mappa di componenti con meno elementi;
 una volta trovata, si iterano tutte le entità contenute al suo interno e per ognuna si controlla che sia presente in
 tutte le altre mappe.
 In caso affermativo, si procede all'estrazione di tutti i suoi componenti richiesti.
+
+\begin{figure}
+    \includegraphics{./img/View}
+    \caption{Design di dettaglio di View ed ExcludingView}
+    \label{fig:view}
+\end{figure}
 
 \subsubsection{System}
 
