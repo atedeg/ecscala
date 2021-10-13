@@ -260,10 +260,15 @@ Inoltre, sono stati utilizzati i seguenti meccanismi di Scala 3:
 
 Si è utilizzata una \textit{Type Class} \texttt{From} per realizzare la parte di sintassi che permette di effettuare
 arbitrarie operazioni su \texttt{World} e \texttt{Entity} con il metodo \texttt{from} (parola chiave del DSL).
-Come si vede nel diagramma in Figura~TODO è possibile specificare il tipo al quale si applica il metodo \texttt{from} e
+Come si può vedere nel diagramma in Figura~\ref{fig:from} è possibile specificare il tipo al quale si applica il metodo \texttt{from} e
 il suo tipo di ritorno.
 In questo modo, si può implementare la classe specifica per abilitare la sintassi necessaria di caso in caso.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/From}
+    \caption{Diagramma delle classi che mostra l'implementazione della \textit{type class} \texttt{From}.}\label{fig:from}
+\end{figure}
 
 \section{Benchmarks}\label{sec:benchmarks}
 Il requisito non funzionale~\ref{itm:nf1} richiede che il framework soddisfi un certo livello di prestazioni;
