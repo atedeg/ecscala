@@ -179,8 +179,14 @@ In questo modo è stato possibile individuare piccoli bug nell'implementazione d
 \subsection{ECSCanvas}\label{subsec:ecscanvas}
 Per non legarsi ad una specifica libreria grafica, si è deciso di introdurre una classe che esponesse metodi di alto livello
 per disegnare le primitive necessarie (in particolare cerchio e linea) e ottenere le dimensioni dell'aria di disegno.
-È stato inoltre deciso di introdurre il pattern Façade, descritto in Figura~TODO, per nascondere la complessità della libreria ScalaFX e,
+È stato inoltre deciso di introdurre il pattern Façade, descritto in Figura~\ref{fig:facade}, per nascondere la complessità della libreria ScalaFX e,
 in particolare, della classe \texttt{Canvas}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img/Facade}
+    \caption{Utilizzo del pattern façade nella demo.}\label{fig:facade}
+\end{figure}
 
 \section{Implementazione}\label{sec:demo-implementazione}
 Di seguito si riportano gli aspetti implementativi che meritano una trattazione più approfondita.
