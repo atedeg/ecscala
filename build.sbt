@@ -112,7 +112,7 @@ ThisBuild / githubWorkflowPublish := Seq(
     name = Some("Release to Github Releases"),
     params = Map(
       "repo_token" -> "${{ secrets.GITHUB_TOKEN }}",
-      "prerelease" -> "${{ env.IS_SNAPSHOT }}",
+      "prerelease" -> "false",
       "title" -> """Release - Version ${{ env.VERSION }}""",
       "files" -> s"core/target/scala-$scala3Version/*.jar\ncore/target/scala-$scala3Version/*.pom\ndemo/target/scala-$scala3Version/ECScalaDemo.jar\ndoc/ecscala-report.pdf",
     ),

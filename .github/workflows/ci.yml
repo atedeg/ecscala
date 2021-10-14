@@ -152,7 +152,7 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: ${{ env.IS_SNAPSHOT }}
+          prerelease: false
           title: Release - Version ${{ env.VERSION }}
           files: |
             core/target/scala-3.0.1/*.jar
