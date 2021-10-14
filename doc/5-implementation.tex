@@ -169,9 +169,11 @@ Così facendo si elimina la necessità di specificare a tempo di esecuzione il t
 esempio è necessario fare nella libreria Ashely~\cite{ashley} che ricorre al passaggio di oggetti \texttt{Class<?>})
 permettendo d'intercettare diversi errori a tempo di compilazione.
 
-Come indicato nella Sezione~\ref{TODO}, l’idea alla base di questa soluzione è stata ispirata dalla libreria
-Shapeless; tuttavia, non si è potuto utilizzarla perché era fondamentale avere un vincolo aggiuntivo sul tipo degli
-elementi della lista. Infatti, tutti gli elementi di una \texttt{CList} devono essere sottotipi di \texttt{Component}.
+Come indicato nella Sezione~\ref{sec:lista-di-componenti}, l’idea alla base di questa soluzione è stata ispirata dalla
+libreria Shapeless;
+tuttavia, non si è potuto utilizzarla perché era fondamentale avere un vincolo aggiuntivo sul tipo degli
+elementi della lista.
+Infatti, tutti gli elementi di una \texttt{CList} devono essere sottotipi di \texttt{Component}.
 Parte dell’implementazione è riportata al Listato~\ref{lst:lstinputlisting}.
 
 \lstinputlisting[label={lst:lstinputlisting}, caption={Esempio di codice per implementare \texttt{CList}.}]{code/clist.scala}
