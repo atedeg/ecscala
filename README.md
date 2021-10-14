@@ -15,24 +15,7 @@ libraryDependencies += "dev.atedeg" %% "ecscala" % "0.2.1"
 ```
 
 ## Usage
-
-```scala
-import dev.atedeg.ecscala.dsl.ECScalaDSL
-import dev.atedeg.ecscala.util.types.given
-
-case class Position(x: Double, y: Double) extends Component
-case class Velocity(vx: Double, vy: Double) extends Component
-case class Gravity(g: Double) extends Component
-
-object AnObject extends ECScalaDSL {
-  val world = World()
-  val entity1 = world hasAn entity withComponents {
-    Position(1, 2) &: Velocity(3, 4) &: Gravity(9.8)
-  }
-  
-  entity1 += Position(3, 6)
-}
-```
+To learn how to use ECScala you can start by reading [its wiki](https://github.com/nicolasfara/ecscala/wiki)!
 
 ## Contributing
 
