@@ -21,14 +21,14 @@ i componenti \texttt{Position} e \texttt{Velocity} avrà come tipo~\texttt{Posit
 di conoscere il tipo e la posizione dei suoi elementi.
 
 Nel Listato~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
-\lstinputlisting[label={lst:lstinputlisting2}, caption=Esempio di utilizzo delle CList.]{code/clist-usage.scala}
+\lstinputlisting[label={lst:lstinputlisting2}, caption={Esempio di utilizzo delle \texttt{CList}.}]{code/clist-usage.scala}
 
 L’idea alla base di questa soluzione è ispirata dalle \textit{Heterogeneous List} della libreria
 Shapeless~\cite{shapeless}; una differenza significativa sta nel fatto che la definizione di una \texttt{CList} impone un
 limite ulteriore sul tipo dei suoi elementi: devono tutti essere sottotipi di \Component, parte dell’implementazione è
 riportata al Listato~\ref{lst:lstinputlisting}.
 
-\lstinputlisting[label={lst:lstinputlisting}, caption=Esempio di codice per implementare CList.]{code/clist.scala}
+\lstinputlisting[label={lst:lstinputlisting}, caption={Esempio di codice per implementare \texttt{CList}.}]{code/clist.scala}
 
 \section{Container di componenti}\label{sec:container-di-componenti}
 Come è possibile osservare in Figura~\ref{fig:world-detail}, dal design di dettaglio emerge come
@@ -44,7 +44,7 @@ necessarie a rispettare il requisito non funzionale~\ref{itm:nf1}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{./img/WorldDetail}
-    \caption{Design di dettaglio di World e Entities}
+    \caption{Design di dettaglio di \texttt{World} e \texttt{Entities}.}
     \label{fig:world-detail}
 \end{figure}
 
@@ -58,6 +58,6 @@ Per completare la costruzione tramite il builder e ottenere il nuovo sistema bis
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{./img/SystemBuilder}
-    \caption{Design di dettaglio di del SystemBuilder}
+    \caption{Design di dettaglio del \texttt{SystemBuilder}.}
     \label{fig:system-builder}
 \end{figure}
