@@ -1,15 +1,16 @@
 \chapter{Requisiti}\label{ch:requisiti}
 Per l'individuazione dei requisiti è stato innanzitutto analizzato il pattern ECS e la terminologia adottata.
-In Tabella~\ref{tab:glossario} è riportato un gloassario con i principali concetti del pattern:
+In Tabella~\ref{tab:glossario} è riportato un glossario con i principali concetti del pattern.
 \begin{table}[H]
     \begin{tabular}{p{0.17\linewidth}p{0.76\linewidth}}
         \toprule
         \textbf{World}     & Contiene più \Entity e i rispettivi \Component.
         Permette la registrazione di più \System che utilizza per aggiornare lo stato dei \Component \\
         \textbf{View}      & Rappresenta il sottoinsieme delle \Entity di un \World con i soli \Component specificati \\
-        \textbf{Entity}    & Contiene più \Entity e i rispettivi \Component                                                                                                          \\
-        \textbf{Component} & Rappresenta una particolare caratteristica da modellare per una \Entity                                                                                             \\
-        \textbf{System}    & Aggiorna lo stato dei \Component di tutte le \Entity di una determinata \View secondo una logica definita dall'utilizzatore                          \\
+        \textbf{Entity}    & Oggetto definito dai rispettivi \Component\\
+        \textbf{Component} & Rappresenta una particolare caratteristica da modellare per una \Entity\\
+        \textbf{System}    & Aggiorna i \Component di tutte le \Entity di una determinata \View secondo una logica 
+        definita dall'utilizzatore\\
         \bottomrule
     \end{tabular}\caption{\label{tab:glossario}Glossario dei termini del dominio.}
 \end{table}
@@ -18,9 +19,9 @@ In Tabella~\ref{tab:glossario} è riportato un gloassario con i principali conce
 L'obiettivo è quello di realizzare un framework che permetta di applicare in maniera semplice il pattern ECS\@.
 I requisiti di business individuati sono:
 \begin{enumerate}[label=\textbf{\ref{sec:business}.\arabic*}]
-    \item \label{itm:b1} Deve essere possibile utilizzare in maniera semplice ed efficiente il pattern ECS
-    \item \label{itm:b2} Il framework deve essere sufficientemente flessibile da poter realizzare simulazioni e videogiochi.
-    In particolare deve essere possibile:
+    \item \label{itm:b1} Dev'essere possibile utilizzare in maniera semplice ed efficiente il pattern ECS
+    \item \label{itm:b2} Il framework dev'essere sufficientemente flessibile da poter realizzare simulazioni e videogiochi.
+    In particolare dev' essere possibile:
     \begin{enumerate}[label=\textbf{\ref{itm:b2}.\arabic*}]
         \item \label{itm:bb3} Realizzare una simulazione del moto di palle da biliardo in un tavolo da gioco
     \end{enumerate}
@@ -30,11 +31,11 @@ I requisiti di business individuati sono:
 I requisiti utente sono sviluppati considerando il punto di vista dello sviluppatore che dovrà utilizzare il framework.
 In particolare:
 \begin{enumerate}[label=\textbf{\ref{sec:utente}.\arabic*}]
-    \item \label{itm:u1} Deve essere possibile creare l'universo che contiene tutte le \Entity
-    \item \label{itm:u2} Deve essere possibile creare e rimuovere \Component
-    \item \label{itm:u3} Deve essere possibile creare e rimuovere \Entity
-    \item \label{itm:u4} Deve essere possibile creare \System
-    \item \label{itm:u5} Deve essere possibile utilizzare un DSL per effettuare le operazioni sopra elencate
+    \item \label{itm:u1} Dev'essere possibile creare il \World che contiene tutte le \Entity
+    \item \label{itm:u2} Dev'essere possibile creare e rimuovere \Component
+    \item \label{itm:u3} Dev'essere possibile creare e rimuovere \Entity
+    \item \label{itm:u4} Dev'essere possibile creare \System
+    \item \label{itm:u5} Dev'essere possibile utilizzare un DSL per effettuare le operazioni sopra elencate
     \item \label{itm:u6} Per l'utente è importante avere un esempio di utilizzo del framework
 \end{enumerate}
 
@@ -43,7 +44,6 @@ I requisiti funzionali, ricavati da quelli utente, sono:
 \begin{enumerate}[label=\textbf{\ref{sec:funzionali}.\arabic*}]
     \item \label{itm:f1} Definire uno o più \World
     \begin{enumerate}[label=\textbf{\ref{itm:f1}.\arabic*}]
-        \item \label{itm:ff1} Definire delle \View che selezionino alcune \Entity del \World
         \item \label{itm:ff2} Far avanzare lo stato del \World, comportando l'aggiornamento delle sue \Entity
     \end{enumerate}
     \item \label{itm:f2} Definire \Component
@@ -54,19 +54,21 @@ I requisiti funzionali, ricavati da quelli utente, sono:
         \item \label{itm:ff3} Aggiungere \Component alle \Entity
         \item \label{itm:ff4} Rimuovere \Component dalle \Entity
     \end{enumerate}
-    \item \label{itm:f6} Creare diverse tipologie di \View
+    \item \label{itm:f6} Creare diverse tipologie di \View che selezionino alcune \Entity del \World
     \begin{enumerate}[label=\textbf{\ref{itm:f6}.\arabic*}]
         \item \label{itm:ff5} \View per ottenere tutte le \Entity del \World che possiedono i \Component specificati
-        \item \label{itm:ff6} \View per ottenere tutte le \Entity del \World che non possiedono nessuno dei \Component specificati
+        \item \label{itm:ff6} \View per ottenere tutte le \Entity del \World che non possiedono nessuno dei \Component
+        specificati
     \end{enumerate}
     \item \label{itm:f7} Creare diverse tipologie di \System
     \begin{enumerate}[label=\textbf{\ref{itm:f7}.\arabic*}]
         \item \label{itm:ff7} \System per manipolare gli specifici \Component delle \Entity
-        \item \label{itm:ff10} \System che non operano sui \Component delle \Entity ma permettono di eseguire operazioni a ogni aggiornamento dello stato del \World
+        \item \label{itm:ff10} \System che non operano sui \Component delle \Entity ma permettono di eseguire operazioni
+        a ogni aggiornamento dello stato del \World
         \item \label{itm:ff11} \System che consentono di escludere alcune \Entity sulla base dei \Component specificati
     \end{enumerate}
     \item \label{itm:f8} Registrare \System nel \World
-    \item \label{itm:f9} Fornire un DSL
+    \item \label{itm:f9} Fornire un DSL per
     \begin{enumerate}[label=\textbf{\ref{itm:f9}.\arabic*}]
         \item \label{itm:ff12} Definire \System
         \item \label{itm:ff13} Manipolare \Entity
@@ -78,12 +80,13 @@ I requisiti funzionali, ricavati da quelli utente, sono:
 \section{Non funzionali}\label{sec:non-funzionali}
 Considerando gli scenari d'uso elencati al punto~\ref{itm:b2}, il \System deve rispettare il seguente requisito:
 \begin{enumerate}[label=\textbf{\ref{sec:non-funzionali}.\arabic*}]
-    \item \label{itm:nf1} Aggiornare velocità e posizione di 10'000 \Entity in non più di 10ms
+    \item \label{itm:nf1} Aggiornare velocità e posizione di $10\;000$ \Entity in non più di 10ms
 \end{enumerate}
 
 
 \section{Implementativi}\label{sec:implementativi}
+Per la realizzazione del framework verrano utilizzati:
 \begin{enumerate}[label=\textbf{\ref{sec:implementativi}.\arabic*}]
-    \item \label{itm:i1} Scala 3
-    \item \label{itm:i2} Scalatest\cite{scalatest}
+    \item \label{itm:i1} Scala 3 come linguaggio principale
+    \item \label{itm:i2} ScalaTest~\cite{scalatest} per la realizzazione di unit test
 \end{enumerate}
