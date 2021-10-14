@@ -74,9 +74,8 @@ Durante il processo di sviluppo è sorta la necessità di poter indicare la rimo
 dall'entità: per esempio, il sistema di un videogioco che opera su entità dotate del componente \texttt{LifePoints}
 potrebbe voler rimuovere tale componente una volta che questo scende a 0.
 
-Utilizzare dei valori opzionali per indicare la rimozione o meno di un componente
-(\eg \texttt{Some(???)~\&:~None~\&:~CNil}) avrebbe comportato una
-riscrittura delle \texttt{CList} in modo tale da poter accettare valori opzionali.
+La prima soluzione ideata avrebbe comportato la riscrittura delle \texttt{CList} in modo da utilizzare valori
+opzionali per indicare la rimozione di un componente (\eg \texttt{Some(???)~\&:~None~\&:~CNil}).
 
 Una soluzione, a mio avviso più elegante, ha sfruttato due nuovi meccanismi introdotti in Scala 3:
 i \textit{match types}~\cite{match-types} e gli \textit{union types}~\cite{union-types}.
