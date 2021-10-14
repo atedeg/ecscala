@@ -3,32 +3,14 @@ In seguito alla realizzazione del design architetturale di massima sono state ef
 relative alla progettazione di alcune parti del sistema.
 
 \section{Lista di componenti}\label{sec:lista-di-componenti}
-Una caratteristica importante della libreria è permettere di specificare nel tipo di un system (o di una vista)
-su quali componenti questi operano, così che le stesse firme dei metodi possano guidare il programmatore indicando i
-tipi dei componenti trattati.
-Così facendo si elimina la necessità di specificare a tempo di esecuzione il tipo di componenti richiesto (come per
-esempio è necessario fare nella libreria Ashely~\cite{ashley} che ricorre al passaggio di oggetti \texttt{Class<?>})
-permettendo d'intercettare diversi errori a tempo di compilazione.
-
-Realizzare tale funzionalità a livello di compilazione si è rivelato essere una sfida che ha richiesto la definizione
-delle \texttt{CList}, nonché l’utilizzo di macro per modificare il comportamento del compilatore introducendo controlli
-personalizzati.
-
-Una \texttt{CList} (abbreviazione di Components List) è essenzialmente una lista di elementi eterogenei che preserva
-informazioni sul tipo di ciascun elemento in maniera simile a una tupla.
-Per esempio si osservi il Listato~\ref{lst:lstinputlisting2}: la lista che contiene
-i componenti \texttt{Position} e \texttt{Velocity} avrà come tipo~\texttt{Position~\&:~Velocity~\&:~CNil}, permettendo
-di conoscere il tipo e la posizione dei suoi elementi.
-
-Nel Listato~\ref{lst:lstinputlisting2} viene mostrato un esempio di utilizzo delle \texttt{CList} nelle~\texttt{View}.
-\lstinputlisting[label={lst:lstinputlisting2}, caption={Esempio di utilizzo delle \texttt{CList}.}]{code/clist-usage.scala}
+Come emerge dal design di dettaglio, i sistemi e le viste indicano, a livello del proprio tipo, su quali
+componenti andranno ad operare.
+Per indicare queste liste di tipi si è scelto di utilizzare le \texttt{CList} (abbreviazione di \textit{Components List})
+che sono essenzialmente liste di elementi eterogenei che preservano informazioni sui tipi dei propri elementi in maniera
+simile alle tuple.
 
 L’idea alla base di questa soluzione è ispirata dalle \textit{Heterogeneous List} della libreria
-Shapeless~\cite{shapeless}; una differenza significativa sta nel fatto che la definizione di una \texttt{CList} impone un
-limite ulteriore sul tipo dei suoi elementi: devono tutti essere sottotipi di \texttt{Component}, parte dell’implementazione è
-riportata al Listato~\ref{lst:lstinputlisting}.
-
-\lstinputlisting[label={lst:lstinputlisting}, caption={Esempio di codice per implementare \texttt{CList}.}]{code/clist.scala}
+Shapeless~\cite{shapeless}.
 
 \section{Container di componenti}\label{sec:container-di-componenti}
 Come è possibile osservare in Figura~\ref{fig:world-detail}, dal design di dettaglio emerge come

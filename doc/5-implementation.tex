@@ -161,10 +161,22 @@ Mi sono infine occupato della gestione del repository, della CI, dei rilasci del
 
 \subsubsection{CList}
 La parte che mi ha conivolto in prima persona è stata la realizzazione delle \texttt{CList}.
-Le \texttt{CList} rappresentano una parte fondamentale del framework realizzato, quindi è stato importante realizzare
-diversi test per cercare d'individuare possibili errori.
-Un esempio significativo riguarda i test effettuati sulla corretta destrutturazione di una \texttt{CList}: in questo
-ambito si è rilevato un bug nella suite ScalaTest;
+
+Una caratteristica importante della libreria è permettere di specificare nel tipo di un sistema (o di una vista)
+su quali componenti questi operano, così che le stesse firme dei metodi possano guidare il programmatore indicando i
+tipi dei componenti trattati.
+Così facendo si elimina la necessità di specificare a tempo di esecuzione il tipo di componenti richiesto (come per
+esempio è necessario fare nella libreria Ashely~\cite{ashley} che ricorre al passaggio di oggetti \texttt{Class<?>})
+permettendo d'intercettare diversi errori a tempo di compilazione.
+
+Come indicato nella Sezione~\ref{TODO}, l’idea alla base di questa soluzione è stata ispirata dalla libreria
+Shapeless; tuttavia, non si è potuto utilizzarla perché era fondamentale avere un vincolo aggiuntivo sul tipo degli
+elementi della lista. Infatti, tutti gli elementi di una \texttt{CList} devono essere sottotipi di \texttt{Component}.
+Parte dell’implementazione è riportata al Listato~\ref{lst:lstinputlisting}.
+
+\lstinputlisting[label={lst:lstinputlisting}, caption={Esempio di codice per implementare \texttt{CList}.}]{code/clist.scala}
+
+Nella scrittura dei test delle \texttt{CList} si è rilevato un bug nella suite ScalaTest;
 per una trattazione dettagliata del problema si veda la Sezione~\ref{sec:problemi-riscontrati}.
 
 \subsubsection{World ed Entity}
