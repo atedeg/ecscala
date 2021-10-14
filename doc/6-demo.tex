@@ -157,6 +157,12 @@ Grazie alla FSM è stato implementato un testing esaustivo delle precondizioni d
 le possibili configurazioni della FSM in unione agli eventi del mouse.
 In questo modo è stato possibile individuare piccoli bug nell'implementazione dei sistemi.
 
+\subsection{ECSCanvas}\label{subsec:ecscanvas}
+Per non legarsi ad una specifica libreria grafica, si è deciso di introdurre una classe che esponesse metodi di alto livello
+per disegnare le primitive necessarie (in particolare cerchio e linea) e ottenere le dimensioni dell'aria di disegno.
+È stato inoltre deciso di introdurre il pattern Façade, descritto in Figura~TODO, per nascondere la complessità della libreria ScalaFX e,
+in particolare, della classe \texttt{Canvas}.
+
 \section{Implementazione}\label{sec:demo-implementazione}
 Di seguito si riportano gli aspetti implementativi che meritano una trattazione più approfondita.
 
@@ -306,8 +312,7 @@ considera solo una metà dell'intorno, mentre l'altra verrà coperta nelle succe
 Nella parte di demo, oltre a \texttt{MovementSystem}, \texttt{FrictionSystem} e \texttt{RenderSystem},
 mi sono occupata di una prima implementazione del \texttt{SimulationStatus}, che in seguito è stato adattato da
 Farabegoli alla FSM sopra descritta.
-Inoltre, per consentire il riuso del codice e non legarsi ad una specifica libreria grafica, ho
-implementato il trait \texttt{ECSCanvas}, che fornisce metodi per:
+Inoltre, ho implementato il trait \texttt{ECSCanvas}, descritto in Sezione\ref{subsec:ecscanvas} che fornisce metodi per:
 \begin{itemize}
     \item Disegnare un cerchio e una linea
     \item Ottenere le dimensioni dell'area di disegno
