@@ -210,8 +210,8 @@ raggiungibili svolgendo le operazioni indicate.
 
 \subsection{Farabegoli}\label{subsec:demo-farabegoli}
 \subsubsection{Game loop}
-Mi sono occupato della realizzazione del \textit{game loop} facendo uso della classe \texttt{AnimationTimer} già
-presente in ScalaFX\@.
+Il \textit{game loop} è il ciclo infinito che si occupa di eseguire tutti i sistemi dell'applicazione a ogni frame.
+Mi sono occupato della sua realizzazione facendo uso della classe \texttt{AnimationTimer} già presente in ScalaFX\@.
 Tale classe consente di eseguire del codice implementandolo nel metodo \texttt{handle}.
 Questo metodo viene chiamato a ogni frame: un frame è renderizzato ogni $\approx16.6$ millisecondi per garantire 60 FPS
 (Frames Per Second).
