@@ -42,7 +42,8 @@ utilizzo della libreria.
 Infatti, sarebbe stato poco pratico per un utente dover specificare manualmente i \texttt{ComponentTag}
 come argomenti dei metodi che ne necessitano la conoscenza.
 Per ovviare a tale problema si sono sfruttati alcuni meccanismi avanzati offerti da Scala 3:
-in particolare l'uso di \textit{macro}, \textit{inlining} e i nuovi \textit{impliciti}.
+in particolare l'uso di \textit{macro}~\cite{macros}, \textit{inlining}~\cite{inline}
+e \textit{given instances}~\cite{given-instances}.
 
 Tramite un semplice import (\texttt{import dev.atedeg.ecscala.given}) l'utente non deve preoccuparsi
 della presenza dei \texttt{ComponentTag} che saranno generati automaticamente dal compilatore tramite
