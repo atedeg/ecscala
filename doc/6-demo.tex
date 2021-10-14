@@ -81,27 +81,31 @@ Di seguito si elencano i requisiti funzionali individuati per il funzionamento d
 
 \section{Design architetturale}\label{sec:demo-design-architetturale}
 A seguito dell'analisi dei requisiti definiti nella sezione precedente, si è realizzato il design architetturale di
-massima riportato in Figura~\ref{fig:demo}.
+massima riportato in Figura~\ref{fig:demo-architechture}.
 
 Il pattern architetturale scelto è ECS, poiché si presta bene a questo genere di applicazioni.
+Come mostrato in Figura~\ref{fig:demo-architechture}, si possono individuare alcuni sistemi fondamentali:
+\begin{itemize}
+    \item \textbf{RenderSystem:} per effettuare il rendering dei diversi elementi grafici
+    \item \textbf{FrictionSystem:} per considerare l'apporto dell'attrito nel movimento delle palle
+    \item \textbf{CollisionSystem:} per gestire le collisioni delle palle
+    \item \textbf{BallCreationSystem:} per aggiungere nuove palle
+    \item \textbf{BallEditingSystem:} per modificare velocità o posizione delle palle
+    \item \textbf{BallSelectionSystem:} per selezionare delle palle
+\end{itemize}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{./img/Demo}
+    \includegraphics[width=\textwidth]{./img/DemoArchitecture}
     \caption{Design architetturale della demo.}
-    \label{fig:demo}
+    \label{fig:demo-architechture}
 \end{figure}
 
 \section{Design di dettaglio}\label{sec:demo-design-di-dettaglio}
-Per ridurre la complessità nell'implementazione dei sistemi si è deciso di demandare la gestione della posizione delle
-palle nello spazio bidimensionale allo \texttt{SpacePartitionContainer}.
-Sono state realizzate due interfaccie che separano le operazioni di modifica da quelle di lettura dello stato;
-in questo modo si può garantire che solo i sistemi che hanno bisogno di aggiungere elementi al container possano
-effettivamente farlo.
-Una trattazione più approfondita della logica di funzionamento del container si trova alla
-Sottosezione~\ref{subsubsec:container}.
-
-Si elencano di seguito i sistemi individuati ai fini della realizzazione della demo:
+È stato ulteriormente approfondito il design architetturale spezzando i sistemi in sistemi più piccoli
+dai compiti ben circoscritti.
+Il design di dettaglio finale è riportato in Figura~\ref{fig:demo-detail},
+tutti i sistemi individuati sono:
 \begin{itemize}
     \item \textbf{AutoPauseSystem:} mette in automatico il gioco in pausa quando nessuna palla è più in movimento
     \item \textbf{BallCreationRenderingSystem:} si occupa di renderizzare la fase di creazione di una nuova palla
@@ -117,6 +121,21 @@ Si elencano di seguito i sistemi individuati ai fini della realizzazione della d
     \item \textbf{VelocityEditingSystem:} assegna il nuovo valore di velocità a una palla
     \item \textbf{WallCollisionSystem:} gestisce le collisioni delle palle con i muri
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{./img/Demo}
+    \caption{Design di dettaglio della demo, i sistemi sono stati esplosi in sistemi più piccoli dai compiti ben circoscritti.}
+    \label{fig:demo-detail}
+\end{figure}
+
+Inoltre, per ridurre la complessità nell'implementazione dei sistemi si è deciso di demandare la gestione della
+posizione delle palle nello spazio bidimensionale allo \texttt{SpacePartitionContainer}.
+Sono state realizzate due interfaccie che separano le operazioni di modifica da quelle di lettura dello stato;
+in questo modo si può garantire che solo i sistemi che hanno bisogno di aggiungere elementi al container possano
+effettivamente farlo.
+Una trattazione più approfondita della logica di funzionamento del container si trova alla
+Sottosezione~\ref{subsubsec:container}.
 
 \subsection{Macchina a stati finiti}\label{subsec:macchina-a-stati-finiti}
 Le macchine a stati finiti (FSM) consentono di descrivere formalmente il comportamento di un sistema.
