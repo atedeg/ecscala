@@ -17,7 +17,7 @@ e il \texttt{ComponentsContainer} descritto precedentemente alla Sezione~\ref{se
 Inoltre ho collaborato con i miei colleghi alla realizzazione delle \texttt{CList}.
 
 \subsubsection{CList}
-Nelle prime fasi di sviluppo ho cercato di risolvere il problema del garantire la type-safety dei sistemi.
+Nelle prime fasi di sviluppo ho cercato di risolvere il problema del garantire la type safety dei sistemi.
 Mi sono inizialmente documentato su possibili meccanismi forniti dal linguaggio individuando nell'utilizzo delle
 tuple una possibile soluzione.
 Infatti, in Scala 3 le tuple possono fungere da meccanismo per ottenere liste eterogenee di elementi
@@ -146,7 +146,7 @@ Questi due sistemi definiscono i seguenti metodi:
 \end{itemize}
 
 Il metodo \texttt{update} deve ritornare una \texttt{CList} dei nuovi componenti;
-grazie all'utilizzo delle \texttt{CList} (descritte in dettaglio nella sottosezione~\ref{sec:lista-di-componenti})
+grazie all'utilizzo delle \texttt{CList} (descritte in dettaglio nella Sottosezione~\ref{subsec:farabegoli})
 verrà verificato a tempo di compilazione che i nuovi componenti abbiano lo stesso tipo di quelli su cui opera il
 sistema.
 Per permettere la cancellazione di alcuni dei componenti, è stato implementato un match type chiamato
@@ -166,7 +166,7 @@ Una caratteristica importante della libreria è permettere di specificare nel ti
 su quali componenti questi operano, così che le stesse firme dei metodi possano guidare il programmatore indicando i
 tipi dei componenti trattati.
 Così facendo si elimina la necessità di specificare a tempo di esecuzione il tipo di componenti richiesto (come per
-esempio è necessario fare nella libreria Ashely~\cite{ashley} che ricorre al passaggio di oggetti \texttt{Class<?>})
+esempio è necessario fare nella libreria Ashely che ricorre al passaggio di oggetti \texttt{Class<?>})
 permettendo d'intercettare diversi errori a tempo di compilazione.
 
 Come indicato nella Sezione~\ref{sec:lista-di-componenti}, l’idea alla base di questa soluzione è stata ispirata dalla
@@ -178,7 +178,7 @@ Parte dell’implementazione è riportata al Listato~\ref{lst:lstinputlisting}.
 
 \lstinputlisting[label={lst:lstinputlisting}, caption={Esempio di codice per implementare \texttt{CList}.}]{code/clist.scala}
 
-Nella scrittura dei test delle \texttt{CList} si è rilevato un bug nella suite ScalaTest;
+Nella scrittura dei test delle \texttt{CList} è stato trovato un bug nella suite ScalaTest;
 per una trattazione dettagliata del problema si veda la Sezione~\ref{sec:problemi-riscontrati}.
 
 \subsubsection{World ed Entity}
@@ -202,7 +202,7 @@ in questa fase ho contribuito fornendo consigli e suggerimenti per una migliore 
 Il requisito non funzionale~\ref{itm:nf1} fornisce una linea di base delle prestazioni che il framework deve rispettare;
 a tal proposito ho definito una serie di benchmark per misurare le prestazioni di \texttt{View}, \texttt{System} e
 dell'aggiornamento del \texttt{World}.
-Mediante questi benchmark è stato possibile validare il requisito non funzionale sulla base di dati oggettivi.
+Mediante questi benchmark è stato possibile validare il requisito non funzionale~\ref{itm:nf1} sulla base di dati oggettivi.
 Per una descrizione più approfondita dei benchmark si faccia riferimento alla Sezione~\ref{sec:benchmark}.
 
 \subsection{Vitali}\label{subsec:linda-vitali}
@@ -227,8 +227,8 @@ Il \texttt{ComponentsContainer} descritto nella Sezione~\ref{sec:container-di-co
     \item Rimuovere \texttt{Entity}
     \item Ottenere tutte le \texttt{Entity} e i rispettivi \texttt{Component}
 \end{itemize}
-Sebbene inizialmente fosse stata utilizzata una \texttt{HashMap} come struttura dati, in seguito si è optato per una
-\texttt{AnyRefMap}, la quale, come descritto nella documentazione ufficiale~\cite{anyRefMap},
+Sebbene inizialmente fosse stata utilizzata una \texttt{HashMap} come struttura dati interna, in seguito si è optato per
+una \texttt{AnyRefMap}, la quale, come descritto nella documentazione ufficiale~\cite{anyRefMap},
 è ``\textit{notevolmente più veloce di una HashMap}''.
 Infatti, come si può osservare in Tabella~\ref{tab:componentscontainer-benchmark}, ha contribuito nel rispettare il
 requisito non funzionale~\ref{itm:nf1}.
@@ -266,7 +266,7 @@ Inoltre, sono stati utilizzati i seguenti meccanismi di Scala 3:
     metodo \texttt{hasA}, usato per aggiungere un \texttt{System} al \texttt{World}.
     Come si può notare nel Listato~\ref{lst:dsl-ctxf}, il metodo prende in ingresso una \textit{context function} che va
     da \texttt{World} a \texttt{Unit}.
-    Il questo modo il \texttt{World} viene passato implicitamente alla funzione che lo utilizza permettendo l'aggiunta
+    In questo modo il \texttt{World} viene passato implicitamente alla funzione che lo utilizza permettendo l'aggiunta
     del \texttt{System}
     \item \textbf{Conversioni implicite:} sono state implementate due conversioni implicite\\
     \texttt{componentToClist[C~<:~Component:~ComponentTag]:\\Conversion[C,~C~\&:~CNil]}

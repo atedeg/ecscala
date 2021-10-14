@@ -12,7 +12,7 @@ I principali componenti individuati sono:
     \item \texttt{View}: permette di selezionare le \texttt{Entity} di un \texttt{World} che abbiano tutti i
     \texttt{Component} specificati
     \item \texttt{ExcludingView}: rappresenta una specializzazione di una \texttt{View} che permette di specificare un
-    ulteriore filtro andando ad indicare i \texttt{Component} che una \texttt{Entity} non deve avere per essere parte
+    ulteriore filtro andando a indicare i \texttt{Component} che una \texttt{Entity} non deve avere per essere parte
     della \texttt{View}
     \item \texttt{System}: descrive un'operazione che viene eseguita ogni volta che viene effettuato l'\texttt{update}
     del \texttt{World} in cui è registrato
@@ -47,6 +47,3 @@ su cui devono operare mediante la chiamata al metodo~\texttt{update}.
 Per ogni \texttt{System} del \texttt{World} si verifica, tramite il metodo \texttt{shouldRun}, che questo possa essere
 eseguito.
 In caso affermativo, il sistema viene eseguito chiamandone il metodo \texttt{update}.
-
-L'esecuzione di ogni sistema è atomica e sequenziale: ciò significa che l'ordine con cui vengono inseriti nel
-mondo è significativo ai fini della computazione degli stessi e non si possono verificare race condition.

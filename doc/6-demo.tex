@@ -102,7 +102,7 @@ Come mostrato in Figura~\ref{fig:demo-architechture}, si possono individuare alc
 \end{figure}
 
 \section{Design di dettaglio}\label{sec:demo-design-di-dettaglio}
-È stato ulteriormente approfondito il design architetturale spezzando i sistemi in sistemi più piccoli
+È stato ulteriormente approfondito il design architetturale dividendo i sistemi in sistemi più piccoli
 dai compiti ben circoscritti.
 Il design di dettaglio finale è riportato in Figura~\ref{fig:demo-detail},
 tutti i sistemi individuati sono:
@@ -143,10 +143,10 @@ Si è quindi scelto tale formalismo per descrivere il funzionamento della simula
 
 Sono stati identificati sei stati: \textit{Pause}, \textit{Play}, \textit{Add Balls}, \textit{Select Ball},
 \textit{Change Velocity} e \textit{Dragging}.
-A seguito della definizione degli stati del sistema, sono stati definiti gli eventi di transizione tra stati.
+A seguito della definizione degli stati del sistema, sono stati definiti i loro eventi di transizione.
 Di seguito viene riportata la descrizione di tali eventi:
 \begin{itemize}
-    \item \textit{PlayPauseBtn.clicked}: rappresenta la pressione del pulsante per eseguire o mettere in pausa la
+    \item \texttt{PlayPauseBtn.clicked}: rappresenta la pressione del pulsante per eseguire o mettere in pausa la
     simulazione
     \item \texttt{AddBallBtn.clicked}: rappresenta la pressione del pulsante per l'aggiunta di palle alla simulazione
     \item \texttt{ChangeVelBtn.clicked}: rappresenta la pressione del pulsante per cambiare la velocità a una palla
@@ -236,6 +236,7 @@ raggiungibili svolgendo le operazioni indicate.
 \subsection{Farabegoli}\label{subsec:demo-farabegoli}
 \subsubsection{Game loop}
 Il \textit{game loop} è il ciclo infinito che si occupa di eseguire tutti i sistemi dell'applicazione a ogni frame.
+
 Mi sono occupato della sua realizzazione facendo uso della classe \texttt{AnimationTimer} già presente in ScalaFX\@.
 Tale classe consente di eseguire del codice implementandolo nel metodo \texttt{handle}.
 Questo metodo viene chiamato a ogni frame: un frame è renderizzato ogni $\approx16.6$ millisecondi per garantire 60 FPS
@@ -337,7 +338,7 @@ considera solo una metà dell'intorno, mentre l'altra verrà coperta nelle succe
 Nella parte di demo, oltre a \texttt{MovementSystem}, \texttt{FrictionSystem} e \texttt{RenderSystem},
 mi sono occupata di una prima implementazione del \texttt{SimulationStatus}, che in seguito è stato adattato da
 Farabegoli alla FSM sopra descritta.
-Inoltre, ho implementato il trait \texttt{ECSCanvas}, descritto in Sezione\ref{subsec:ecscanvas} che fornisce metodi per:
+Inoltre, ho implementato il trait \texttt{ECSCanvas}, descritto in Sezione~\ref{subsec:ecscanvas} che fornisce metodi per:
 \begin{itemize}
     \item Disegnare un cerchio e una linea
     \item Ottenere le dimensioni dell'area di disegno
