@@ -1,9 +1,9 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.util.types.given
-import dev.atedeg.ecscala.fixtures.{ ComponentsFixture, Gravity, Mass, Position, Velocity, ViewFixture, WorldFixture }
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import dev.atedeg.ecscala.given
+import dev.atedeg.ecscala.fixtures.{ Gravity, Mass, Position, Velocity, ViewFixture }
 
 class ViewTest extends AnyWordSpec with Matchers {
 
@@ -53,7 +53,7 @@ class ViewTest extends AnyWordSpec with Matchers {
     }
     "allow to change the entities and reflect the changes on successive iteration" in new ViewFixture {
       val view = world.getView[Velocity &: Mass &: CNil]
-      view foreach (_.head.addComponent(Mass(11)))
+      view foreach (_.head setComponent Mass(11))
       view should contain theSameElementsAs List((entity3, Velocity(1, 1) &: Mass(11)))
     }
   }

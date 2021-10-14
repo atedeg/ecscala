@@ -1,157 +1,144 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
-import dev.atedeg.ecscala.{ CList, CNil, Component, Deletable, DeltaTime, Entity, System, View, World }
-import dev.atedeg.ecscala.dsl.Words.*
-import dev.atedeg.ecscala.util.types
+import dev.atedeg.ecscala.{
+  CList,
+  CListTag,
+  CNil,
+  Component,
+  ComponentTag,
+  Entity,
+  IteratingSystem,
+  System,
+  View,
+  World,
+}
+import dev.atedeg.ecscala.dsl.Syntax
+//import dev.atedeg.ecscala.dsl.Words.EntityWord
 
 /**
  * This trait provides a domain specific language (DSL) for expressing the ECScala framework operations using an
  * english-like syntax. Here's the things you can do:
  *
- * '''Create an entity in a world:'''
+ * '''Create an Entity in a World:'''
  * {{{
  * val world = World()
  * val entity1 = world hasAn entity
  * }}}
  *
- * '''Remove entities from a world:'''
+ * '''Remove Entities from a World:'''
  * {{{
- *   *  world - entity1
+ *   *  world -= entity1
  *   *  remove (entity1) from world
  *   *  remove (List(entity1, entity2, entity3)) from world
  * }}}
  *
- * '''Create an entity in a world with a component:'''
+ * '''Create an Entity in a World with a Component:'''
  * {{{
- * val entity1 = world hasAn entity withComponent MyComponent()
+ * val entity1 = world hasAn entity withComponent myComponent
  * }}}
  *
- * '''Create an entity in a world with multiple components:'''
+ * '''Create an Entity in a World with multiple Components:'''
  * {{{
  * val entity1 = world hasAn entity withComponents {
- *       MyComponent1() &: MyComponent2() &: MyComponent3()
+ *       myComponent1 &: myComponent2 &: myComponent3
  * }
  * }}}
  *
- * '''Add components to an entity:'''
+ * '''Add Components to an Entity:'''
  * {{{
- *   *  entity1 + MyComponent()
- *   *  entity1 withComponent MyComponent()
- *   *  entity1 withComponents { MyComponent1() &: MyComponent2() }
+ *   *  entity1 += myComponent
+ *   *  entity1 withComponent myComponent
+ *   *  entity1 withComponents { myComponent1 &: myComponent2 }
  * }}}
  *
- * '''Remove components from an entity:'''
+ * '''Remove Components from an Entity:'''
  * {{{
- *   *  remove { MyComponent() } from entity1
- *   *  entity1 - MyComponent()
- *   *  remove { MyComponent1() &: MyComponent2() &: MyComponent3() } from entity1
+ *   *  remove (myComponent) from entity1
+ *   *  entity1 -= myComponent
+ *   *  remove { myComponent1 &: myComponent2 &: myComponent3 } from entity1
  * }}}
  *
- * '''Add a system to a world:'''
+ * '''Add a System to a World:'''
  * {{{
- * world hasA system[MyComponent &: CNil] { (_,_,_) => {}}
+ *     * world hasA system[MyComponent &: CNil] { (_,_,_) => {}}
+ *     * world hasA system(mySistem)
+ *     * world += mySystem
  * }}}
  *
- * '''Get a view from a world:'''
+ * '''Remove a System from a World'''
+ * {{{
+ *   * remove (mySystem) from world
+ *   * world -= mySystem
+ * }}}
+ *
+ * '''Get a View from a World:'''
  * {{{
  *   val view = getView[MyComponent1 &: MyComponent2 &: CNil] from world
  * }}}
  *
- * '''Remove all entities and their components from a world:'''
+ * '''Get a View without certain Components'''
  * {{{
- *   clearAll from world
+ *   val view = getView[MyComponent1 &: CNil].excluding[MyComponent2 &: CNil] from world
+ * }}}
+ *
+ * '''Remove all Entities and their Components from a World:'''
+ * {{{
+ *   clearAllEntities from world
  * }}}
  */
-trait ECScalaDSL extends ExtensionMethods with Conversions with FromSyntax {
+trait ECScalaDSL extends ExtensionMethods with Conversions with Syntax with Words {
 
   /**
-   * Keyword that enables the use of the word "entity" in the dsl.
+   * Keyword that enables the use of the word "entity".
    */
   def entity: EntityWord = EntityWord()
 
   /**
-   * Keyword that enables the use of the word "system" in the dsl.
+   * Keyword that enables the use of the word "system".
    */
-  def system[L <: CList](system: (Entity, L, DeltaTime, World, View[L]) => Deletable[L])(using
-      clt: CListTag[L],
-  )(using world: World): Unit = world.addSystem(system)(using clt)
+  def system(system: System)(using world: World): Unit = world.addSystem(system)
 
   /**
-   * Keyword that enables the use of the word "getView" in the dsl.
+   * Keyword that enables the use of the word "system".
    */
-  def getView[L <: CList](using clt: CListTag[L]) = ViewFromWorld(using clt)
+  def system[L <: CList](system: IteratingSystem[L])(using clt: CListTag[L])(using world: World): Unit =
+    world.addSystem(system)
 
   /**
-   * Keyword that enables the use of the word "remove" in the dsl.
+   * Keyword that enables the use of the word "getView".
    */
-  def remove(entities: Seq[Entity]) = FromWorld(entities)
+  def getView[L <: CList](using clt: CListTag[L]): ViewFromWorld[L] = ViewFromWorld(using clt)
 
   /**
-   * Keyword that enables the use of the word "remove" in the dsl.
+   * Keyword that enables the use of the word "remove" for the removal of a [[Clist]] of [[Component]] from an
+   * [[Entity]].
    */
-  def remove[L <: CList: CListTag](componentsList: L): FromEntity[L] = FromEntity(componentsList)
+  def remove[L <: CList: CListTag](componentsList: L): From[Entity, Unit] = ComponentsFromEntity(componentsList)
 
   /**
-   * Keyword that enables the use of the word "clearAll" in the dsl.
+   * Keyword that enables the use of the word "remove" for the removal of a [[CList]] of [[Component]] specifing their
+   * type from an [[Entity]].
    */
-  def clearAll: FromWorld = FromWorld(ClearWord())
-}
-
-private[dsl] trait FromSyntax {
-
-  class FromWorld(left: Seq[Entity] | ClearWord) {
-
-    /**
-     * This method enables the following syntax:
-     *
-     * {{{
-     *   * remove (entity1) from world
-     *   * clearAll from world
-     * }}}
-     */
-    def from(world: World): Unit = left match
-      case entitities: Seq[Entity] => entitities foreach { world.removeEntity(_) }
-      case _: ClearWord => world.clear()
-  }
-
-  class FromEntity[L <: CList](componentList: L)(using clt: CListTag[L]) {
-
-    /**
-     * This method enables the following syntax:
-     *
-     * {{{
-     *   remove (myComponent) from entity1
-     * }}}
-     */
-    def from(entity: Entity): Unit =
-      componentList zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] foreach {
-        entity.removeComponent(_)(using _)
-      }
-  }
-
-  class ViewFromWorld[L <: CList](using clt: CListTag[L]) {
-
-    /**
-     * This method enables the following syntax:
-     *
-     * {{{
-     *   getView[MyComponent1 &: MyComponent2 &: CNil] from world
-     * }}}
-     */
-    def from(world: World): View[L] = world.getView(using clt)
-  }
-}
-
-object Words {
+  def remove[L <: CList: CListTag]: ComponentsTypeFromEntity[L] = ComponentsTypeFromEntity()
 
   /**
-   * This case class enables the following syntax:
-   *
-   * {{{
-   * world hasAn entity
-   * }}}
+   * Keyword that enables the use of the word "remove" for the removal of a [[Component]] specifing its type from an
+   * [[Entity]].
    */
-  case class EntityWord()
-  private[dsl] case class ClearWord()
+  def remove[C <: Component: ComponentTag]: From[Entity, Unit] = ComponentTypeFromEntity()
+
+  /**
+   * Keyword that enables the use of the word "remove" for the removal of an [[Entity]] from a [[World]].
+   */
+  def remove(entities: Seq[Entity]): From[World, Unit] = EntitiesFromWorld(entities)
+
+  /**
+   * Keyword that enables the use of the word "remove" for the removal of a [[System]] from a [[World]].
+   */
+  def remove(system: System): From[World, Unit] = SystemFromWorld(system)
+
+  /**
+   * Keyword that enables the use of the word "clearAllEntities" in the dsl.
+   */
+  def clearAllEntities: From[World, Unit] = ClearAllFromWorld()
 }

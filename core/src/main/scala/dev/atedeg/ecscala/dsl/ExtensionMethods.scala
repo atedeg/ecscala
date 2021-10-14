@@ -1,9 +1,8 @@
 package dev.atedeg.ecscala.dsl
 
-import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
-import dev.atedeg.ecscala.{ CList, Component, Entity, System, World }
-import dev.atedeg.ecscala.dsl.Words.EntityWord
-import dev.atedeg.ecscala.util.types.given
+import dev.atedeg.ecscala.given
+import dev.atedeg.ecscala.{ taggedWith, CList, CListTag, Component, ComponentTag, Entity, System, World }
+import dev.atedeg.ecscala.dsl.EntityWord
 
 trait ExtensionMethods {
 
@@ -17,7 +16,7 @@ trait ExtensionMethods {
      * }}}
      */
     def withComponents[L <: CList](componentList: L)(using clt: CListTag[L]): Entity = {
-      componentList zip clt.tags.asInstanceOf[Seq[ComponentTag[Component]]] foreach { entity.addComponent(_)(using _) }
+      componentList.taggedWith(clt) foreach { entity.setComponent(_)(using _) }
       entity
     }
 
@@ -28,25 +27,25 @@ trait ExtensionMethods {
      * entity withComponent Component()
      * }}}
      */
-    def withComponent[C <: Component: ComponentTag](component: C): Entity = entity.addComponent(component)
+    def withComponent[C <: Component: ComponentTag](component: C): Entity = entity setComponent component
 
     /**
      * This method enables the following syntax:
      *
      * {{{
-     * entity + Component()
+     * entity += Component()
      * }}}
      */
-    def +[C <: Component: ComponentTag](component: C): Entity = entity.addComponent(component)
+    def +=[C <: Component: ComponentTag](component: C): Entity = entity setComponent component
 
     /**
      * This method enables the following syntax:
      *
      * {{{
-     * entity - Component()
+     * entity -= Component()
      * }}}
      */
-    def -[C <: Component: ComponentTag](component: C): Entity = entity.removeComponent(component)
+    def -=[C <: Component: ComponentTag](component: C): Entity = entity removeComponent component
   }
 
   extension (world: World) {
@@ -55,10 +54,28 @@ trait ExtensionMethods {
      * This method enables the following syntax:
      *
      * {{{
-     * world - entity
+     * world -= myEntity
      * }}}
      */
-    def -(entity: Entity) = world.removeEntity(entity)
+    def -=(entity: Entity) = world removeEntity entity
+
+    /**
+     * This method enables the following syntax:
+     *
+     * {{{
+     * world += mySystem
+     * }}}
+     */
+    def +=(system: System) = world addSystem system
+
+    /**
+     * This method enables the following syntax:
+     *
+     * {{{
+     * world -= mySystem
+     * }}}
+     */
+    def -=(system: System) = world removeSystem system
 
     /**
      * This method enables the following syntax:

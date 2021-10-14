@@ -1,7 +1,8 @@
 # ECScala
-General-purpose ECS Scala framework  
+An ECS Scala framework  
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.atedeg/ecscala_3)](https://search.maven.org/artifact/dev.atedeg/ecscala_3)
 [![GitHub release](https://img.shields.io/github/release/nicolasfara/ecscala.svg)](https://gitHub.com/nicolasfara/ecscala/releases/)
 ![example workflow](https://github.com/nicolasfara/ecscala/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/nicolasfara/ecscala/branch/develop/graph/badge.svg?token=0XZ4XF71AY)](https://codecov.io/gh/nicolasfara/ecscala)
@@ -10,7 +11,7 @@ General-purpose ECS Scala framework
 ## Getting Started
 
 ```scala
-libraryDependencies += "dev.atedeg" %% "ecscala" % "0.1.0"
+libraryDependencies += "dev.atedeg" %% "ecscala" % "0.2.1"
 ```
 
 ## Usage
@@ -29,7 +30,7 @@ object AnObject extends ECScalaDSL {
     Position(1, 2) &: Velocity(3, 4) &: Gravity(9.8)
   }
   
-  entity1 + Position(3, 6)
+  entity1 += Position(3, 6)
 }
 ```
 

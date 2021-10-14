@@ -5,34 +5,59 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox minHeight="540.0" minWidth="960.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.atedeg.ecscalademo.controller.MainViewController">
-   <VBox spacing="10.0">
-      <Label text="Label" />
-      <HBox spacing="10.0">
-         <Button fx:id="playPauseBtnDelegate" mnemonicParsing="false" onAction="#onPlayPauseClickHandler" text="Play" />
-         <Button fx:id="addBallBtn" mnemonicParsing="false" text="Add Ball" />
-         <Button fx:id="selectBallBtn" mnemonicParsing="false" text="SelectBall" />
-      </HBox>
-      <Label text="Label" />
-      <HBox spacing="10.0">
-         <Button fx:id="moveBtn" mnemonicParsing="false" text="Move" />
-         <Button fx:id="changeVelBtn" mnemonicParsing="false" text="Change Velocity" />
-      </HBox>
-      <VBox.margin>
-         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-      </VBox.margin>
+<HBox minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.atedeg.ecscalademo.controller.MainViewController">
+   <VBox HBox.hgrow="ALWAYS">
+      <VBox spacing="10.0">
+         <HBox spacing="10.0">
+            <Button fx:id="playPauseBtnDelegate" mnemonicParsing="false" onAction="#onPlayPauseClickHandler" text="Play" />
+            <Button fx:id="addBallBtnDelegate" mnemonicParsing="false" onAction="#onAddBallButtonHandler" text="Add Ball" />
+            <Button fx:id="changeVelBtnDelegate" mnemonicParsing="false" onAction="#onChangeVelocityButtonHandler" text="Change Velocity" />
+            <Button fx:id="resetBtnDelegate" mnemonicParsing="false" onAction="#onResetClickHandler" text="Reset">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+         </HBox>
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </VBox>
+      <Separator />
+      <StackPane alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
+         <Pane fx:id="paneDelegate">
+            <Canvas fx:id="canvasDelegate" height="${paneDelegate.height}" onMouseDragged="#onDragDetectedHandler" onMouseMoved="#onMouseMovedHandler" onMousePressed="#onMousePressedHandler" onMouseReleased="#onMouseReleasedHandler" width="${paneDelegate.width}" />
+            <StackPane.margin>
+               <Insets />
+            </StackPane.margin>
+         </Pane>
+         <Label fx:id="fpsDelegate" alignment="TOP_RIGHT" style="-fx-background-color: rgba(192, 192, 192, 0.3); -fx-background-radius: 3px;" text="FPS" textAlignment="CENTER">
+            <padding>
+               <Insets bottom="4.0" left="7.0" right="7.0" top="4.0" />
+            </padding>
+            <StackPane.margin>
+               <Insets right="10.0" top="10.0" />
+            </StackPane.margin></Label>
+      </StackPane>
    </VBox>
-   <Separator />
-   <StackPane alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
-      <padding>
-         <Insets bottom="10.0" left="10.0" right="10.0" />
-      </padding>
-      <Pane fx:id="paneDelegate">
-         <Canvas fx:id="canvasDelegate" height="${paneDelegate.height}" onMouseMoved="#onMouseMovedHandler" onMousePressed="#onMousePressedHandler" onMouseReleased="#onMouseReleasedHandler" width="${paneDelegate.width}" />
-      </Pane>
-      <Label fx:id="fpsDelegate" alignment="TOP_RIGHT" style="-fx-background-color: rgba(192, 192, 192, 0.3); -fx-background-radius: 3px;" text="FPS" textAlignment="CENTER">
-         <padding>
-            <Insets bottom="4.0" left="7.0" right="7.0" top="4.0" />
-         </padding></Label>
-   </StackPane>
-</VBox>
+   <HBox>
+      <Separator orientation="VERTICAL" />
+      <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </HBox.margin>
+         <Label text="Friction coefficent" />
+         <HBox>
+            <Slider fx:id="frictionCoefficientSliderDelegate" blockIncrement="0.01" max="0.5" value="0.05" />
+            <Label fx:id="frictionCoefficientLabelDelegate" />
+         </HBox>
+         <Label text="Wall restitution" />
+         <HBox spacing="5.0">
+            <Slider fx:id="wallRestitutionSliderDelegate" blockIncrement="0.05" max="1" value="0.5" />
+            <Label fx:id="wallRestitutionLabelDelegate" />
+            <VBox.margin>
+               <Insets />
+            </VBox.margin>
+         </HBox>
+      </VBox>
+   </HBox>
+</HBox>

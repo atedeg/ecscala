@@ -1,8 +1,8 @@
 package dev.atedeg.ecscala
 
 import scala.annotation.targetName
-import dev.atedeg.ecscala.util.types.{ CListTag, ComponentTag }
-import dev.atedeg.ecscala.util.types.given
+import scala.collection.Map
+import dev.atedeg.ecscala.given
 
 /**
  * A [[View]] on a [[World]] that allows to iterate over its entities with components of the type specified in L.
@@ -24,7 +24,7 @@ trait ExcludingView[LIncluded <: CList, LExcluded <: CList] extends View[LInclud
 private[ecscala] object View {
 
   def apply[L <: CList](world: World)(using clt: CListTag[L]): View[L] = new View[L] {
-    override def iterator: Iterator[(Entity, L)] = new ViewIterator(world)(using clt)
+    override def iterator: Iterator[(Entity, L)] = ViewIterator(world)(using clt)
   }
 
   def apply[LIncluded <: CList, LExcluded <: CList](
@@ -32,7 +32,7 @@ private[ecscala] object View {
   )(using cltIncl: CListTag[LIncluded], cltExcl: CListTag[LExcluded]): ExcludingView[LIncluded, LExcluded] =
     new ExcludingView[LIncluded, LExcluded] {
 
-      override def iterator: Iterator[(Entity, LIncluded)] = new ExcludingViewIterator(world)(using cltIncl, cltExcl)
+      override def iterator: Iterator[(Entity, LIncluded)] = ExcludingViewIterator(world)(using cltIncl, cltExcl)
     }
 
   private abstract class BaseViewIterator[L <: CList](world: World)(using clt: CListTag[L])
@@ -68,7 +68,7 @@ private[ecscala] object View {
     private val excludingMaps = taggedExcludingMaps map (_._2)
 
     override protected def isValid(entity: Entity): Boolean =
-      otherMaps.forall(_ contains entity) && !excludingMaps.exists(_ contains entity)
+      super.isValid(entity) && !excludingMaps.exists(_ contains entity)
   }
 
   private def getEntityComponents[L <: CList](

@@ -1,7 +1,7 @@
 package dev.atedeg.ecscala.fixtures
 
 import dev.atedeg.ecscala.Component
-import dev.atedeg.ecscala.util.immutable.ComponentsContainer
+import dev.atedeg.ecscala.util.mutable.ComponentsContainer
 
 case class Mass(m: Int) extends Component
 case class Position(x: Int, y: Int) extends Component

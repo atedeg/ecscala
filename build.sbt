@@ -1,9 +1,8 @@
-import sbtghactions.GenerativePlugin.autoImport.WorkflowStep
-import xerial.sbt.Sonatype.autoImport.sonatypeRepository
-
 val scala3Version = "3.0.1"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
+
+ThisBuild / resolvers += Resolver.jcenterRepo
 
 ThisBuild / homepage := Some(url("https://github.com/nicolasfara/ecscala"))
 ThisBuild / organization := "dev.atedeg"
@@ -38,23 +37,33 @@ ThisBuild / developers := List(
   ),
 )
 
-ThisBuild / githubWorkflowScalaVersions := Seq("3.0.1")
-ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@1.16")
+ThisBuild / githubWorkflowScalaVersions := Seq(scala3Version)
+ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.11", "adopt@1.16")
 ThisBuild / githubWorkflowTargetBranches := Seq("master", "develop")
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches := Seq(RefPredicate.StartsWith(Ref.Tag("v")))
 
 ThisBuild / githubWorkflowBuild := Seq(
-  WorkflowStep.Sbt(List("scalafmtCheck"), name = Some("Lint check with scalafmt")),
-  WorkflowStep.Sbt(List("core / test"), name = Some("Tests")),
+  WorkflowStep.Sbt(
+    List("scalafmtCheckAll"),
+    name = Some("Lint check with scalafmt"),
+  ),
+  WorkflowStep.Sbt(
+    List("test"),
+    name = Some("Tests"),
+  ),
   WorkflowStep.Sbt(
     List("core / jacoco"),
+    cond = Some(
+      "${{ matrix.java }} == 'adopt@1.11' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'",
+    ),
     name = Some("Generate JaCoCo report"),
   ),
   WorkflowStep.Use(
-    "codecov",
-    "codecov-action",
-    "v2",
+    UseRef.Public("codecov", "codecov-action", "v2"),
+    cond = Some(
+      "${{ matrix.java }} == 'adopt@1.11' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'",
+    ),
     name = Some("Publish coverage to codecov"),
     params = Map(
       "token" -> "${{ secrets.CODECOV_TOKEN }}",
@@ -63,9 +72,7 @@ ThisBuild / githubWorkflowBuild := Seq(
     ),
   ),
   WorkflowStep.Use(
-    "xu-cheng",
-    "latex-action",
-    "v2",
+    UseRef.Public("xu-cheng", "latex-action", "v2"),
     name = Some("Build LaTeX report"),
     params = Map(
       "root_file" -> "ecscala-report.tex",
@@ -77,15 +84,17 @@ ThisBuild / githubWorkflowBuild := Seq(
 
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Use(
-    "xu-cheng",
-    "latex-action",
-    "v2",
+    UseRef.Public("xu-cheng", "latex-action", "v2"),
     name = Some("Build LaTeX report"),
     params = Map(
       "root_file" -> "ecscala-report.tex",
       "args" -> "-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape",
       "working_directory" -> "doc",
     ),
+  ),
+  WorkflowStep.Sbt(
+    List("demo / assembly"),
+    name = Some("Create FatJar for the demo"),
   ),
   WorkflowStep.Sbt(
     List("ci-release"),
@@ -99,9 +108,7 @@ ThisBuild / githubWorkflowPublish := Seq(
     ),
   ),
   WorkflowStep.Use(
-    "marvinpinto",
-    "action-automatic-releases",
-    "latest",
+    UseRef.Public("marvinpinto", "action-automatic-releases", "latest"),
     name = Some("Release to Github Releases"),
     params = Map(
       "repo_token" -> "${{ secrets.GITHUB_TOKEN }}",
@@ -112,14 +119,21 @@ ThisBuild / githubWorkflowPublish := Seq(
   ),
 )
 
-val scalaTest = Seq(
+addCommandAlias("run", "demo / run")
+
+lazy val scalaTestLibrary = Seq(
   "org.scalactic" %% "scalactic" % "3.2.9",
   "org.scalatest" %% "scalatest" % "3.2.9" % "test",
 )
 
+lazy val javaFxLibrary = for {
+  module <- Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
+  os <- Seq("win", "mac", "linux")
+} yield "org.openjfx" % s"javafx-$module" % "16" classifier os
+
 lazy val root = project
   .in(file("."))
-  .aggregate(core, benchmarks)
+  .aggregate(core, benchmarks, demo)
   .settings(
     sonatypeCredentialHost := "s01.oss.sonatype.org",
     sonatypeRepository := "https://s01.oss.sonatype.org/service/local",
@@ -131,7 +145,7 @@ lazy val core = project
   .in(file("core"))
   .settings(
     name := "ecscala",
-    libraryDependencies := scalaTest,
+    libraryDependencies := scalaTestLibrary,
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",
     ),
@@ -142,7 +156,7 @@ lazy val core = project
       formats = Seq(JacocoReportFormats.HTML, JacocoReportFormats.XML),
       fileEncoding = "utf-8",
     ),
-    Test / jacocoExcludes := Seq("**.macros.*", "**.types.*"),
+    Test / jacocoExcludes := Seq("*Tag*"),
   )
 
 lazy val benchmarks = project
@@ -155,34 +169,26 @@ lazy val benchmarks = project
     githubWorkflowArtifactUpload := false,
   )
 
-// Determine OS version of JavaFX binaries
-lazy val osName = System.getProperty("os.name") match {
-  case n if n.startsWith("Linux") => "linux"
-  case n if n.startsWith("Mac") => "mac"
-  case n if n.startsWith("Windows") => "win"
-  case _ => throw new Exception("Unknown platform!")
-}
-
-// Add dependency on JavaFX libraries, OS dependent
-lazy val javaFXModules = Seq("base", "controls", "fxml", "graphics", "web", "media", "swing")
-
-ThisBuild / assemblyMergeStrategy := {
-  case PathList("module-info.class") => MergeStrategy.discard
-  case x if x.endsWith("/module-info.class") => MergeStrategy.discard
-  case x =>
-    val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
-    oldStrategy(x)
-}
-
 lazy val demo = project
   .in(file("demo"))
   .dependsOn(core)
   .settings(
     publish / skip := true,
-    test / skip := true,
+    Test / fork := true,
     assembly / assemblyJarName := "ECScalaDemo.jar",
     githubWorkflowArtifactUpload := false,
-    libraryDependencies ++= scalaTest,
-    libraryDependencies += "org.scalafx" %% "scalafx" % "16.0.0-R24",
-    libraryDependencies ++= javaFXModules.map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName),
+    libraryDependencies ++= scalaTestLibrary ++ javaFxLibrary ++ Seq(
+      "org.scalatestplus" %% "mockito-3-12" % "3.2.10.0" % "test",
+      "org.scalafx" %% "scalafx" % "16.0.0-R24",
+      "org.testfx" % "testfx-core" % "4.0.16-alpha" % "test",
+      "org.testfx" % "testfx-junit5" % "4.0.16-alpha" % "test",
+      "org.testfx" % "openjfx-monocle" % "jdk-12.0.1+2" % "test",
+      "org.junit.jupiter" % "junit-jupiter" % "5.8.1" % "test",
+      "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % "test",
+    ),
   )
+
+ThisBuild / assemblyMergeStrategy := {
+  case PathList("META-INF", _ @_*) => MergeStrategy.discard
+  case _ => MergeStrategy.first
+}

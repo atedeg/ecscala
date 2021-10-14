@@ -24,7 +24,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         scala: [3.0.1]
-        java: [adopt@1.8, adopt@1.11, adopt@1.16]
+        java: [adopt@1.11, adopt@1.16]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Java and Scala
-        uses: olafurpg/setup-scala@v10
+        uses: olafurpg/setup-scala@v13
         with:
           java-version: ${{ matrix.java }}
 
@@ -53,15 +53,17 @@ jobs:
         run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 
       - name: Lint check with scalafmt
-        run: sbt ++${{ matrix.scala }} scalafmtCheck
+        run: sbt ++${{ matrix.scala }} scalafmtCheckAll
 
       - name: Tests
-        run: sbt ++${{ matrix.scala }} 'core / test'
+        run: sbt ++${{ matrix.scala }} test
 
       - name: Generate JaCoCo report
+        if: ${{ matrix.java }} == 'adopt@1.11' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'
         run: sbt ++${{ matrix.scala }} 'core / jacoco'
 
       - name: Publish coverage to codecov
+        if: ${{ matrix.java }} == 'adopt@1.11' && ${{ matrix.scala }} == '3.0.1' && github.event_name != 'pull_request'
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -92,7 +94,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         scala: [3.0.1]
-        java: [adopt@1.8]
+        java: [adopt@1.11]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout current branch (full)
@@ -101,7 +103,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Java and Scala
-        uses: olafurpg/setup-scala@v10
+        uses: olafurpg/setup-scala@v13
         with:
           java-version: ${{ matrix.java }}
 
@@ -133,6 +135,9 @@ jobs:
           root_file: ecscala-report.tex
           args: '-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape'
           working_directory: doc
+
+      - name: Create FatJar for the demo
+        run: sbt ++${{ matrix.scala }} 'demo / assembly'
 
       - name: Release to Sonatype
         env:

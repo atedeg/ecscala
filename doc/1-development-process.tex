@@ -1,1 +1,46 @@
 \chapter{Processo di sviluppo}\label{ch:processo-di-sviluppo}
+\section{Metodologia di lavoro}\label{sec:metodologia-di-lavoro}
+Il processo di sviluppo adottato dal team si basa sulla versione semplificata di \textit{SCRUM} consigliata dal docente:
+sono presenti le figure di \textit{product owner} e di \textit{domain expert}, sono stati svolti sprint a cadenza
+settimanale e si sono redatti \textit{product backlog} e \textit{sprint backlog}.
+Il team ha applicato il più possibile la tecnica di sviluppo \textit{test-driven} e largamente sfruttato la modalità
+collaborativa di \textit{pair programming} che ha permesso di ottimizzare e rendere più veloce l'implementazione del
+codice, nonché d'individuare rapidamente eventuali bug.
+
+\subsection{Organizzazione degli Sprint}\label{subsec:organizzazione-sprint}
+Il primo sprint è stato organizzativo: sono stati identificati gli elementi di base del processo di sviluppo, è stata
+preparata la build del progetto ed è stata prodotta la prima versione del product backlog secondo i requisiti
+identificati per il progetto.
+È stato inoltre necessario concordare la \textit{definition of done} per capire quando uno sprint item potesse
+considerarsi concluso;
+ne è emerso che ciò avviene solo se il codice che ne realizza le funzionalità soddisfa i seguenti punti:
+\begin{itemize}
+    \item i test vengono eseguiti con successo
+    \item il codice è ben formattato
+    \item è presente la Scaladoc
+    \item la coverage viene, eventualmente, decrementata al più del 5\%
+    \item il codice prodotto viene controllato e approvato dagli altri membri del gruppo
+\end{itemize}
+Per quanto riguarda gli sprint successivi, a inizio settimana il team si è incontrato di persona per la fase di
+\textit{sprint planning} durante la quale, a partire dagli item del product backlog, è stato prodotto lo
+sprint backlog e sono stati assegnati gli item ai membri.
+Al termine di ogni sprint è stata scritta la retrospettiva per verificare l'attuale stato di avanzamento del progetto
+ed, eventualmente, posporre alla settimana seguente gli sprint item non conclusi.
+Inoltre, ogni membro ha opportunamente aggiornato lo sprint backlog con l'effort rimanente al completamento del
+proprio item.
+
+\section{Strumenti utilizzati}\label{sec:strumenti-utilizzati}
+A supporto del processo sopra descritto, il team ha principalmente adottato gli strumenti messi a disposizione da
+GitHub: sono state utilizzate le issue per tenere traccia degli item degli sprint backlog e assegnarli ai singoli
+membri;
+inoltre, si è ricorso a pull request da \textit{feature branch} per permettere la code review.
+Per avere una visione globale e chiara dell'andamento dello sviluppo, sono stati tracciati e tenuti in versione nel
+repository del progetto - su file .csv - tutti gli sprint backlog e il product backlog.
+
+È stato verificato in modo automatico che il codice prodotto rispettasse i requisiti prestabiliti nella
+definition of done tramite le \textit{GitHub Actions} configurate opportunamente.
+
+Per le release su \textit{Sonatype} è stato utilizzato il plugin \texttt{sbt-ci-release}~\cite{sbt-ci-release}
+opportunamente configurato per eseguire il rilascio direttamente dalla CI\@.
+
+In ultimo, si è utilizzato il \textit{Semantic Versioning} per le release.

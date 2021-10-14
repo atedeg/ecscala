@@ -6,6 +6,16 @@ import org.scalatest.wordspec.AnyWordSpec
 class MathTest extends AnyWordSpec with Matchers {
 
   "A point" when {
+    "inside a radius of another point" should {
+      "overlapped" in {
+        Point(1, 1).isOverlappedWith(Point(2, 2), 10, 10) shouldBe true
+      }
+    }
+    "outside a radius of another point" should {
+      "not overlapped" in {
+        Point(1, 1).isOverlappedWith(Point(20, 20), 5, 5) shouldBe false
+      }
+    }
     "adding a vector" should {
       "return a point with summed components" in {
         Point(1, 1) + Vector(2, 3) shouldBe Point(3, 4)
@@ -28,16 +38,16 @@ class MathTest extends AnyWordSpec with Matchers {
       "return the correct result" in {
         Vector(1, 1) + Vector(2, 2) shouldBe Vector(3, 3)
       }
-    "subtracting another vector" should {
-      "return the correct result" in {
-        Vector(1, 1) - Vector(2, 2) shouldBe Vector(-1, -1)
+      "subtracting another vector" should {
+        "return the correct result" in {
+          Vector(1, 1) - Vector(2, 2) shouldBe Vector(-1, -1)
+        }
       }
-    }
-    "computing the dot product" should {
-      "return the correct result" in {
-        Vector(1, 2) dot Vector(3, 4) shouldBe 11
+      "computing the dot product" should {
+        "return the correct result" in {
+          Vector(1, 2) dot Vector(3, 4) shouldBe 11
+        }
       }
-    }
     }
     "inverted" should {
       "return the opposite vector" in {
@@ -75,9 +85,9 @@ class MathTest extends AnyWordSpec with Matchers {
 
   "A number" can {
     "be clamped between a minimum and a maximum" in {
-      5.clamped(1, 10) shouldBe 5
-      10.clamped(2, 5) shouldBe 5
-      0.clamped(10, 20) shouldBe 10
+      5 clamped (1, 10) shouldBe 5
+      10 clamped (2, 5) shouldBe 5
+      0 clamped (10, 20) shouldBe 10
     }
   }
 }

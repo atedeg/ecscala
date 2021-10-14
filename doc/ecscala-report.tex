@@ -8,21 +8,37 @@
 \usepackage[utf8]{inputenc}
 \usepackage[italian]{babel}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
 \usepackage{listings}
 \usepackage{microtype}
 \usepackage{xcolor}
+\usepackage{xspace}
 \usepackage{enumitem}
 \usepackage{csquotes}
 \usepackage{booktabs}
 \usepackage{float}
-\usepackage[backend=biber]{biblatex}
-\usepackage{hyperref}
+\usepackage[backend=biber,sorting=none]{biblatex}
+\usepackage{amsmath}
 \usepackage{textcomp}
+\usepackage{hyperref}
 \addbibresource{ecscala-report.bib}
 
 % custom commands
-\newcommand{\eg}{\emph{e.g}\ }
+\def\CC{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\tiny\bf ++}}}
+\newcommand{\eg}{\emph{e.g.}\ }
 \newcommand{\emailaddr}[1]{\href{mailto:#1}{\texttt{#1}}}
+\newcommand{\ECS}{\textit{ECS}\xspace}
+\newcommand{\Entity}{\textit{Entity}\xspace}
+\newcommand{\Component}{\textit{Component}\xspace}
+\newcommand{\System}{\textit{System}\xspace}
+\newcommand{\View}{\textit{View}\xspace}
+\newcommand{\World}{\textit{World}\xspace}
+\newcommand{\entity}{\textit{entity}\xspace}
+\newcommand{\component}{\textit{component}\xspace}
+\newcommand{\system}{\textit{system}\xspace}
+\newcommand{\view}{\textit{view}\xspace}
+\newcommand{\world}{\textit{world}\xspace}
 \renewcommand{\lstlistingname}{Listato}
 \lstset{basicstyle=\ttfamily, showspaces=false, showstringspaces=false}
 \definecolor{lightmauve}{rgb}{0.86, 0.82, 1.0}
@@ -49,7 +65,7 @@
     escapeinside={\%*}{*)}
 }
 
-\title{ECScala - A general-purpose ECS framework}
+\title{ECScala - An ECS framework}
 \author{
     Giacomo Cavalieri \\
     \emailaddr{giacomo.cavalieri2@studio.unibo.it}
@@ -76,11 +92,12 @@
 
     \include{0-introduction}
     \include{1-development-process}
-    \include{2-requirments}
+    \include{2-requirements}
     \include{3-architectural-design}
     \include{4-detailed-design}
     \include{5-implementation}
-    \include{6-retrospective}
+    \include{6-demo}
+    \include{7-retrospective}
 
     \printbibliography
 

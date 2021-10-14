@@ -1,7 +1,5 @@
 package dev.atedeg.ecscala
 
-import dev.atedeg.ecscala.util.types.ComponentTag
-
 /**
  * This trait represents an [[Entity]] 's feature.
  */
@@ -9,7 +7,7 @@ trait Component {
   private var _entity: Option[Entity] = Option.empty
   def entity: Option[Entity] = _entity
 
-  private[ecscala] def setEntity(entity: Option[Entity]): Unit = {
+  private[ecscala] def entity_=(entity: Option[Entity]): Unit = {
     _entity = entity
   }
 }
