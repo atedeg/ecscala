@@ -1,5 +1,5 @@
 # ECScala
-An ECS Scala framework  
+An [Entity Component System](https://en.wikipedia.org/wiki/Entity_component_system) Scala framework  
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Maven Central](https://img.shields.io/maven-central/v/dev.atedeg/ecscala_3)](https://search.maven.org/artifact/dev.atedeg/ecscala_3)
@@ -15,6 +15,25 @@ libraryDependencies += "dev.atedeg" %% "ecscala" % "0.2.1"
 ```
 
 ## Usage
+ECScala allows you to use the ECS architechtural pattern with ease:
+```scala
+import dev.atedeg.ecscala.given
+
+case class Position(x: Float, y: Float) extends Component
+case class Velocity(vx: Float, vy: Float) extends Component
+
+object Example extends ECScalaDSL {
+  val world = World()
+  world hasAn entity withComponents { Position(1, 1) &: Velocity(2, 2) }
+  val movementSystem = System[Position &: Velocity &: CNil]
+    .withUpdate { (_, components, deltaTime) =>
+      val Position(x, y) &: Velocity(vx, vy) &: CNil = components
+      Position(x + vx*deltaTime, y + vy*deltaTime) &: Velocity(vx, vy) &: CNil
+    }
+  world hasA system(movementSystem)
+  world.update(10)
+}
+```
 To learn how to use ECScala you can start by reading [its wiki](https://github.com/nicolasfara/ecscala/wiki)!
 
 ## Contributing
