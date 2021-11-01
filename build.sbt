@@ -71,27 +71,9 @@ ThisBuild / githubWorkflowBuild := Seq(
       "fail_ci_if_error" -> "true",
     ),
   ),
-  WorkflowStep.Use(
-    UseRef.Public("xu-cheng", "latex-action", "v2"),
-    name = Some("Build LaTeX report"),
-    params = Map(
-      "root_file" -> "ecscala-report.tex",
-      "args" -> "-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape",
-      "working_directory" -> "doc",
-    ),
-  ),
 )
 
 ThisBuild / githubWorkflowPublish := Seq(
-  WorkflowStep.Use(
-    UseRef.Public("xu-cheng", "latex-action", "v2"),
-    name = Some("Build LaTeX report"),
-    params = Map(
-      "root_file" -> "ecscala-report.tex",
-      "args" -> "-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape",
-      "working_directory" -> "doc",
-    ),
-  ),
   WorkflowStep.Sbt(
     List("demo / assembly"),
     name = Some("Create FatJar for the demo"),
@@ -114,7 +96,7 @@ ThisBuild / githubWorkflowPublish := Seq(
       "repo_token" -> "${{ secrets.GITHUB_TOKEN }}",
       "prerelease" -> "false",
       "title" -> """Release - Version ${{ env.VERSION }}""",
-      "files" -> s"core/target/scala-$scala3Version/*.jar\ncore/target/scala-$scala3Version/*.pom\ndemo/target/scala-$scala3Version/ECScalaDemo.jar\ndoc/ecscala-report.pdf",
+      "files" -> s"core/target/scala-$scala3Version/*.jar\ncore/target/scala-$scala3Version/*.pom\ndemo/target/scala-$scala3Version/ECScalaDemo.jar",
     ),
   ),
 )
@@ -127,7 +109,7 @@ lazy val scalaTestLibrary = Seq(
 )
 
 lazy val javaFxLibrary = for {
-  module <- Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
+  module <- Seq("controls", "fxml", "graphics", "media")
   os <- Seq("win", "mac", "linux")
 } yield "org.openjfx" % s"javafx-$module" % "16" classifier os
 
