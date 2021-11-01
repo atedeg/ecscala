@@ -70,13 +70,6 @@ jobs:
           directory: core/target/scala-3.0.1/jacoco/report
           fail_ci_if_error: true
 
-      - name: Build LaTeX report
-        uses: xu-cheng/latex-action@v2
-        with:
-          root_file: ecscala-report.tex
-          args: '-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape'
-          working_directory: doc
-
       - name: Compress target directories
         run: tar cf targets.tar target core/target project/target
 
@@ -129,13 +122,6 @@ jobs:
           tar xf targets.tar
           rm targets.tar
 
-      - name: Build LaTeX report
-        uses: xu-cheng/latex-action@v2
-        with:
-          root_file: ecscala-report.tex
-          args: '-output-format=pdf -file-line-error -synctex=1 -halt-on-error -interaction=nonstopmode -shell-escape'
-          working_directory: doc
-
       - name: Create FatJar for the demo
         run: sbt ++${{ matrix.scala }} 'demo / assembly'
 
@@ -158,4 +144,3 @@ jobs:
             core/target/scala-3.0.1/*.jar
             core/target/scala-3.0.1/*.pom
             demo/target/scala-3.0.1/ECScalaDemo.jar
-            doc/ecscala-report.pdf
