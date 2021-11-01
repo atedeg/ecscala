@@ -3,9 +3,9 @@ An [Entity Component System](https://en.wikipedia.org/wiki/Entity_component_syst
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Maven Central](https://img.shields.io/maven-central/v/dev.atedeg/ecscala_3)](https://search.maven.org/artifact/dev.atedeg/ecscala_3)
-[![GitHub release](https://img.shields.io/github/release/nicolasfara/ecscala.svg)](https://gitHub.com/nicolasfara/ecscala/releases/)
-![example workflow](https://github.com/nicolasfara/ecscala/workflows/CI/badge.svg)
-[![codecov](https://codecov.io/gh/nicolasfara/ecscala/branch/develop/graph/badge.svg?token=0XZ4XF71AY)](https://codecov.io/gh/nicolasfara/ecscala)
+[![GitHub release](https://img.shields.io/github/release/atedeg/ecscala.svg)](https://gitHub.com/atedeg/ecscala/releases/)
+![example workflow](https://github.com/atedeg/ecscala/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/atedeg/ecscala/branch/develop/graph/badge.svg?token=0XZ4XF71AY)](https://codecov.io/gh/atedeg/ecscala)
 [![javadoc](https://javadoc.io/badge2/dev.atedeg/ecscala_3/javadoc.svg)](https://javadoc.io/doc/dev.atedeg/ecscala_3)
 
 ## Getting Started

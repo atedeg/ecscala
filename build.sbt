@@ -4,7 +4,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 ThisBuild / resolvers += Resolver.jcenterRepo
 
-ThisBuild / homepage := Some(url("https://github.com/nicolasfara/ecscala"))
+ThisBuild / homepage := Some(url("https://github.com/atedeg/ecscala"))
 ThisBuild / organization := "dev.atedeg"
 ThisBuild / licenses := List("MIT" -> url("https://opensource.org/licenses/MIT"))
 
